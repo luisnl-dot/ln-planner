@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npx --yes create-next-app@14 .next-scaffold --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --eslint --use-npm)",
+      "Bash(npx --yes create-next-app@14 scaffold-tmp --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --eslint --use-npm)",
+      "Bash(shopt -s dotglob)",
+      "Bash(mv scaffold-tmp/* .)",
+      "Bash(shopt -u dotglob)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pkill -f \"next-server\")",
+      "mcp__Claude_Preview__preview_start",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "Bash(npx tsc *)",
+      "Bash(curl -s -X POST http://localhost:3000/api/generate -H \"Content-Type: application/json\" -d '{\"client_id\":\"test\"}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(curl -s -X POST http://localhost:3000/api/generate -H \"Content-Type: application/json\" -d '{\"client_id\":\"test\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -s -X POST http://localhost:3000/api/generate -H \"Content-Type: application/json\" -d '{\"client_id\":\"33bb95b9-b37f-4991-af21-72ee30d0918d\",\"format\":\"Feed\",\"theme\":\"Business Lunch Angebot\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\" --max-time 90)",
+      "Bash(curl -s -X POST http://localhost:3000/api/generate -H \"Content-Type: application/json\" -d '{\"client_id\":\"bc22194a-f312-4649-b5a4-3d3e0128eaef\",\"format\":\"Story\",\"theme\":\"HVO100 an unseren Stationen\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\" --max-time 90)",
+      "Bash(curl -s http://localhost:3000/api/generate -X POST -H \"Content-Type: application/json\" -d '{}')"
+    ]
+  }
+}
