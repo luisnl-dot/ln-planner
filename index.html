@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LN Planner</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="LN Planner">
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root{
+    --bg:#ffffff; --ink:#111315; --muted:#9b9fa4; --faint:#c7cbcf;
+    --line:#ececee; --line2:#f4f4f5; --panel:#fafafa;
+    --dot-neu:#e0a63b; --dot-frei:#d1544f; --dot-plan:#5a86c9; --dot-live:#3ca86a; --dot-ent:#b9bdc1;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+  /* header */
+  header{position:sticky;top:0;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(14px);
+    z-index:20;border-bottom:1px solid var(--line);
+    padding:max(16px,env(safe-area-inset-top)) 20px 0}
+  .hrow{display:flex;align-items:center;gap:12px;padding-bottom:14px}
+  .logo{font-size:20px;font-weight:800;letter-spacing:-.5px}
+  .logo .d{color:var(--dot-live)}
+  .logo small{font-weight:500;color:var(--muted);font-size:11px;letter-spacing:.3px;margin-left:6px}
+  .spacer{flex:1}
+  .add{border:none;background:var(--ink);color:#fff;font-weight:600;font-size:14px;
+    padding:9px 15px;border-radius:11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .add:active{transform:scale(.97)}
+  /* client tabs */
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding:0 0 14px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .ctab{white-space:nowrap;border:1px solid var(--line);background:#fff;color:var(--ink);
+    padding:8px 16px;border-radius:22px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  .ctab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .ctab.addc{color:var(--muted);font-weight:500;border-style:dashed}
+  /* sub */
+  main{flex:1;padding:20px}
+  .meta{display:flex;align-items:center;gap:14px;margin-bottom:18px;color:var(--muted);font-size:13px}
+  .meta b{color:var(--ink);font-size:22px;font-weight:800;letter-spacing:-.4px}
+  .toggle{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .toggle span{padding:6px 13px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+  .toggle span.on{background:var(--panel);color:var(--ink)}
+  /* agenda */
+  .daygroup{margin-bottom:8px}
+  .dayhd{display:flex;align-items:baseline;gap:8px;padding:16px 2px 8px}
+  .dayhd .dd{font-size:15px;font-weight:700}
+  .dayhd .dw{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .dayhd.is-today .dd{color:var(--dot-live)}
+  .card{display:flex;gap:14px;align-items:center;padding:14px;border:1px solid var(--line);
+    border-radius:var(--radius);margin-bottom:10px;cursor:pointer;background:#fff;transition:.15s}
+  .card:active{background:var(--line2)}
+  .card:hover{border-color:var(--faint)}
+  .tcol{width:52px;flex-shrink:0;text-align:center}
+  .tcol .tm{font-weight:700;font-size:14px}
+  .tcol .fm{font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.2}
+  .body{flex:1;min-width:0}
+  .body .tt{font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .body .cp{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+  .thumbs{display:flex;gap:4px;margin-top:7px}
+  .thumbs img{width:30px;height:30px;border-radius:7px;object-fit:cover;border:1px solid var(--line)}
+  .thumbs .more{width:30px;height:30px;border-radius:7px;background:var(--panel);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);font-weight:600}
+  .rcol{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .stt{font-size:11px;color:var(--muted);font-weight:600}
+  .empty{text-align:center;color:var(--muted);padding:70px 24px}
+  .empty .big{font-size:15px;color:var(--ink);font-weight:600;margin-bottom:6px}
+  /* calendar (clean) */
+  .cal{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .calhd{display:grid;grid-template-columns:repeat(7,1fr)}
+  .calhd div{padding:10px 0;text-align:center;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr)}
+  .ccell{min-height:74px;border-top:1px solid var(--line2);border-left:1px solid var(--line2);padding:6px}
+  .ccell:nth-child(7n+1){border-left:none}
+  .ccell .cd{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
+  .ccell.today .cd{color:var(--dot-live);font-weight:800}
+  .cdotrow{display:flex;flex-wrap:wrap;gap:3px}
+  .cev{width:100%;font-size:10px;color:var(--ink);background:var(--panel);border-radius:5px;padding:2px 5px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;cursor:pointer;border-left:2px solid var(--faint)}
+  /* sheet / modal */
+  .ov{position:fixed;inset:0;background:rgba(20,20,22,.32);z-index:60;display:none}
+  .ov.show{display:block}
+  .sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;
+    max-width:820px;margin:0 auto;max-height:94vh;overflow-y:auto;
+    padding-bottom:max(20px,env(safe-area-inset-bottom));transform:translateY(100%);transition:.28s cubic-bezier(.2,.8,.2,1)}
+  .ov.show .sheet{transform:translateY(0)}
+  .grab{width:38px;height:4px;background:var(--faint);border-radius:3px;margin:10px auto 4px}
+  .sh-hd{display:flex;align-items:center;padding:8px 20px 14px;border-bottom:1px solid var(--line)}
+  .sh-hd .t{font-weight:700;font-size:17px;flex:1}
+  .sh-hd .cancel{color:var(--muted);font-size:15px;cursor:pointer}
+  .sh-bd{padding:18px 20px;display:flex;flex-direction:column;gap:16px}
+  label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;display:block;margin-bottom:7px}
+  input,select,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;
+    font-size:15px;font-family:inherit;color:var(--ink);background:#fff}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
+  textarea{resize:vertical;min-height:80px}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  /* photo upload */
+  .drop{border:1.5px dashed var(--faint);border-radius:13px;padding:18px;text-align:center;color:var(--muted);
+    font-size:13px;cursor:pointer;transition:.15s}
+  .drop:active{background:var(--panel)}
+  .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px;margin-top:10px}
+  .gal .ph{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+  .gal .ph img{width:100%;height:100%;object-fit:cover}
+  .gal .ph .rm{position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(0,0,0,.6);color:#fff;
+    border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer}
+  .sh-ft{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--line);position:sticky;bottom:0;background:#fff}
+  .btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:600;font-size:15px;
+    padding:13px;border-radius:12px;cursor:pointer}
+  .btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .btn.danger{color:var(--dot-frei);border-color:transparent;flex:0 0 auto;padding:13px 8px}
+  .ai{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px}
+  .ai .aih{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:8px}
+  .ai .aih .gen{margin-left:auto;font-size:12px;color:var(--muted);cursor:pointer;font-weight:600;
+    border:1px solid var(--line);background:#fff;padding:5px 11px;border-radius:8px}
+  .ai .out{font-size:13px;white-space:pre-wrap;color:#3a3d40;line-height:1.5}
+  @media (max-width:520px){ .g3{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="hrow">
+      <div class="logo">LN<span class="d">.</span><small>Planner</small></div>
+      <div class="spacer"></div>
+      <button class="add" onclick="openNew()">+ Post</button>
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </header>
+  <main>
+    <div class="meta">
+      <b id="mCount">0</b> <span id="mLabel">Posts</span>
+      <div class="toggle">
+        <span class="on" data-v="list" onclick="setView('list')">Liste</span>
+        <span data-v="cal" onclick="setView('cal')">Kalender</span>
+      </div>
+    </div>
+    <div id="content"></div>
+  </main>
+</div>
+
+<!-- SHEET -->
+<div class="ov" id="ov">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="sh-hd"><div class="t" id="shTitle">Neuer Post</div><div class="cancel" onclick="closeSheet()">Abbrechen</div></div>
+    <div class="sh-bd">
+      <div class="g2">
+        <div><label>Kunde</label><select id="f_client"></select></div>
+        <div><label>Status</label><select id="f_status">
+          <option value="Neu">Neu</option><option value="Entwurf">Entwurf</option>
+          <option value="Freigabe">Freigabe</option><option value="Geplant">Geplant</option><option value="Live">Live</option>
+        </select></div>
+      </div>
+      <div class="g3">
+        <div><label>Datum</label><input type="date" id="f_date"></div>
+        <div><label>Zeit</label><input type="time" id="f_time"></div>
+        <div><label>Format</label><select id="f_format">
+          <option>Story</option><option>Feed</option><option>Feed (Reel)</option><option>Feed (Carousel)</option><option>Reel</option>
+        </select></div>
+      </div>
+      <div><label>Thema / Titel</label><input id="f_theme" placeholder="Kurz-Thema"></div>
+      <div><label>Caption / Text-Overlay</label><textarea id="f_caption"></textarea></div>
+
+      <div>
+        <label>Fotos & Medien</label>
+        <div class="drop" id="drop" onclick="document.getElementById('f_file').click()">
+          📷 Fotos hochladen — tippen zum Auswählen
+        </div>
+        <input type="file" id="f_file" accept="image/*" multiple hidden onchange="handleFiles(this.files)">
+        <div class="gal" id="gal"></div>
+      </div>
+
+      <div class="ai">
+        <div class="aih">Caption-Vorschlag <span class="gen" onclick="genAI()">Generieren</span></div>
+        <div class="out" id="aiOut">Nutzt Kunde, Format & Thema. Genau das läuft später im WhatsApp-Chat.</div>
+      </div>
+    </div>
+    <div class="sh-ft">
+      <button class="btn danger" id="delBtn" onclick="delPost()" style="display:none">Löschen</button>
+      <button class="btn primary" onclick="savePost()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- STATE ---------- */
+const Y=2026;
+const d=(m,day)=>`${Y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+const STAT={Neu:'--dot-neu',Freigabe:'--dot-frei',Geplant:'--dot-plan',Live:'--dot-live',Entwurf:'--dot-ent'};
+
+let CLIENTS=["Greek Food Olympia","team tankpool24"];
+let POSTS=[
+  {c:"Greek Food Olympia",date:d(7,7),time:"11:00",format:"Story",theme:"Business Lunch",caption:"Business Lunch. Mo–Fr, 11:45–14:30 Uhr, 19,99 €.",status:"Geplant",photos:[]},
+  {c:"Greek Food Olympia",date:d(7,8),time:"12:00",format:"Story",theme:"Stimmung",caption:"Auf dem Weg zu dir.",status:"Geplant",photos:[]},
+  {c:"Greek Food Olympia",date:d(7,9),time:"12:00",format:"Story",theme:"Küche",caption:"Frisch aus der Küche: Kritharotto.",status:"Neu",photos:[]},
+  {c:"Greek Food Olympia",date:d(7,10),time:"17:00",format:"Story",theme:"Freitag",caption:"Freitagabend. Noch ist ein Tisch frei.",status:"Neu",photos:[]},
+  {c:"Greek Food Olympia",date:d(7,12),time:"18:00",format:"Feed (Carousel)",theme:"Carousel 5 Bilder",caption:"Caption 2 — griechische Klassiker.",status:"Entwurf",photos:[]},
+  {c:"Greek Food Olympia",date:d(7,13),time:"10:00",format:"Story",theme:"Wochenstart",caption:"Montag. Wir decken schon mal für dich ein.",status:"Neu",photos:[]},
+  {c:"Greek Food Olympia",date:d(7,19),time:"18:00",format:"Feed (Reel)",theme:"Garides Saganaki",caption:"Caption 3 — frisch zubereitet.",status:"Entwurf",photos:[]},
+  {c:"Greek Food Olympia",date:d(7,31),time:"17:00",format:"Story",theme:"Monatsende",caption:"Letzter Freitag im Juli. Verbring ihn mit uns.",status:"Entwurf",photos:[]},
+
+  {c:"team tankpool24",date:d(7,7),time:"08:00",format:"Feed",theme:"W2 Sicherheit · tankpool24",caption:"Eine der sichersten Tankkarten der Welt — amtliche Fahrerkarte, Sperrung, Videoauswertung.",status:"Geplant",photos:[]},
+  {c:"team tankpool24",date:d(7,8),time:"07:30",format:"Story",theme:"W2 · tankpool24",caption:"Info: bis zu 4 Cent günstiger.",status:"Neu",photos:[]},
+  {c:"team tankpool24",date:d(7,8),time:"18:00",format:"Feed",theme:"W2 · team · HVO100",caption:"HVO100 — bis zu 90 % weniger CO₂.",status:"Freigabe",photos:[]},
+  {c:"team tankpool24",date:d(7,10),time:"08:00",format:"Feed (Reel)",theme:"W2 · tankpool24",caption:"NFC-Tankvorgang.",status:"Neu",photos:[]},
+  {c:"team tankpool24",date:d(7,14),time:"08:00",format:"Feed",theme:"W3 Lkw-Services",caption:"Mautbox: eine Box, 15 Länder, automatische Updates.",status:"Neu",photos:[]},
+  {c:"team tankpool24",date:d(7,17),time:"08:00",format:"Feed (Reel)",theme:"W3 · Kai persönlich",caption:"REDEN WIR: Kai persönlich. Bio + 0800.",status:"Freigabe",photos:[]},
+  {c:"team tankpool24",date:d(7,28),time:"08:00",format:"Feed",theme:"W5 App + Portal",caption:"Tanken per App mit tankpool24-connect.",status:"Entwurf",photos:[]}
+];
+POSTS.forEach((p,i)=>p.id=i+1);
+let nextId=POSTS.length+1;
+
+let active=CLIENTS[0];
+let view='list';
+let editId=null;
+let draftPhotos=[];
+
+/* ---------- PERSIST ---------- */
+function persist(){try{localStorage.setItem('lnp_clients',JSON.stringify(CLIENTS));
+  localStorage.setItem('lnp_posts',JSON.stringify(POSTS));localStorage.setItem('lnp_next',nextId)}catch(e){alert('Speicher voll — bitte ein paar Fotos entfernen.')}}
+function load(){try{
+  const c=localStorage.getItem('lnp_clients');if(c)CLIENTS=JSON.parse(c);
+  const p=localStorage.getItem('lnp_posts');if(p){POSTS=JSON.parse(p);nextId=+localStorage.getItem('lnp_next')||POSTS.length+1}
+  if(!CLIENTS.includes(active))active=CLIENTS[0];
+}catch(e){}}
+
+/* ---------- TABS ---------- */
+function renderTabs(){
+  document.getElementById('tabs').innerHTML =
+    CLIENTS.map(c=>`<div class="ctab ${active===c?'active':''}" onclick="selectClient('${esc(c)}')">${c}</div>`).join('')
+    +`<div class="ctab addc" onclick="addClient()">+ Kunde</div>`;
+}
+function esc(s){return s.replace(/'/g,"\\'")}
+function selectClient(c){active=c;renderTabs();render()}
+function addClient(){
+  const n=prompt('Name des neuen Kunden:');
+  if(!n||!n.trim())return;
+  const name=n.trim();
+  if(CLIENTS.includes(name)){active=name}else{CLIENTS.push(name);active=name}
+  persist();renderTabs();render();
+}
+function setView(v){view=v;document.querySelectorAll('.toggle span').forEach(s=>s.classList.toggle('on',s.dataset.v===v));render()}
+
+/* ---------- RENDER ---------- */
+function forClient(){return POSTS.filter(p=>p.c===active).sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time))}
+const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+const MO=['Jan','Feb','März','Apr','Mai','Juni','Juli','Aug','Sep','Okt','Nov','Dez'];
+function todayISO(){const t=new Date();return d(t.getMonth()+1,t.getDate())}
+
+function render(){
+  const v=forClient();
+  document.getElementById('mCount').textContent=v.length;
+  document.getElementById('mLabel').textContent=v.length===1?'Post':'Posts';
+  view==='list'?renderList(v):renderCal(v);
+}
+function statusDot(s){return `<div class="dot" style="background:var(${STAT[s]||'--dot-ent'})"></div>`}
+function thumbHTML(p){if(!p.photos||!p.photos.length)return '';
+  const shown=p.photos.slice(0,4).map(src=>`<img src="${src}">`).join('');
+  const more=p.photos.length>4?`<div class="more">+${p.photos.length-4}</div>`:'';
+  return `<div class="thumbs">${shown}${more}</div>`}
+function renderList(v){
+  const el=document.getElementById('content');
+  if(!v.length){el.innerHTML=`<div class="empty"><div class="big">Noch keine Posts</div>Tippe „+ Post“, um für ${active} zu starten.</div>`;return}
+  let html='',lastDay='';
+  v.forEach(p=>{
+    if(p.date!==lastDay){lastDay=p.date;
+      const dt=new Date(p.date+'T00:00');const isT=p.date===todayISO();
+      html+=`<div class="dayhd ${isT?'is-today':''}"><span class="dd">${dt.getDate()}. ${MO[dt.getMonth()]}</span><span class="dw">${WD[dt.getDay()]}${isT?' · Heute':''}</span></div>`;
+    }
+    html+=`<div class="card" onclick="openEdit(${p.id})">
+      <div class="tcol"><div class="tm">${p.time}</div><div class="fm">${p.format}</div></div>
+      <div class="body"><div class="tt">${p.theme||p.caption||'—'}</div>
+        ${p.theme&&p.caption?`<div class="cp">${p.caption}</div>`:''}
+        ${thumbHTML(p)}</div>
+      <div class="rcol">${statusDot(p.status)}<div class="stt">${p.status}</div></div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+function renderCal(v){
+  const month=6;const el=document.getElementById('content');
+  let html='<div class="cal"><div class="calhd">'+['Mo','Di','Mi','Do','Fr','Sa','So'].map(x=>`<div>${x}</div>`).join('')+'</div><div class="calgrid">';
+  const first=new Date(Y,month,1);let start=(first.getDay()+6)%7;
+  const days=new Date(Y,month+1,0).getDate();
+  for(let i=0;i<start;i++)html+='<div class="ccell"></div>';
+  for(let day=1;day<=days;day++){
+    const ds=d(7,day);const evs=v.filter(p=>p.date===ds);
+    html+=`<div class="ccell ${ds===todayISO()?'today':''}"><div class="cd">${day}</div>`+
+      evs.map(p=>`<div class="cev" style="border-left-color:var(${STAT[p.status]||'--dot-ent'})" onclick="event.stopPropagation();openEdit(${p.id})">${p.time} ${p.format.replace('Feed ','').replace(/[()]/g,'')}</div>`).join('')+
+      `</div>`;
+  }
+  html+='</div></div>';el.innerHTML=html;
+}
+
+/* ---------- SHEET ---------- */
+function fillClients(){document.getElementById('f_client').innerHTML=CLIENTS.map(c=>`<option>${c}</option>`).join('')}
+function openNew(){editId=null;draftPhotos=[];
+  document.getElementById('shTitle').textContent='Neuer Post';
+  document.getElementById('delBtn').style.display='none';
+  fillClients();document.getElementById('f_client').value=active;
+  document.getElementById('f_status').value='Neu';
+  document.getElementById('f_date').value=todayISO();
+  document.getElementById('f_time').value='08:00';
+  document.getElementById('f_format').value='Story';
+  document.getElementById('f_theme').value='';document.getElementById('f_caption').value='';
+  document.getElementById('aiOut').textContent='Nutzt Kunde, Format & Thema.';
+  renderGal();showSheet();
+}
+function openEdit(id){const p=POSTS.find(x=>x.id===id);if(!p)return;editId=id;draftPhotos=[...(p.photos||[])];
+  document.getElementById('shTitle').textContent='Post bearbeiten';
+  document.getElementById('delBtn').style.display='block';
+  fillClients();document.getElementById('f_client').value=p.c;
+  document.getElementById('f_status').value=p.status;
+  document.getElementById('f_date').value=p.date;document.getElementById('f_time').value=p.time;
+  document.getElementById('f_format').value=p.format;
+  document.getElementById('f_theme').value=p.theme||'';document.getElementById('f_caption').value=p.caption||'';
+  document.getElementById('aiOut').textContent='Generiere Varianten mit „Generieren“.';
+  renderGal();showSheet();
+}
+function showSheet(){document.getElementById('ov').classList.add('show');document.body.style.overflow='hidden'}
+function closeSheet(){document.getElementById('ov').classList.remove('show');document.body.style.overflow=''}
+function val(id){return document.getElementById(id).value}
+function savePost(){
+  const o={c:val('f_client'),status:val('f_status'),date:val('f_date'),time:val('f_time'),
+    format:val('f_format'),theme:val('f_theme'),caption:val('f_caption'),photos:[...draftPhotos]};
+  if(!o.date){alert('Bitte ein Datum wählen.');return}
+  if(editId){Object.assign(POSTS.find(x=>x.id===editId),o)}else{o.id=nextId++;POSTS.push(o)}
+  if(!CLIENTS.includes(o.c)){CLIENTS.push(o.c)}
+  active=o.c;persist();closeSheet();renderTabs();render();
+}
+function delPost(){if(editId&&confirm('Post löschen?')){POSTS=POSTS.filter(x=>x.id!==editId);persist();closeSheet();render()}}
+
+/* ---------- PHOTOS ---------- */
+function handleFiles(files){
+  [...files].forEach(f=>{if(!f.type.startsWith('image/'))return;
+    const r=new FileReader();
+    r.onload=e=>{resizeImg(e.target.result,900,.82,dataUrl=>{draftPhotos.push(dataUrl);renderGal()})};
+    r.readAsDataURL(f);
+  });
+  document.getElementById('f_file').value='';
+}
+function resizeImg(src,max,q,cb){
+  const img=new Image();
+  img.onload=()=>{let{width:w,height:h}=img;
+    if(w>max||h>max){const s=max/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s)}
+    const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+    cv.getContext('2d').drawImage(img,0,0,w,h);
+    cb(cv.toDataURL('image/jpeg',q));
+  };img.src=src;
+}
+function renderGal(){
+  const g=document.getElementById('gal');
+  g.innerHTML=draftPhotos.map((src,i)=>`<div class="ph"><img src="${src}"><div class="rm" onclick="rmPhoto(${i})">×</div></div>`).join('');
+}
+function rmPhoto(i){draftPhotos.splice(i,1);renderGal()}
+
+/* ---------- MOCK-KI (zieht aus dem Content-Brain) ---------- */
+const BRAIN={
+  "Greek Food Olympia":{
+    cta:"Willkommen im GFO.", emoji:"",
+    tag:"..\n#greekfoodolympia #berlindining #berlinrestaurants #moderncuisine #greekbutdifferent #dinnerexperience",
+    rule:"(du-Form · atmosphärisch · kein Em-Dash · schließt mit „Willkommen im GFO.“)",
+    lines:[
+      t=>`${t}, so wie du es liebst.`,
+      t=>`Heute erwartet dich ${t.toLowerCase()}. Frisch, modern, für dich.`,
+      t=>`${t}. Nimm dir den Abend, wir kümmern uns um den Rest.`
+    ]
+  },
+  "team tankpool24":{
+    cta:"Link in Bio 👆", emoji:"",
+    tag:"#teamenergie #tankpool24 #fuhrpark #spedition #logistik",
+    rule:"(„tankpool24-Karte von team“ · team klein · nie „Bezahlkarte“ · keine Referenzkunden · kein Em-Dash · 2.200 Stationen · Ökostrom aus Wasserkraft · HVO100 ca. 90%)",
+    lines:[
+      t=>`${t}. Für deinen Fuhrpark gemacht.`,
+      t=>`${t.toUpperCase()}. Nutzen ohne Umwege für Disponenten und Fuhrparkleiter.`,
+      t=>`Du kennst uns von der Station. ${t} kommt on top.`
+    ]
+  }
+};
+function genAI(){
+  const c=val('f_client'),fmt=val('f_format'),theme=val('f_theme')||'dein Thema';
+  const b=BRAIN[c]||{cta:"Jetzt anfragen.",emoji:"✨",tag:"#LNsocial",lines:[t=>`${t} — auf den Punkt.`,t=>`Wusstest du? ${t}.`,t=>`Kurz & klar: ${t}.`]};
+  let out=`${fmt} · ${theme}\n`+(b.rule?b.rule+'\n':'')+`\n`;
+  out+=b.lines.map((fn,i)=>`${i+1}) ${fn(theme)} ${b.cta} ${b.emoji}`).join('\n');
+  out+=`\n\n${b.tag}`;
+  const el=document.getElementById('aiOut');el.textContent='';let i=0;
+  (function type(){if(i<=out.length){el.textContent=out.slice(0,i);i+=3;requestAnimationFrame(type)}})();
+}
+
+/* ---------- INIT ---------- */
+load();renderTabs();render();
+document.getElementById('ov').addEventListener('click',e=>{if(e.target.id==='ov')closeSheet()});
+</script>
+</body>
+</html>
