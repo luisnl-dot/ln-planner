@@ -20,7 +20,9 @@
       "Bash(curl -s -X POST http://localhost:3000/api/generate -H \"Content-Type: application/json\" -d '{\"client_id\":\"test\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
       "Bash(curl -s -X POST http://localhost:3000/api/generate -H \"Content-Type: application/json\" -d '{\"client_id\":\"33bb95b9-b37f-4991-af21-72ee30d0918d\",\"format\":\"Feed\",\"theme\":\"Business Lunch Angebot\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\" --max-time 90)",
       "Bash(curl -s -X POST http://localhost:3000/api/generate -H \"Content-Type: application/json\" -d '{\"client_id\":\"bc22194a-f312-4649-b5a4-3d3e0128eaef\",\"format\":\"Story\",\"theme\":\"HVO100 an unseren Stationen\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\" --max-time 90)",
-      "Bash(curl -s http://localhost:3000/api/generate -X POST -H \"Content-Type: application/json\" -d '{}')"
+      "Bash(curl -s http://localhost:3000/api/generate -X POST -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(git check-ignore *)",
+      "Bash(git add *)"
     ]
   }
 }
