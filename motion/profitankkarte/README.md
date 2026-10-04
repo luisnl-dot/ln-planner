@@ -1,7 +1,8 @@
-# profitankkarte.de · Motion-Design-Video
+# profitankkarte.de · Motion-Design-Video und Instagram Reels
 
-Erklärvideo für die Website **profitankkarte.de** (tankpool24-Karte von team).
-Ziel: **Anfragen über das Kontaktformular.** Das ganze Video läuft auf einen einzigen Call-to-Action zu.
+Erklärvideo für die Website **profitankkarte.de** (tankpool24-Karte von team) und zwei Instagram Reels.
+Ziel: **Anfragen über das Kontaktformular.** Alles läuft auf einen einzigen Call-to-Action zu.
+Gezeigt wird die Originalkarte (`assets/tankpool24-karte.webp`).
 
 ## Ergebnis
 
@@ -12,7 +13,10 @@ Ziel: **Anfragen über das Kontaktformular.** Das ganze Video läuft auf einen e
 | `output/profitankkarte-poster.jpg` | Posterbild (Endcard) für `<video poster>` |
 | `output/profitankkarte-storyboard.pdf` | Storyboard mit 9 Schlüsselbildern zur Freigabe beim Kunden |
 | `embed/snippet.html` | Einbindung mit klickbarem CTA auf der Endcard + Tracking |
-| `audio/soundtrack.wav` | Musik + Sounddesign, −16 LUFS |
+| `output/profitankkarte-reel-sparen.mp4` | Instagram Reel „4 Cent“, 1080×1920, 16 s, −14 LUFS |
+| `output/profitankkarte-reel-gruende.mp4` | Instagram Reel „5 Gründe“, 1080×1920, 22 s, −14 LUFS |
+| `output/*-cover.jpg` | Titelbilder der Reels |
+| `social/instagram-reels.md` | Captions nach Markenregeln, Bio-Link mit UTM, Posting-Hinweise |
 
 ## Dramaturgie
 
@@ -22,7 +26,7 @@ Schnitte liegen auf einem 120-BPM-Raster, Musik und Effekte sind framegenau sync
 | Zeit | Szene | Text im Bild | Bild |
 |---|---|---|---|
 | 0–4 s | Hook | Ihr Fuhrpark tankt jeden Tag. · Da zählt jeder **Cent** pro Liter. | Zapfsäulen-Display, Betrag und Liter laufen |
-| 4–8 s | Lösung | tankpool24-Karte von team · **Die Tankkarte für Profis.** · Für Fuhrpark, Spedition und Logistik. | Unterstrich wird zur roten Fläche, 3D-Karte fliegt ein |
+| 4–8 s | Lösung | tankpool24-Karte von team · **Die Tankkarte für Profis.** · Für Fuhrpark, Spedition und Logistik. | Unterstrich wird zur roten Fläche, die Originalkarte fliegt in 3D ein |
 | 8–14 s | Individuelle Konditionen | Bis zu **4 ct** pro Liter Diesel sparen. · Rechenbeispiel: 250.000 Liter × 4 ct = **10.000 €** | Ziffern-Roll, Zähler |
 | 14–19 s | Tanknetz | **2.200** Stationen. · 24 Stunden europaweit tanken. | Europa als Punktraster, Stationen leuchten ab Flensburg auf |
 | 19–25 s | Maximale Sicherheit | Eine der sichersten Tankkarten der Welt. · amtliche Fahrerkarte · Kartensperre im Kundenportal · Videoauswertung an den Stationen | Schild, Fahrerkarte, Scan, Haken |
@@ -46,7 +50,7 @@ Bewusste Entscheidungen für die Conversion:
 - [x] „2.200 Stationen", HVO100 „ca. 90 %", Laden „an nahezu allen Ladepunkten in Deutschland"
 - [x] Schwarz/weiß entsättigt, Rot #E31E24 als einziger Akzent (im Video gemessen: 226/29/36)
 - [x] B100, Ökostrom, Schmierstoffe kommen nicht vor
-- [x] Keine Logos nachgebaut (team- und tankpool24-Logo nie mischen): Die Wortmarke ist die Domain in der Hausschrift Barlow
+- [x] Kein Logo nachgebaut: Das tankpool24-Logo erscheint nur auf der Originalkarte, das team-Logo kommt nicht vor (nie mischen). Die Wortmarke der Endcard ist die Domain in der Hausschrift Barlow
 
 ## Vor der Veröffentlichung prüfen
 
@@ -89,15 +93,19 @@ npm run cues && npm run audio   # Soundtrack neu erzeugen (nach Timing-Änderung
 npm run render                  # finale Videos + Poster nach output/ (ca. 10 Minuten)
 npm run render -- --from 8 --to 14   # nur einen Ausschnitt rendern
 npm run storyboard              # Storyboard-PDF aus dem fertigen Video
+npm run render:reel-sparen      # Reel „4 Cent“ (inkl. Ton und Titelbild)
+npm run render:reel-gruende     # Reel „5 Gründe“
+npm run stills -- --page reel-sparen.html --safe 1.9   # Reel-Standbild mit Instagram-Safe-Zones
 ```
 
 | Was | Wo |
 |---|---|
-| Texte | `src/index.html`, pro Szene kommentiert |
-| Timing und Animation | `src/main.js` (Szenenplan `T`, 120 BPM) |
-| Farben, Typografie, Layout | `src/styles.css` |
+| Texte | `src/index.html`, `src/reel-sparen.html`, `src/reel-gruende.html` |
+| Timing und Animation | `src/main.js`, `src/reel-sparen.js`, `src/reel-gruende.js` (Szenenplan `T`, 120 BPM) |
+| Gemeinsame Engine (Timeline-Helfer, Übergänge, Karte, Körnung, Vorschau) | `src/engine.js`, Reels zusätzlich `src/reel-kit.js` |
+| Farben, Typografie, Layout | `src/base.css` (gemeinsam), `src/styles.css` (Website), `src/reels.css` (Reels) |
 | Karte | `scripts/build-map.mjs` → `src/data/europe-dots.json` (`npm run map`) |
-| Musik und Sounddesign | `scripts/audio.py` |
+| Musik und Sounddesign | `scripts/audio.py`, Arrangement je Video über den Musikplan (`MUSIC`) der Komposition |
 
 Technik: HTML/CSS-Komposition mit GSAP, deterministisch Frame für Frame gerendert (Playwright → ffmpeg),
 Bewegungsunschärfe über einen 180°-Shutter mit 4 bis 16 Subframes pro Bild.

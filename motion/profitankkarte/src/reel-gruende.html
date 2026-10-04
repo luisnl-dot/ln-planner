@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>profitankkarte.de · Reel „5 Gründe“</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/500.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/600.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/700.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/800.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow-condensed/700.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow-condensed/800.css">
+<link rel="stylesheet" href="reels.css">
+<style>
+  /* G0 · Hook */
+  #g0 .kicker { position: absolute; left: var(--mx); top: 330px; }
+  #g0 .mega { position: absolute; left: 50px; top: 360px; width: 980px; height: 520px; font-family: var(--cond); font-weight: 800; }
+  #g0 .m-num { position: absolute; left: 0; top: 0; font-size: 560px; line-height: 560px; color: var(--red); transform-origin: 30% 70%; }
+  #g0 .m-unit { position: absolute; left: 300px; top: 252px; font-size: 220px; line-height: 1; }
+  #g0 .sub { position: absolute; left: var(--mx); right: var(--mx); top: 852px; font-size: 54px; font-weight: 600; color: #fff; }
+  #g0 .card3d { left: 220px; top: 1000px; width: 640px; height: 403px; }
+
+  /* Fortschritt über die fünf Gründe */
+  .progress { position: absolute; left: var(--mx); right: var(--mx); top: 300px; display: flex; gap: 14px; z-index: 6; visibility: hidden; }
+  .progress i { flex: 1; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.16); overflow: hidden; }
+  .progress b { display: block; height: 100%; background: var(--red); transform: scaleX(0); transform-origin: left center; }
+
+  /* Gründe: gemeinsames Raster */
+  .reason .num { position: absolute; left: var(--mx); top: 340px; font-family: var(--cond); font-weight: 800; font-size: 200px; line-height: 1; color: var(--red); }
+  .reason .rh { position: absolute; left: var(--mx); right: var(--mx); top: 576px; font-size: 108px; line-height: 1.02; }
+  .reason .rs { position: absolute; left: var(--mx); right: 140px; top: 812px; font-size: 46px; line-height: 1.25; }
+  .reason .vis { position: absolute; left: 0; right: 0; top: 960px; height: 440px; }
+
+  /* 01 · Rechenbeispiel */
+  .mini { position: absolute; left: var(--mx); right: 140px; top: 10px; box-sizing: border-box; padding: 34px 40px 30px; border-radius: 30px; background: #fff; color: var(--ink); box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.8); }
+  .mini small { display: block; font-size: 28px; font-weight: 700; letter-spacing: 0.16em; color: #7A7A80; }
+  .mini .m-row { margin-top: 10px; font-size: 52px; font-weight: 700; }
+  .mini .m-row b { color: var(--red); }
+  .mini .m-rule { display: block; height: 4px; background: var(--ink); margin: 18px 0 8px; transform-origin: left center; }
+  .mini .m-total { display: flex; align-items: baseline; gap: 18px; }
+  .mini .m-total b { font-family: var(--cond); font-weight: 800; font-size: 150px; line-height: 1; color: var(--red); }
+  .mini .m-total span { font-size: 40px; font-weight: 600; color: var(--grey-ink); }
+
+  /* 02 · Karte */
+  #g2 canvas { position: absolute; left: 0; top: -40px; }
+
+  /* 03 · Sicherheit */
+  .sec { position: absolute; left: 50%; top: -20px; width: 440px; height: 520px; margin-left: -220px; transform: scale(0.9); transform-origin: 50% 0; }
+  .sec .rings { position: absolute; left: 220px; top: 262px; width: 0; height: 0; }
+  .sec .rings i { position: absolute; left: 0; top: 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50%; transform: translate(-50%, -50%); }
+  .sec .rings i:nth-child(1) { width: 640px; height: 640px; }
+  .sec .rings i:nth-child(2) { width: 860px; height: 860px; border-color: rgba(255, 255, 255, 0.05); }
+  .sec .shield { position: absolute; left: 0; top: 0; overflow: visible; }
+  .dcard { position: absolute; left: 70px; top: 176px; width: 300px; height: 190px; border-radius: 16px; background: linear-gradient(160deg, #F6F6F3, #D6D6D2); box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6); overflow: hidden; color: #2A2A2E; }
+  .dcard-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px 0; font-weight: 800; font-size: 15px; letter-spacing: 0.2em; }
+  .dcard-top i { width: 30px; height: 19px; border-radius: 3px; background: #A9A9AE; }
+  .dcard-photo { position: absolute; left: 18px; top: 52px; width: 78px; height: 104px; border-radius: 8px; background: #C3C3C7; overflow: hidden; }
+  .dcard-photo i { position: absolute; left: 50%; top: 22px; width: 34px; height: 34px; margin-left: -17px; border-radius: 50%; background: #8E8E93; }
+  .dcard-photo b { position: absolute; left: 50%; top: 62px; width: 64px; height: 60px; margin-left: -32px; border-radius: 32px 32px 0 0; background: #8E8E93; }
+  .dcard-lines { position: absolute; left: 112px; top: 60px; right: 20px; }
+  .dcard-lines i { display: block; height: 9px; border-radius: 5px; background: #B3B3B7; margin-bottom: 13px; }
+  .dcard-lines i:nth-child(2) { width: 70%; }
+  .dcard-lines i:nth-child(3) { width: 86%; }
+  .dcard-lines i:nth-child(4) { width: 48%; }
+  .dcard-chip { position: absolute; right: 20px; bottom: 18px; width: 46px; height: 35px; border-radius: 7px; background: linear-gradient(135deg, #D5D5D8, #8F8F94); }
+  .dcard-scan { position: absolute; left: -10%; width: 120%; height: 3px; top: 0; background: var(--red); box-shadow: 0 0 18px 5px rgba(227, 30, 36, 0.55); opacity: 0; }
+  .badge { position: absolute; left: 306px; top: 372px; width: 116px; height: 116px; border-radius: 50%; background: var(--red); display: grid; place-items: center; color: #fff; box-shadow: 0 0 0 12px rgba(227, 30, 36, 0.16), 0 24px 50px rgba(227, 30, 36, 0.35); }
+  .badge svg { width: 62px; height: 62px; stroke-width: 3; }
+
+  /* 04 · Kundenportal */
+  .portal { position: absolute; left: var(--mx); right: 140px; top: 10px; box-sizing: border-box; padding: 22px 34px 10px; border-radius: 30px; background: #fff; color: var(--ink); box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.8); }
+  .portal .p-h { font-size: 26px; font-weight: 700; letter-spacing: 0.14em; color: #7A7A80; padding: 8px 0 12px; }
+  .portal .c-row { display: flex; align-items: center; gap: 20px; padding: 20px 0; border-top: 1px solid #ECECE8; font-size: 40px; font-weight: 700; }
+  .portal .c-ic { width: 64px; height: 64px; border-radius: 16px; background: #F1F1EE; display: grid; place-items: center; }
+  .portal .c-ic svg { width: 34px; height: 34px; }
+  .portal .c-row small { display: block; font-size: 26px; font-weight: 600; color: #8D8D93; }
+  .portal .c-row small.lock { color: var(--red); }
+  .portal .tg { margin-left: auto; width: 96px; height: 54px; border-radius: 27px; background: var(--ink); position: relative; flex: 0 0 auto; }
+  .portal .tg b { position: absolute; top: 6px; left: 48px; width: 42px; height: 42px; border-radius: 50%; background: #fff; }
+  .tap { position: absolute; left: 0; top: 0; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; border: 4px solid var(--red); box-sizing: border-box; opacity: 0; }
+  .finger { position: absolute; left: 0; top: 0; width: 64px; height: 64px; margin: -6px 0 0 -18px; color: #fff; opacity: 0; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45)); }
+  .finger svg { stroke-width: 1.8; fill: rgba(11, 11, 12, 0.85); }
+
+  /* 05 · Services */
+  .svc { position: absolute; left: var(--mx); right: 140px; top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .svc .tile { box-sizing: border-box; height: 300px; padding: 30px 22px; border-radius: 28px; background: linear-gradient(180deg, #1A1A1D, #121214); border: 1px solid rgba(255, 255, 255, 0.1); }
+  .svc .t-ic { width: 92px; height: 92px; border-radius: 50%; background: var(--red); display: grid; place-items: center; margin-bottom: 26px; }
+  .svc .t-ic b { display: block; width: 50px; height: 50px; color: #fff; }
+  .svc .t-ic svg { stroke-width: 2.1; }
+  .svc .tile span { display: block; font-size: 36px; font-weight: 700; line-height: 1.12; }
+</style>
+</head>
+<body>
+<!--
+  Reel „5 Gründe“ (22 s): Hook mit Originalkarte → 5 Gründe mit Fortschrittsbalken → Endcard „Link in Bio“.
+  Markenregeln team tankpool24: kein Gedankenstrich, „team“ klein, „tankpool24-Karte von team“,
+  „2.200 Stationen“, Rot #E31E24 als einziger Akzent, Abschluss „Link in Bio“.
+-->
+<div id="stage">
+  <div id="bg"></div>
+  <canvas id="ambient" width="1080" height="1920"></canvas>
+
+  <!-- G0 · Hook -->
+  <section class="scene dark" id="g0">
+    <div class="glow"></div>
+    <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>FÜR FUHRPARK UND SPEDITION</span></span></div>
+    <div class="mega"><span class="m-num" id="five">5</span><span class="m-unit"><span class="mask"><span class="ln">Gründe</span></span></span></div>
+    <p class="sub"><span class="mask"><span class="ln">für die tankpool24-Karte von team.</span></span></p>
+    <div class="card3d" id="c0">
+      <div class="card-floor"></div>
+      <div class="card"><div class="card-face"><img class="card-img" src="/assets/tankpool24-karte.webp" alt=""><div class="card-sheen"></div></div></div>
+    </div>
+  </section>
+
+  <div class="progress" id="progress"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+
+  <!-- 01 -->
+  <section class="scene dark reason" id="g1">
+    <div class="num"><span class="mask"><span class="ln">01</span></span></div>
+    <h2 class="h1 rh"><span class="mask"><span class="ln">Bis zu 4 ct</span></span><span class="mask"><span class="ln">pro Liter sparen<em>.</em></span></span></h2>
+    <p class="sub rs"><span class="mask"><span class="ln">Mit individuellen Konditionen.</span></span></p>
+    <div class="vis">
+      <div class="mini" id="mini">
+        <small>RECHENBEISPIEL</small>
+        <div class="m-row">250.000 Liter Diesel <b>× 4 ct</b></div>
+        <i class="m-rule" id="miniRule"></i>
+        <div class="m-total"><b><em id="g1num">0</em> €</b><span>pro Jahr</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="scene dark reason" id="g2">
+    <div class="num"><span class="mask"><span class="ln">02</span></span></div>
+    <h2 class="h1 rh"><span class="mask"><span class="ln" id="g2num">2.200</span></span><span class="mask"><span class="ln">Stationen<em>.</em></span></span></h2>
+    <p class="sub rs"><span class="mask"><span class="ln">24 Stunden europaweit tanken.</span></span></p>
+    <div class="vis"><canvas id="map" width="1080" height="520"></canvas></div>
+  </section>
+
+  <!-- 03 -->
+  <section class="scene dark reason" id="g3">
+    <div class="num"><span class="mask"><span class="ln">03</span></span></div>
+    <h2 class="h1 rh"><span class="mask"><span class="ln">Tanken mit der</span></span><span class="mask"><span class="ln">Fahrerkarte<em>.</em></span></span></h2>
+    <p class="sub rs"><span class="mask"><span class="ln">Eine der sichersten Tankkarten der Welt.</span></span></p>
+    <div class="vis">
+      <div class="sec">
+        <div class="rings"><i></i><i></i></div>
+        <svg class="shield" viewBox="0 0 440 520" width="440" height="520">
+          <path class="sh-fill" d="M220 24 L398 88 V250 C398 372 322 456 220 496 C118 456 42 372 42 250 V88 Z" fill="rgba(255,255,255,0.035)"/>
+          <path class="sh-path" d="M220 24 L398 88 V250 C398 372 322 456 220 496 C118 456 42 372 42 250 V88 Z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round" pathLength="1"/>
+        </svg>
+        <div class="dcard">
+          <div class="dcard-top"><span>FAHRERKARTE</span><i></i></div>
+          <div class="dcard-photo"><i></i><b></b></div>
+          <div class="dcard-lines"><i></i><i></i><i></i><i></i></div>
+          <div class="dcard-chip"></div>
+          <div class="dcard-scan"></div>
+        </div>
+        <div class="badge"><span data-icon="check"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="scene dark reason" id="g4">
+    <div class="num"><span class="mask"><span class="ln">04</span></span></div>
+    <h2 class="h1 rh"><span class="mask"><span class="ln">Alles im</span></span><span class="mask"><span class="ln">Kundenportal<em>.</em></span></span></h2>
+    <p class="sub rs"><span class="mask"><span class="ln">Karten bestellen und sperren,</span></span><span class="mask"><span class="ln">Transaktionen einsehen.</span></span></p>
+    <div class="vis">
+      <div class="portal" id="portal">
+        <div class="p-h">KARTEN</div>
+        <div class="c-row"><span class="c-ic" data-icon="credit-card"></span><span>Karte 01<small>aktiv</small></span><i class="tg"><b></b></i></div>
+        <div class="c-row"><span class="c-ic" data-icon="credit-card"></span><span>Karte 02<small>aktiv</small></span><i class="tg"><b></b></i></div>
+        <div class="c-row"><span class="c-ic" data-icon="credit-card"></span><span>Karte 03<small id="g4state">aktiv</small></span><i class="tg" id="g4toggle"><b></b></i></div>
+      </div>
+      <div class="tap" id="g4tap"></div>
+      <div class="finger" id="g4finger" data-icon="pointer"></div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="scene dark reason" id="g5">
+    <div class="num"><span class="mask"><span class="ln">05</span></span></div>
+    <h2 class="h1 rh"><span class="mask"><span class="ln">Mehr als</span></span><span class="mask"><span class="ln">Tanken<em>.</em></span></span></h2>
+    <p class="sub rs"><span class="mask"><span class="ln">Pannenhilfe, Parken, Maut und mehr.</span></span></p>
+    <div class="vis">
+      <div class="svc">
+        <div class="tile"><span class="t-ic"><b data-icon="wrench"></b></span><span>Pannenhilfe 24/7</span></div>
+        <div class="tile"><span class="t-ic"><b data-icon="square-parking"></b></span><span>Park Your Truck</span></div>
+        <div class="tile"><span class="t-ic"><b data-icon="route"></b></span><span>Mautservice</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Endcard -->
+  <section class="scene dark endc" id="end">
+    <div class="glow"></div>
+    <div class="card3d e-card">
+      <div class="card-floor"></div>
+      <div class="card"><div class="card-face"><img class="card-img" src="/assets/tankpool24-karte.webp" alt=""><div class="card-sheen"></div></div></div>
+    </div>
+    <h2 class="h1"><span class="mask"><span class="ln">Ihr individuelles</span></span><span class="mask"><span class="ln">Angebot<em>.</em></span></span></h2>
+    <div class="btn-cta"><span>Jetzt kostenlos anfragen</span><i class="cta-shine"></i></div>
+    <div class="bio"><span class="hand" data-icon="pointer"></span><b>Link in Bio</b></div>
+    <div class="end-brand"><span class="mask"><span class="ln">tankpool24-Karte von team · profitankkarte.de</span></span></div>
+  </section>
+
+  <div id="wipeA" class="wipe red"></div>
+  <div id="wipeB" class="wipe"></div>
+  <div id="expand" class="expand"></div>
+  <canvas id="grain" width="540" height="960"></canvas>
+  <div id="safe"><i class="s-top"></i><i class="s-bottom"></i><i class="s-right"></i></div>
+</div>
+
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script type="module" src="reel-gruende.js"></script>
+</body>
+</html>

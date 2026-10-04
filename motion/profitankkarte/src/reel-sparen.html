@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>profitankkarte.de · Reel „4 Cent“</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/500.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/600.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/700.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/800.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow-condensed/700.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow-condensed/800.css">
+<link rel="stylesheet" href="reels.css">
+<style>
+  /* R1 · Hook */
+  #r1 .q { position: absolute; left: var(--mx); top: 420px; font-size: 116px; }
+  #r1 .mega { position: absolute; left: 50px; top: 520px; width: 980px; height: 560px; font-family: var(--cond); font-weight: 800; }
+  #r1 .m-num { position: absolute; left: 0; top: 0; font-size: 620px; line-height: 620px; color: var(--red); transform-origin: 30% 70%; }
+  #r1 .m-unit { position: absolute; left: 318px; top: 262px; font-size: 236px; line-height: 1; }
+  #r1 .m-unit em { font-style: normal; color: var(--red); }
+  #r1 .sub { position: absolute; left: var(--mx); top: 1096px; font-size: 60px; font-weight: 600; color: #fff; }
+
+  /* R2 · Rechenbeispiel */
+  #r2 .calcv { position: absolute; left: var(--mx); right: var(--mx); top: 352px; }
+  #r2 .kicker { margin-bottom: 30px; }
+  #r2 .row { margin-bottom: 26px; }
+  #r2 .lab { font-size: 40px; font-weight: 600; color: var(--grey2); margin-bottom: 4px; }
+  #r2 .val { display: flex; align-items: baseline; gap: 22px; font-family: var(--cond); font-weight: 800; font-size: 160px; line-height: 0.95; }
+  #r2 .val small { font-family: var(--sans); font-size: 54px; font-weight: 600; color: var(--grey1); }
+  #r2 .val.red b, #r2 .val.red small { color: var(--red); }
+  #r2 .rule { display: block; height: 6px; background: #fff; margin: 4px 0 30px; transform-origin: left center; }
+  #r2 .val.big { font-size: 236px; color: var(--red); transform-origin: left center; }
+  #r2 .val.big small { font-family: var(--cond); font-weight: 800; font-size: 150px; color: var(--red); }
+  #r2 .note { margin: 10px 0 0; max-width: 800px; font-size: 34px; line-height: 1.35; color: var(--grey2); }
+
+  /* R3 · Karte + Beweise */
+  #r3 .head { position: absolute; left: var(--mx); right: var(--mx); top: 372px; font-size: 120px; line-height: 1.0; }
+  #r3 .card3d { left: 140px; top: 736px; width: 800px; height: 504px; }
+  #r3 .brand { position: absolute; left: var(--mx); right: var(--mx); top: 1296px; text-align: center; font-size: 42px; font-weight: 600; color: var(--grey1); }
+  #r3 .chips { position: absolute; left: var(--mx); right: 140px; top: 862px; }
+  #r3 .chip { display: flex; align-items: center; gap: 26px; height: 128px; padding: 0 34px 0 22px; margin-bottom: 22px; border-radius: 64px; background: linear-gradient(180deg, #1A1A1D, #121214); border: 1px solid rgba(255, 255, 255, 0.1); font-size: 47px; font-weight: 700; box-sizing: border-box; }
+  #r3 .c-ic { flex: 0 0 auto; width: 84px; height: 84px; border-radius: 50%; background: var(--red); display: grid; place-items: center; }
+  #r3 .c-ic b { display: block; width: 44px; height: 44px; color: #fff; }
+  #r3 .c-ic svg { stroke-width: 2.2; }
+</style>
+</head>
+<body>
+<!--
+  Reel „4 Cent“ (16 s): Hook-Frage → Rechenbeispiel → Originalkarte + Beweise → Endcard „Link in Bio“.
+  Markenregeln team tankpool24: kein Gedankenstrich, „team“ klein, „tankpool24-Karte von team“,
+  „2.200 Stationen“, Rot #E31E24 als einziger Akzent, Abschluss „Link in Bio“.
+-->
+<div id="stage">
+  <div id="bg"></div>
+  <canvas id="ambient" width="1080" height="1920"></canvas>
+
+  <!-- R1 · Hook -->
+  <section class="scene dark" id="r1">
+    <div class="glow"></div>
+    <h1 class="h1 q"><span class="mask"><span class="ln">Was sind schon</span></span></h1>
+    <div class="mega"><span class="m-num" id="four">4</span><span class="m-unit"><span class="mask"><span class="ln">Cent<em>?</em></span></span></span></div>
+    <p class="sub"><span class="mask"><span class="ln">pro Liter Diesel.</span></span></p>
+  </section>
+
+  <!-- R2 · Rechenbeispiel -->
+  <section class="scene dark" id="r2">
+    <div class="calcv">
+      <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>RECHENBEISPIEL</span></span></div>
+      <div class="row" id="rA"><div class="lab">Diesel pro Jahr</div><div class="val"><b id="litNum">0</b><small>Liter</small></div></div>
+      <div class="row" id="rB"><div class="lab">Ersparnis pro Liter</div><div class="val red"><b>× 4</b><small>Cent</small></div></div>
+      <i class="rule" id="rule"></i>
+      <div class="row" id="rC"><div class="lab">Ersparnis pro Jahr</div><div class="val big" id="total"><b id="eurNum">0</b><small>€</small></div></div>
+      <p class="note" id="note">Beispielrechnung: bis zu 4 ct/l mit individuellen Konditionen.</p>
+    </div>
+  </section>
+
+  <!-- R3 · Originalkarte + Beweise -->
+  <section class="scene dark" id="r3">
+    <div class="glow"></div>
+    <h2 class="h1 head"><span class="mask"><span class="ln">Die Tankkarte</span></span><span class="mask"><span class="ln">für Profis<em>.</em></span></span></h2>
+    <div class="card3d" id="c3">
+      <div class="card-floor"></div>
+      <div class="card"><div class="card-face"><img class="card-img" src="/assets/tankpool24-karte.webp" alt=""><div class="card-sheen"></div></div></div>
+    </div>
+    <div class="brand"><span class="mask"><span class="ln">tankpool24-Karte von team</span></span></div>
+    <div class="chips">
+      <div class="chip"><span class="c-ic"><b data-icon="map-pin"></b></span><span>2.200 Stationen</span></div>
+      <div class="chip"><span class="c-ic"><b data-icon="id-card"></b></span><span>Tanken mit der Fahrerkarte</span></div>
+      <div class="chip"><span class="c-ic"><b data-icon="layout-dashboard"></b></span><span>Alles im Kundenportal</span></div>
+    </div>
+  </section>
+
+  <!-- R4 · Endcard -->
+  <section class="scene dark endc" id="end">
+    <div class="glow"></div>
+    <div class="card3d e-card">
+      <div class="card-floor"></div>
+      <div class="card"><div class="card-face"><img class="card-img" src="/assets/tankpool24-karte.webp" alt=""><div class="card-sheen"></div></div></div>
+    </div>
+    <h2 class="h1"><span class="mask"><span class="ln">Wie viel spart</span></span><span class="mask"><span class="ln">Ihr Fuhrpark<em>?</em></span></span></h2>
+    <div class="btn-cta"><span>Jetzt kostenlos anfragen</span><i class="cta-shine"></i></div>
+    <div class="bio"><span class="hand" data-icon="pointer"></span><b>Link in Bio</b></div>
+    <div class="end-brand"><span class="mask"><span class="ln">tankpool24-Karte von team · profitankkarte.de</span></span></div>
+  </section>
+
+  <div id="wipeA" class="wipe red"></div>
+  <div id="wipeB" class="wipe"></div>
+  <div id="expand" class="expand"></div>
+  <canvas id="grain" width="540" height="960"></canvas>
+  <div id="safe"><i class="s-top"></i><i class="s-bottom"></i><i class="s-right"></i></div>
+</div>
+
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script type="module" src="reel-sparen.js"></script>
+</body>
+</html>

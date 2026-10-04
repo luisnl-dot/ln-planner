@@ -1,0 +1,39 @@
+/* Instagram Reels 1080x1920 · gleiche Basis wie das Website-Video (base.css)
+   Text bleibt in der sicheren Zone y 300–1350 (oben Reels-Kopf, unten Caption, rechts Buttons). */
+@import url("base.css");
+
+:root { --stage-w: 1080px; --stage-h: 1920px; --mx: 84px; }
+
+.wipe { transform: scaleY(0); transform-origin: center bottom; }
+#grain { opacity: 0.06; }
+
+/* Safe-Zones von Instagram (nur Vorschau/Standbilder mit ?safe) */
+#safe { position: absolute; inset: 0; z-index: 95; pointer-events: none; display: none; }
+.safe #safe { display: block; }
+#safe i { position: absolute; box-sizing: border-box; background: rgba(0, 170, 255, 0.16); border: 2px dashed rgba(0, 170, 255, 0.85); }
+#safe .s-top { left: 0; right: 0; top: 0; height: 250px; }
+#safe .s-bottom { left: 0; right: 0; bottom: 0; height: 450px; }
+#safe .s-right { right: 0; width: 140px; top: 980px; bottom: 450px; }
+
+.kicker { font-size: 32px; font-weight: 700; letter-spacing: 0.2em; color: var(--red); }
+.kicker .bar { width: 44px; height: 5px; margin-right: 18px; top: -4px; }
+.sub { margin: 0; font-size: 50px; font-weight: 500; color: var(--grey1); line-height: 1.24; }
+.glow { position: absolute; left: 50%; top: 50%; width: 1700px; height: 1700px; margin: -850px 0 0 -850px; background: radial-gradient(closest-side, rgba(227, 30, 36, 0.26), rgba(227, 30, 36, 0.07) 45%, transparent 72%); }
+
+/* Originalkarte in 3D (Seitenverhältnis 2000x1261) */
+.card3d { position: absolute; perspective: 2200px; }
+.card3d .card { position: absolute; inset: 0; transform-style: preserve-3d; }
+.card-face { position: absolute; inset: 0; border-radius: 4.7% / 7.45%; overflow: hidden; background: #E6E6E6; box-shadow: 0 60px 110px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.card-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.card-sheen { position: absolute; top: -60%; left: 0; width: 34%; height: 220%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent); transform: rotate(16deg); }
+.card-floor { position: absolute; left: 12%; right: 12%; bottom: -16%; height: 20%; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.8), transparent); }
+
+/* Endcard mit Call-to-Action */
+.endc .e-card { left: 270px; top: 310px; width: 540px; height: 340px; }
+.endc .h1 { position: absolute; left: 40px; right: 40px; top: 704px; text-align: center; font-size: 112px; line-height: 1.02; }
+.btn-cta { position: absolute; left: 150px; right: 150px; top: 994px; height: 140px; border-radius: 70px; background: var(--red); display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: 700; overflow: hidden; box-shadow: 0 26px 70px -12px rgba(227, 30, 36, 0.65); }
+.cta-shine { position: absolute; top: -10px; bottom: -10px; left: 0; width: 24%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent); transform: skewX(-20deg); }
+.bio { position: absolute; left: 0; right: 0; top: 1178px; display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 62px; font-weight: 800; }
+.bio .hand { width: 74px; height: 74px; }
+.bio .hand svg { stroke-width: 1.9; }
+.end-brand { position: absolute; left: 0; right: 0; top: 1298px; text-align: center; font-size: 34px; font-weight: 600; color: var(--grey2); }

@@ -2,11 +2,14 @@
 // Bewegungsunschärfe: pro Ausgabe-Frame werden Subframes über einen 180°-Shutter gemittelt,
 // in schnellen Übergängen (window.__fast) mit deutlich mehr Subframes.
 //
-//   node scripts/render.mjs                      → output/profitankkarte-1080p.mp4 (+ 720p, Poster)
-//   node scripts/render.mjs --from 8 --to 14     → nur ein Ausschnitt (Review)
-//   node scripts/render.mjs --sub 1 --fast 1     → schnell, ohne Bewegungsunschärfe
+//   node scripts/render.mjs                                  → Website-Video (src/index.html)
+//   node scripts/render.mjs --page reel-sparen.html --name profitankkarte-reel-sparen
+//   node scripts/render.mjs --from 8 --to 14                 → nur ein Ausschnitt (Review)
+//   node scripts/render.mjs --sub 1 --fast 1                 → schnell, ohne Bewegungsunschärfe
 //
-// Ton: liegt audio/soundtrack.wav vor (npm run audio), wird er automatisch eingemischt.
+// Ablauf: Seite laden → Sound-Cues + Musikplan nach audio/<name>.cues.json → Soundtrack
+// (scripts/audio.py) → Frames → Encodes. Querformat: 1080p + 720p + Poster.
+// Hochformat (Reels): 1080x1920 + Cover-Bild.
 import { chromium } from "playwright";
 import sharp from "sharp";
 import { spawn, execFileSync } from "node:child_process";
@@ -21,13 +24,12 @@ const arg = (name, def) => {
   const i = process.argv.indexOf(`--${name}`);
   return i > -1 ? process.argv[i + 1] : def;
 };
-const W = 1920;
-const H = 1080;
 const FPS = Number(arg("fps", 30));
 const SUB = Number(arg("sub", 4)); // Subframes pro Frame (normal)
 const SUB_FAST = Number(arg("fast", 16)); // Subframes in schnellen Übergängen
 const SHUTTER = Number(arg("shutter", 0.5)); // 0.5 = 180°
 const WORKERS = Number(arg("workers", Math.max(1, cpus().length)));
+const PAGE = arg("page", "index.html");
 const NAME = arg("name", "profitankkarte");
 const tmp = join(root, ".frames");
 const outDir = join(root, "output");
@@ -37,21 +39,35 @@ mkdirSync(join(root, "audio"), { recursive: true });
 sharp.concurrency(1);
 
 const { server, port } = await startServer();
-const url = `http://127.0.0.1:${port}/src/index.html?render`;
+const url = `http://127.0.0.1:${port}/src/${PAGE}${PAGE.includes("?") ? "&" : "?"}render`;
 const LAUNCH = { args: ["--font-render-hinting=none", "--force-color-profile=srgb", "--disable-lcd-text"] };
 
 // Dauer, Cues und schnelle Zeitfenster aus der Seite lesen
 const probe = await chromium.launch(LAUNCH);
-const probePage = await probe.newPage({ viewport: { width: W, height: H } });
+const probePage = await probe.newPage({ viewport: { width: 1920, height: 1920 } });
 await probePage.goto(url);
 await probePage.waitForFunction(() => window.__ready === true, null, { timeout: 60000 });
-const { duration, cues, fast } = await probePage.evaluate(() => ({ duration: window.__duration, cues: window.__cues, fast: window.__fast }));
-writeFileSync(join(root, "audio", "cues.json"), JSON.stringify({ duration, cues }, null, 1));
+const { duration, cues, fast, size, cover, music } = await probePage.evaluate(() => ({
+  duration: window.__duration, cues: window.__cues, fast: window.__fast, size: window.__size, cover: window.__cover, music: window.__music,
+}));
 await probe.close();
+const W = size.width;
+const H = size.height;
+const VERTICAL = H > W;
+const cuesFile = join(root, "audio", `${NAME}.cues.json`);
+writeFileSync(cuesFile, JSON.stringify({ duration, music, cues }, null, 1));
 if (process.argv.includes("--cues-only")) {
   server.close();
-  console.log("→ audio/cues.json");
+  console.log(`→ audio/${NAME}.cues.json`);
   process.exit(0);
+}
+// Soundtrack passend zu den Cues erzeugen (python3 + numpy + scipy)
+if (!process.argv.includes("--mute") && !process.argv.includes("--keep-audio")) {
+  try {
+    execFileSync("python3", [join(root, "scripts", "audio.py"), NAME], { stdio: "inherit" });
+  } catch {
+    console.warn("! Soundtrack konnte nicht erzeugt werden, Video wird ohne Ton gerendert.");
+  }
 }
 
 const from = Number(arg("from", 0));
@@ -136,7 +152,7 @@ execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-f", "concat", "-safe", "0"
 console.log(`Frames fertig in ${((Date.now() - started) / 1000).toFixed(0)} s`);
 
 // Finale Web-Encodes: RGB → BT.709 (TV-Range) explizit, damit Rot #E31E24 exakt bleibt
-const audio = join(root, "audio", "soundtrack.wav");
+const audio = join(root, "audio", `${NAME}.wav`);
 const hasAudio = existsSync(audio) && !process.argv.includes("--mute");
 const partial = from > 0 || to < duration;
 const suffix = partial ? `-${from}-${to}s` : "";
@@ -155,8 +171,17 @@ const enc = (height, crf, maxrate, file) => {
   execFileSync("ffmpeg", args);
   console.log("→", file);
 };
-enc(1080, 20, "6M", join(outDir, `${NAME}-1080p${suffix}.mp4`));
-if (!partial) {
+if (VERTICAL) {
+  // Reels: volle Auflösung, hohe Qualität (Instagram komprimiert selbst noch einmal)
+  enc(H, 17, "14M", join(outDir, `${NAME}${suffix}.mp4`));
+  if (!partial && cover != null) {
+    execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-ss", String(cover), "-i", master, "-frames:v", "1", "-q:v", "2", join(outDir, `${NAME}-cover.jpg`)]);
+    console.log("→", join(outDir, `${NAME}-cover.jpg`));
+  }
+} else {
+  enc(1080, 20, "6M", join(outDir, `${NAME}-1080p${suffix}.mp4`));
+}
+if (!partial && !VERTICAL) {
   enc(720, 22, "3M", join(outDir, `${NAME}-720p.mp4`));
   // Poster = Endcard (für <video poster>)
   execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-sseof", "-0.4", "-i", master, "-frames:v", "1", "-q:v", "2", join(outDir, `${NAME}-poster.jpg`)]);

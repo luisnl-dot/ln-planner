@@ -1,0 +1,68 @@
+/* Gemeinsame Basis aller Kompositionen (Website-Video und Reels).
+   Designsystem: schwarz/weiß entsättigt, Rot #E31E24 als einziger Akzent. */
+:root {
+  --ink: #0B0B0C;
+  --ink2: #131315;
+  --paper: #F3F3F0;
+  --grey1: #B9B9BE;
+  --grey2: #8D8D93;
+  --grey-ink: #5A5A60;
+  --red: #E31E24;
+  --sans: "Barlow", sans-serif;
+  --cond: "Barlow Condensed", "Barlow", sans-serif;
+}
+
+html, body { margin: 0; background: #000; }
+body.preview { height: 100vh; overflow: hidden; }
+
+#stage {
+  position: relative;
+  width: var(--stage-w, 1920px);
+  height: var(--stage-h, 1080px);
+  overflow: hidden;
+  font-family: var(--sans);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  transform-origin: 0 0;
+}
+#bg { position: absolute; inset: 0; background: var(--ink); }
+#ambient { position: absolute; inset: 0; }
+
+.scene { position: absolute; inset: 0; visibility: hidden; }
+.scene.dark { color: #fff; }
+.scene.dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 95% at 50% 45%, transparent 52%, rgba(0, 0, 0, 0.55) 100%);
+}
+.scene.light { color: var(--ink); }
+
+/* Zeilen-Reveal: .mask schneidet, .ln fährt */
+.mask { display: block; overflow: hidden; padding: 0.08em 0 0.14em; margin: -0.08em 0 -0.14em; }
+.ln { display: block; will-change: transform; }
+
+.h1 { margin: 0; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+.h1 em, .h1 .ln em { font-style: normal; color: var(--red); }
+.ink { color: var(--ink); }
+
+.bar {
+  display: inline-block;
+  width: 36px;
+  height: 4px;
+  background: var(--red);
+  vertical-align: middle;
+  margin-right: 16px;
+  position: relative;
+  top: -3px;
+}
+
+[data-icon] svg { display: block; }
+
+/* Übergänge & Textur */
+.wipe { position: absolute; inset: 0; transform: scaleX(0); transform-origin: left center; z-index: 50; }
+.wipe.red { background: var(--red); }
+#wipeB { background: var(--ink); }
+.expand { position: absolute; left: 0; top: 0; background: var(--red); z-index: 51; visibility: hidden; }
+.iris { position: absolute; left: 0; top: 0; border-radius: 50%; border-style: solid; border-color: var(--red); box-sizing: border-box; z-index: 51; visibility: hidden; }
+#grain { position: absolute; left: 0; top: 0; width: var(--stage-w, 1920px); height: var(--stage-h, 1080px); z-index: 90; opacity: 0.09; mix-blend-mode: overlay; pointer-events: none; }

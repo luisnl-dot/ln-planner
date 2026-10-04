@@ -11,6 +11,8 @@
     "cues": "node scripts/render.mjs --cues-only",
     "audio": "python3 scripts/audio.py",
     "render": "node scripts/render.mjs",
+    "render:reel-sparen": "node scripts/render.mjs --page reel-sparen.html --name profitankkarte-reel-sparen",
+    "render:reel-gruende": "node scripts/render.mjs --page reel-gruende.html --name profitankkarte-reel-gruende",
     "storyboard": "node scripts/storyboard.mjs"
   },
   "dependencies": {

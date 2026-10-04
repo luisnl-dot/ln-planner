@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
-"""Soundtrack + Sound-Design für das profitankkarte.de-Video.
+"""Soundtrack + Sound-Design für die profitankkarte.de-Videos (Website-Video und Reels).
 
 Komplett prozedural synthetisiert (keine Samples, keine Lizenzfragen).
-Liest audio/cues.json (schreibt der Renderer bzw. `npm run cues`) und erzeugt
-audio/soundtrack.wav: 120 BPM, A-Moll (Am, F, C, G), Schluss auf C-Dur.
-Jeder Sound-Effekt hängt an einem Cue aus der Animation und ist damit framegenau synchron.
+Liest audio/<name>.cues.json (schreibt der Renderer) und erzeugt audio/<name>.wav:
+120 BPM, A-Moll (Am, F, C, G), Schluss auf C-Dur.
+Das Arrangement kommt als Musikplan aus der Komposition (window.__music), ohne Plan gilt das
+Arrangement des Website-Videos. Jeder Sound-Effekt hängt an einem Cue aus der Animation und
+ist damit framegenau synchron.
 
-Aufruf:  python3 scripts/audio.py
+Aufruf:  python3 scripts/audio.py [name]      (Standard: profitankkarte)
 """
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -22,10 +25,32 @@ BEAT = 0.5  # 120 BPM
 BAR = 4 * BEAT
 rng = np.random.default_rng(2200)
 
-data = json.loads((ROOT / "audio" / "cues.json").read_text())
+NAME = sys.argv[1] if len(sys.argv) > 1 else "profitankkarte"
+data = json.loads((ROOT / "audio" / f"{NAME}.cues.json").read_text())
 DUR = float(data["duration"])
 CUES = data["cues"]
 N = int(round(DUR * SR))
+
+# Arrangement des Website-Videos (48 s); Reels liefern ihren eigenen Plan.
+DEFAULT_PLAN = {
+    "lufs": -16,
+    "cycleStartBar": 2,
+    "intro": {"hats": [0.5, 4.0], "droneEnd": 4.2, "droneFade": 4.05, "padLen": 3.9, "arp": [2.0, 4.0]},
+    "groove": [[4.0, 35.0], [36.5, 42.5]],
+    "claps": [[4.0, 19.0], [25.0, 35.0], [36.5, 42.5]],
+    "openHats": [[30.0, 35.0], [38.5, 42.5]],
+    "sparse": [[19.0, 25.0]],
+    "dark": [[19.0, 25.0]],
+    "lift": [[14.0, 19.0]],
+    "outro": [],
+    "end": 43.0,
+    "melody": [[36.5, 76], [37.0, 81], [38.0, 84], [38.5, 81], [39.0, 77], [40.0, 79], [42.0, 86]],
+}
+EMPTY_PLAN = {
+    "lufs": -16, "cycleStartBar": 0, "intro": None, "groove": [], "claps": [], "openHats": [],
+    "sparse": [], "dark": [], "lift": [], "outro": [], "end": DUR, "melody": [],
+}
+PLAN = {**EMPTY_PLAN, **data["music"]} if data.get("music") else DEFAULT_PLAN
 
 
 # ----------------------------------------------------------------- Grundlagen
@@ -299,17 +324,20 @@ CYCLE = ["Am", "F", "C", "G"]
 
 def chord_at(t):
     b = int(t // BAR)
-    return CYCLE[(b - 2) % 4] if b >= 2 else "Am"
+    start = PLAN["cycleStartBar"]
+    return CYCLE[(b - start) % 4] if b >= start else "Am"
 
 
 def inside(t, ranges):
     return any(a <= t < b for a, b in ranges)
 
 
-GROOVE = [(4.0, 35.0), (36.5, 42.5)]
-CLAPS = [(4.0, 19.0), (25.0, 35.0), (36.5, 42.5)]
-OPEN_HATS = [(30.0, 35.0), (38.5, 42.5)]
-END = 43.0
+GROOVE = PLAN["groove"]
+CLAPS = PLAN["claps"]
+OPEN_HATS = PLAN["openHats"]
+OUTRO = PLAN["outro"]  # nach dem Schlussakkord laufen Hi-Hats und Bass weiter (Reels, loopfähig)
+END = float(PLAN["end"])
+INTRO = PLAN["intro"] or {}
 kicks = []
 
 # Drums
@@ -323,10 +351,11 @@ for s in range(steps):
     if inside(t, CLAPS) and pos in (4, 12):
         place(drums, CLAP, t, 0.6, 0.05)
         place(send, CLAP, t, 0.12)
-    in_intro = 0.5 <= t < 4.0
-    if inside(t, GROOVE) or in_intro:
+    ih = INTRO.get("hats")
+    in_intro = ih is not None and ih[0] <= t < ih[1]
+    if inside(t, GROOVE) or in_intro or inside(t, OUTRO):
         accent = 1.0 if pos % 4 == 2 else (0.55 if pos % 2 == 0 else 0.4)
-        g = 0.17 * accent * (0.35 + 0.65 * (t - 0.5) / 3.5 if in_intro else 1.0)
+        g = 0.17 * accent * (0.35 + 0.65 * (t - ih[0]) / (ih[1] - ih[0]) if in_intro else 1.0)
         place(drums, HATS[s % 4], t + rng.uniform(-0.002, 0.002), g, 0.25)
     if inside(t, OPEN_HATS) and pos % 4 == 2:
         place(drums, OHAT, t, 0.1, -0.2)
@@ -334,24 +363,27 @@ for s in range(steps):
 # Bass: Achtel auf der Offbeat-Zählzeit (pumpend)
 for s in range(int(DUR / (BEAT / 2))):
     t = s * BEAT / 2
-    if inside(t, GROOVE) and s % 2 == 1:
+    if s % 2 == 1 and inside(t, GROOVE):
         place(bassb, bass_note(CHORDS[chord_at(t)]["root"] + 12, BEAT / 2 * 0.92), t, 0.36)
+    elif s % 2 == 1 and inside(t, OUTRO):
+        place(bassb, bass_note(CHORDS["C"]["root"] + 12, BEAT / 2 * 0.92), t, 0.3)
 
 # Intro-Drone + Pad, das sich öffnet
-n0 = int(4.2 * SR)
-tdr = tt(n0)
-drone = (0.5 * saw(55, n0) + 0.5 * saw(55.2, n0, 0.5))
-drone = lp(drone, 520) * np.minimum(tdr / 1.2, 1) * 0.55 + 0.15 * np.sin(2 * np.pi * 55 * tdr) * np.minimum(tdr / 0.8, 1)
-place(bassb, drone * np.clip((4.05 - tdr) / 0.05, 0, 1), 0.0, 0.5)
-place(padb, pad_chord(CHORDS["Am"]["pad"], 3.9, bright=0.15, rel=0.3, attack=1.6), 0.0, 0.55)
+if INTRO.get("droneEnd"):
+    n0 = int(INTRO["droneEnd"] * SR)
+    tdr = tt(n0)
+    drone = (0.5 * saw(55, n0) + 0.5 * saw(55.2, n0, 0.5))
+    drone = lp(drone, 520) * np.minimum(tdr / 1.2, 1) * 0.55 + 0.15 * np.sin(2 * np.pi * 55 * tdr) * np.minimum(tdr / 0.8, 1)
+    place(bassb, drone * np.clip((INTRO["droneFade"] - tdr) / 0.05, 0, 1), 0.0, 0.5)
+    place(padb, pad_chord(CHORDS["Am"]["pad"], INTRO["padLen"], bright=0.15, rel=0.3, attack=1.6), 0.0, 0.55)
 
 # Pads je Takt ab dem Drop
-for b in range(2, int(END // BAR) + 1):
+for b in range(PLAN["cycleStartBar"], int(END // BAR) + 1):
     t0 = b * BAR
     if t0 >= END:
         break
     length = min(BAR, END - t0)
-    bright = 0.55 if 19.0 <= t0 < 25.0 else 0.85
+    bright = 0.55 if inside(t0, PLAN["dark"]) else 0.85
     place(padb, pad_chord(CHORDS[chord_at(t0)]["pad"], length, bright=bright, rel=0.5), t0, 0.5)
     place(send, pad_chord(CHORDS[chord_at(t0)]["pad"], length, bright=0.4, rel=0.5), t0, 0.08)
 
@@ -365,21 +397,22 @@ ARP = [0, 1, 2, 3, 2, 1, 2, 3]
 for s in range(int(DUR / (BEAT / 4))):
     t = s * BEAT / 4
     c = CHORDS[chord_at(t)]
-    if 2.0 <= t < 4.0 and s % 2 == 0:  # Vorbote im Intro
-        g = 0.05 + 0.1 * (t - 2.0) / 2.0
+    ia = INTRO.get("arp")
+    if ia and ia[0] <= t < ia[1] and s % 2 == 0:  # Vorbote im Intro
+        g = 0.05 + 0.1 * (t - ia[0]) / (ia[1] - ia[0])
         place(pluckb, pluck(c["arp"][ARP[s % 8]], 0.12, 0.5), t, g, 0.3 * (1 if s % 4 else -1))
     if inside(t, GROOVE):
-        sparse = 19.0 <= t < 25.0
+        sparse = inside(t, PLAN["sparse"])
         if sparse and s % 2:
             continue
-        note = c["arp"][ARP[s % 8]] + (12 if (14.0 <= t < 19.0 and s % 8 == 7) else 0)
+        note = c["arp"][ARP[s % 8]] + (12 if (inside(t, PLAN["lift"]) and s % 8 == 7) else 0)
         place(pluckb, pluck(note, 0.17), t, 0.2, 0.35 * (1 if (s // 2) % 2 else -1))
 # Ausklang-Arpeggio auf C-Dur
 for i, (dt, m) in enumerate([(0.5, 72), (0.75, 76), (1.0, 79), (1.25, 84), (1.75, 79), (2.25, 76), (2.75, 72)]):
     place(pluckb, pluck(m, 0.35), END + dt, 0.2 * (1 - i * 0.09), 0.4 * (1 if i % 2 else -1))
 
 # Glocken-Motiv im CTA-Teil
-for t, m in [(36.5, 76), (37.0, 81), (38.0, 84), (38.5, 81), (39.0, 77), (40.0, 79), (42.0, 86)]:
+for t, m in PLAN["melody"]:
     place(bellb, bell(m, 1.6), t, 0.16, 0.15)
 for m in (72, 79, 84):
     place(bellb, bell(m, 3.6, 1.6), END, 0.13)
@@ -539,21 +572,22 @@ mix[:, -fade:] *= np.cos(np.linspace(0, np.pi / 2, fade)) ** 2
 peak = np.max(np.abs(mix))
 mix = np.tanh(mix / peak * 1.25) / np.tanh(1.25)
 
-raw = ROOT / "audio" / ".raw.wav"
+raw = ROOT / "audio" / f".{NAME}.raw.wav"
 wavfile.write(raw, SR, (mix.T * 0.89).astype(np.float32))
 
 # Lautheit für Web: -16 LUFS integriert, True Peak -1,5 dBTP (zwei Durchgänge)
-out = ROOT / "audio" / "soundtrack.wav"
+out = ROOT / "audio" / f"{NAME}.wav"
+LUFS = PLAN["lufs"]
 meas = subprocess.run(
-    ["ffmpeg", "-hide_banner", "-i", str(raw), "-af", "loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
+    ["ffmpeg", "-hide_banner", "-i", str(raw), "-af", f"loudnorm=I={LUFS}:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
     capture_output=True, text=True,
 ).stderr
 js = json.loads(meas[meas.rindex("{"): meas.rindex("}") + 1])
 af = (
-    f"loudnorm=I=-16:TP=-1.5:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
+    f"loudnorm=I={LUFS}:TP=-1.5:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
     f"measured_LRA={js['input_lra']}:measured_thresh={js['input_thresh']}:offset={js['target_offset']}:linear=true,"
     "alimiter=limit=0.75:attack=4:release=60:level=disabled"
 )
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af", af, "-ar", str(SR), "-c:a", "pcm_s16le", str(out)], check=True)
 raw.unlink()
-print(f"→ {out}  (gemessen vorher: {js['input_i']} LUFS, Ziel -16 LUFS)")
+print(f"→ {out}  (gemessen vorher: {js['input_i']} LUFS, Ziel {LUFS} LUFS)")
