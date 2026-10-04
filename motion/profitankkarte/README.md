@@ -10,6 +10,7 @@ Ziel: **Anfragen über das Kontaktformular.** Das ganze Video läuft auf einen e
 | `output/profitankkarte-1080p.mp4` | 1920×1080, 30 fps, H.264 + AAC, 48 s · Desktop |
 | `output/profitankkarte-720p.mp4` | 1280×720 · Mobil, kleinere Datei |
 | `output/profitankkarte-poster.jpg` | Posterbild (Endcard) für `<video poster>` |
+| `output/profitankkarte-storyboard.pdf` | Storyboard mit 9 Schlüsselbildern zur Freigabe beim Kunden |
 | `embed/snippet.html` | Einbindung mit klickbarem CTA auf der Endcard + Tracking |
 | `audio/soundtrack.wav` | Musik + Sounddesign, −16 LUFS |
 
@@ -63,7 +64,8 @@ Die Europakarte ist eine Illustration: Die roten Punkte zeigen die Dichte des Ne
 
 ## Einbindung auf der Website
 
-`embed/snippet.html` als HTML-Block einfügen und die vier `data-…`-Werte anpassen (Videopfade, Poster, Formular-Anker).
+`embed/snippet.html` als HTML-Block einfügen und die vier `data-…`-Werte anpassen:
+`data-video-desktop` (1080p), `data-video-mobile` (720p), `data-poster` und `data-contact` (Anker oder URL des Formulars).
 
 - Startet stumm, sobald das Video zur Hälfte sichtbar ist, pausiert beim Wegscrollen
 - Lädt auf Bildschirmen bis 900 px die 720p-Datei
@@ -86,6 +88,7 @@ npm run stills -- 12.5 40       # Standbilder bei 12,5 s und 40 s nach .tmp/
 npm run cues && npm run audio   # Soundtrack neu erzeugen (nach Timing-Änderungen)
 npm run render                  # finale Videos + Poster nach output/ (ca. 10 Minuten)
 npm run render -- --from 8 --to 14   # nur einen Ausschnitt rendern
+npm run storyboard              # Storyboard-PDF aus dem fertigen Video
 ```
 
 | Was | Wo |
