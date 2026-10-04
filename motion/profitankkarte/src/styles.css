@@ -131,7 +131,7 @@ body.preview { height: 100vh; overflow: hidden; }
 .card-chip i:nth-child(4) { top: 0; bottom: 0; left: 62px; width: 2px; }
 .card-holder { position: absolute; left: 52px; bottom: 104px; font-size: 26px; font-weight: 600; letter-spacing: 0.16em; color: rgba(255, 255, 255, 0.72); }
 .card-num { position: absolute; left: 52px; bottom: 50px; font-family: var(--cond); font-weight: 500; font-size: 36px; letter-spacing: 0.1em; }
-.card-sheen { position: absolute; top: -60%; left: 0; width: 34%; height: 220%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.17), transparent); transform: translateX(-150%) rotate(16deg); }
+.card-sheen { position: absolute; top: -60%; left: 0; width: 34%; height: 220%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.17), transparent); transform: rotate(16deg); }
 .card-floor { position: absolute; left: 90px; right: 90px; bottom: -70px; height: 90px; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.8), transparent); }
 .s2-text { position: absolute; left: 1040px; top: 312px; width: 820px; }
 .brandline { font-size: 30px; font-weight: 600; color: var(--grey1); margin-bottom: 26px; }
@@ -297,7 +297,7 @@ body.preview { height: 100vh; overflow: hidden; }
 .cta b { width: 40px; height: 40px; }
 .cta svg { width: 40px; height: 40px; stroke-width: 2.6; }
 .end-note { margin-top: 26px; font-size: 26px; font-weight: 500; color: var(--grey2); letter-spacing: 0.02em; }
-.cta-shine { position: absolute; top: -10px; bottom: -10px; left: 0; width: 26%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent); transform: translateX(-260%) skewX(-20deg); }
+.cta-shine { position: absolute; top: -10px; bottom: -10px; left: 0; width: 26%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent); transform: skewX(-20deg); }
 
 /* ---------- Übergänge & Textur ---------- */
 .wipe { position: absolute; inset: 0; transform: scaleX(0); transform-origin: left center; z-index: 50; }

@@ -14,8 +14,8 @@
   Anpassen: nur die vier Werte in data-… am <div class="ptk-video"> unten.
 -->
 <div class="ptk-video"
-     data-src-1080="/videos/profitankkarte-1080p.mp4"
-     data-src-720="/videos/profitankkarte-720p.mp4"
+     data-video-desktop="/videos/profitankkarte-1080p.mp4"
+     data-video-mobile="/videos/profitankkarte-720p.mp4"
      data-poster="/videos/profitankkarte-poster.jpg"
      data-contact="#kontakt">
   <video class="ptk-video__media" muted playsinline preload="none"
@@ -61,7 +61,7 @@
     var ENDCARD_AT = 44.3; // Sekunde, ab der der Button in der Endcard steht
 
     var small = window.matchMedia("(max-width: 900px)").matches;
-    video.src = small ? root.dataset.src720 : root.dataset.src1080;
+    video.src = small ? root.dataset.videoMobile : root.dataset.videoDesktop;
     video.poster = root.dataset.poster;
     cta.href = root.dataset.contact;
 

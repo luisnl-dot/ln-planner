@@ -734,12 +734,13 @@ function sceneEnd() {
   tl.fromTo("#cta", { autoAlpha: 0, scale: 0.82, y: 24 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.85, ease: "back.out(1.8)" }, handoff + 0.35);
   drawIcon("#cta b", handoff + 0.6, 0.45);
   tl.fromTo("#endNote", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "expo.out" }, handoff + 0.75);
-  tl.fromTo("#ctaShine", { xPercent: -260 }, { xPercent: 520, duration: 1.0, ease: "power2.inOut" }, s + 2.4);
-  tl.fromTo("#ctaShine", { xPercent: -260 }, { xPercent: 520, duration: 1.0, ease: "power2.inOut", immediateRender: false }, s + 4.0);
+  tl.fromTo("#ctaShine", { xPercent: -260 }, { xPercent: 520, duration: 1.0, ease: "power2.inOut" }, s + 2.2);
+  // zweiter Glanz endet vor dem letzten Bild: das Schlussbild bleibt auf der Website stehen und ist das Poster
+  tl.fromTo("#ctaShine", { xPercent: -260 }, { xPercent: 520, duration: 1.0, ease: "power2.inOut", immediateRender: false }, s + 3.4);
   tl.to("#cta b", { x: 8, duration: 0.32, ease: "power2.inOut", yoyo: true, repeat: 3 }, s + 2.6);
   cue("pop", handoff + 0.35, { i: 6 });
-  cue("shine", s + 2.4);
-  cue("shine", s + 4.0);
+  cue("shine", s + 2.2);
+  cue("shine", s + 3.4);
   // Länge der Timeline exakt auf T.end setzen
   tl.set({}, {}, T.end);
 }
