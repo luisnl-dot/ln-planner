@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>profitankkarte.de · Motion-Design-Video</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/400.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/500.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/600.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/700.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow/800.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow-condensed/500.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow-condensed/700.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/barlow-condensed/800.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!--
+  Alle sichtbaren Texte stehen direkt hier im Markup (pro Szene kommentiert).
+  Markenregeln team tankpool24: kein Gedankenstrich (—), „team" immer klein,
+  „tankpool24-Karte von team", nie „Bezahlkarte", immer „2.200 Stationen",
+  HVO100 „ca. 90 %", Rot #E31E24 als einziger Akzent.
+-->
+<div id="stage">
+  <div id="bg"></div>
+  <canvas id="ambient" width="1920" height="1080"></canvas>
+
+  <!-- ============ S1 · HOOK ============ -->
+  <section class="scene dark" id="s1">
+    <div class="pump" id="pump">
+      <div class="pump-top">
+        <span class="pump-tag">DIESEL</span>
+        <span class="pump-led"></span>
+      </div>
+      <div class="pump-row">
+        <div class="pump-label">BETRAG <b>EUR</b></div>
+        <svg class="seg seg-lg" id="segEuro"></svg>
+      </div>
+      <div class="pump-row">
+        <div class="pump-label">LITER</div>
+        <svg class="seg seg-md" id="segLiter"></svg>
+      </div>
+    </div>
+    <div class="hook-text">
+      <h1 class="h1 hook" id="hookA">
+        <span class="mask"><span class="ln">Ihr Fuhrpark</span></span>
+        <span class="mask"><span class="ln">tankt jeden Tag.</span></span>
+      </h1>
+      <h1 class="h1 hook" id="hookB">
+        <span class="mask"><span class="ln">Da zählt jeder</span></span>
+        <span class="mask"><span class="ln"><span class="hl" id="centWord">Cent<i class="u" id="centLine"></i></span> pro Liter.</span></span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- ============ S2 · REVEAL ============ -->
+  <section class="scene dark" id="s2">
+    <div class="glow" id="s2glow"></div>
+    <div class="card-wrap">
+      <div class="card-floor" id="cardFloor"></div>
+      <div class="card" id="card">
+        <div class="card-face">
+          <div class="card-tex"></div>
+          <div class="card-chev"><i></i><i></i><i></i></div>
+          <div class="card-brand">Profitankkarte</div>
+          <div class="card-nfc" data-icon="nfc"></div>
+          <div class="card-chip"><i></i><i></i><i></i><i></i></div>
+          <div class="card-holder">IHR FUHRPARK</div>
+          <div class="card-num">•••• &nbsp;•••• &nbsp;•••• &nbsp;2200</div>
+          <div class="card-sheen" id="cardSheen"></div>
+        </div>
+      </div>
+    </div>
+    <div class="s2-text">
+      <div class="brandline"><span class="mask"><span class="ln"><i class="bar"></i>tankpool24-Karte von team</span></span></div>
+      <h1 class="h1 xl">
+        <span class="mask"><span class="ln">Die Tankkarte</span></span>
+        <span class="mask"><span class="ln">für Profis<em>.</em></span></span>
+      </h1>
+      <p class="sub"><span class="mask"><span class="ln">Für Fuhrpark, Spedition und Logistik.</span></span></p>
+    </div>
+  </section>
+
+  <!-- ============ S3 · KONDITIONEN ============ -->
+  <section class="scene light" id="s3">
+    <div class="s3-left">
+      <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>INDIVIDUELLE KONDITIONEN</span></span></div>
+      <div class="s3-pre"><span class="mask"><span class="ln">Bis zu</span></span></div>
+      <div class="s3-mega">
+        <span class="roll" id="roll"><span class="roll-strip" id="rollStrip"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b></span></span><span class="mask ct"><span class="ln">ct</span></span>
+      </div>
+      <div class="s3-post"><span class="mask"><span class="ln">pro Liter Diesel sparen.</span></span></div>
+    </div>
+    <div class="calc" id="calc">
+      <div class="calc-head"><span data-icon="calculator"></span>Rechenbeispiel</div>
+      <div class="calc-row" id="calcR1"><span>Diesel pro Jahr</span><b>250.000 <small>Liter</small></b></div>
+      <div class="calc-row" id="calcR2"><span>Ersparnis pro Liter</span><b>4 <small>ct</small></b></div>
+      <div class="calc-line" id="calcLine"></div>
+      <div class="calc-total-label" id="calcTL">Ersparnis pro Jahr</div>
+      <div class="calc-total" id="calcTotal"><span id="calcNum">0</span>&#8239;€</div>
+      <div class="calc-note" id="calcNote">Beispielrechnung bei 4 ct/l. Ihre Konditionen werden individuell vereinbart.</div>
+    </div>
+  </section>
+
+  <!-- ============ S4 · TANKNETZ ============ -->
+  <section class="scene dark" id="s4">
+    <div class="map-cam" id="mapCam"><canvas id="map" width="1920" height="1080"></canvas></div>
+    <div class="map-fade"></div>
+    <div class="s4-text">
+      <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>TANKNETZ</span></span></div>
+      <div class="s4-mega"><span class="mask"><span class="ln" id="netNum">0</span></span></div>
+      <div class="h1 lg"><span class="mask"><span class="ln">Stationen<em>.</em></span></span></div>
+      <p class="sub"><span class="mask"><span class="ln">24 Stunden europaweit tanken.</span></span></p>
+    </div>
+  </section>
+
+  <!-- ============ S5 · SICHERHEIT ============ -->
+  <section class="scene dark" id="s5">
+    <div class="s5-text">
+      <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>MAXIMALE SICHERHEIT</span></span></div>
+      <h1 class="h1 md">
+        <span class="mask"><span class="ln">Eine der sichersten</span></span>
+        <span class="mask"><span class="ln">Tankkarten der Welt<em>.</em></span></span>
+      </h1>
+      <ul class="checks">
+        <li><span class="ck" data-icon="check"></span><span class="mask"><span class="ln">Tanken mit der amtlichen Fahrerkarte</span></span></li>
+        <li><span class="ck" data-icon="check"></span><span class="mask"><span class="ln">Kartensperre im Kundenportal</span></span></li>
+        <li><span class="ck" data-icon="check"></span><span class="mask"><span class="ln">Videoauswertung an den Stationen</span></span></li>
+      </ul>
+    </div>
+    <div class="sec-visual">
+      <div class="rings"><i></i><i></i><i></i></div>
+      <svg class="shield" viewBox="0 0 440 520" width="440" height="520">
+        <path id="shieldFill" d="M220 24 L398 88 V250 C398 372 322 456 220 496 C118 456 42 372 42 250 V88 Z" fill="rgba(255,255,255,0.035)"/>
+        <path id="shieldPath" d="M220 24 L398 88 V250 C398 372 322 456 220 496 C118 456 42 372 42 250 V88 Z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round" pathLength="1"/>
+      </svg>
+      <div class="dcard" id="dcard">
+        <div class="dcard-top"><span>FAHRERKARTE</span><i></i></div>
+        <div class="dcard-photo"><i></i><b></b></div>
+        <div class="dcard-lines"><i></i><i></i><i></i><i></i></div>
+        <div class="dcard-chip"></div>
+        <div class="dcard-scan" id="dcardScan"></div>
+      </div>
+      <div class="badge" id="secBadge"><span data-icon="check"></span></div>
+    </div>
+  </section>
+
+  <!-- ============ S6 · KOSTENKONTROLLE ============ -->
+  <section class="scene light" id="s6">
+    <div class="s6-text">
+      <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>VOLLE KOSTENKONTROLLE</span></span></div>
+      <h1 class="h1 md ink">
+        <span class="mask"><span class="ln">Alles im Blick<em>.</em></span></span>
+      </h1>
+      <p class="sub ink">
+        <span class="mask"><span class="ln">Karten bestellen und sperren,</span></span>
+        <span class="mask"><span class="ln">Transaktionen jederzeit einsehen:</span></span>
+        <span class="mask"><span class="ln"><b>im Online-Kundenportal.</b></span></span>
+      </p>
+    </div>
+    <div class="portal" id="portal">
+      <div class="portal-bar"><i></i><i></i><i></i><span>Kundenportal</span><b data-icon="user-round"></b></div>
+      <div class="portal-body">
+        <div class="kpis">
+          <div class="kpi"><span>Getankt im Oktober</span><b><em id="kpiLiter">0</em> <small>Liter</small></b></div>
+          <div class="kpi"><span>Transaktionen</span><b id="kpiTx">0</b></div>
+          <div class="kpi"><span>Aktive Karten</span><b id="kpiCards">24</b></div>
+        </div>
+        <div class="portal-grid">
+          <div class="panel tx">
+            <div class="panel-h">Letzte Transaktionen</div>
+            <div class="tx-row"><span class="tx-ic" data-icon="fuel"></span><span class="tx-st">Station Hamburg<small>04.10. · Karte 01</small></span><span class="pill">Diesel</span><b>412,8 <small>l</small></b></div>
+            <div class="tx-row"><span class="tx-ic" data-icon="fuel"></span><span class="tx-st">Station Kassel<small>04.10. · Karte 07</small></span><span class="pill">HVO100</span><b>386,1 <small>l</small></b></div>
+            <div class="tx-row"><span class="tx-ic" data-icon="fuel"></span><span class="tx-st">Station Würzburg<small>03.10. · Karte 12</small></span><span class="pill">Diesel</span><b>455,0 <small>l</small></b></div>
+            <div class="tx-row"><span class="tx-ic" data-icon="fuel"></span><span class="tx-st">Station Flensburg<small>03.10. · Karte 03</small></span><span class="pill">Diesel</span><b>298,4 <small>l</small></b></div>
+          </div>
+          <div class="panel cards">
+            <div class="panel-h">Karten</div>
+            <div class="c-row"><span class="c-ic" data-icon="credit-card"></span><span>Karte 01</span><i class="tg on"><b></b></i></div>
+            <div class="c-row"><span class="c-ic" data-icon="credit-card"></span><span>Karte 02</span><i class="tg on"><b></b></i></div>
+            <div class="c-row" id="cRow3"><span class="c-ic" data-icon="credit-card"></span><span>Karte 03<small id="cState">aktiv</small></span><i class="tg on" id="toggle3"><b></b></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <svg class="cursor" id="cursor1" viewBox="0 0 32 32" width="44" height="44"><path d="M5 3 L5 25 L11 19.5 L15 28.5 L19 26.8 L15.2 18 L23 18 Z" fill="#0B0B0C" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    <div class="click-ring" id="ring1"></div>
+  </section>
+
+  <!-- ============ S7 · SERVICES ============ -->
+  <section class="scene dark" id="s7">
+    <div class="s7-head">
+      <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>SERVICES FÜR FAHRER UND FUHRPARK</span></span></div>
+      <h1 class="h1 md"><span class="mask"><span class="ln">Mehr als Tanken<em>.</em></span></span></h1>
+    </div>
+    <div class="tiles">
+      <div class="tile"><span class="t-ic" data-icon="wrench"></span><b>Pannenhilfe 24/7</b><span>Europaweit für Ihre Fahrer</span></div>
+      <div class="tile"><span class="t-ic" data-icon="square-parking"></span><b>Park Your Truck</b><span>Sichere Parkplätze vorab buchen</span></div>
+      <div class="tile"><span class="t-ic" data-icon="route"></span><b>Mautservice</b><span>Eine Box für 15 Länder</span></div>
+      <div class="tile"><span class="t-ic" data-icon="search-check"></span><b>Dieselinspektor</b><span>Prüft Abrechnungen automatisch</span></div>
+      <div class="tile"><span class="t-ic" data-icon="leaf"></span><b>HVO100</b><span>ca. 90&#8239;% weniger CO<sub>2</sub></span></div>
+      <div class="tile"><span class="t-ic" data-icon="plug-zap"></span><b>E-Laden</b><span>An nahezu allen Ladepunkten in Deutschland</span></div>
+    </div>
+  </section>
+
+  <!-- ============ S8 · CTA ============ -->
+  <section class="scene dark" id="s8">
+    <h1 class="h1 q" id="question">
+      <span class="mask"><span class="ln">Wie viel spart</span></span>
+      <span class="mask"><span class="ln">Ihr Fuhrpark<em>?</em></span></span>
+    </h1>
+    <div class="s8-text">
+      <div class="kicker"><span class="mask"><span class="ln"><i class="bar"></i>KOSTENLOSE BERATUNG</span></span></div>
+      <h1 class="h1 md">
+        <span class="mask"><span class="ln">Ihr individuelles</span></span>
+        <span class="mask"><span class="ln">Angebot anfordern<em>.</em></span></span>
+      </h1>
+      <ul class="checks">
+        <li><span class="ck" data-icon="check"></span><span class="mask"><span class="ln">Kostenlos und unverbindlich</span></span></li>
+        <li><span class="ck" data-icon="check"></span><span class="mask"><span class="ln">Persönlicher Ansprechpartner</span></span></li>
+      </ul>
+    </div>
+    <div class="form" id="form">
+      <div class="form-h">Kontaktformular</div>
+      <div class="form-sub">Wir melden uns bei Ihnen.</div>
+      <div class="field" data-type="Muster Logistik GmbH"><label>Firma</label><div class="input"><span class="val"></span><i class="caret"></i></div></div>
+      <div class="field" data-type="Max Mustermann"><label>Ansprechpartner</label><div class="input"><span class="val"></span><i class="caret"></i></div></div>
+      <div class="field" data-type="fuhrpark@muster-logistik.de"><label>E-Mail</label><div class="input"><span class="val"></span><i class="caret"></i></div></div>
+      <div class="field" data-type="25"><label>Fahrzeuge im Fuhrpark</label><div class="input"><span class="val"></span><i class="caret"></i></div></div>
+      <div class="btn" id="sendBtn">
+        <span class="btn-a">Anfrage senden<b data-icon="arrow-right"></b></span>
+        <span class="btn-b"><b data-icon="check"></b>Anfrage gesendet</span>
+      </div>
+    </div>
+    <svg class="cursor" id="cursor2" viewBox="0 0 32 32" width="44" height="44"><path d="M5 3 L5 25 L11 19.5 L15 28.5 L19 26.8 L15.2 18 L23 18 Z" fill="#0B0B0C" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    <div class="click-ring" id="ring2"></div>
+  </section>
+
+  <!-- ============ S9 · ENDCARD ============ -->
+  <section class="scene dark" id="s9">
+    <div class="glow end" id="endGlow"></div>
+    <div class="end">
+      <div class="end-brand"><span class="mask"><span class="ln">tankpool24-Karte von team</span></span></div>
+      <div class="wordmark" id="wordmark"><span class="mask"><span class="ln">profitankkarte<span class="tld">.de</span></span></span></div>
+      <i class="end-bar" id="endBar"></i>
+      <div class="end-tag"><span class="mask"><span class="ln">Die Tankkarte für Profis.</span></span></div>
+      <div class="cta" id="cta"><span>Jetzt Kontaktformular ausfüllen</span><b data-icon="arrow-right"></b><i class="cta-shine" id="ctaShine"></i></div>
+      <div class="end-note" id="endNote">Kostenlos und unverbindlich</div>
+    </div>
+  </section>
+
+  <!-- Übergänge -->
+  <div id="wipeA" class="wipe red"></div>
+  <div id="wipeB" class="wipe"></div>
+  <div id="expand" class="expand"></div>
+  <div id="iris" class="iris"></div>
+
+  <canvas id="grain" width="960" height="540"></canvas>
+</div>
+
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script type="module" src="main.js"></script>
+</body>
+</html>

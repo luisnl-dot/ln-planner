@@ -1,0 +1,116 @@
+<!--
+  profitankkarte.de · Video-Einbindung (Copy & Paste, z. B. als „Eigenes HTML“-Block im CMS)
+
+  Was das Snippet macht:
+  - startet das Video stumm, sobald es ins Bild scrollt (Autoplay ist nur stumm erlaubt)
+  - Ton-Schalter unten rechts
+  - lädt auf kleinen Bildschirmen die 720p-Datei, sonst 1080p
+  - legt auf der Endcard einen echten, klickbaren Button über den Video-Button
+    → führt direkt zum Kontaktformular (das ist der eigentliche Conversion-Hebel)
+  - nach Ende bleibt die Endcard stehen, „Nochmal ansehen“ startet neu
+  - respektiert „Bewegung reduzieren“ (kein Autoplay)
+  - optional: Klick-Tracking über dataLayer (Google Tag Manager)
+
+  Anpassen: nur die vier Werte in data-… am <div class="ptk-video"> unten.
+-->
+<div class="ptk-video"
+     data-src-1080="/videos/profitankkarte-1080p.mp4"
+     data-src-720="/videos/profitankkarte-720p.mp4"
+     data-poster="/videos/profitankkarte-poster.jpg"
+     data-contact="#kontakt">
+  <video class="ptk-video__media" muted playsinline preload="none"
+         aria-label="Video: Die Tankkarte für Profis. tankpool24-Karte von team."></video>
+  <a class="ptk-video__cta" href="#kontakt" tabindex="-1" aria-hidden="true">Jetzt Kontaktformular ausfüllen</a>
+  <button class="ptk-video__sound" type="button" aria-pressed="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z" fill="currentColor"/><path class="ptk-off" d="m23 9-6 6M17 9l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path class="ptk-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>Ton an</span>
+  </button>
+  <button class="ptk-video__replay" type="button">Nochmal ansehen</button>
+</div>
+
+<style>
+  .ptk-video { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0B0B0C; border-radius: 16px; overflow: hidden; }
+  .ptk-video__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Klickfläche exakt über dem roten Button der Endcard (Position in % des Videos) */
+  .ptk-video__cta { position: absolute; left: 30.6%; top: 60.6%; width: 38.8%; height: 11.6%; border-radius: 999px;
+    opacity: 0; pointer-events: none; transition: opacity .3s; font-size: 0; }
+  .ptk-video.is-endcard .ptk-video__cta { opacity: 1; pointer-events: auto; cursor: pointer; }
+  .ptk-video.is-endcard .ptk-video__cta:hover,
+  .ptk-video.is-endcard .ptk-video__cta:focus-visible { box-shadow: 0 0 0 3px #fff, 0 0 0 7px rgba(227, 30, 36, .55); outline: none; }
+  .ptk-video__sound, .ptk-video__replay {
+    position: absolute; bottom: 14px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border: 0; border-radius: 999px; background: rgba(11, 11, 12, .72); color: #fff;
+    font: 600 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif; cursor: pointer; backdrop-filter: blur(6px);
+  }
+  .ptk-video__sound { right: 14px; }
+  .ptk-video__replay { left: 14px; display: none; }
+  .ptk-video.is-ended .ptk-video__replay { display: inline-flex; }
+  .ptk-video__sound .ptk-on, .ptk-video__sound[aria-pressed="true"] .ptk-off { display: none; }
+  .ptk-video__sound[aria-pressed="true"] .ptk-on { display: inline; }
+  .ptk-video__sound:focus-visible, .ptk-video__replay:focus-visible { outline: 2px solid #E31E24; outline-offset: 2px; }
+</style>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling.previousElementSibling;
+    if (!root || !root.classList.contains("ptk-video")) root = document.querySelector(".ptk-video");
+    var video = root.querySelector(".ptk-video__media");
+    var cta = root.querySelector(".ptk-video__cta");
+    var sound = root.querySelector(".ptk-video__sound");
+    var replay = root.querySelector(".ptk-video__replay");
+    var ENDCARD_AT = 44.3; // Sekunde, ab der der Button in der Endcard steht
+
+    var small = window.matchMedia("(max-width: 900px)").matches;
+    video.src = small ? root.dataset.src720 : root.dataset.src1080;
+    video.poster = root.dataset.poster;
+    cta.href = root.dataset.contact;
+
+    function track(name) {
+      if (window.dataLayer) window.dataLayer.push({ event: name, video: "profitankkarte" });
+    }
+
+    video.addEventListener("timeupdate", function () {
+      var on = video.currentTime >= ENDCARD_AT;
+      root.classList.toggle("is-endcard", on);
+      cta.tabIndex = on ? 0 : -1;
+      cta.setAttribute("aria-hidden", on ? "false" : "true");
+    });
+    video.addEventListener("ended", function () {
+      root.classList.add("is-ended", "is-endcard");
+      track("ptk_video_complete");
+    });
+    cta.addEventListener("click", function () { track("ptk_video_cta_click"); });
+
+    sound.addEventListener("click", function () {
+      video.muted = !video.muted;
+      sound.setAttribute("aria-pressed", String(!video.muted));
+      sound.querySelector("span").textContent = video.muted ? "Ton an" : "Ton aus";
+      if (video.paused) video.play();
+      track(video.muted ? "ptk_video_mute" : "ptk_video_unmute");
+    });
+    replay.addEventListener("click", function () {
+      root.classList.remove("is-ended", "is-endcard");
+      video.currentTime = 0;
+      video.play();
+    });
+
+    // Nur abspielen, wenn das Video sichtbar ist; bei „Bewegung reduzieren“ nicht automatisch
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      video.controls = true;
+      video.preload = "metadata";
+      return;
+    }
+    var started = false;
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio > 0.5) {
+          if (!root.classList.contains("is-ended")) video.play().catch(function () { video.controls = true; });
+          if (!started) { started = true; track("ptk_video_start"); }
+        } else if (!video.paused) {
+          video.pause();
+        }
+      });
+    }, { threshold: [0, 0.5, 1] }).observe(root);
+  })();
+</script>

@@ -1,0 +1,10 @@
+node_modules/
+.frames/
+.tmp/
+*.log
+# Zwischenstände, werden von `npm run cues` / `npm run audio` neu erzeugt
+audio/.raw.wav
+audio/soundtrack.wav
+audio/cues.json
+# Review-Ausschnitte
+output/*-[0-9]*-[0-9]*s.mp4

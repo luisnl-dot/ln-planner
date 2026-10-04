@@ -1,0 +1,29 @@
+{
+  "name": "profitankkarte-motion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Motion-Design-Video für profitankkarte.de (16:9, 1920x1080). HTML/GSAP-Komposition, deterministisch gerendert mit Playwright + ffmpeg.",
+  "type": "module",
+  "scripts": {
+    "map": "node scripts/build-map.mjs",
+    "preview": "node scripts/serve.mjs",
+    "stills": "node scripts/stills.mjs",
+    "cues": "node scripts/render.mjs --cues-only",
+    "audio": "python3 scripts/audio.py",
+    "render": "node scripts/render.mjs",
+    "storyboard": "node scripts/storyboard.mjs"
+  },
+  "dependencies": {
+    "@fontsource/barlow": "5.3.0",
+    "@fontsource/barlow-condensed": "5.3.0",
+    "d3-geo": "3.1.1",
+    "gsap": "3.15.0",
+    "lucide-static": "1.52.0",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1",
+    "sharp": "0.34.5"
+  }
+}
