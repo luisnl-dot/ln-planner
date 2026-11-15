@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Basis from '../../layouts/Basis.astro';
 import Anfrage from '../../components/Anfrage.astro';
 import Bild from '../../components/Bild.astro';
-import Fit, { teile } from '../../components/Fit.astro';
 import JournalKarte from '../../components/JournalKarte.astro';
 import Kopf from '../../components/Kopf.astro';
 import Pfeil from '../../components/Pfeil.astro';
@@ -68,7 +67,16 @@ const schema = [
           </nav>
           <span>{e.nr} / {String(editionen.length).padStart(2, '0')}</span>
         </div>
-        <Fit tag="h1" class="ed-kopf__titel" lines={[e.basis, e.name]} linesSm={[...teile(e.basis), ...teile(e.name)]} akzent={1} akzentSm={teile(e.name).length} label={e.titel} />
+        <div class="ed-kopf__titelzeile">
+          <h1 class="ed-kopf__titel" data-reveal>
+            <span class="ed-kopf__basis">BMW {e.basis}</span>
+            <span class="ed-kopf__name">{e.name}</span>
+            <span class="sr-only"> – Martin Edition</span>
+          </h1>
+          <p class="ed-kopf__zeile muted" data-reveal style="--i:1">
+            <span class="ed-kopf__farbe" aria-hidden="true"></span>Martin Edition · Katalog Nº {e.nr}
+          </p>
+        </div>
       </div>
     </header>
 
@@ -76,8 +84,7 @@ const schema = [
     <section class="section">
       <div class="wrap ed-intro">
         <div class="ed-intro__text">
-          <p class="label ed-intro__ober"><span class="ed-akzent">Martin Edition</span> · BMW {e.basis}</p>
-          <p class="h2 mt2" data-reveal>{e.zeile}</p>
+          <p class="h2" data-reveal set:html={e.zeile.replace(/ (\S{1,3}) /g, ' $1&nbsp;').replace(/ R (\d)/g, ' R&nbsp;$1')} />
           {
             e.text ? (
               <div class="prosa mt3">
@@ -235,8 +242,48 @@ const schema = [
   .ed-kopf__krumen a:hover {
     opacity: 1;
   }
-  :global(.ed-kopf__titel) {
-    margin-top: 0.9rem;
+  .ed-kopf__titelzeile {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem 2rem;
+    align-items: end;
+    padding-top: clamp(1.5rem, 4vw, 3.5rem);
+    padding-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .ed-kopf__titel {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .ed-kopf__basis {
+    font-size: clamp(1.1rem, 0.9rem + 0.9vw, 1.7rem);
+    font-weight: 450;
+    letter-spacing: -0.01em;
+    color: var(--fg-2);
+  }
+  .ed-kopf__name {
+    font-size: clamp(3rem, 1.2rem + 7vw, 8.5rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+  }
+  .ed-kopf__zeile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    padding-bottom: 0.6rem;
+  }
+  .ed-kopf__farbe {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--edition);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.2);
+  }
+  @media (max-width: 700px) {
+    .ed-kopf__titelzeile {
+      grid-template-columns: 1fr;
+    }
   }
   .ed-intro {
     display: grid;
@@ -332,17 +379,15 @@ const schema = [
   }
   .ed-weiter__name {
     font-size: clamp(1.2rem, 0.8rem + 1.8vw, 2.4rem);
-    font-weight: 760;
+    font-weight: 560;
     font-stretch: 100%;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.028em;
     line-height: 1;
-    text-transform: uppercase;
     transition:
       font-stretch 0.6s var(--ease),
       color 0.3s;
   }
   .ed-weiter__link:hover .ed-weiter__name {
-    font-stretch: 116%;
     color: var(--edition);
   }
   .ed-weiter__mitte {

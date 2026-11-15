@@ -1,12 +1,11 @@
 /**
  * Globales Verhalten: sanftes Scrollen, Einblendungen, Kopfzeile, Dialoge,
- * Typenschild-Satz und Live-Status. Alles ist Progressive Enhancement –
+ * und Live-Status. Alles ist Progressive Enhancement –
  * ohne JavaScript bleibt jede Seite vollständig les- und bedienbar.
  */
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { initFit } from './fit';
 import { initStatus } from './status';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,7 +27,7 @@ export const scrollStart = () => lenis?.start();
 
 /* ---- Einblendungen ---- */
 function initReveal() {
-  const ziele = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal], .fit'));
+  const ziele = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
   if (ruhig || !('IntersectionObserver' in window)) {
     ziele.forEach((el) => el.classList.add('is-in'));
     return;
@@ -326,7 +325,7 @@ initStatus();
 initFilter();
 initAnsicht();
 initEinbettung();
-initFit().then(() => {
+(document.fonts?.ready ?? Promise.resolve()).then(() => {
   initReveal();
   initParallaxe();
   initHorizontal();

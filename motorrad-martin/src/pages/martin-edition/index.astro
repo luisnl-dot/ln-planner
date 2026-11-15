@@ -132,16 +132,13 @@ const schema = [
   </section>
 
   <!-- ============ Komponenten ============ -->
-  <section class="komp" aria-label="Verbaute Komponenten">
-    <div class="wrap">
-      <p class="label label--dim">In den Umbauten verbaut: Komponenten von</p>
+  <section class="komp" aria-labelledby="komp-titel">
+    <div class="wrap komp__raster">
+      <p class="label label--dim" id="komp-titel">Verbaute Komponenten</p>
+      <ul class="komp__liste" role="list">
+        {komponenten.map((k) => <li>{k}</li>)}
+      </ul>
     </div>
-    <div class="komp__lauf" aria-hidden="true">
-      <div class="komp__band">
-        {[...komponenten, ...komponenten].map((k) => <span>{k}</span>)}
-      </div>
-    </div>
-    <p class="sr-only">{komponenten.join(', ')}</p>
   </section>
 
   <!-- ============ Ihr Motorrad ============ -->
@@ -204,7 +201,7 @@ const schema = [
   <section class="section anfrage-band" id="anfrage">
     <div class="wrap anfrage-band__raster">
       <div class="anfrage-band__text">
-        <p class="label label--dim">04 — Anfrage</p>
+        <p class="label label--dim">Anfrage</p>
         <h2 class="h1 h1--s mt2" data-reveal>Ihre Edition beginnt mit einer Frage.</h2>
         <p class="lead mt2 muted" data-reveal style="--i:1">Welche BMW fahren Sie – oder möchten Sie fahren? Schreiben Sie uns, was Sie sich vorstellen.</p>
         <dl class="anfrage-band__haus mt3" data-reveal style="--i:2">
@@ -290,12 +287,11 @@ const schema = [
   }
   .register__name {
     font-size: clamp(1.6rem, 0.9rem + 2.6vw, 3.4rem);
-    font-weight: 780;
+    font-weight: 560;
     font-stretch: 100%;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.028em;
     line-height: 0.98;
-    text-transform: uppercase;
-    transition: font-stretch 0.6s var(--ease);
+    transition: color 0.3s;
   }
   .register__zeile :global(.pfeil) {
     align-self: center;
@@ -307,7 +303,6 @@ const schema = [
   }
   .register__zeile:hover .register__name,
   .register__zeile:focus-visible .register__name {
-    font-stretch: 120%;
   }
   .register__vorschau {
     position: absolute;
@@ -337,48 +332,29 @@ const schema = [
     opacity: 1;
   }
 
-  /* Komponenten-Laufband */
+  /* Komponenten */
   .komp {
-    padding-block: clamp(2rem, 4vw, 3.5rem);
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
     border-block: 1px solid var(--line);
     background: var(--bg);
     color: var(--fg);
-    overflow: clip;
   }
-  .komp__lauf {
-    margin-top: 1.25rem;
+  .komp__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: 1.25rem var(--gap);
+    align-items: baseline;
+  }
+  .komp__liste {
     display: flex;
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    flex-wrap: wrap;
+    gap: 0.4rem 2.25rem;
+    font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.35rem);
+    color: var(--fg-2);
   }
-  .komp__band {
-    display: flex;
-    gap: clamp(2rem, 4vw, 4.5rem);
-    padding-right: clamp(2rem, 4vw, 4.5rem);
-    white-space: nowrap;
-    animation: lauf 46s linear infinite;
-    font-size: clamp(1.6rem, 1rem + 2.4vw, 3.2rem);
-    font-weight: 300;
-    font-stretch: 112%;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-  }
-  .komp__band span:nth-child(even) {
-    font-weight: 800;
-  }
-  .komp:hover .komp__band {
-    animation-play-state: paused;
-  }
-  @keyframes lauf {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .komp__lauf {
-      overflow-x: auto;
-    }
-    .komp__band {
-      animation: none;
+  @media (max-width: 800px) {
+    .komp__raster {
+      grid-template-columns: 1fr;
     }
   }
 

@@ -1,7 +1,6 @@
 ---
 import { menue, recht } from '../data/navigation';
 import { standorte, routeUrl, social } from '../data/standorte';
-import Fit from './Fit.astro';
 import Pfeil from './Pfeil.astro';
 import Status from './Status.astro';
 import Zeiten from './Zeiten.astro';
@@ -66,7 +65,6 @@ const jahr = new Date().getFullYear();
       }
     </ul>
 
-    <Fit tag="p" class="fuss__marke" lines={['Martin']} label="Martin" />
 
     <div class="fuss__unten label">
       <p>© {jahr} Motorrad Martin</p>
@@ -156,6 +154,7 @@ const jahr = new Date().getFullYear();
     opacity: 0.96;
   }
   .fuss__unten {
+    margin-top: clamp(3rem, 6vw, 5rem) !important;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

@@ -11,19 +11,21 @@ npm run preview   # Build lokal ansehen
 
 ---
 
-## Konzept: das Typenschild
+## Konzept: ruhig, präzise, hochwertig
 
-**Die Idee.** Jedes Motorrad trägt ein Typenschild: eingeprägte Daten, exakt bündig, nichts Überflüssiges. Martin baut Einzelstücke, also wird die ganze Website wie ein Typenschild gesetzt.
+**Die Idee.** Martin baut Einzelstücke und ist seit 1954 ein Familienbetrieb. Die Seite tritt deshalb auf wie ein Premium-Automobilhersteller: viel Ruhe, klare Hierarchie, die Fotos stehen im Mittelpunkt. Laute Effekte gibt es nicht.
 
-**Typografie.** Eine einzige variable Grotesk (Archivo, Breitenachse 62–125 %) und eine Mono-Schrift (IBM Plex Mono) für alles, was gezählt, gemessen oder verbaut wird.
+**Typografie.** Eine einzige variable Grotesk (Archivo) in gemischter Schreibweise.
 
-- Jede große Schlagzeile wird per Skript Zeile für Zeile auf die exakte Spaltenbreite gesetzt (`src/scripts/fit.ts`). Dafür wird die Breite der Buchstaben verändert, nicht nur die Größe, wie bei einer Prägung.
-- Bei Hover dehnen sich Titel in die Breite, statt die Farbe zu wechseln.
+- Große Titel sind leicht und eng gesetzt, Fließtext ist gut lesbar.
+- Kleine Etiketten nutzen dieselbe Schrift schmal und gesperrt, wie ein geprägtes Typenschild.
+- Zahlen stehen in Tabellenziffern.
+- Großbuchstaben-Schlagzeilen, Abschnittsnummern und Laufbänder wurden bewusst entfernt.
 
 **Farbe.**
 - Zwei Welten: Papier (Haus und Service) und Graphit (Manufaktur).
 - Keine Markenfarbe als Fläche.
-- Jede Martin Edition bringt ihre eigene Signaturfarbe mit, aus dem Foto abgeleitet (Daytona-Orange, Hunter-Oliv, Dakar-Rot). Sie färbt Katalognummer, Akzentzeile und Hover-Linie.
+- Jede Martin Edition bringt ihre eigene Signaturfarbe mit, aus dem Foto abgeleitet (Daytona-Orange, Hunter-Oliv, Dakar-Rot). Sie erscheint zurückhaltend als Farbpunkt, Katalognummer und Hover-Linie.
 
 **Bildsprache.** Die Fotos der Martin Edition (Darren Jacklin) sind das stärkste Kapital der Marke und tragen die Seite. Es gibt keine Stockfotos und keine KI-Bilder.
 
@@ -31,7 +33,8 @@ npm run preview   # Build lokal ansehen
 
 - **Das Tor (Startseite):** Das Bildfenster unter der Schlagzeile öffnet sich beim Scrollen zur ganzen Bühne, wie ein Hallentor.
 - **Die Manufaktur-Galerie:** Am Desktop ist sie an den Scroll gekoppelt, mobil wischt man nativ.
-- **Bild-Einblendungen:** Bilder werden beim Einblenden aufgedeckt, Schlagzeilen schieben sich Zeile für Zeile aus der Maske.
+- **Bild-Einblendungen:** Bilder und Texte werden beim Scrollen ruhig eingeblendet.
+- **Chronik:** Auf „Seit 1954“ läuft die Jahreszahl beim Lesen mit, eine Skala zeigt die Stationen.
 - **Seitenübergänge:** Sie laufen über View Transitions. Das Bild einer Edition wandert aus der Übersicht in die Detailseite.
 - **Reduzierte Bewegung:** Bei „Bewegung reduzieren“ entfällt alles davon. Ohne JavaScript ist jede Seite vollständig lesbar und bedienbar.
 
@@ -41,8 +44,7 @@ npm run preview   # Build lokal ansehen
 |---|---|
 | **Live-Öffnungsstatus** je Haus („Schongau öffnet morgen 8:00“) | Wird nach Europe/Berlin berechnet, inklusive Mittagspause und der unterschiedlichen Winterregeln der drei Häuser. Er stimmt also auch für Besucher aus dem Ausland. |
 | **„Mein Haus“** | Einmal gewählt, richten sich Kopfzeile, Anruf-Knopf, Formulare und Kontaktseite nach diesem Haus. Gespeichert wird nur lokal im Browser, es gibt keinen Server und kein Tracking. |
-| **Revierkarte** | Eine schematische Karte des Alpenrands, aus echten Koordinaten projiziert. Sie zeigt die drei Häuser, ihre Luftlinien-Abstände und beim Überfahren das Einzugsgebiet. Es gibt keinen Kartendienst und keine Fremdanfrage. |
-| **Maßband 1954 – heute** | Die Firmengeschichte als Skala: ein Teilstrich pro Jahr. |
+| **Revierkarte** | Eine echte Karte von Oberbayern und Allgäu: Staatsgrenzen und Seen aus Natural Earth, dazu Flüsse, Autobahnen, Bundesstraßen, Städte und Gipfel. Sie zeigt die drei Häuser, ihre Luftlinien-Abstände und beim Überfahren das Einzugsgebiet. Es gibt keinen Kartendienst und keine Fremdanfrage. Die Aufbereitung der Geodaten liegt in `scripts/karte/geodaten.py`. |
 | **Miet-Preisrechner** | Rechnet ausschließlich mit den veröffentlichten Tarifen (Stand 20.05.2026): 3-Tages- und Wochenpauschale, Probefahrtenpauschale, Mehrkilometer, Koffer, Navi und Reinigung. |
 | **Katalog-Register** der Martin Edition | Filter nach Baureihe und eine Umschaltung zwischen Tafel- und Register-Ansicht. Im Register folgt eine Bildvorschau dem Mauszeiger. |
 
@@ -87,13 +89,14 @@ Die bisherige Navigation (Standorte, News, Events, Gebrauchte, Ankauf, Motorräd
 ```
 src/
   pages/        eine Datei je Seite bzw. Seitentyp ([slug].astro)
-  components/   Kopfzeile, Fuß, Fit (Typenschild-Satz), Karte, Massband, Anfrage …
+  components/   Kopfzeile, Fuß, Seitenkopf, Karte, Anfrage, EditionKarte …
   content/      Markdown-Inhalte (aus der alten Seite importiert)
   data/         Standorte, Editionen, Miete, Team, Chronik, Weiterleitungen
-  scripts/      app.ts (Bewegung, Dialoge, Filter), fit.ts, status.ts, formular.ts, miete.ts
+  scripts/      app.ts (Bewegung, Dialoge, Filter), status.ts, formular.ts, miete.ts
   styles/       global.css – Design-Tokens und Grundbausteine
   assets/       Fotos und Schriften
 scripts/import/ einmalige Import-Skripte (Inhalte und Bildauswahl von der alten Seite)
+scripts/karte/  Aufbereitung der Geodaten für die Revierkarte
 tests/          Funktionsprüfung mit Playwright
 ```
 
@@ -140,7 +143,7 @@ npm i -D playwright && DIST=./dist node tests/pruefung.cjs
 
 Geprüft wird Folgendes:
 
-- **Alle Seiten** in drei Breiten (390 / 820 / 1440 px): keine Konsolenfehler, kein horizontales Überlaufen, genau eine H1, jede Typenschild-Zeile bündig.
+- **Alle Seiten** in drei Breiten (390 / 820 / 1440 px): keine Konsolenfehler, kein horizontales Überlaufen, genau eine H1.
 - **Navigation:** Menü und Hauswahl samt Fokus und Escape, „Mein Haus“ über Seiten hinweg.
 - **Formulare:** Formularprüfung und E-Mail-Versand, dazu der Ankauf mit seinen drei Stufen.
 - **Mietrechner:** sechs Rechenfälle.

@@ -137,19 +137,17 @@ const pflege: [string, string][] = [
   }
   .wege__titel {
     font-size: clamp(1.7rem, 1rem + 3vw, 4rem);
-    font-weight: 780;
+    font-weight: 560;
     font-stretch: 100%;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.028em;
     line-height: 0.96;
-    text-transform: uppercase;
-    transition: font-stretch 0.6s var(--ease);
+    transition: color 0.3s;
   }
   .wege__liste a:hover {
     padding-left: 1rem;
     border-bottom-color: var(--fg);
   }
   .wege__liste a:hover .wege__titel {
-    font-stretch: 120%;
   }
   .wege__liste :global(.pfeil) {
     align-self: center;

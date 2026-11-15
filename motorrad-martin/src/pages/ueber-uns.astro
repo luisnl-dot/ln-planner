@@ -4,7 +4,6 @@ import Basis from '../layouts/Basis.astro';
 import Abschluss from '../components/Abschluss.astro';
 import Bild from '../components/Bild.astro';
 import Kopf from '../components/Kopf.astro';
-import Massband from '../components/Massband.astro';
 import Pfeil from '../components/Pfeil.astro';
 import Seitenkopf from '../components/Seitenkopf.astro';
 import { chronik } from '../data/chronik';
@@ -12,11 +11,14 @@ import { standorte } from '../data/standorte';
 import { bild } from '../lib/bilder';
 
 const stellen = (await getCollection('jobs')).length;
-const bilder: Record<string, [string, string]> = {
-  '1964': ['standorte/schongau-front', 'Das Stammhaus Erwin Martin in Schongau'],
-  '1969': ['haus/classic-firma', 'BMW Motorräder vor dem Betrieb in Schongau'],
-  '2018': ['standorte/oy-neubau', 'Rohbau des neuen Gebäudes in Oy-Mittelberg'],
-  '2022': ['haus/weyarn-bau-nacht', 'Baustelle des Motorradhauses in Weyarn bei Nacht'],
+const heute = new Date().getFullYear();
+
+/** Bilder zu einzelnen Stationen – sie zeigen die Häuser, nicht das jeweilige Jahr. */
+const bilder: Record<string, { name: string; alt: string; text: string }> = {
+  '1964': { name: 'standorte/schongau-front', alt: 'Das Stammhaus Erwin Martin in der Marktoberdorfer Straße in Schongau', text: 'Das Stammhaus in der Marktoberdorfer Straße, Schongau' },
+  '1969': { name: 'haus/classic-firma', alt: 'Klassische BMW Motorräder vor dem Betrieb in Schongau', text: 'Klassiker vor dem Stammhaus in Schongau' },
+  '2018': { name: 'standorte/oy-front', alt: 'Der Neubau von BMW Martin in Oy-Mittelberg', text: 'Das Haus im Allgäu, Gewerbepark 2 in Oy-Mittelberg' },
+  '2022': { name: 'haus/weyarn-bau-nacht', alt: 'Das Motorradhaus in Weyarn während der Bauphase bei Nacht', text: 'Weyarn, Am Weiglfeld – kurz vor der Eröffnung' },
 };
 ---
 
@@ -27,63 +29,88 @@ const bilder: Record<string, [string, string]> = {
 >
   <Seitenkopf
     krumen={[{ titel: 'Seit 1954' }]}
-    lines={['Präzision', 'seit 1954']}
-    label="Präzision seit 1954"
+    lines={['Präzision seit 1954.']}
     rechts="Familie Martin · dritte Generation"
     einleitung="Was 1954 als Familienbetrieb begann, wird heute in dritter Generation geführt: BMW Martin ist einer der größten BMW Motorrad Händler in Deutschland."
+    bild={bild('standorte/schongau-strasse')}
+    bildAlt="Das Stammhaus Erwin Martin in Schongau mit BMW Schild"
   >
     <p class="muted">Drei Standorte in Weyarn, Schongau und Oy-Mittelberg – jeder mit eigenem Team in Verkauf, Werkstatt, Service und Verwaltung. Ein Betrieb, der seit 1954 in Familienhand ist: keine Kette, kein Investor.</p>
   </Seitenkopf>
 
-  <section class="section section--flush-top">
+  <!-- ============ Chronik ============ -->
+  <section class="section section--flush-top chronik" aria-labelledby="chronik-titel">
     <div class="wrap">
-      <Massband />
+      <Kopf label="Chronik" rechts={`1954 – ${heute}`} />
+      <h2 class="sr-only" id="chronik-titel">Chronik des Hauses Martin</h2>
+      <div class="chronik__raster" data-chronik>
+        <!-- mitlaufende Jahreszahl -->
+        <div class="chronik__seite" aria-hidden="true">
+          <div class="chronik__jahr" data-chronik-jahr>{chronik[0].jahr}</div>
+          <ol class="chronik__skala" role="list">
+            {
+              chronik.map((c, i) => (
+                <li data-chronik-marke={i} class:list={[i === 0 && 'ist-aktiv']}>
+                  <span>{c.jahr}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <ol class="chronik__kapitel" role="list">
+          {
+            chronik.map((c, i) => {
+              const b = bilder[c.jahr];
+              return (
+                <li class="kapitel" data-chronik-kapitel={i} data-jahr={c.jahr}>
+                  <p class="kapitel__jahr" aria-hidden="true">
+                    {c.jahr}
+                  </p>
+                  <p class="label label--dim">{c.datum}</p>
+                  <h3 class="kapitel__titel">{c.titel}</h3>
+                  <p class="kapitel__text">{c.text}</p>
+                  {b && (
+                    <figure class="kapitel__bild">
+                      <Bild src={bild(b.name)} alt={b.alt} ratio="32" sizes="(min-width: 1000px) 46vw, 100vw" widths={[480, 800, 1200]} reveal />
+                      <figcaption>{b.text}</figcaption>
+                    </figure>
+                  )}
+                </li>
+              );
+            })
+          }
+          <li class="kapitel kapitel--heute" data-chronik-kapitel={chronik.length} data-jahr={String(heute)}>
+            <p class="kapitel__jahr" aria-hidden="true">{heute}</p>
+            <p class="label label--dim">Heute</p>
+            <h3 class="kapitel__titel">Drei Häuser, dritte Generation</h3>
+            <p class="kapitel__text">Im Bereich Motorrad einer der größten Händler deutschland- und weltweit – und mit der Martin Edition Heimat einer eigenen Custom-Marke.</p>
+          </li>
+        </ol>
+      </div>
     </div>
   </section>
 
-  <section class="section section--flush-top">
-    <div class="wrap">
-      <Kopf nr="01" label="Chronik" titel="Acht Stationen." />
-      <ol class="chr" role="list">
-        {
-          chronik.map((c) => (
-            <li class="chr__eintrag">
-              <div class="chr__jahr" data-reveal>
-                {c.jahr}
-              </div>
-              <div class="chr__text" data-reveal style="--i:1">
-                <p class="label label--dim">{c.datum}</p>
-                <h3 class="h2">{c.titel}</h3>
-                <p class="lead muted">{c.text}</p>
-              </div>
-              {bilder[c.jahr] && (
-                <div class="chr__bild">
-                  <Bild src={bild(bilder[c.jahr][0])} alt={bilder[c.jahr][1]} ratio="32" sizes="(min-width: 900px) 32vw, 100vw" widths={[480, 800, 1200]} reveal />
-                </div>
-              )}
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
+  <!-- ============ Heute ============ -->
   <section class="section heute" data-theme="dark">
     <div class="wrap">
-      <Kopf nr="02" label="Heute" titel="Drei Häuser, eine Familie." />
+      <Kopf label="Heute" titel="Drei Häuser, eine Familie." />
       <ul class="heute__liste" role="list">
         {
           standorte.map((s, i) => (
             <li data-reveal style={`--i:${i}`}>
               <p class="label label--dim">{s.firma}</p>
-              <p class="heute__ort"><a href={`/standorte/${s.slug}/`}>{s.ort}</a></p>
-              <p class="muted">Vertreten durch {s.vertretung}</p>
-              <a class="link" href={`/standorte/${s.slug}/#team`}>Team {s.ort} <Pfeil /></a>
+              <p class="heute__ort">
+                <a href={`/standorte/${s.slug}/`}>{s.ort}</a>
+              </p>
+              <p class="muted">{s.rolle} · vertreten durch {s.vertretung}</p>
+              <a class="link" href={`/standorte/${s.slug}/#team`}>
+                Team {s.ort} <Pfeil />
+              </a>
             </li>
           ))
         }
       </ul>
-      <p class="lead heute__zitat mt4" data-reveal>Im Bereich Motorrad einer der größten Händler deutschland- und weltweit – und mit der Martin Edition Heimat einer eigenen Custom-Marke.</p>
     </div>
   </section>
 
@@ -91,41 +118,124 @@ const bilder: Record<string, [string, string]> = {
 </Basis>
 
 <style>
-  .chr {
+  .chronik__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .chronik__seite {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    display: grid;
+    gap: 2rem;
+  }
+  .chronik__jahr {
+    font-size: clamp(5rem, 2rem + 10vw, 13rem);
+    font-weight: 250;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+    transition:
+      opacity 0.35s var(--ease),
+      transform 0.5s var(--ease);
+  }
+  .chronik__jahr.ist-wechsel {
+    opacity: 0;
+    transform: translateY(0.12em);
+  }
+  .chronik__skala {
+    display: grid;
+    grid-template-columns: repeat(var(--n, 8), minmax(0, 1fr));
+    border-top: 1px solid var(--line-2);
+    max-width: 30rem;
+  }
+  .chronik__skala li {
+    position: relative;
+    padding-top: 0.7rem;
+    font-size: 0.74rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-3);
+    transition: color 0.3s;
+  }
+  .chronik__skala li::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 1px;
+    height: 0.45rem;
+    background: var(--line-2);
+    transition:
+      background 0.3s,
+      height 0.4s var(--ease);
+  }
+  .chronik__skala li.ist-aktiv {
+    color: var(--fg);
+  }
+  .chronik__skala li.ist-aktiv::before {
+    background: var(--fg);
+    height: 0.9rem;
+  }
+  .chronik__skala li.ist-vorbei::before {
+    background: var(--fg);
+  }
+
+  .chronik__kapitel {
     border-top: 1px solid var(--fg);
   }
-  .chr__eintrag {
+  .kapitel {
     display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
-    gap: 1.25rem var(--gap);
-    align-items: start;
-    padding: clamp(1.5rem, 3vw, 3rem) 0;
+    gap: 0.75rem;
+    padding: clamp(2.5rem, 6vw, 5.5rem) 0;
     border-bottom: 1px solid var(--line);
+    transition: opacity 0.5s var(--ease);
   }
-  .chr__jahr {
-    font-size: clamp(3.6rem, 1.6rem + 9vw, 11rem);
-    font-weight: 800;
-    font-stretch: 112%;
-    line-height: 0.82;
+  .js .kapitel:not(.ist-aktiv) {
+    opacity: 0.38;
+  }
+  .kapitel__jahr {
+    display: none;
+    font-size: 3.4rem;
+    font-weight: 250;
+    line-height: 0.9;
     letter-spacing: -0.05em;
-    font-variant-numeric: tabular-nums;
   }
-  .chr__text {
-    display: grid;
-    gap: 0.7rem;
-    padding-top: 0.4rem;
+  .kapitel__titel {
+    font-size: clamp(1.7rem, 1.1rem + 2vw, 2.9rem);
+    font-weight: 540;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
   }
-  .chr__text .lead {
-    max-width: 30em;
+  .kapitel__text {
+    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+    line-height: 1.55;
+    color: var(--fg-2);
+    max-width: 36em;
+  }
+  .kapitel__bild {
+    margin: 1.25rem 0 0;
+  }
+  .kapitel__bild figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--fg-3);
   }
   @media (max-width: 900px) {
-    .chr__eintrag {
+    .chronik__raster {
       grid-template-columns: 1fr;
     }
-    .chr__bild {
-      max-width: 26rem;
+    .chronik__seite {
+      display: none;
+    }
+    .kapitel__jahr {
+      display: block;
+    }
+    .js .kapitel:not(.ist-aktiv) {
+      opacity: 1;
     }
   }
+
   .heute__liste {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -135,6 +245,7 @@ const bilder: Record<string, [string, string]> = {
     display: grid;
     gap: 0.6rem;
     justify-items: start;
+    align-content: start;
     padding: 1.25rem var(--gap) 0 0;
   }
   .heute__liste li + li {
@@ -142,15 +253,10 @@ const bilder: Record<string, [string, string]> = {
     border-left: 1px solid var(--line);
   }
   .heute__ort {
-    font-size: clamp(2rem, 1.2rem + 3vw, 4.2rem);
-    font-weight: 800;
-    font-stretch: 106%;
+    font-size: clamp(2rem, 1.2rem + 2.6vw, 3.6rem);
+    font-weight: 520;
     letter-spacing: -0.04em;
-    line-height: 0.92;
-    text-transform: uppercase;
-  }
-  .heute__zitat {
-    max-width: 28em;
+    line-height: 1;
   }
   @media (max-width: 900px) {
     .heute__liste {
@@ -164,3 +270,45 @@ const bilder: Record<string, [string, string]> = {
     }
   }
 </style>
+
+<script>
+  // Mitlaufende Jahreszahl: das Kapitel in der Bildschirmmitte bestimmt Jahr und Skala
+  const box = document.querySelector<HTMLElement>('[data-chronik]');
+  if (box) {
+    const jahr = box.querySelector<HTMLElement>('[data-chronik-jahr]')!;
+    const marken = Array.from(box.querySelectorAll<HTMLElement>('[data-chronik-marke]'));
+    const kapitel = Array.from(box.querySelectorAll<HTMLElement>('[data-chronik-kapitel]'));
+    box.querySelector<HTMLElement>('.chronik__skala')?.style.setProperty('--n', String(marken.length));
+    const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let aktiv = -1;
+    const setze = (i: number) => {
+      if (i === aktiv) return;
+      aktiv = i;
+      kapitel.forEach((k, n) => k.classList.toggle('ist-aktiv', n === i));
+      marken.forEach((m, n) => {
+        m.classList.toggle('ist-aktiv', n === i);
+        m.classList.toggle('ist-vorbei', n < i);
+      });
+      const neu = kapitel[i].dataset.jahr!;
+      if (jahr.textContent === neu) return;
+      if (ruhig) {
+        jahr.textContent = neu;
+        return;
+      }
+      jahr.classList.add('ist-wechsel');
+      window.setTimeout(() => {
+        jahr.textContent = neu;
+        jahr.classList.remove('ist-wechsel');
+      }, 220);
+    };
+    const io = new IntersectionObserver(
+      (eintraege) => {
+        const sichtbar = eintraege.filter((e) => e.isIntersecting);
+        if (sichtbar.length) setze(kapitel.indexOf(sichtbar[sichtbar.length - 1].target as HTMLElement));
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    kapitel.forEach((k) => io.observe(k));
+    setze(0);
+  }
+</script>

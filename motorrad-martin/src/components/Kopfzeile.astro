@@ -73,7 +73,7 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
         menue.map((g, gi) => (
           <div class="menue__gruppe" style={`--g:${gi}`}>
             <p class="label label--dim menue__titel">
-              0{gi + 1} — {g.titel}
+              {g.titel}
             </p>
             <ul role="list">
               {g.links.map((l) => (
@@ -467,11 +467,10 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
     display: block;
     /* Größe folgt der Spaltenbreite – das längste Wort („Gebrauchte“) passt auch gedehnt */
     font-size: clamp(1.6rem, 12.5cqi, 3.1rem);
-    font-weight: 760;
-    font-stretch: 96%;
-    letter-spacing: -0.03em;
+    font-weight: 560;
+    font-stretch: 100%;
+    letter-spacing: -0.028em;
     line-height: 1.02;
-    text-transform: uppercase;
     padding-block: 0.16em;
   }
   .menue__gross span {
@@ -482,7 +481,6 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
   }
   .menue__gross:hover span,
   .menue__gross:focus-visible span {
-    font-stretch: 108%;
     color: var(--accent);
   }
   .menue__gross[aria-current='page'] span {
@@ -650,12 +648,14 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
     gap: 0.5rem;
     min-height: 3.5rem;
     padding: 0 1.1rem;
-    font-family: var(--mono);
+    font-family: var(--font);
     font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+        letter-spacing: 0.08em;
     text-transform: uppercase;
+    font-stretch: 85%;
+    font-weight: 600;
     border-right: 1px solid rgb(236 233 226 / 0.18);
+    font-variant-numeric: tabular-nums;
   }
   .leiste svg:not(.pfeil) {
     width: 1.15rem;

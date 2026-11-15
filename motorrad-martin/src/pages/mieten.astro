@@ -175,7 +175,7 @@ const ab = Math.min(...alle.map((m) => m.tag));
   <section class="section miet-anfrage" id="anfrage">
     <div class="wrap miet-anfrage__raster">
       <div>
-        <p class="label label--dim">04 — Anfrage</p>
+        <p class="label label--dim">Anfrage</p>
         <h2 class="h1 h1--s mt2" data-reveal>Miete anfragen.</h2>
         <p class="lead muted mt2 measure-s" data-reveal style="--i:1">Nennen Sie uns Modell, Zeitraum und Ihr Wunsch-Haus – wir prüfen die Verfügbarkeit.</p>
       </div>
@@ -214,8 +214,8 @@ const ab = Math.min(...alle.map((m) => m.tag));
   }
   .rechner__summe {
     font-size: clamp(3.4rem, 2rem + 6vw, 7rem);
-    font-weight: 800;
-    font-stretch: 112%;
+    font-weight: 300;
+    font-stretch: 100%;
     line-height: 0.9;
     letter-spacing: -0.045em;
     font-variant-numeric: tabular-nums;
@@ -238,10 +238,11 @@ const ab = Math.min(...alle.map((m) => m.tag));
   }
   .rechner__posten :global(dd) {
     margin: 0;
-    font-family: var(--mono);
+    font-family: var(--font);
     font-size: 0.86rem;
     text-align: right;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
   @media (max-width: 900px) {
     .rechner {
@@ -276,9 +277,10 @@ const ab = Math.min(...alle.map((m) => m.tag));
   }
   .flotte sup {
     color: var(--accent);
-    font-family: var(--mono);
+    font-family: var(--font);
     font-size: 0.7em;
     margin-left: 0.2em;
+    font-variant-numeric: tabular-nums;
   }
   @media (max-width: 1100px) {
     .flotte__raster {

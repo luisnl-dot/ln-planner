@@ -6,12 +6,12 @@ interface Props {
   tag?: 'h1' | 'h2' | 'h3';
   rechts?: string;
 }
-const { nr, label, titel, tag: Tag = 'h2', rechts } = Astro.props;
+const { label, titel, tag: Tag = 'h2', rechts } = Astro.props;
 ---
 
 <div class="kopf">
   <div class="kopf__nr label">
-    <span>{nr && <span class="dim">{nr} — </span>}{label}</span>
+    <span>{label}</span>
     {rechts && <span class="dim">{rechts}</span>}
   </div>
   {

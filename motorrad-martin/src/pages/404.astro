@@ -1,6 +1,5 @@
 ---
 import Basis from '../layouts/Basis.astro';
-import Fit from '../components/Fit.astro';
 import Pfeil from '../components/Pfeil.astro';
 import { hauptnav } from '../data/navigation';
 ---
@@ -9,7 +8,7 @@ import { hauptnav } from '../data/navigation';
   <section class="fehler">
     <div class="wrap">
       <p class="label label--dim fehler__ober">Fehler 404 · Diese Strecke ist gesperrt</p>
-      <Fit tag="h1" lines={['Falsch', 'abgebogen.']} label="Falsch abgebogen – Seite nicht gefunden" />
+      <h1 class="titel-xl">Falsch abgebogen.</h1>
       <div class="fehler__unten">
         <p class="lead muted">Die Seite gibt es nicht oder nicht mehr. Hier geht es zurück auf die Strecke:</p>
         <ul role="list" class="fehler__liste">

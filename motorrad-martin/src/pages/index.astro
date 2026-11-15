@@ -3,11 +3,10 @@ import { getCollection } from 'astro:content';
 import Basis from '../layouts/Basis.astro';
 import Bild from '../components/Bild.astro';
 import EditionKarte from '../components/EditionKarte.astro';
-import Fit from '../components/Fit.astro';
 import JournalKarte from '../components/JournalKarte.astro';
 import Karte from '../components/Karte.astro';
 import Kopf from '../components/Kopf.astro';
-import Massband from '../components/Massband.astro';
+import { chronik } from '../data/chronik';
 import Pfeil from '../components/Pfeil.astro';
 import Status from '../components/Status.astro';
 import { edition, editionen } from '../data/editionen';
@@ -73,28 +72,17 @@ const schema = [
         </span>
       </p>
 
-      <Fit tag="h1" class="start__titel" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
+      <h1 class="start__titel" data-reveal>Kein gewöhnlicher<br /> BMW Partner.</h1>
 
       <div class="start__unten">
         <div class="start__text" data-tor-vorn>
-          <p class="lead" data-reveal style="--i:3">
+          <p class="lead" data-reveal style="--i:2">
             Familienbetrieb seit 1954, heute in dritter Generation. Drei Häuser am Alpenrand – und eine eigene Manufaktur, in der aus BMW Motorrädern Einzelstücke werden.
           </p>
-          <div class="start__aktionen" data-reveal style="--i:4">
+          <div class="start__aktionen" data-reveal style="--i:3">
             <a class="btn btn--solid" href="/martin-edition/">Martin Edition ansehen <Pfeil /></a>
             <a class="btn" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
           </div>
-          <ul class="start__status" role="list">
-            {
-              standorte.map((s) => (
-                <li>
-                  <a href={`/standorte/${s.slug}/`}>
-                    <Status haus={s.slug} ort />
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
         </div>
 
         <div class="start__platz" data-tor-platz>
@@ -114,6 +102,17 @@ const schema = [
           </div>
         </div>
       </div>
+      <ul class="start__status" role="list">
+        {
+          standorte.map((s) => (
+            <li>
+              <a href={`/standorte/${s.slug}/`}>
+                <Status haus={s.slug} ort />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -122,7 +121,7 @@ const schema = [
     <div class="wrap manu__kopf">
       <Kopf nr="01" label="Manufaktur" rechts={`${editionen.length} Editionen in der Kollektion`} />
       <div class="manu__auftakt">
-        <Fit tag="h2" lines={['Martin', 'Edition']} class="manu__titel" label="Martin Edition" />
+        <h2 class="manu__titel titel-xl" data-reveal>Martin Edition</h2>
         <div class="manu__text">
           <p class="lead" data-reveal>Unter dem Namen Martin Edition entstehen veredelte BMW Motorräder in Handarbeit – streng limitiert, jedes ein Einzelstück.</p>
           <p class="muted mt2 measure-s" data-reveal style="--i:1">Wir bauen Ihnen Ihr Motorrad nach Ihren Wünschen um. Für BMW gibt es eine breite Palette von Umbauteilen – wir geben Ihnen gerne Auskunft über die Möglichkeiten eines sinnvollen An- oder Umbaus.</p>
@@ -196,7 +195,6 @@ const schema = [
             leistungen.map((l, i) => (
               <li data-zeile={l.id} data-reveal style={`--i:${Math.min(i, 5)}`}>
                 <a class="leist__zeile" href={l.href}>
-                  <span class="label dim">{String(i + 1).padStart(2, '0')}</span>
                   <span class="leist__titel">{l.titel}</span>
                   <span class="leist__text muted">{l.text}</span>
                   <Pfeil />
@@ -224,50 +222,68 @@ const schema = [
       <Kopf nr="03" label="Standorte" titel="Drei Häuser, rund 100 Kilometer Alpenrand.">
         <a slot="seite" class="link" href="/standorte/">Alle Standorte <Pfeil /></a>
       </Kopf>
-      <div class="haeuser__raster">
-        <Karte class="haeuser__karte" data-reveal />
-        <ul class="haeuser__liste" role="list">
-          {
-            standorte.map((s, i) => (
-              <li class="haus-karte" data-haus-karte={s.slug} data-reveal style={`--i:${i}`}>
-                <div class="haus-karte__kopf">
-                  <a class="haus-karte__name" href={`/standorte/${s.slug}/`}>
-                    {s.ort}
-                  </a>
-                  <Status haus={s.slug} />
-                </div>
-                <p class="label label--dim">{s.rolle}</p>
-                <p class="muted haus-karte__text">{s.anfahrt}</p>
-                <p class="haus-karte__adresse">
-                  {s.strasse}, {s.plz} {s.ort}
-                </p>
-                <div class="haus-karte__aktionen">
-                  <a class="link" href={`tel:${s.tel}`}>
-                    {s.telefon}
-                  </a>
-                  <a class="link" href={routeUrl(s)} target="_blank" rel="noopener">
-                    Route <Pfeil raus />
-                  </a>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+      <Karte class="haeuser__karte" data-reveal />
+      <ul class="haeuser__liste" role="list">
+        {
+          standorte.map((s, i) => (
+            <li class="haus-karte" data-haus-karte={s.slug} data-reveal style={`--i:${i}`}>
+              <p class="label label--dim">{s.rolle}</p>
+              <div class="haus-karte__kopf">
+                <a class="haus-karte__name" href={`/standorte/${s.slug}/`}>
+                  {s.ort}
+                </a>
+                <Status haus={s.slug} />
+              </div>
+              <p class="muted haus-karte__text">{s.anfahrt}</p>
+              <p class="haus-karte__adresse">
+                {s.strasse}, {s.plz} {s.ort}
+              </p>
+              <div class="haus-karte__aktionen">
+                <a class="link" href={`tel:${s.tel}`}>
+                  {s.telefon}
+                </a>
+                <a class="link" href={routeUrl(s)} target="_blank" rel="noopener">
+                  Route <Pfeil raus />
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
   <!-- ============ Seit 1954 ============ -->
   <section class="section seit">
     <div class="wrap">
-      <Kopf nr="04" label="Geschichte" titel="Präzision seit 1954.">
-        <a slot="seite" class="link" href="/ueber-uns/">Die ganze Geschichte <Pfeil /></a>
-      </Kopf>
+      <Kopf label="Geschichte" rechts="Seit 1954 in Familienhand" />
       <div class="seit__raster">
-        <p class="lead seit__text" data-reveal>
-          Was 1954 als Familienbetrieb begann, wird heute in dritter Generation geführt: BMW Martin ist einer der größten BMW Motorrad Händler in Deutschland.
-        </p>
-        <Massband />
+        <figure class="seit__bild">
+          <Bild src={bild('standorte/schongau-front')} alt="Das Stammhaus Erwin Martin in der Marktoberdorfer Straße in Schongau" ratio="45" sizes="(min-width: 900px) 40vw, 100vw" widths={[480, 800, 1200]} reveal fokus="38% 50%" />
+          <figcaption>Das Stammhaus in der Marktoberdorfer Straße, Schongau</figcaption>
+        </figure>
+        <div class="seit__text">
+          <h2 class="h1" data-reveal>Präzision seit 1954.</h2>
+          <p class="lead muted mt2" data-reveal style="--i:1">
+            Was 1954 als Familienbetrieb begann, wird heute in dritter Generation geführt: BMW Martin ist einer der größten BMW Motorrad Händler in Deutschland.
+          </p>
+          <ol class="seit__stationen" role="list">
+            {
+              chronik
+                .filter((c) => ['1954', '1967', '1998', '2022'].includes(c.jahr))
+                .map((c, i) => (
+                  <li data-reveal style={`--i:${i}`}>
+                    <span class="seit__jahr">{c.jahr}</span>
+                    <span class="seit__station">
+                      <strong>{c.titel}</strong>
+                      <span class="muted">{c.text}</span>
+                    </span>
+                  </li>
+                ))
+            }
+          </ol>
+          <a class="btn mt3" href="/ueber-uns/">Die ganze Geschichte <Pfeil /></a>
+        </div>
       </div>
     </div>
   </section>
@@ -291,7 +307,7 @@ const schema = [
   <section class="section karriere-band" data-theme="dark">
     <div class="wrap karriere-band__raster">
       <div>
-        <p class="label label--dim">06 — Karriere</p>
+        <p class="label label--dim">Karriere</p>
         <p class="h2 mt2" data-reveal>Wer bei uns anfängt, schraubt nicht nur an Serienmaschinen – sondern baut an einer eigenen Marke mit.</p>
       </div>
       <div class="karriere-band__seite" data-reveal style="--i:1">
@@ -316,7 +332,7 @@ const schema = [
   .start__innen {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto 1fr auto;
     padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
     padding-bottom: var(--pad);
     min-height: 0;
@@ -345,53 +361,55 @@ const schema = [
       display: flex;
       gap: clamp(1rem, 2vw, 2.25rem);
     }
-    .start__status {
-      display: none !important;
-    }
   }
   .start__live a:hover {
     text-decoration: underline;
     text-underline-offset: 0.3em;
   }
-  :global(.start__titel) {
-    margin-top: clamp(0.6rem, 2vh, 1.4rem);
+  .start__titel {
+    margin-top: clamp(1.25rem, 4vh, 3.25rem);
+    font-size: clamp(2.9rem, 1rem + 7.2vw, 9.6rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
   }
   .start__unten {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--gap);
-    margin-top: clamp(1rem, 2.6vh, 2rem);
+    row-gap: 1.75rem;
+    margin-top: clamp(1.5rem, 4vh, 3rem);
     min-height: 0;
   }
   .start__text {
     grid-column: 1 / span 4;
     align-self: end;
     display: grid;
-    gap: clamp(1rem, 2.4vh, 1.75rem);
+    gap: 1.5rem;
     padding-right: 1rem;
   }
   .start__text .lead {
-    font-size: clamp(1.05rem, 0.85rem + 0.72vw, 1.45rem);
+    font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.3rem);
   }
   .start__aktionen {
     display: grid;
     gap: 0.5rem;
     max-width: 23rem;
   }
+  .start__platz {
+    grid-column: 5 / -1;
+    min-height: clamp(14rem, 34vh, 32rem);
+    position: static;
+  }
   .start__status {
     display: grid;
     gap: 0.35rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--line);
   }
-  .start__status a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
-  }
-  .start__platz {
-    grid-column: 5 / -1;
-    min-height: clamp(14rem, 36vh, 30rem);
-    position: static;
+  @media (min-width: 900px) {
+    .start__status {
+      display: none;
+    }
   }
   .start__film {
     position: relative;
@@ -406,14 +424,14 @@ const schema = [
     height: 100%;
   }
   .start__bild :global(img) {
-    object-position: 50% 58%;
+    object-position: 50% 55%;
   }
   .start__schleier {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to bottom, rgb(11 12 12 / 0.62), transparent 26%),
-      linear-gradient(to top, rgb(11 12 12 / 0.78), transparent 42%);
+      linear-gradient(to bottom, rgb(11 12 12 / 0.55), transparent 24%),
+      linear-gradient(to top, rgb(11 12 12 / 0.72), transparent 40%);
     opacity: 0;
     pointer-events: none;
   }
@@ -433,20 +451,17 @@ const schema = [
     justify-items: start;
   }
   .start__etikett-name {
-    font-size: clamp(1.4rem, 1rem + 2.4vw, 3.4rem);
-    font-weight: 780;
-    font-stretch: 112%;
+    font-size: clamp(1.4rem, 1rem + 2vw, 3rem);
+    font-weight: 540;
     letter-spacing: -0.03em;
-    line-height: 0.98;
-    text-transform: uppercase;
+    line-height: 1;
   }
   .start__weiter {
     display: none;
   }
-  /* statischer Zustand (mobil, ohne JS, reduzierte Bewegung): Etikett sitzt im Bild */
   .start:not(.tor-aktiv) .start__schleier {
     opacity: 1;
-    background: linear-gradient(to top, rgb(11 12 12 / 0.8), transparent 55%);
+    background: linear-gradient(to top, rgb(11 12 12 / 0.75), transparent 55%);
   }
   .start:not(.tor-aktiv) .start__etikett {
     padding-inline: 1rem;
@@ -455,7 +470,6 @@ const schema = [
   .start:not(.tor-aktiv) .start__etikett-name {
     font-size: clamp(1.15rem, 0.9rem + 1.2vw, 1.8rem);
   }
-  /* aktiver Zustand: Film liegt über der ganzen Bühne und wird freigeschnitten */
   .start.tor-aktiv {
     height: 100svh;
     min-height: 0;
@@ -481,18 +495,17 @@ const schema = [
     }
     .start__unten {
       display: flex;
-      flex-direction: column-reverse;
-      gap: 1.5rem;
+      flex-direction: column;
     }
     .start__text {
       padding-right: 0;
     }
+    .start__aktionen {
+      max-width: none;
+    }
     .start__platz {
       aspect-ratio: 4 / 3;
       min-height: 0;
-    }
-    .start__aktionen {
-      max-width: none;
     }
   }
 
@@ -570,10 +583,10 @@ const schema = [
   }
   .schau__ende-zahl {
     font-size: clamp(4rem, 9vw, 9rem);
-    font-weight: 800;
-    font-stretch: 125%;
+    font-weight: 300;
+    font-stretch: 100%;
     line-height: 0.82;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.045em;
   }
   .schau__fuss {
     display: flex;
@@ -634,8 +647,8 @@ const schema = [
   }
   .werte__zahl {
     font-size: clamp(2.6rem, 1.4rem + 4.6vw, 6rem);
-    font-weight: 800;
-    font-stretch: 118%;
+    font-weight: 300;
+    font-stretch: 100%;
     line-height: 0.9;
     letter-spacing: -0.045em;
     font-variant-numeric: tabular-nums;
@@ -667,7 +680,7 @@ const schema = [
   }
   .leist__zeile {
     display: grid;
-    grid-template-columns: 3rem minmax(0, 5fr) minmax(0, 5fr) 1.5rem;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) 1.5rem;
     gap: var(--gap);
     align-items: baseline;
     padding: clamp(1rem, 2vw, 1.75rem) 0;
@@ -678,12 +691,11 @@ const schema = [
   }
   .leist__titel {
     font-size: clamp(1.9rem, 1rem + 4vw, 5rem);
-    font-weight: 780;
+    font-weight: 560;
     font-stretch: 100%;
     line-height: 0.95;
-    letter-spacing: -0.035em;
-    text-transform: uppercase;
-    transition: font-stretch 0.6s var(--ease);
+    letter-spacing: -0.028em;
+    transition: color 0.3s;
   }
   .leist__text {
     max-width: 44ch;
@@ -701,14 +713,13 @@ const schema = [
   }
   .leist__zeile:hover .leist__titel,
   .leist__zeile:focus-visible .leist__titel {
-    font-stretch: 122%;
   }
   @media (max-width: 800px) {
     .leist__zeile {
-      grid-template-columns: 2rem minmax(0, 1fr) 1.25rem;
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
     }
     .leist__text {
-      grid-column: 2 / 3;
+      grid-column: 1 / 2;
       grid-row: 2;
       font-size: 0.95rem;
     }
@@ -752,27 +763,26 @@ const schema = [
     background: var(--paper-2);
     --bg: var(--paper-2);
   }
-  .haeuser__raster {
-    display: grid;
-    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-    gap: 2.5rem var(--gap);
-    align-items: start;
-  }
   .haeuser__liste {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--gap);
+    margin-top: clamp(2rem, 4vw, 3.5rem);
     border-top: 1px solid var(--fg);
   }
   .haus-karte {
     display: grid;
-    gap: 0.5rem;
-    padding: 1.2rem 0 1.3rem;
-    border-bottom: 1px solid var(--line);
-    transition:
-      padding 0.5s var(--ease),
-      box-shadow 0.3s;
+    align-content: start;
+    gap: 0.55rem;
+    padding: 1.25rem var(--gap) 0.5rem 0;
+    transition: box-shadow 0.3s;
+  }
+  .haus-karte + .haus-karte {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
   }
   :global(.haus-karte.ist-aktiv) {
-    padding-left: 1rem;
-    box-shadow: inset 3px 0 0 var(--accent);
+    box-shadow: inset 0 3px 0 var(--fg);
   }
   .haus-karte__kopf {
     display: flex;
@@ -782,16 +792,19 @@ const schema = [
     gap: 0.4rem 1rem;
   }
   .haus-karte__name {
-    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem);
-    font-weight: 760;
-    font-stretch: 108%;
-    letter-spacing: -0.03em;
+    font-size: clamp(1.7rem, 1.2rem + 1.4vw, 2.5rem);
+    font-weight: 540;
+    letter-spacing: -0.035em;
     line-height: 1;
-    text-transform: uppercase;
+  }
+  .haus-karte__name:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
   }
   .haus-karte__text {
     font-size: 0.95rem;
-    margin-top: 0.3rem;
+    margin-top: 0.2rem;
   }
   .haus-karte__adresse {
     font-size: 0.95rem;
@@ -803,23 +816,72 @@ const schema = [
     margin-top: 0.4rem;
   }
   @media (max-width: 1000px) {
-    .haeuser__raster {
+    .haeuser__liste {
       grid-template-columns: 1fr;
+    }
+    .haus-karte + .haus-karte {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      margin-top: 1rem;
     }
   }
 
   /* ---------- Seit 1954 ---------- */
   .seit__raster {
     display: grid;
-    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
   }
-  .seit__text {
-    max-width: 34ch;
+  .seit__bild {
+    margin: 0;
   }
-  @media (min-width: 900px) {
-    .seit__text {
-      margin-left: calc((100% + var(--gap)) / 12 * 6);
-      max-width: 36ch;
+  .seit__bild figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--fg-3);
+  }
+  .seit__text .h1 {
+    max-width: 12ch;
+  }
+  .seit__text .lead {
+    max-width: 30em;
+  }
+  .seit__stationen {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    border-top: 1px solid var(--fg);
+  }
+  .seit__stationen li {
+    display: grid;
+    grid-template-columns: minmax(6rem, 1.4fr) minmax(0, 5fr);
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .seit__jahr {
+    font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem);
+    font-weight: 250;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .seit__station {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .seit__station strong {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  @media (max-width: 900px) {
+    .seit__raster {
+      grid-template-columns: 1fr;
+    }
+    .seit__bild {
+      max-width: 26rem;
     }
   }
 
@@ -881,10 +943,10 @@ const schema = [
   }
   .karriere-band__zahl {
     font-size: clamp(5rem, 11vw, 11rem);
-    font-weight: 800;
-    font-stretch: 125%;
+    font-weight: 300;
+    font-stretch: 100%;
     line-height: 0.8;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.045em;
   }
   @media (max-width: 900px) {
     .karriere-band__raster {

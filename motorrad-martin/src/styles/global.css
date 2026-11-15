@@ -1,8 +1,7 @@
 /* ==========================================================================
    BMW Motorrad Martin — Design-System
-   Konzept „Typenschild“: Papier und Graphit, eine variable Grotesk, deren
-   Breitenachse jede Schlagzeile bündig auf Spaltenbreite prägt, und Mono für
-   alles, was gemessen, gezählt oder verbaut wird.
+   Ruhig, präzise, hochwertig: Papier und Graphit, eine variable Grotesk in
+   gemischter Schreibweise, schmale gesperrte Etiketten wie auf einem Typenschild.
    ========================================================================== */
 
 /* ---- Tokens ------------------------------------------------------------- */
@@ -23,8 +22,8 @@
   --chalk-2: #b9b6af;
   --chalk-3: #8e8c86;
 
-  --blau: #1447e6;
-  --blau-hell: #7ea2ff;
+  --blau: #1f4f9c;
+  --blau-hell: #9db7e8;
   --gruen: #1e9b57;
   --rot: #d13b2e;
 
@@ -169,67 +168,82 @@ p {
 
 /* ---- Typografie --------------------------------------------------------- */
 .label {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: 0.1em;
+  font-family: var(--font);
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-stretch: 85%;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .label--dim {
   color: var(--fg-3);
 }
 .mono {
-  font-family: var(--mono);
-  font-size: 0.86em;
+  font-family: var(--font);
+  font-size: 0.95em;
+  font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
 }
 .h1 {
-  font-size: clamp(2.3rem, 1.1rem + 4.2vw, 5rem);
-  font-weight: 760;
-  font-stretch: 104%;
-  line-height: 0.96;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-size: clamp(2.3rem, 1.2rem + 3.6vw, 4.6rem);
+  font-weight: 540;
+  font-stretch: 100%;
+  line-height: 1;
+  letter-spacing: -0.035em;
   overflow-wrap: break-word;
 }
 .h1--s {
   font-size: clamp(2rem, 1.1rem + 2.7vw, 3.5rem);
 }
 .h2 {
-  font-size: clamp(1.9rem, 1.1rem + 3vw, 3.75rem);
-  font-weight: 650;
-  font-stretch: 106%;
-  line-height: 1;
-  letter-spacing: -0.028em;
+  font-size: clamp(1.85rem, 1.1rem + 2.6vw, 3.4rem);
+  font-weight: 540;
+  font-stretch: 100%;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
   overflow-wrap: break-word;
 }
 @media (max-width: 560px) {
   .h1 {
     font-size: clamp(2.1rem, 9.4vw, 2.6rem);
-    font-stretch: 100%;
     hyphens: auto;
     -webkit-hyphens: auto;
   }
 }
 .h3 {
-  font-size: clamp(1.3rem, 1.05rem + 0.9vw, 1.9rem);
-  font-weight: 620;
-  font-stretch: 104%;
+  font-size: clamp(1.3rem, 1.05rem + 0.9vw, 1.85rem);
+  font-weight: 580;
+  font-stretch: 100%;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
 .h4 {
   font-size: 1.125rem;
-  font-weight: 620;
+  font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
 .lead {
-  font-size: clamp(1.15rem, 0.98rem + 0.75vw, 1.6rem);
-  line-height: 1.36;
+  font-size: clamp(1.15rem, 0.98rem + 0.7vw, 1.55rem);
+  line-height: 1.4;
   letter-spacing: -0.012em;
-  font-weight: 420;
+  font-weight: 400;
+}
+/* Große Seitentitel: ruhig, gemischte Schreibweise, eng gesetzt */
+.titel-xl {
+  font-size: clamp(2.8rem, 1.2rem + 6.2vw, 7.4rem);
+  font-weight: 520;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+@media (max-width: 560px) {
+  .titel-xl {
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
 }
 .muted {
   color: var(--fg-2);
@@ -251,45 +265,6 @@ p {
 }
 .nowrap {
   white-space: nowrap;
-}
-
-/* Typenschild-Satz: Zeilen werden per Skript bündig auf Spaltenbreite gesetzt. */
-.fit {
-  display: block;
-  max-width: 100%;
-  min-width: 0;
-  font-weight: 800;
-  font-stretch: 100%;
-  text-transform: uppercase;
-  line-height: 0.86;
-  letter-spacing: -0.02em;
-  font-size: clamp(2.6rem, 11.5vw, 12rem);
-  font-kerning: normal;
-  text-rendering: geometricPrecision;
-}
-.fit__line {
-  display: block;
-  white-space: nowrap;
-  width: max-content;
-  max-width: none;
-  transform-origin: left center;
-  padding-block: 0.045em;
-}
-.fit:not([data-fit='done']) .fit__line {
-  white-space: normal;
-  width: auto;
-  font-stretch: 78%;
-}
-.fit[data-fit='done'] {
-  font-size: inherit;
-}
-.fit__mask {
-  display: block;
-  overflow: clip;
-  overflow-clip-margin: 0.02em;
-}
-.fit--thin {
-  font-weight: 300;
 }
 
 .sr-only {
@@ -412,16 +387,15 @@ p {
   border: 1px solid var(--fg);
   background: var(--btn-bg);
   color: var(--btn-fg);
-  font-family: var(--mono);
-  font-size: 0.76rem;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-family: var(--font);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
   line-height: 1.2;
   isolation: isolate;
   overflow: hidden;
   cursor: pointer;
-  transition: color 0.45s var(--ease), border-color 0.45s var(--ease);
+  transition: color 0.35s var(--ease), border-color 0.35s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 .btn::before {
@@ -430,8 +404,8 @@ p {
   inset: 0;
   z-index: -1;
   background: var(--fg);
-  transform: translateY(101%);
-  transition: transform 0.55s var(--ease);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
 }
 .btn:hover,
 .btn:focus-visible {
@@ -439,7 +413,7 @@ p {
 }
 .btn:hover::before,
 .btn:focus-visible::before {
-  transform: translateY(0);
+  opacity: 1;
 }
 .btn--solid {
   --btn-bg: var(--fg);
@@ -459,8 +433,8 @@ p {
 }
 .btn--small {
   min-height: 2.5rem;
-  padding: 0.45rem 0.8rem 0.45rem 0.9rem;
-  font-size: 0.7rem;
+  padding: 0.45rem 0.85rem 0.45rem 0.95rem;
+  font-size: 0.84rem;
   gap: 0.9rem;
 }
 .pfeil {
@@ -488,11 +462,10 @@ a:hover > .pfeil,
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--mono);
-  font-size: 0.76rem;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-family: var(--font);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
   padding-block: 0.35rem;
   background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
   transition: background-size 0.5s var(--ease);
@@ -539,17 +512,18 @@ a:hover > .pfeil,
   border-top: 0;
 }
 .schild__zeile dt {
-  font-family: var(--mono);
+  font-family: var(--font);
   font-size: 0.68rem;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-stretch: 85%;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-3);
 }
 .schild__zeile dd {
-  font-family: var(--mono);
-  font-size: 0.86rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---- Status ------------------------------------------------------------- */
@@ -557,11 +531,11 @@ a:hover > .pfeil,
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  font-family: var(--mono);
-  font-size: 0.72rem;
+  font-family: var(--font);
+  font-size: 0.84rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 .status__punkt {
@@ -649,11 +623,9 @@ a:hover > .pfeil,
   min-height: 2.25rem;
   padding: 0.3rem 0.85rem;
   border: 1px solid var(--line-2);
-  font-family: var(--mono);
-  font-size: 0.7rem;
+  font-family: var(--font);
+  font-size: 0.86rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   cursor: pointer;
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
@@ -687,10 +659,11 @@ a:hover > .pfeil,
 }
 .tabelle thead th {
   border-top: 0;
-  font-family: var(--mono);
+  font-family: var(--font);
   font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-stretch: 85%;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-3);
   padding-bottom: 0.6rem;
@@ -708,11 +681,10 @@ a:hover > .pfeil,
 .feld > label,
 .feld > .feld__label,
 fieldset > legend {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--font);
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0;
   color: var(--fg-2);
 }
 .feld input:not([type='checkbox'], [type='radio'], [type='file'], [type='range']),
@@ -954,8 +926,9 @@ fieldset > legend {
   position: absolute;
   left: 0;
   top: 0.3em;
-  font-family: var(--mono);
-  font-size: 0.7em;
+  font-family: var(--font);
+  font-size: 0.78em;
+  font-variant-numeric: tabular-nums;
   color: var(--fg-3);
 }
 .prosa strong {
@@ -976,7 +949,7 @@ fieldset > legend {
 /* ---- Bewegung ----------------------------------------------------------- */
 [data-reveal] {
   opacity: 0;
-  transform: translate3d(0, 1.6rem, 0);
+  transform: translate3d(0, 1rem, 0);
   transition:
     opacity 0.9s var(--ease),
     transform 1.1s var(--ease);
@@ -1095,10 +1068,9 @@ fieldset > legend {
   padding: 0.8rem 1.1rem;
   background: var(--ink);
   color: var(--paper);
-  font-family: var(--mono);
-  font-size: 0.76rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 600;
   transform: translateY(-200%);
 }
 .skip:focus {
