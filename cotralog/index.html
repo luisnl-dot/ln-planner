@@ -83,7 +83,7 @@
   </div>
 </header>
 
-<main id="inhalt">
+<main id="inhalt" tabindex="-1">
 
   <!-- ====================================================== Einstieg -->
   <section class="hero" aria-labelledby="hero-h">
@@ -323,7 +323,7 @@
               <ul class="points">
                 <li><strong>Emissionen auf Basis der tatsächlichen Verbräuche</strong> und der unterschiedlichen verbrauchten Kraftstoffsorten Diesel, HVO&nbsp;100, Biodiesel, LNG, CNG und Strom</li>
                 <li><strong>Je Kunde, Auftrag und Tour</strong> abgegrenzt</li>
-                <li><strong>Nach internationalen Standards</strong> (GHG&nbsp;Protocol, GLEC&nbsp;Framework), über den gesamten Kraftstoff-Lebenszyklus (Well-to-Wheel)</li>
+                <li><strong>Nach internationalen Standards</strong> (<span lang="en">GHG&nbsp;Protocol</span>, <span lang="en">GLEC&nbsp;Framework</span>), über den gesamten Kraftstoff-Lebenszyklus (<span lang="en">Well-to-Wheel</span>)</li>
                 <li><strong>Alle Kraftstoffarten getrennt ausgewiesen:</strong> Diesel, HVO&nbsp;100, Biodiesel, LNG, CNG und Strom</li>
                 <li><strong>Automatischer Versand</strong> an Ihre Auftraggeber, Berichtsformate individuell einstellbar</li>
               </ul>
@@ -548,20 +548,35 @@
       </a>
       <p>cotralog&nbsp;Insider. Tankkosten verstehen, kontrollieren und senken.</p>
     </div>
-    <nav class="foot__nav" aria-label="Seitenübersicht">
-      <ul>
-        <li><a href="#nutzen">Nutzen</a></li>
-        <li><a href="#module">Module</a></li>
-        <li><a href="#voraussetzungen">Voraussetzungen</a></li>
-        <li><a href="#testangebot">Testangebot</a></li>
-      </ul>
-    </nav>
-    <nav class="foot__nav" aria-label="Rechtliches">
-      <ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-      </ul>
-    </nav>
+    <div class="foot__navs">
+      <nav class="foot__nav" aria-labelledby="foot-seite">
+        <p class="foot__label" id="foot-seite">Seite</p>
+        <ul>
+          <li><a href="#nutzen">Nutzen</a></li>
+          <li><a href="#module">Module</a></li>
+          <li><a href="#voraussetzungen">Voraussetzungen</a></li>
+          <li><a href="#testangebot">Testangebot</a></li>
+        </ul>
+      </nav>
+      <nav class="foot__nav" aria-labelledby="foot-module">
+        <p class="foot__label" id="foot-module">Module</p>
+        <ul>
+          <li><a href="#modul-1">Tankkosten-Analyse</a></li>
+          <li><a href="#modul-2">Kontrolle der Betankungen</a></li>
+          <li><a href="#modul-3">CO<sub>2</sub>-Berichte</a></li>
+          <li><a href="#modul-4">Flottenauswertung</a></li>
+          <li><a href="#modul-5">Rechnungskontrolle</a></li>
+          <li><a href="#modul-6">Vorläufige Preise und Touren</a></li>
+        </ul>
+      </nav>
+      <nav class="foot__nav" aria-labelledby="foot-recht">
+        <p class="foot__label" id="foot-recht">Rechtliches</p>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </footer>
 

@@ -64,7 +64,7 @@
   </div>
 </header>
 
-<main id="inhalt" class="legal">
+<main id="inhalt" class="legal" tabindex="-1">
   <div class="wrap">
     <h1 class="legal__h">Daten&shy;schutz</h1>
 
@@ -128,20 +128,35 @@
       </a>
       <p>cotralog&nbsp;Insider. Tankkosten verstehen, kontrollieren und senken.</p>
     </div>
-    <nav class="foot__nav" aria-label="Seitenübersicht">
-      <ul>
-        <li><a href="index.html#nutzen">Nutzen</a></li>
-        <li><a href="index.html#module">Module</a></li>
-        <li><a href="index.html#voraussetzungen">Voraussetzungen</a></li>
-        <li><a href="index.html#testangebot">Testangebot</a></li>
-      </ul>
-    </nav>
-    <nav class="foot__nav" aria-label="Rechtliches">
-      <ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html" aria-current="page">Datenschutz</a></li>
-      </ul>
-    </nav>
+    <div class="foot__navs">
+      <nav class="foot__nav" aria-labelledby="foot-seite">
+        <p class="foot__label" id="foot-seite">Seite</p>
+        <ul>
+          <li><a href="index.html#nutzen">Nutzen</a></li>
+          <li><a href="index.html#module">Module</a></li>
+          <li><a href="index.html#voraussetzungen">Voraussetzungen</a></li>
+          <li><a href="index.html#testangebot">Testangebot</a></li>
+        </ul>
+      </nav>
+      <nav class="foot__nav" aria-labelledby="foot-module">
+        <p class="foot__label" id="foot-module">Module</p>
+        <ul>
+          <li><a href="index.html#modul-1">Tankkosten-Analyse</a></li>
+          <li><a href="index.html#modul-2">Kontrolle der Betankungen</a></li>
+          <li><a href="index.html#modul-3">CO<sub>2</sub>-Berichte</a></li>
+          <li><a href="index.html#modul-4">Flottenauswertung</a></li>
+          <li><a href="index.html#modul-5">Rechnungskontrolle</a></li>
+          <li><a href="index.html#modul-6">Vorläufige Preise und Touren</a></li>
+        </ul>
+      </nav>
+      <nav class="foot__nav" aria-labelledby="foot-recht">
+        <p class="foot__label" id="foot-recht">Rechtliches</p>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html" aria-current="page">Datenschutz</a></li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </footer>
 

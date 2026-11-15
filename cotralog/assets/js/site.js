@@ -254,6 +254,13 @@
     };
     window.addEventListener('hashchange', fromHash);
     fromHash();
+    // Beim Laden springt der Browser selbst zur Überschrift; danach einmal nachführen.
+    window.addEventListener('load', function () { window.setTimeout(fromHash, 0); });
+    // Derselbe Link zweimal: kein hashchange, also beim Klick nachführen.
+    doc.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href^="#modul-"]');
+      if (link) window.setTimeout(fromHash, 0);
+    });
   }
 
   /* ---------- Anfrageformular --------------------------------------------- */
