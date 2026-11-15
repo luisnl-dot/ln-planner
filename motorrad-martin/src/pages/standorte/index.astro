@@ -1,0 +1,150 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import Abschluss from '../../components/Abschluss.astro';
+import Bild from '../../components/Bild.astro';
+import Karte from '../../components/Karte.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import Status from '../../components/Status.astro';
+import Zeiten from '../../components/Zeiten.astro';
+import { haeuser } from '../../data/haeuser';
+import { standorte, routeUrl } from '../../data/standorte';
+import { bild } from '../../lib/bilder';
+---
+
+<Basis
+  titel="Standorte – Schongau, Weyarn, Oy-Mittelberg"
+  beschreibung="Die drei Häuser von BMW Motorrad Martin: Schongau im Pfaffenwinkel, Weyarn an der A8 und Oy-Mittelberg im Allgäu. Adressen, Öffnungszeiten, Telefon und Anfahrt."
+  bildOg={bild('standorte/weyarn-front')}
+>
+  <Seitenkopf krumen={[{ titel: 'Standorte' }]} lines={['Drei Häuser']} rechts="Oberbayern & Allgäu" einleitung="Drei Häuser auf rund 100 Kilometern Alpenrand – jedes mit eigenem Team in Verkauf, Werkstatt, Service und Verwaltung." />
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Karte data-reveal />
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="01" label="Die Häuser" />
+      <ul class="orte" role="list">
+        {
+          standorte.map((s, i) => {
+            const h = haeuser[s.slug];
+            return (
+              <li class="ort" data-haus-karte={s.slug}>
+                <a class="ort__bild" href={`/standorte/${s.slug}/`} aria-hidden="true" tabindex="-1">
+                  <Bild src={bild(h.held)} alt="" ratio="32" sizes="(min-width: 900px) 46vw, 100vw" reveal fokus={h.fokus} />
+                </a>
+                <div class="ort__text">
+                  <p class="label label--dim">
+                    0{i + 1} — {s.rolle}
+                  </p>
+                  <h2 class="ort__name">
+                    <a href={`/standorte/${s.slug}/`}>{s.ort}</a>
+                  </h2>
+                  <Status haus={s.slug} />
+                  <p class="muted measure-s">{h.einleitung}</p>
+                  <div class="ort__daten">
+                    <div>
+                      <p class="label label--dim">Adresse</p>
+                      <p>
+                        {s.strasse}
+                        <br />
+                        {s.plz} {s.ort}
+                      </p>
+                      <p class="mt1">
+                        <a class="textlink" href={`tel:${s.tel}`}>
+                          {s.telefon}
+                        </a>
+                        <br />
+                        <a class="textlink" href={`mailto:${s.email}`}>
+                          {s.email}
+                        </a>
+                      </p>
+                    </div>
+                    <div>
+                      <p class="label label--dim" style="margin-bottom:.4rem">
+                        Öffnungszeiten
+                      </p>
+                      <Zeiten haus={s} />
+                    </div>
+                  </div>
+                  <div class="flex umbruch g1">
+                    <a class="btn btn--solid" href={`/standorte/${s.slug}/`}>
+                      Zum Haus <Pfeil />
+                    </a>
+                    <a class="btn" href={routeUrl(s)} target="_blank" rel="noopener">
+                      Route planen <Pfeil raus />
+                    </a>
+                  </div>
+                </div>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Abschluss dunkel titel="Wann dürfen wir Sie erwarten?" text="Probefahrt, Werkstatt-Termin oder Beratung – sagen Sie uns, was Sie vorhaben." knopf="Termin anfragen" href="/kontakt/" knopf2="Zum Team" href2="/kontakt/#team" />
+</Basis>
+
+<style>
+  .orte {
+    display: grid;
+    gap: clamp(3.5rem, 8vw, 8rem);
+  }
+  .ort {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: 2rem clamp(1.5rem, 5vw, 6rem);
+    align-items: start;
+  }
+  .ort:nth-child(even) .ort__bild {
+    order: 2;
+  }
+  .ort__text {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+  .ort__name {
+    font-size: clamp(2.6rem, 1.4rem + 5vw, 6rem);
+    font-weight: 800;
+    font-stretch: 108%;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+  .ort__name a {
+    transition: font-stretch 0.6s var(--ease);
+  }
+  .ort__name a:hover {
+    font-stretch: 122%;
+  }
+  .ort__daten {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem var(--gap);
+    width: 100%;
+    padding-block: 1.25rem;
+    border-block: 1px solid var(--line);
+    margin-block: 0.5rem;
+  }
+  @media (max-width: 900px) {
+    .ort {
+      grid-template-columns: 1fr;
+    }
+    .ort:nth-child(even) .ort__bild {
+      order: 0;
+    }
+  }
+  @media (max-width: 520px) {
+    .ort__daten {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

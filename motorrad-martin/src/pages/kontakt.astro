@@ -1,0 +1,170 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Anfrage from '../components/Anfrage.astro';
+import Karte from '../components/Karte.astro';
+import Kopf from '../components/Kopf.astro';
+import Pfeil from '../components/Pfeil.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import Status from '../components/Status.astro';
+import Zeiten from '../components/Zeiten.astro';
+import { standorte, routeUrl, social } from '../data/standorte';
+import { team } from '../data/team';
+---
+
+<Basis titel="Kontakt – Termin, Probefahrt, Anfrage" beschreibung="Kontakt zu BMW Motorrad Martin in Schongau, Weyarn und Oy-Mittelberg: Telefon, E-Mail, Öffnungszeiten und Anfrageformular für Probefahrt, Werkstatt-Termin, Miete oder Martin Edition.">
+  <Seitenkopf krumen={[{ titel: 'Kontakt' }]} lines={['Kontakt']} rechts="Drei Häuser · ein Formular" einleitung="Probefahrt, Werkstatt-Termin, Mietmotorrad oder Ihre eigene Edition – sagen Sie uns, worum es geht." />
+
+  <section class="section section--flush-top">
+    <div class="wrap kon">
+      <div class="kon__form">
+        <Kopf nr="01" label="Anfrage" />
+        <Anfrage termin />
+      </div>
+      <aside class="kon__seite">
+        <Kopf nr="02" label="Direkt" />
+        <ul role="list" class="kon__haeuser">
+          {
+            standorte.map((s) => (
+              <li data-mein-haus={s.slug}>
+                <div class="kon__kopf">
+                  <a class="h3" href={`/standorte/${s.slug}/`}>{s.ort}</a>
+                  <Status haus={s.slug} />
+                </div>
+                <p class="muted">{s.strasse}, {s.plz} {s.ort}</p>
+                <p>
+                  <a class="textlink" href={`tel:${s.tel}`}>{s.telefon}</a><br />
+                  <a class="textlink" href={`mailto:${s.email}`}>{s.email}</a>
+                </p>
+                <details class="kon__zeiten">
+                  <summary class="label">Öffnungszeiten</summary>
+                  <Zeiten haus={s} />
+                </details>
+                <a class="link" href={routeUrl(s)} target="_blank" rel="noopener">Route planen <Pfeil raus /></a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="label label--dim mt2">
+          <a href={social.instagram} target="_blank" rel="noopener">Instagram ↗</a> · <a href={social.facebook} target="_blank" rel="noopener">Facebook ↗</a>
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section kon-karte">
+    <div class="wrap">
+      <Kopf nr="03" label="Anfahrt" titel="So finden Sie uns." />
+      <Karte data-reveal />
+    </div>
+  </section>
+
+  <section class="section" id="team">
+    <div class="wrap">
+      <Kopf nr="04" label="Team" titel="Wer für Sie da ist." />
+      <ul class="kon-team" role="list">
+        {
+          standorte.map((s, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <a href={`/standorte/${s.slug}/#team`}>
+                <span class="label label--dim">{team[s.slug].length} Kolleginnen und Kollegen</span>
+                <span class="kon-team__ort">Team {s.ort}</span>
+                <span class="muted">{team[s.slug].slice(0, 3).map((p) => p.name).join(', ')} …</span>
+                <span class="link">Zum Team <Pfeil /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .kon {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3.5rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .kon__haeuser li {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    padding: 0 0 1.4rem;
+    margin-bottom: 1.4rem;
+    border-bottom: 1px solid var(--line);
+    transition:
+      padding 0.4s var(--ease),
+      box-shadow 0.3s;
+  }
+  .kon__haeuser li[data-ist-mein] {
+    padding-left: 0.9rem;
+    box-shadow: inset 3px 0 0 var(--blau);
+  }
+  .kon__kopf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    width: 100%;
+  }
+  .kon__zeiten {
+    width: 100%;
+  }
+  .kon__zeiten summary {
+    cursor: pointer;
+    padding: 0.4rem 0;
+    color: var(--fg-2);
+  }
+  .kon__zeiten[open] summary {
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 1000px) {
+    .kon {
+      grid-template-columns: 1fr;
+    }
+  }
+  .kon-karte {
+    background: var(--paper-2);
+    --bg: var(--paper-2);
+  }
+  .kon-team {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--gap);
+    border-top: 1px solid var(--fg);
+  }
+  .kon-team a {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    padding: 1.25rem 0;
+  }
+  .kon-team li + li a {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  .kon-team__ort {
+    font-size: clamp(1.7rem, 1.1rem + 2.4vw, 3.2rem);
+    font-weight: 780;
+    font-stretch: 104%;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    text-transform: uppercase;
+    transition: font-stretch 0.6s var(--ease);
+  }
+  .kon-team a:hover .kon-team__ort {
+    font-stretch: 118%;
+  }
+  @media (max-width: 900px) {
+    .kon-team {
+      grid-template-columns: 1fr;
+    }
+    .kon-team li + li a {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

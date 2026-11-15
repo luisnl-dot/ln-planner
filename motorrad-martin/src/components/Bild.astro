@@ -1,0 +1,47 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** z. B. "32", "43", "169", "219", "45", "11" – oder leer für freies Format. */
+  ratio?: string;
+  sizes?: string;
+  widths?: number[];
+  class?: string;
+  eager?: boolean;
+  reveal?: boolean;
+  fokus?: string;
+  /** view-transition-name für den Übergang zwischen Liste und Detail. */
+  vt?: string;
+  i?: number;
+}
+const { src, alt, ratio, sizes = '100vw', widths = [480, 800, 1200, 1800], class: c, eager = false, reveal = false, fokus, vt, i } = Astro.props;
+const w = [...new Set(widths.filter((x) => x < src.width).concat(Math.min(src.width, Math.max(...widths))))].sort((a, b) => a - b);
+const stil = [vt && `view-transition-name:${vt}`, i !== undefined && `--i:${i}`].filter(Boolean).join(';') || undefined;
+---
+
+<div class:list={['bild', ratio && `bild--${ratio}`, c]} data-reveal={reveal ? 'bild' : undefined} style={stil}>
+  <Picture
+    src={src}
+    alt={alt}
+    formats={['avif']}
+    fallbackFormat="jpg"
+    widths={w}
+    sizes={sizes}
+    quality={62}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    decoding={eager ? 'sync' : 'async'}
+    style={fokus ? `object-position:${fokus}` : undefined}
+  />
+</div>
+
+<style is:global>
+  .bild picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

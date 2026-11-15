@@ -1,0 +1,109 @@
+---
+/**
+ * Anfrageformular. Ohne konfigurierten Endpunkt (PUBLIC_FORM_ENDPOINT) wird die Anfrage
+ * als vorbereitete E-Mail an das gewählte Haus geöffnet – es wird nichts vorgetäuscht.
+ */
+import { standorte } from '../data/standorte';
+import Pfeil from './Pfeil.astro';
+
+export const anliegenListe = [
+  ['probefahrt', 'Probefahrt'],
+  ['neu', 'Beratung Neufahrzeug'],
+  ['gebraucht', 'Gebrauchtfahrzeug'],
+  ['edition', 'Martin Edition / Umbau'],
+  ['werkstatt', 'Werkstatt-Termin'],
+  ['miete', 'Mietmotorrad'],
+  ['winter', 'Winter-Wellness / Einlagerung'],
+  ['classic', 'BMW Classic / Restaurierung'],
+  ['ankauf', 'Ankauf / Inzahlungnahme'],
+  ['zubehoer', 'Bekleidung & Zubehör'],
+  ['sonstiges', 'Sonstiges'],
+] as const;
+
+interface Props {
+  id?: string;
+  anliegen?: string;
+  /** Vorbelegung für das Feld „Fahrzeug / Modell“. */
+  fahrzeug?: string;
+  /** Fest vorgegebenes Haus. */
+  haus?: string;
+  /** Terminwunsch abfragen. */
+  termin?: boolean;
+  knopf?: string;
+  nachrichtLabel?: string;
+}
+const { id = 'anfrage-form', anliegen, fahrzeug, haus, termin = false, knopf = 'Anfrage senden', nachrichtLabel = 'Ihre Nachricht' } = Astro.props;
+const endpunkt = import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined;
+---
+
+<form class="anfrage" id={id} data-anfrage data-endpunkt={endpunkt} novalidate>
+  <div class="anfrage__raster">
+    <div class="feld">
+      <label for={`${id}-anliegen`}>Anliegen</label>
+      <select id={`${id}-anliegen`} name="anliegen" required data-anliegen>
+        {anliegenListe.map(([wert, text]) => <option value={wert} selected={wert === anliegen}>{text}</option>)}
+      </select>
+    </div>
+    <div class="feld">
+      <label for={`${id}-haus`}>Haus</label>
+      <select id={`${id}-haus`} name="haus" required data-haus-vorwahl>
+        <option value="" disabled selected={!haus}>Bitte wählen</option>
+        {standorte.map((s) => <option value={s.slug} data-email={s.email} data-name={s.name} selected={s.slug === haus}>{s.ort}</option>)}
+      </select>
+    </div>
+    <div class="feld">
+      <label for={`${id}-name`}>Name</label>
+      <input id={`${id}-name`} name="name" type="text" autocomplete="name" required />
+    </div>
+    <div class="feld">
+      <label for={`${id}-email`}>E-Mail</label>
+      <input id={`${id}-email`} name="email" type="email" autocomplete="email" inputmode="email" required />
+    </div>
+    <div class="feld">
+      <label for={`${id}-telefon`}>Telefon <span class="dim">(optional)</span></label>
+      <input id={`${id}-telefon`} name="telefon" type="tel" autocomplete="tel" inputmode="tel" />
+    </div>
+    <div class="feld">
+      <label for={`${id}-fahrzeug`}>Fahrzeug / Modell <span class="dim">(optional)</span></label>
+      <input id={`${id}-fahrzeug`} name="fahrzeug" type="text" value={fahrzeug} />
+    </div>
+    {
+      termin && (
+        <div class="feld">
+          <label for={`${id}-termin`}>Wunschtermin <span class="dim">(optional)</span></label>
+          <input id={`${id}-termin`} name="termin" type="date" />
+        </div>
+      )
+    }
+    <slot />
+    <div class="feld anfrage__breit">
+      <label for={`${id}-nachricht`}>{nachrichtLabel}</label>
+      <textarea id={`${id}-nachricht`} name="nachricht" rows="4" required></textarea>
+    </div>
+  </div>
+
+  <label class="haken">
+    <input type="checkbox" name="einwilligung" required />
+    <span>
+      Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage verwendet werden. Hinweise in der
+      <a class="textlink" href="/datenschutz/">Datenschutzerklärung</a>.
+    </span>
+  </label>
+
+  <div class="anfrage__fuss">
+    <button class="btn btn--solid" type="submit">
+      {knopf}
+      <Pfeil />
+    </button>
+    <p class="feld__hinweis">
+      {endpunkt ? 'Wir melden uns schnellstmöglich bei Ihnen.' : 'Ihre Anfrage öffnet sich als vorbereitete E-Mail an das gewählte Haus.'}
+    </p>
+  </div>
+  <p class="anfrage__meldung" role="status" aria-live="polite" data-meldung hidden></p>
+</form>
+
+
+
+<script>
+  import '../scripts/formular.ts';
+</script>

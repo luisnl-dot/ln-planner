@@ -1,0 +1,27 @@
+---
+import { getEntry, render } from 'astro:content';
+import Basis from '../layouts/Basis.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+const eintrag = await getEntry('recht', 'impressum');
+const { Content } = await render(eintrag!);
+---
+
+<Basis titel="Impressum" beschreibung="Impressum von BMW Motorrad Martin – Erwin Martin GmbH (Schongau), Martin GmbH (Weyarn) und Motorrad Martin GmbH (Oy-Mittelberg)." noindex>
+  <Seitenkopf krumen={[{ titel: 'Impressum' }]} lines={['Impressum']} />
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <article class="prosa prosa--klein recht">
+        <Content />
+      </article>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .recht :global(h2) {
+    font-size: 1.5rem;
+  }
+  .recht :global(h3) {
+    font-size: 1.15rem;
+  }
+</style>

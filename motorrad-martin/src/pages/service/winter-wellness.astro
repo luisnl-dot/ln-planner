@@ -1,0 +1,216 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import Anfrage from '../../components/Anfrage.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { bild } from '../../lib/bilder';
+
+const pakete = [
+  {
+    name: 'Basis',
+    preis: '259',
+    dauer: 'Einlagerung 5 Monate',
+    punkte: ['Fahrzeugwäsche', 'Batterieservice', 'Batterie-Leistungstest', 'Fahrzeug-Frühjahrscheck'],
+  },
+  {
+    name: 'Premium',
+    preis: '519',
+    dauer: 'Einlagerung 7 Monate',
+    punkte: ['Fahrzeugwäsche', 'Professionelle Fahrzeugaufbereitung', 'Kettenreinigung und Pflege', 'Batterieservice', 'Batterie-Leistungstest', 'Fahrzeug-Frühjahrscheck'],
+  },
+];
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Winter-Wellness – Motorrad-Einlagerung',
+    provider: { '@id': `${new URL('/', Astro.site).origin}/#organisation` },
+    offers: pakete.map((p) => ({ '@type': 'Offer', name: `Winter-Wellness ${p.name}paket`, price: p.preis, priceCurrency: 'EUR' })),
+  },
+];
+---
+
+<Basis
+  titel="Winter-Wellness – Motorrad einlagern mit Batterieservice"
+  beschreibung="Motorrad-Einlagerung bei BMW Motorrad Martin: trockene, saubere, beheizte Hallen, Batterieservice und Frühjahrscheck. Basispaket 259 €, Premiumpaket 519 €, Hol- und Bringservice."
+  bildOg={bild('standorte/schongau-halle')}
+  schema={schema}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Service', href: '/service/' }, { titel: 'Winter-Wellness' }]}
+    lines={['Winter-Wellness']}
+    linesSm={['Winter-', 'Wellness']}
+    label="Winter-Wellness"
+    rechts="Einlagerung · Batterieservice · Frühjahrscheck"
+    einleitung="Bringen Sie Ihr Motorrad sicher durch den Winter. Damit Ihre Maschine im nächsten Frühjahr ohne Zögern anspringt, bieten wir auch dieses Jahr unseren professionellen Winter-Einlagerungsservice an."
+  >
+    <a class="btn btn--solid" href="#anfrage">Platz anfragen <Pfeil /></a>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <ul class="ww-kern" role="list">
+        <li data-reveal><span class="h3">Fachgerechte Einlagerung</span><span class="muted">In unseren trockenen, sauberen und beheizten Hallen.</span></li>
+        <li data-reveal style="--i:1"><span class="h3">Batterieservice</span><span class="muted">Regelmäßiges Laden und Überprüfen für einen perfekten Start im Frühling.</span></li>
+        <li data-reveal style="--i:2"><span class="h3">Fahrzeug-Check</span><span class="muted">Sichtprüfung von Reifen, Bremsen und Flüssigkeiten.</span></li>
+        <li data-reveal style="--i:3"><span class="h3">Optional</span><span class="muted">Auf Wunsch führen wir direkt die fällige Inspektion oder fällige Reparaturen durch – ganz ohne Zeitdruck im Winter.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section pakete" data-theme="dark">
+    <div class="wrap">
+      <Kopf nr="01" label="Pakete" titel="Zwei Pakete, ein Komplettpreis." />
+      <div class="pakete__raster">
+        {
+          pakete.map((p, i) => (
+            <article class="paket" data-reveal style={`--i:${i}`}>
+              <p class="label label--dim">Winter-Wellness</p>
+              <h3 class="paket__name">{p.name}</h3>
+              <p class="paket__preis">
+                {p.preis}
+                <span>€</span>
+              </p>
+              <p class="label">{p.dauer}</p>
+              <ul role="list" class="paket__liste">
+                {p.punkte.map((x) => (
+                  <li>{x}</li>
+                ))}
+              </ul>
+              <p class="muted paket__fuss">Jeder weitere Monat 39 €</p>
+            </article>
+          ))
+        }
+        <article class="paket paket--service" data-reveal style="--i:2">
+          <p class="label label--dim">Dazu</p>
+          <h3 class="paket__name">Hol- und Bringservice</h3>
+          <table class="tabelle mt2">
+            <tbody>
+              <tr><th scope="row">bis 15 km</th><td class="r">kostenlos</td></tr>
+              <tr><th scope="row">bis 50 km</th><td class="r">69 €</td></tr>
+              <tr><th scope="row">bis 100 km</th><td class="r">89 €</td></tr>
+            </tbody>
+          </table>
+          <p class="muted paket__fuss">Melden Sie sich direkt bei einem unserer Standorte und sichern Sie sich dieses Angebot.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="anfrage">
+    <div class="wrap ww-anfrage">
+      <div>
+        <p class="label label--dim">02 — Anfrage</p>
+        <h2 class="h1 h1--s mt2" data-reveal>Winterplatz sichern.</h2>
+        <p class="lead muted mt2 measure-s" data-reveal style="--i:1">Nennen Sie uns Ihr Motorrad, das gewünschte Paket und Ihr Haus.</p>
+      </div>
+      <Anfrage anliegen="winter" knopf="Einlagerung anfragen" nachrichtLabel="Paket und Wünsche" />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .ww-kern {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--fg);
+  }
+  .ww-kern li {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+    padding: 1.25rem var(--gap) 0 0;
+  }
+  .ww-kern li + li {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  @media (max-width: 1000px) {
+    .ww-kern {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 1.5rem;
+    }
+    .ww-kern li:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+  @media (max-width: 560px) {
+    .ww-kern {
+      grid-template-columns: 1fr;
+    }
+    .ww-kern li + li {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+  .pakete__raster {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: stretch;
+  }
+  .paket {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    border: 1px solid var(--line-2);
+  }
+  .paket__name {
+    font-size: clamp(1.8rem, 1.2rem + 2vw, 3rem);
+    font-weight: 780;
+    font-stretch: 108%;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-transform: uppercase;
+  }
+  .paket__preis {
+    font-size: clamp(4rem, 2rem + 8vw, 9rem);
+    font-weight: 800;
+    font-stretch: 112%;
+    line-height: 0.86;
+    letter-spacing: -0.05em;
+    margin-top: 0.5rem;
+  }
+  .paket__preis span {
+    font-size: 0.34em;
+    font-weight: 500;
+    letter-spacing: 0;
+    margin-left: 0.15em;
+    vertical-align: 1.35em;
+    color: var(--fg-2);
+  }
+  .paket__liste {
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--fg);
+  }
+  .paket__liste li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .paket__fuss {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .paket--service .paket__name {
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.2rem);
+  }
+  @media (max-width: 1000px) {
+    .pakete__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ww-anfrage {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  @media (max-width: 1000px) {
+    .ww-anfrage {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

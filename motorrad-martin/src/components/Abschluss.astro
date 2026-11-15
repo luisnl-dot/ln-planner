@@ -1,0 +1,57 @@
+---
+/** Abschlussband: nächster Schritt am Ende einer Seite. */
+import Pfeil from './Pfeil.astro';
+interface Props {
+  ober?: string;
+  titel: string;
+  text?: string;
+  knopf: string;
+  href: string;
+  knopf2?: string;
+  href2?: string;
+  dunkel?: boolean;
+}
+const { ober = 'Nächster Schritt', titel, text, knopf, href, knopf2, href2, dunkel = false } = Astro.props;
+---
+
+<section class="section abschluss" data-theme={dunkel ? 'dark' : undefined}>
+  <div class="wrap abschluss__raster">
+    <div>
+      <p class="label label--dim">{ober}</p>
+      <h2 class="h1 mt2" data-reveal>{titel}</h2>
+    </div>
+    <div class="abschluss__seite" data-reveal style="--i:1">
+      {text && <p class="lead">{text}</p>}
+      <div class="abschluss__knoepfe">
+        <a class="btn btn--solid" href={href}>{knopf} <Pfeil /></a>
+        {knopf2 && href2 && <a class="btn" href={href2}>{knopf2} <Pfeil /></a>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .abschluss {
+    border-top: 1px solid var(--line);
+  }
+  .abschluss__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2.5rem var(--gap);
+    align-items: end;
+  }
+  .abschluss__seite {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .abschluss__knoepfe {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 24rem;
+  }
+  @media (max-width: 900px) {
+    .abschluss__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

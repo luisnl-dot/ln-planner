@@ -1,0 +1,66 @@
+---
+import Bild from './Bild.astro';
+import Pfeil from './Pfeil.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export const kategorien: Record<string, string> = {
+  neuheiten: 'Neuheiten',
+  'martin-edition': 'Martin Edition',
+  uebergaben: 'Übergaben',
+  haus: 'Aus dem Haus',
+  service: 'Service & Aktionen',
+};
+interface Props {
+  eintrag: CollectionEntry<'journal'>;
+  sizes?: string;
+  gross?: boolean;
+  i?: number;
+}
+const { eintrag, sizes = '(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw', gross = false, i = 0 } = Astro.props;
+const d = eintrag.data;
+---
+
+<a class:list={['j-karte', gross && 'j-karte--gross']} href={`/journal/${eintrag.id}/`} data-reveal style={`--i:${i}`} data-kategorie={d.kategorie}>
+  {d.cover && <Bild src={d.cover} alt="" ratio={gross ? '169' : '32'} sizes={sizes} widths={[480, 800, 1200, 1600]} />}
+  <span class="label j-karte__kat">{kategorien[d.kategorie]}</span>
+  <span class="j-karte__titel">{d.title}</span>
+  {gross && <span class="j-karte__teaser muted">{d.teaser}</span>}
+  <span class="link j-karte__mehr">Lesen <Pfeil /></span>
+</a>
+
+<style is:global>
+  .j-karte {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+  .j-karte .bild img {
+    transition: transform 1.2s var(--ease);
+  }
+  .j-karte:hover .bild img {
+    transform: scale(1.04);
+  }
+  .j-karte__kat {
+    color: var(--fg-3);
+    margin-top: 0.3rem;
+  }
+  .j-karte__titel {
+    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.55rem);
+    font-weight: 640;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .j-karte--gross .j-karte__titel {
+    font-size: clamp(1.6rem, 1.1rem + 2vw, 2.9rem);
+    font-stretch: 104%;
+    line-height: 1.02;
+  }
+  .j-karte__teaser {
+    max-width: 58ch;
+  }
+  .j-karte__mehr {
+    justify-self: start;
+    margin-top: 0.25rem;
+  }
+</style>

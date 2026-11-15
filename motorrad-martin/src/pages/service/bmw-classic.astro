@@ -1,0 +1,206 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import Anfrage from '../../components/Anfrage.astro';
+import Bild from '../../components/Bild.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { bild } from '../../lib/bilder';
+
+const angebot = ['Instandsetzen von Unfallmotorrädern', 'Motorenüberholung', 'Vergaser einstellen', 'Reparatur an Zweiventilboxern', 'Restaurierungen'];
+const imHaus = ['Alle Arbeiten an Motor, Getriebe, Hinterachse und Elektrik', 'Glasstrahlen, Schweißarbeiten – auch Aluminium oder VA'];
+const partner = ['Sämtliche Richtarbeiten an Rahmen oder Schwinge', 'Lackierarbeiten einschließlich Handlinierung', 'Pulverbeschichten mit chemischer Entlackung', 'Räder einspeichen'];
+const generationen = [
+  ['1923 – 1930', 'Die erste Generation: Dreiecksrohrrahmen', 'Die ersten Motorräder von BMW, vom Konstrukteur Max Friz der Legende nach auf einem Bierdeckel entworfen, gehören heute zu den gesuchten Modellen. Es wurden Boxermodelle mit 500 und 750 cc sowie wenige Einzylindermodelle mit 250 cc gebaut.'],
+  ['ab Ende der 1920er', 'Die zweite Generation: Pressstahlrahmen', 'Neben einem neuen Design versprachen sich nicht wenige Hersteller auch geringere Produktionskosten. Bei BMW entstanden sowohl Einzylinder von 200 bis 400 cc als auch Boxermodelle, welche alle in der 750-cc-Klasse fuhren.'],
+  ['ab 1936', 'Die dritte Generation: R 5 bis R 68', 'Mit dem 1936 erschienenen Modell R 5 hatte BMW eine Antwort auf die Konkurrenz parat: leistungsstark und langlebig überzeugten dieses Modell und die davon abgeleiteten Derivate noch fünfzehn Jahre später.'],
+  ['ab 1937', 'Einzylinder: R 20 bis R 25/3', 'Nachdem die neuen Boxermodelle, allen voran die beliebte R 5, auf dem Markt einschlugen, hat BMW 1937 auch neue Einzylindermodelle vorgestellt.'],
+  ['1955 – 1969', 'Die „Gummikuh“: R 26 bis R 69 S', '1955 wurden die Fahrgestelle komplett neu überarbeitet und mit modellgepflegten Motoren bis 1969 in München produziert. Die Modelle R 26 und R 27 sollten bis heute die letzten Einzylinder mit Gelenkwellen-Antrieb bleiben.'],
+  ['ab 1969', 'Eine kleine Revolution: die /5 und die R 90 S', '1969 sollte bei BMW alles anders werden. Zum zweiten Mal in der Firmengeschichte wurden gleichzeitig Fahrgestell und Motoren komplett überarbeitet vorgestellt – und die Produktion nach Berlin verlagert.'],
+];
+---
+
+<Basis
+  titel="BMW Classic – Restaurierung & Instandsetzung"
+  beschreibung="BMW Classic bei Motorrad Martin in Schongau: Restaurierung, Motorenüberholung und Reparatur klassischer BMW Motorräder – vom Zweiventilboxer bis zur kompletten Restaurierung. Unverbindliches Angebot anfragen."
+  bildOg={bild('haus/classic-vorkrieg')}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Service', href: '/service/' }, { titel: 'BMW Classic' }]}
+    lines={['BMW Classic']}
+    linesSm={['BMW', 'Classic']}
+    rechts="Restaurierung · Instandsetzung"
+    einleitung="Ob umfangreiche Motoreninstandsetzung, kleine oder große Restaurierung – Ihre Wartungs- und Restaurierungsarbeiten können Sie ruhig uns überlassen."
+    bild={bild('haus/classic-vorkrieg')}
+    bildAlt="Klassisches BMW Vorkriegsmotorrad im Schauraum in Schongau"
+    fokus="50% 55%"
+  >
+    <div class="stack">
+      <p class="muted">Welchen BMW Klassiker besitzen Sie und welche Arbeiten stehen an? Wir machen uns gerne ein gründliches Bild über den Zustand Ihres Motorrads und erstellen Ihnen ein unverbindliches Angebot.</p>
+      <a class="btn btn--solid" href="#anfrage">Angebot anfragen <Pfeil /></a>
+    </div>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap cl">
+      <div>
+        <Kopf nr="01" label="Restauration" titel="Fachmännisch statt ungefähr." />
+        <div class="prosa">
+          <p data-reveal>Bei einer Restaurierung steht man vor vielen interessanten Aufgaben. Wo finde ich die richtigen Ersatzteile, welche Komponenten muss man ersetzen und welche kann man reparieren, wie bringe ich den Auspuff wieder zum Glänzen, wie überhole ich mein Getriebe?</p>
+          <p data-reveal style="--i:1">Mit einem sehr engagierten Serviceteam können wir Ihnen bei der Restaurierung eine kompetente Beratung geben oder selbst Hand anlegen. Da eine Restaurierung meist ein längerer Prozess ist, haben wir die Möglichkeit, Einzelteile in unserem Lager systematisch aufzubewahren.</p>
+        </div>
+        <a class="link mt3" href="https://www.bmwgroup-classic.com/de/angebote-und-services/originalteile.html" target="_blank" rel="noopener">Mehr zu BMW Classic Originalteilen <Pfeil raus /></a>
+      </div>
+      <div class="cl__bilder">
+        <Bild src={bild('haus/classic-sattel')} alt="Lederner Schwingsattel eines klassischen BMW Motorrads" ratio="43" sizes="(min-width: 900px) 30vw, 100vw" reveal />
+        <Bild src={bild('haus/classic-rad')} alt="Vorderrad und Schutzblech eines Vorkriegsmotorrads" ratio="43" sizes="(min-width: 900px) 30vw, 100vw" reveal i={1} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section cl-listen" data-theme="dark">
+    <div class="wrap">
+      <Kopf nr="02" label="Leistungen" titel="Was wir für Klassiker tun." />
+      <div class="cl-listen__raster">
+        <div data-reveal>
+          <h3 class="h3">Auszug aus unserem Angebot</h3>
+          <ul role="list">{angebot.map((a) => <li>{a}</li>)}</ul>
+        </div>
+        <div data-reveal style="--i:1">
+          <h3 class="h3">Arbeiten im Haus</h3>
+          <ul role="list">{imHaus.map((a) => <li>{a}</li>)}</ul>
+        </div>
+        <div data-reveal style="--i:2">
+          <h3 class="h3">Mit Spezialisten nach unseren Vorgaben</h3>
+          <ul role="list">{partner.map((a) => <li>{a}</li>)}</ul>
+        </div>
+      </div>
+      <div class="cl-ablauf mt4">
+        <p class="label label--dim">Wie gehen wir bei einer Restaurierung vor?</p>
+        <ol role="list">
+          <li data-reveal><span class="mono dim">01</span><span class="lead">Begutachtung der angelieferten Teile oder des Fahrzeugs gemeinsam mit Ihnen.</span></li>
+          <li data-reveal style="--i:1"><span class="mono dim">02</span><span class="lead">Absprache der auszuführenden Arbeiten, die wir auf Wunsch auch dokumentieren.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <Kopf nr="03" label="Kleine Modellkunde" titel="Seit 1923: rund 130 Motorradmodelle." />
+      <ol class="gen" role="list">
+        {
+          generationen.map(([zeit, titel, text], i) => (
+            <li data-reveal style={`--i:${Math.min(i, 4)}`}>
+              <span class="mono gen__zeit">{zeit}</span>
+              <h3 class="h3">{titel}</h3>
+              <p class="muted">{text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section cl-anfrage" id="anfrage">
+    <div class="wrap cl-anfrage__raster">
+      <div>
+        <p class="label label--dim">04 — Anfrage</p>
+        <h2 class="h1 h1--s mt2" data-reveal>Welchen Klassiker besitzen Sie?</h2>
+        <p class="lead muted mt2 measure-s" data-reveal style="--i:1">Beschreiben Sie Modell, Baujahr und die anstehenden Arbeiten – wir melden uns mit einem unverbindlichen Angebot.</p>
+      </div>
+      <Anfrage anliegen="classic" haus="schongau" knopf="Angebot anfragen" nachrichtLabel="Modell, Baujahr und anstehende Arbeiten" />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .cl {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .cl__bilder {
+    display: grid;
+    gap: var(--gap);
+    padding-top: clamp(0rem, 5vw, 5rem);
+  }
+  .cl__bilder > :last-child {
+    width: 72%;
+    justify-self: end;
+  }
+  @media (max-width: 900px) {
+    .cl {
+      grid-template-columns: 1fr;
+    }
+  }
+  .cl-listen__raster {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem var(--gap);
+  }
+  .cl-listen__raster ul {
+    margin-top: 1rem;
+    border-top: 1px solid var(--fg);
+  }
+  .cl-listen__raster li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--fg-2);
+  }
+  .cl-ablauf ol {
+    margin-top: 1rem;
+    border-top: 1px solid var(--fg);
+  }
+  .cl-ablauf li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .cl-ablauf .lead {
+    max-width: 34em;
+  }
+  @media (max-width: 900px) {
+    .cl-listen__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+  .gen {
+    border-top: 1px solid var(--fg);
+  }
+  .gen li {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 4fr) minmax(0, 6fr);
+    gap: 0.75rem var(--gap);
+    align-items: baseline;
+    padding: clamp(1.1rem, 2vw, 1.75rem) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .gen__zeit {
+    color: var(--fg-3);
+  }
+  @media (max-width: 900px) {
+    .gen li {
+      grid-template-columns: 1fr;
+    }
+  }
+  .cl-anfrage {
+    background: var(--paper-2);
+    --bg: var(--paper-2);
+  }
+  .cl-anfrage__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  @media (max-width: 1000px) {
+    .cl-anfrage__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

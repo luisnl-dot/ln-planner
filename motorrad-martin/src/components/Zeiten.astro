@@ -1,0 +1,62 @@
+---
+/** Öffnungszeiten eines Hauses als Tabelle (inkl. Winterregelung). */
+import type { Standort } from '../data/standorte';
+interface Props {
+  haus: Standort;
+}
+const { haus } = Astro.props;
+---
+
+<div class="zeiten">
+  {
+    haus.zeitenText.map((block) => (
+      <table class="zeiten__tab">
+        {block.titel && <caption class="label label--dim">{block.titel}</caption>}
+        <tbody>
+          {block.zeilen.map(([tag, zeit]) => (
+            <tr>
+              <th scope="row">{tag}</th>
+              <td>{zeit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    ))
+  }
+</div>
+
+<style is:global>
+  .zeiten {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .zeiten__tab {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .zeiten__tab caption {
+    text-align: left;
+    padding-bottom: 0.35rem;
+  }
+  .zeiten__tab th {
+    width: 5.2rem;
+    text-align: left;
+    font-weight: 500;
+    color: var(--fg-3);
+    vertical-align: top;
+    white-space: nowrap;
+  }
+  .zeiten__tab th,
+  .zeiten__tab td {
+    padding: 0.28rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .zeiten__tab tr:first-child th,
+  .zeiten__tab tr:first-child td {
+    border-top: 0;
+  }
+</style>

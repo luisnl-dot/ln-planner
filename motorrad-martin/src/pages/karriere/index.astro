@@ -1,0 +1,207 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Bild from '../../components/Bild.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { standorte } from '../../data/standorte';
+import { bild } from '../../lib/bilder';
+
+const jobs = await getCollection('jobs');
+const vorteile = [
+  ['Unbefristete Verträge', 'Sicherheit von Anfang an.'],
+  ['30 Tage Jahresurlaub', 'Zeit für die eigene Tour.'],
+  ['Betriebliche Altersvorsorge', 'Für später mitgedacht.'],
+  ['Vergütung mit Prämiensystem', 'Leistung zahlt sich aus.'],
+  ['Strukturierte Einarbeitung', 'Ankommen mit Plan.'],
+  ['Kurze Wege zur Geschäftsführung', 'Entscheidungen ohne Umweg.'],
+];
+---
+
+<Basis
+  titel="Karriere – Arbeiten bei BMW Motorrad Martin"
+  beschreibung={`Arbeiten bei BMW Motorrad Martin: Familienbetrieb seit 1954 mit eigener Custom-Marke. ${jobs.length} offene Stellen in Schongau, Weyarn und Oy-Mittelberg – unbefristet, 30 Tage Urlaub, betriebliche Altersvorsorge.`}
+  bildOg={bild('standorte/weyarn-werkstatt')}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Karriere' }]}
+    lines={['Bauen Sie mit.']}
+    linesSm={['Bauen', 'Sie mit.']}
+    label="Karriere bei BMW Motorrad Martin"
+    rechts={`${jobs.length} offene Stellen`}
+    einleitung="Was 1954 als Familienbetrieb begann, wird heute in dritter Generation geführt: BMW Martin ist einer der größten BMW Motorrad Händler in Deutschland."
+    bild={bild('standorte/weyarn-werkstatt')}
+    bildAlt="Zwei Kollegen an einem BMW Motorrad in der Werkstatt Weyarn"
+    fokus="50% 32%"
+  >
+    <div class="stack">
+      <p class="muted">Der Unterschied zu einem gewöhnlichen Autohaus steht in unserer eigenen Halle: Unter dem Namen Martin Edition entstehen veredelte BMW Motorräder in Handarbeit. Wer bei uns anfängt, schraubt nicht nur an Serienmaschinen, sondern baut an einer eigenen Marke mit.</p>
+      <a class="btn btn--solid" href="#stellen">Offene Stellen <Pfeil /></a>
+    </div>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="01" label="Was wir bieten" titel="Seit 1954 in Familienhand – keine Kette, kein Investor." />
+      <ul class="vort" role="list">
+        {
+          vorteile.map(([t, x], i) => (
+            <li data-reveal style={`--i:${i % 3}`}>
+              <span class="mono dim">{String(i + 1).padStart(2, '0')}</span>
+              <span class="h3">{t}</span>
+              <span class="muted">{x}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section stellen" data-theme="dark" id="stellen">
+    <div class="wrap">
+      <Kopf nr="02" label="Offene Stellen" titel="Sortiert nach Standort." rechts={`${jobs.length} Stellen`} />
+      {
+        standorte.map((s) => {
+          const hier = jobs.filter((j) => j.data.standort === s.slug);
+          return (
+            hier.length > 0 && (
+              <div class="stellen__haus">
+                <h3 class="stellen__ort">
+                  {s.ort} <sup>{hier.length}</sup>
+                </h3>
+                <ul role="list">
+                  {hier.map((j) => (
+                    <li data-reveal>
+                      <a href={`/karriere/${j.id}/`}>
+                        <span class="stellen__titel">{j.data.title}</span>
+                        <span class="label label--dim">{j.data.art}</span>
+                        <Pfeil />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap init">
+      <div>
+        <p class="label label--dim">03 — Initiativ</p>
+        <h2 class="h1 h1--s mt2" data-reveal>Nichts Passendes dabei?</h2>
+      </div>
+      <div class="stack" data-reveal style="--i:1">
+        <p class="lead">Schreiben Sie dem Haus Ihrer Wahl – mit Ihren Unterlagen als PDF und Ihrem frühestmöglichen Einstiegstermin.</p>
+        <ul class="init__liste" role="list">
+          {standorte.map((s) => <li><span class="h4">{s.ort}</span><a class="textlink" href={`mailto:${s.email}?subject=${encodeURIComponent('Initiativbewerbung')}`}>{s.email}</a></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .vort {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--fg);
+  }
+  .vort li {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    padding: 1.25rem var(--gap) 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .vort li:not(:nth-child(3n + 1)) {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  @media (max-width: 900px) {
+    .vort {
+      grid-template-columns: 1fr;
+    }
+    .vort li:not(:nth-child(3n + 1)) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+  .stellen__haus + .stellen__haus {
+    margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  }
+  .stellen__ort {
+    font-size: clamp(2.2rem, 1.2rem + 4vw, 5rem);
+    font-weight: 800;
+    font-stretch: 108%;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--fg);
+  }
+  .stellen__ort sup {
+    font-family: var(--mono);
+    font-size: 0.2em;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    vertical-align: 2.6em;
+    color: var(--fg-3);
+  }
+  .stellen__haus a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 1.5rem;
+    gap: var(--gap);
+    align-items: baseline;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--line);
+    transition:
+      padding 0.45s var(--ease),
+      border-color 0.3s;
+  }
+  .stellen__titel {
+    font-size: clamp(1.15rem, 1rem + 0.9vw, 1.8rem);
+    font-weight: 620;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+  .stellen__haus a:hover {
+    padding-left: 0.75rem;
+    border-bottom-color: var(--fg);
+  }
+  @media (max-width: 600px) {
+    .stellen__haus a {
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
+    }
+    .stellen__haus a .label {
+      grid-column: 1;
+      grid-row: 2;
+    }
+  }
+  .init {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: 2.5rem var(--gap);
+    align-items: end;
+  }
+  .init__liste {
+    border-top: 1px solid var(--fg);
+  }
+  .init__liste li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 900px) {
+    .init {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

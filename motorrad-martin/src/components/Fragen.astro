@@ -1,0 +1,90 @@
+---
+/** Fragen & Antworten als aufklappbare Liste, mit FAQPage-Daten für Suchmaschinen. */
+interface Props {
+  fragen: [string, string][];
+  schema?: boolean;
+}
+const { fragen, schema = true } = Astro.props;
+const daten = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: fragen.map(([f, a]) => ({ '@type': 'Question', name: f, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+---
+
+<div class="fragen">
+  {
+    fragen.map(([f, a], i) => (
+      <details class="frage" data-reveal style={`--i:${Math.min(i, 5)}`}>
+        <summary>
+          <span class="mono dim">{String(i + 1).padStart(2, '0')}</span>
+          <span class="frage__titel">{f}</span>
+          <span class="frage__zeichen" aria-hidden="true" />
+        </summary>
+        <div class="frage__antwort">
+          <p>{a}</p>
+        </div>
+      </details>
+    ))
+  }
+</div>
+{schema && <script type="application/ld+json" set:html={JSON.stringify(daten)} />}
+
+<style is:global>
+  .fragen {
+    border-top: 1px solid var(--fg);
+  }
+  .frage {
+    border-bottom: 1px solid var(--line);
+  }
+  .frage summary {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) 1.25rem;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 1.2rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .frage summary::-webkit-details-marker {
+    display: none;
+  }
+  .frage__titel {
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.6rem);
+    font-weight: 620;
+    letter-spacing: -0.018em;
+    line-height: 1.15;
+  }
+  .frage__zeichen {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    align-self: center;
+  }
+  .frage__zeichen::before,
+  .frage__zeichen::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.45s var(--ease);
+  }
+  .frage__zeichen::after {
+    transform: rotate(90deg);
+  }
+  .frage[open] .frage__zeichen::after {
+    transform: rotate(0deg);
+  }
+  .frage__antwort {
+    padding: 0 2.25rem 1.5rem 3.5rem;
+    max-width: 62ch;
+    color: var(--fg-2);
+  }
+  @media (max-width: 600px) {
+    .frage__antwort {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+</style>

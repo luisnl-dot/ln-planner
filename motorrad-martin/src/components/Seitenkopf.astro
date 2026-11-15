@@ -1,0 +1,153 @@
+---
+/** Kopf einer Unterseite: Brotkrumen, Typenschild-Titel, Einleitung, optional Bild. */
+import type { ImageMetadata } from 'astro';
+import Bild from './Bild.astro';
+import Fit from './Fit.astro';
+
+interface Krume {
+  titel: string;
+  href?: string;
+}
+interface Props {
+  krumen?: Krume[];
+  lines: string[];
+  linesSm?: string[];
+  label?: string;
+  einleitung?: string;
+  bild?: ImageMetadata;
+  bildAlt?: string;
+  fokus?: string;
+  rechts?: string;
+}
+const { krumen = [], lines, linesSm, label, einleitung, bild, bildAlt = '', fokus, rechts } = Astro.props;
+const seite = Astro.site ?? new URL('https://www.motorrad-martin.de');
+const pfad = [{ titel: 'Start', href: '/' }, ...krumen];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: pfad.map((k, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: k.titel,
+    item: new URL(k.href ?? Astro.url.pathname, seite).href,
+  })),
+};
+---
+
+<header class="skopf">
+  <div class="wrap">
+    <div class="skopf__leiste label">
+      <nav aria-label="Brotkrumen">
+        <ol role="list" class="skopf__krumen">
+          {
+            pfad.map((k, i) => (
+              <li>
+                {k.href && i < pfad.length - 1 ? <a href={k.href}>{k.titel}</a> : <span aria-current="page">{k.titel}</span>}
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+      {rechts && <span class="dim skopf__rechts">{rechts}</span>}
+    </div>
+    <Fit tag="h1" class="skopf__titel" lines={lines} linesSm={linesSm} label={label} auto />
+    {
+      (einleitung || Astro.slots.has('default')) && (
+        <div class="skopf__unten">
+          {einleitung && (
+            <p class="lead skopf__einleitung" data-reveal style="--i:2">
+              {einleitung}
+            </p>
+          )}
+          <div class="skopf__seite" data-reveal style="--i:3">
+            <slot />
+          </div>
+        </div>
+      )
+    }
+  </div>
+  {
+    bild && (
+      <div class="skopf__bild wrap">
+        <Bild src={bild} alt={bildAlt} ratio="219" sizes="100vw" eager reveal fokus={fokus} class="skopf__bild-innen" />
+      </div>
+    )
+  }
+</header>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<style is:global>
+  .skopf {
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: clamp(2.5rem, 5vw, 5rem);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .skopf__leiste {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(0.5rem, 1.6vh, 1.1rem);
+    border-bottom: 1px solid var(--fg);
+  }
+  .skopf__krumen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+  }
+  .skopf__krumen li + li::before {
+    content: '/';
+    margin-right: 0.6rem;
+    color: var(--fg-3);
+  }
+  .skopf__krumen a {
+    color: var(--fg-3);
+    transition: color 0.25s;
+  }
+  .skopf__krumen a:hover {
+    color: var(--fg);
+  }
+  .skopf__rechts {
+    display: none;
+    text-align: right;
+  }
+  @media (min-width: 700px) {
+    .skopf__rechts {
+      display: block;
+    }
+  }
+  .skopf__titel {
+    margin-top: clamp(0.6rem, 2vh, 1.4rem);
+  }
+  .skopf__unten {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 2rem var(--gap);
+    margin-top: clamp(1.5rem, 3.5vw, 3.5rem);
+    align-items: start;
+  }
+  .skopf__einleitung {
+    grid-column: 1 / span 7;
+    max-width: 30em;
+  }
+  .skopf__seite {
+    grid-column: 9 / -1;
+  }
+  .skopf__seite:empty {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .skopf__einleitung,
+    .skopf__seite {
+      grid-column: 1 / -1;
+    }
+  }
+  .skopf__bild {
+    margin-top: clamp(2rem, 4vw, 4.5rem);
+  }
+  @media (max-width: 700px) {
+    .skopf__bild-innen {
+      aspect-ratio: 3 / 2;
+    }
+  }
+</style>

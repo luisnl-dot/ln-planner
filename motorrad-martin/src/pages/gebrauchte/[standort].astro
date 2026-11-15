@@ -1,0 +1,186 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import Abschluss from '../../components/Abschluss.astro';
+import Einbettung from '../../components/Einbettung.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Schild from '../../components/Schild.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import Status from '../../components/Status.astro';
+import { haeuser } from '../../data/haeuser';
+import { standorte, mobileDeUrl, type Standort } from '../../data/standorte';
+import { bild } from '../../lib/bilder';
+
+export function getStaticPaths() {
+  return standorte.map((s) => ({ params: { standort: s.slug }, props: { s } }));
+}
+const { s } = Astro.props as { s: Standort };
+const h = haeuser[s.slug];
+
+const inhalt: Record<string, { titel: string[]; label: string; einleitung: string; absaetze: string[]; bekommen: string[] }> = {
+  weyarn: {
+    titel: ['Gebrauchte', 'in Weyarn'],
+    label: 'Gebrauchte BMW Motorräder in Weyarn',
+    einleitung: 'Auf rund 3.500 Quadratmetern finden Sie bei BMW Martin in Weyarn eine der größten Auswahlen gebrauchter BMW Motorräder in Oberbayern.',
+    absaetze: [
+      'Reiseenduros, Tourer, Roadster und Boxer-Klassiker stehen fahrbereit in der Halle – jede Maschine geprüft, gewartet und mit nachvollziehbarer Historie.',
+      'Wir führen fort, was die Familie Martin 1954 begonnen hat: Wir verkaufen kein Motorrad, das wir nicht selbst fahren würden. Jede Gebrauchtmaschine durchläuft vor der Übergabe unsere Werkstatt. Was ersetzt gehört, wird ersetzt – nicht beschönigt.',
+      'Der Standort liegt direkt an der A8 zwischen München und Salzburg. Aus Holzkirchen, Miesbach, Bad Tölz, dem Tegernseer Tal, Rosenheim und dem Münchner Süden sind Sie in wenigen Minuten bei uns.',
+    ],
+    bekommen: [
+      'Probefahrt nach Vereinbarung – auf Wunsch auf Ihrer Hausstrecke.',
+      'Inzahlungnahme Ihrer aktuellen Maschine mit fairer Bewertung vor Ort.',
+      'Zubehörmontage und Bekleidungsberatung im Haus.',
+      'Suchauftrag: Über unser Standortnetz und unsere Kontakte im BMW Handel finden wir Ihre Maschine oft innerhalb weniger Tage.',
+    ],
+  },
+  schongau: {
+    titel: ['Gebrauchte', 'in Schongau'],
+    label: 'Gebrauchte BMW Motorräder in Schongau',
+    einleitung: 'In Schongau steht der Ursprung des Hauses Martin. Hier, in der Marktoberdorfer Straße, finden Sie unseren Gebrauchtbestand an BMW Motorrädern – vom sofort fahrbereiten Alltagsmotorrad bis zum gepflegten Klassiker.',
+    absaetze: [
+      'Über siebzig Jahre am selben Ort verpflichten. Wir kennen viele unserer Maschinen aus der eigenen Werkstatt, weil wir sie über Jahre betreut haben. Was wir über ein Motorrad wissen, erfahren Sie auch – vollständig und vor dem Kauf.',
+      'Schongau liegt im Pfaffenwinkel, verkehrsgünstig zwischen Landsberg, Weilheim, Murnau, Peiting und Kaufbeuren. Aus dem westlichen Oberbayern und dem Ostallgäu erreichen Sie uns unkompliziert.',
+    ],
+    bekommen: [
+      'BMW Vertragswerkstatt mit computergestützter Motorraddiagnose und regelmäßig geschultem Personal.',
+      'Zugriff auf über 24.000 BMW Originalteile über das Zentrallager Dingolfing – nicht vorrätige Teile in der Regel innerhalb von 24 Stunden.',
+      'Eigene Metallbearbeitung mit Dreh-, Fräs- und Schweißtechnik für Arbeiten, die andernorts nicht mehr möglich sind.',
+      'Werkstattersatzfahrzeug gegen geringe Gebühr. Probefahrt und Inzahlungnahme.',
+    ],
+  },
+  'oy-mittelberg': {
+    titel: ['Gebrauchte', 'im Allgäu'],
+    label: 'Gebrauchte BMW Motorräder im Allgäu',
+    einleitung: 'Oy-Mittelberg liegt dort, wo Motorradfahren Spaß macht: zwischen Oberallgäu, Tannheimer Tal und den Pässen des Allgäuer Alpenrands. Unseren Gebrauchtbestand finden Sie hier – geprüft, gewartet und fahrbereit.',
+    absaetze: [
+      'Hier ist ein Motorrad kein Stadtgerät. Wer bei uns Probe fährt, hat nach zehn Minuten Kurven unter dem Rad statt Ampeln – und weiß danach, ob die Maschine zu ihm passt. Ein gebrauchtes Motorrad kauft man nicht im Prospekt, sondern im Sattel.',
+      'Aus Kempten, Sonthofen, Immenstadt, Füssen, Nesselwang und Marktoberdorf erreichen Sie uns in kurzer Zeit. Die Anfahrt aus dem Bodenseeraum und aus Tirol lohnt sich, und das Ausprobieren gleich mit.',
+    ],
+    bekommen: [
+      'Probefahrt auf Straßen, die etwas über ein Motorrad verraten.',
+      'Inzahlungnahme Ihrer aktuellen Maschine.',
+      'Zubehör- und Bekleidungsberatung.',
+      'Suchauftrag: Über unsere drei Standorte und unser Netz im BMW Handel finden wir Ihre Maschine meist kurzfristig.',
+    ],
+  },
+};
+const t = inhalt[s.slug];
+const andere = standorte.filter((x) => x !== s);
+---
+
+<Basis titel={t.label} beschreibung={`${t.label}: ${t.einleitung} Aktueller Bestand, Probefahrt und Inzahlungnahme bei ${s.name}.`} bildOg={bild(h.held)}>
+  <Seitenkopf krumen={[{ titel: 'Gebrauchte', href: '/gebrauchte/' }, { titel: s.ort }]} lines={t.titel} label={t.label} rechts={s.name} einleitung={t.einleitung}>
+    <div class="stack">
+      <Status haus={s.slug} />
+      <div class="stack" style="--stack:.5rem">
+        <a class="btn btn--solid btn--block" href="#bestand">Zum aktuellen Bestand <Pfeil /></a>
+        <a class="btn btn--block" href={`tel:${s.tel}`}>{s.telefon} <Pfeil /></a>
+      </div>
+    </div>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap geb">
+      <div class="prosa">
+        {t.absaetze.map((p, i) => <p data-reveal style={`--i:${i}`}>{p}</p>)}
+      </div>
+      <div class="geb__seite">
+        <p class="label label--dim">Was Sie bei uns bekommen</p>
+        <ul class="geb__liste" role="list">
+          {
+            t.bekommen.map((b, i) => (
+              <li data-reveal style={`--i:${i}`}>
+                <span class="mono dim">{String(i + 1).padStart(2, '0')}</span>
+                <span>{b}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--flush-top" id="bestand">
+    <div class="wrap">
+      <Kopf nr="01" label="Bestand" titel={`Aktuelle Gebrauchtmotorräder ${s.slug === 'oy-mittelberg' ? 'im Allgäu' : `in ${s.ort}`}.`} />
+      <Einbettung src={mobileDeUrl(s)} titel={`Gebrauchtbestand ${s.ort}`} anbieter="mobile.de" />
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="wrap geb-kontakt">
+      <Schild zeilen={[['Haus', s.name], ['Adresse', `${s.strasse}, ${s.plz} ${s.ort}`], ['Telefon', s.telefon], ['E-Mail', s.email]]} />
+      <ul class="geb-andere" role="list">
+        {
+          andere.map((a) => (
+            <li>
+              <a href={`/gebrauchte/${a.slug}/`}>
+                <span class="label label--dim">Bestand</span>
+                <span class="h3">{a.ort}</span>
+                <Pfeil />
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href="/gebrauchte/#ratgeber">
+            <span class="label label--dim">Ratgeber</span>
+            <span class="h3">Modelle im Gebrauchtkauf</span>
+            <Pfeil />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <Abschluss dunkel titel="Probe fahren, dann entscheiden." text="Ein gebrauchtes Motorrad kauft man nicht im Prospekt, sondern im Sattel." knopf="Probefahrt anfragen" href={`/kontakt/?anliegen=probefahrt&haus=${s.slug}`} knopf2="Motorrad in Zahlung geben" href2="/ankauf/" />
+</Basis>
+
+<style>
+  .geb {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .geb__liste {
+    margin-top: 0.9rem;
+    border-top: 1px solid var(--fg);
+  }
+  .geb__liste li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .geb-kontakt {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 2.5rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .geb-andere {
+    border-top: 1px solid var(--fg);
+  }
+  .geb-andere a {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr) 1.25rem;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 1.05rem 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s var(--ease);
+  }
+  .geb-andere a:hover {
+    padding-left: 0.75rem;
+  }
+  @media (max-width: 900px) {
+    .geb,
+    .geb-kontakt {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,308 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import Anfrage from '../../components/Anfrage.astro';
+import Bild from '../../components/Bild.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import Status from '../../components/Status.astro';
+import { standorte } from '../../data/standorte';
+import { bild } from '../../lib/bilder';
+
+const ausruestung = [
+  'Computergestützte Motorraddiagnose',
+  'Elektronischer Teilekatalog',
+  'Ultraschallreiniger für Vergaser und Kleinteile',
+  'Fräsmaschine und Drehbank',
+  'WIG, MIG/MAG, Autogen und elektrische Schweißgeräte',
+  'Unterdruckentlüftungsgerät zum Befüllen und Entlüften von Stoßdämpfern',
+  'Stickstofffüllgerät für Stoßdämpfer',
+  'Federbeinpresse',
+  'Abgastester',
+  'Oszilloskop',
+  '15-Tonnen-Presse',
+  'Markenwerkzeug von HAZET und Würth',
+  'Reifenmontiermaschine',
+];
+const mehr = [
+  { titel: 'Winter-Wellness', text: 'Einlagerung mit Batterieservice und Frühjahrscheck – Basispaket 259 €.', href: '/service/winter-wellness/' },
+  { titel: 'BMW Classic', text: 'Restaurierung und Instandsetzung klassischer BMW Motorräder.', href: '/service/bmw-classic/' },
+  { titel: 'Bekleidung & Zubehör', text: 'BMW Motorrad Kollektionen und Original Zubehör – beraten und montiert im Haus.', href: '/service/bekleidung-zubehoer/' },
+  { titel: 'Martin Edition', text: 'An- und Umbauten bis zum kompletten Einzelstück.', href: '/martin-edition/' },
+];
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'BMW Motorrad Werkstatt',
+    serviceType: 'Motorradwerkstatt, Inspektion, Reparatur, Diagnose',
+    provider: { '@id': `${new URL('/', Astro.site).origin}/#organisation` },
+    areaServed: ['Oberbayern', 'Allgäu'],
+  },
+];
+---
+
+<Basis
+  titel="BMW Motorrad Werkstatt – Service, Diagnose, Originalteile"
+  beschreibung="BMW Motorrad Werkstatt bei Motorrad Martin: computergestützte Diagnose, regelmäßig geschultes Personal und Zugriff auf über 24.000 BMW Originalteile. Termin in Schongau, Weyarn oder Oy-Mittelberg anfragen."
+  bildOg={bild('standorte/weyarn-werkstatt')}
+  schema={schema}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Service' }]}
+    lines={['Werkstatt']}
+    rechts="Service · Diagnose · Teile"
+    einleitung="Moderne Werkstatteinrichtung, computergestützte Motorraddiagnose und regelmäßig geschultes Personal bieten Ihnen die Garantie für die bekannt gute Servicequalität in BMW Werkstätten."
+    bild={bild('standorte/weyarn-werkstatt')}
+    bildAlt="Zwei Mechaniker mit Diagnosegerät an einem BMW Motorrad in der Werkstatt Weyarn"
+    fokus="50% 35%"
+  >
+    <div class="stack" style="--stack:.5rem">
+      <a class="btn btn--solid btn--block" href="#termin">Werkstatt-Termin anfragen <Pfeil /></a>
+      <a class="btn btn--block" href="#hauswahl" data-hauswahl-oeffnen>Werkstatt anrufen <Pfeil /></a>
+    </div>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <ul class="svc-werte" role="list">
+        <li data-reveal>
+          <span class="svc-werte__zahl">24.000</span>
+          <span class="label">Originalteile im Zugriff</span>
+          <span class="muted">Im BMW Zentrallager Dingolfing für alle Modelle ab der BMW /5 von 1969 bereitgehalten.</span>
+        </li>
+        <li data-reveal style="--i:1">
+          <span class="svc-werte__zahl">24 h</span>
+          <span class="label">bis zum Ersatzteil</span>
+          <span class="muted">Sollte ein Teil einmal nicht vorrätig sein, besorgen wir es innerhalb von 24 Stunden.</span>
+        </li>
+        <li data-reveal style="--i:2">
+          <span class="svc-werte__zahl">3</span>
+          <span class="label">Werkstätten</span>
+          <span class="muted">Schongau, Weyarn und Oy-Mittelberg – jede mit eigenem Service-Team.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="wrap svc">
+      <div>
+        <Kopf nr="01" label="Teile" titel="Genau das Teil, das Sie benötigen." />
+        <div class="prosa">
+          <p data-reveal>Bei über 24.000 verschiedenen Originalteilen ist das eine richtige Herausforderung. Unterstützt werden wir bei der Suche durch einen elektronischen Teilekatalog: Mit dieser computergestützten Teileverwaltung finden wir in Sekundenschnelle das richtige Ersatzteil für Ihr BMW Motorrad. Schnell, effektiv und zuverlässig.</p>
+          <p data-reveal style="--i:1">Wenn Sie Ihr Motorrad bei uns zum Kundendienst oder zu sonstigen Arbeiten abgeben, erhalten Sie gegen eine geringe Gebühr ein Werkstattersatzfahrzeug.</p>
+          <p data-reveal style="--i:2"><strong>Hauptuntersuchung in Schongau:</strong> TÜV und GTÜ sind montags und donnerstags am Nachmittag im Haus.</p>
+        </div>
+      </div>
+      <div class="svc__bild">
+        <Bild src={bild('standorte/schongau-werkstatt-1')} alt="BMW Motorrad auf der Hebebühne in der Werkstatt Schongau" ratio="43" sizes="(min-width: 900px) 42vw, 100vw" reveal />
+      </div>
+    </div>
+  </section>
+
+  <section class="section ausr" data-theme="dark">
+    <div class="wrap">
+      <Kopf nr="02" label="Ausrüstung" titel="Womit wir arbeiten." rechts="Auszug" />
+      <ul class="ausr__liste" role="list">
+        {
+          ausruestung.map((a, i) => (
+            <li data-reveal style={`--i:${i % 6}`}>
+              <span class="mono dim">{String(i + 1).padStart(2, '0')}</span>
+              <span>{a}</span>
+            </li>
+          ))
+        }
+        <li class="dim"><span class="mono">…</span><span>und vieles mehr</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <Kopf nr="03" label="Mehr Service" titel="Rund ums Motorrad." />
+      <ul class="svc-mehr" role="list">
+        {
+          mehr.map((m, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <a href={m.href}>
+                <span class="svc-mehr__titel">{m.titel}</span>
+                <span class="muted">{m.text}</span>
+                <Pfeil />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section svc-termin" id="termin">
+    <div class="wrap svc-termin__raster">
+      <div>
+        <p class="label label--dim">04 — Termin</p>
+        <h2 class="h1 h1--s mt2" data-reveal>Werkstatt-Termin anfragen.</h2>
+        <ul class="svc-termin__haeuser mt3" role="list" data-reveal style="--i:1">
+          {
+            standorte.map((s) => (
+              <li>
+                <span class="h4">{s.ort}</span>
+                <Status haus={s.slug} />
+                <a class="mono" href={`tel:${s.tel}`}>{s.telefon}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <Anfrage anliegen="werkstatt" termin knopf="Termin anfragen" nachrichtLabel="Was steht an?" />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .svc-werte {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--fg);
+  }
+  .svc-werte li {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    padding: 1.25rem var(--gap) 0 0;
+  }
+  .svc-werte li + li {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  .svc-werte__zahl {
+    font-size: clamp(2.8rem, 1.5rem + 5vw, 6.5rem);
+    font-weight: 800;
+    font-stretch: 118%;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+  }
+  .svc-werte .muted {
+    max-width: 34ch;
+    font-size: 0.95rem;
+  }
+  @media (max-width: 800px) {
+    .svc-werte {
+      grid-template-columns: 1fr;
+    }
+    .svc-werte li + li {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      margin-top: 1.25rem;
+    }
+  }
+  .svc {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .svc__bild {
+    padding-top: clamp(0rem, 5vw, 5rem);
+  }
+  @media (max-width: 900px) {
+    .svc {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ausr__liste {
+    columns: 2;
+    column-gap: var(--gap);
+    border-top: 1px solid var(--fg);
+  }
+  .ausr__liste li {
+    break-inside: avoid;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.3rem);
+    font-weight: 520;
+    letter-spacing: -0.01em;
+  }
+  @media (max-width: 800px) {
+    .ausr__liste {
+      columns: 1;
+    }
+  }
+  .svc-mehr {
+    border-top: 1px solid var(--fg);
+  }
+  .svc-mehr a {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) 1.5rem;
+    gap: var(--gap);
+    align-items: baseline;
+    padding: clamp(1rem, 1.8vw, 1.5rem) 0;
+    border-bottom: 1px solid var(--line);
+    transition:
+      padding 0.5s var(--ease),
+      border-color 0.3s;
+  }
+  .svc-mehr__titel {
+    font-size: clamp(1.7rem, 1rem + 3vw, 4rem);
+    font-weight: 780;
+    font-stretch: 100%;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    text-transform: uppercase;
+    transition: font-stretch 0.6s var(--ease);
+  }
+  .svc-mehr a:hover {
+    padding-left: 1rem;
+    border-bottom-color: var(--fg);
+  }
+  .svc-mehr a:hover .svc-mehr__titel {
+    font-stretch: 120%;
+  }
+  .svc-mehr :global(.pfeil) {
+    align-self: center;
+  }
+  @media (max-width: 800px) {
+    .svc-mehr a {
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
+    }
+    .svc-mehr a .muted {
+      grid-column: 1;
+      grid-row: 2;
+    }
+  }
+  .svc-termin {
+    background: var(--paper-2);
+    --bg: var(--paper-2);
+  }
+  .svc-termin__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .svc-termin__haeuser {
+    border-top: 1px solid var(--fg);
+    max-width: 30rem;
+  }
+  .svc-termin__haeuser li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.25rem 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .svc-termin__haeuser li a {
+    grid-column: 1 / -1;
+  }
+  @media (max-width: 1000px) {
+    .svc-termin__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

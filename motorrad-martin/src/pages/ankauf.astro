@@ -1,0 +1,427 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Kopf from '../components/Kopf.astro';
+import Pfeil from '../components/Pfeil.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import { standorte } from '../data/standorte';
+import { bild } from '../lib/bilder';
+const endpunkt = import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined;
+---
+
+<Basis
+  titel="Motorrad-Ankauf & Inzahlungnahme"
+  beschreibung="Motorrad verkaufen oder in Zahlung geben bei BMW Motorrad Martin: Angaben und Fotos senden, wir reagieren prompt mit einem soliden, fairen Angebot. Übergabe in Schongau, Weyarn, Oy-Mittelberg oder per Abholung."
+  bildOg={bild('standorte/weyarn-beratung')}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Ankauf' }]}
+    lines={['Ankauf']}
+    rechts="Verkauf · Inzahlungnahme"
+    einleitung="Füllen Sie das Formular aus – wir reagieren prompt. Für ein solides und faires Angebot sind wir auf die folgenden Angaben angewiesen."
+  >
+    <ol class="schritte-kurz" role="list">
+      <li><span class="mono dim">01</span> Motorrad beschreiben</li>
+      <li><span class="mono dim">02</span> Zustand und Fotos</li>
+      <li><span class="mono dim">03</span> Kontakt und Übergabe</li>
+    </ol>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap ankauf">
+      <form class="anfrage stufen" data-anfrage data-stufen data-betreff="Motorradankauf" data-endpunkt={endpunkt} novalidate>
+        <input type="hidden" name="anliegen" value="Motorradankauf" />
+
+        <ol class="stufen__leiste" role="list" aria-label="Fortschritt">
+          <li data-stufe-marke="1" aria-current="step"><span class="mono">01</span> Motorrad</li>
+          <li data-stufe-marke="2"><span class="mono">02</span> Zustand</li>
+          <li data-stufe-marke="3"><span class="mono">03</span> Kontakt</li>
+        </ol>
+
+        <!-- 1 -->
+        <fieldset class="stufe" data-stufe="1">
+          <legend class="h2">Ihr Motorrad</legend>
+          <div class="anfrage__raster mt2">
+            <div class="feld anfrage__breit">
+              <label for="a-modell">Modell</label>
+              <input id="a-modell" name="modell" type="text" required placeholder="z. B. BMW R 1250 GS Adventure" />
+            </div>
+            <div class="feld">
+              <label for="a-ez">Erstzulassung (Monat / Jahr)</label>
+              <input id="a-ez" name="erstzulassung" type="month" required />
+            </div>
+            <div class="feld">
+              <label for="a-mj">Modelljahr</label>
+              <input id="a-mj" name="modelljahr" type="number" inputmode="numeric" min="1923" max="2030" />
+            </div>
+            <div class="feld">
+              <label for="a-km">Gesamtkilometerstand</label>
+              <input id="a-km" name="kilometerstand" type="number" inputmode="numeric" min="0" required />
+            </div>
+            <div class="feld">
+              <label for="a-vb">Vorbesitzer</label>
+              <input id="a-vb" name="vorbesitzer" type="number" inputmode="numeric" min="0" max="20" />
+            </div>
+            <div class="feld anfrage__breit">
+              <label for="a-farbe">Farbe</label>
+              <input id="a-farbe" name="farbe" type="text" />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 2 -->
+        <fieldset class="stufe" data-stufe="2" hidden>
+          <legend class="h2">Zustand</legend>
+          <div class="stufe__gruppen mt2">
+            <fieldset>
+              <legend data-titel-fuer="verschleissteile">Verschleißteile aktuell</legend>
+              <div class="wahl">
+                <label><input type="radio" name="verschleissteile" value="ja" required />ja</label>
+                <label><input type="radio" name="verschleissteile" value="nein" />nein</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend data-titel-fuer="servicehistorie">Service-Historie komplett</legend>
+              <div class="wahl">
+                <label><input type="radio" name="servicehistorie" value="ja" required />ja</label>
+                <label><input type="radio" name="servicehistorie" value="nein" />nein</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend data-titel-fuer="unfall">Unfallfrei</legend>
+              <div class="wahl">
+                <label><input type="radio" name="unfall" value="unfallfrei" required />unfallfrei</label>
+                <label><input type="radio" name="unfall" value="Unfall" />Unfall</label>
+                <label><input type="radio" name="unfall" value="Unfall repariert" />Unfall repariert</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend data-titel-fuer="reifen_hinten">Reifen hinten</legend>
+              <div class="wahl">
+                <label><input type="radio" name="reifen_hinten" value="> 80 %" required />&gt; 80 %</label>
+                <label><input type="radio" name="reifen_hinten" value="ca. 50 %" />ca. 50 %</label>
+                <label><input type="radio" name="reifen_hinten" value="< 30 %" />&lt; 30 %</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend data-titel-fuer="reifen_vorn">Reifen vorn</legend>
+              <div class="wahl">
+                <label><input type="radio" name="reifen_vorn" value="> 80 %" required />&gt; 80 %</label>
+                <label><input type="radio" name="reifen_vorn" value="ca. 50 %" />ca. 50 %</label>
+                <label><input type="radio" name="reifen_vorn" value="< 30 %" />&lt; 30 %</label>
+              </div>
+            </fieldset>
+          </div>
+          <div class="feld mt2">
+            <label for="a-zustand">Zustand in Ihren Worten</label>
+            <textarea id="a-zustand" name="zustand" rows="4" placeholder="Umbauten, Zubehör, Besonderheiten, bekannte Mängel"></textarea>
+          </div>
+          <div class="feld mt2">
+            <label for="a-bilder">Fotos <span class="dim">(bis zu 5)</span></label>
+            <input class="datei" id="a-bilder" name="bilder" type="file" accept="image/*" multiple data-max-dateien="5" />
+            <p class="feld__hinweis" data-datei-liste>Gut geeignet: beide Seiten, Cockpit mit Kilometerstand, Reifen, eventuelle Schäden.</p>
+          </div>
+        </fieldset>
+
+        <!-- 3 -->
+        <fieldset class="stufe" data-stufe="3" hidden>
+          <legend class="h2">Kontakt und Übergabe</legend>
+          <div class="anfrage__raster mt2">
+            <div class="feld">
+              <label for="a-vorname">Vorname</label>
+              <input id="a-vorname" name="vorname" type="text" autocomplete="given-name" required />
+            </div>
+            <div class="feld">
+              <label for="a-nachname">Nachname</label>
+              <input id="a-nachname" name="nachname" type="text" autocomplete="family-name" required />
+            </div>
+            <div class="feld">
+              <label for="a-email">E-Mail</label>
+              <input id="a-email" name="email" type="email" autocomplete="email" inputmode="email" required />
+            </div>
+            <div class="feld">
+              <label for="a-telefon">Telefonnummer</label>
+              <input id="a-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required />
+            </div>
+            <div class="feld">
+              <label for="a-strasse">Straße, Hausnummer</label>
+              <input id="a-strasse" name="strasse" type="text" autocomplete="street-address" />
+            </div>
+            <div class="feld">
+              <label for="a-ort">PLZ, Ort</label>
+              <input id="a-ort" name="plz_ort" type="text" autocomplete="postal-code" />
+            </div>
+            <div class="feld">
+              <label for="a-haus">Zuständiges Haus</label>
+              <select id="a-haus" name="haus" required data-haus-vorwahl>
+                <option value="" disabled selected>Bitte wählen</option>
+                {standorte.map((s) => <option value={s.slug} data-email={s.email}>{s.ort}</option>)}
+              </select>
+            </div>
+            <div class="feld">
+              <label for="a-uebergabe">Übergabe</label>
+              <select id="a-uebergabe" name="uebergabe" required>
+                <option value="" disabled selected>Bitte wählen</option>
+                <option>Oy-Mittelberg</option>
+                <option>Schongau</option>
+                <option>Weyarn</option>
+                <option>Abholung 399,– €</option>
+                <option>Abholung im Ausland auf Anfrage</option>
+              </select>
+            </div>
+          </div>
+          <fieldset class="mt2">
+            <legend data-titel-fuer="verkaufsabsicht">Verkaufsabsicht</legend>
+            <div class="wahl wahl--block">
+              <label><input type="radio" name="verkaufsabsicht" value="Nur Verkauf, keine neue Anschaffung geplant" required />Ich möchte mein Fahrzeug lediglich verkaufen und plane keine neue Anschaffung.</label>
+              <label><input type="radio" name="verkaufsabsicht" value="Inzahlungnahme für ein neues oder gebrauchtes Motorrad" />Ich möchte dieses Motorrad bei BMW Martin in Zahlung geben und ein neues oder gebrauchtes Motorrad erwerben.</label>
+            </div>
+          </fieldset>
+          <label class="haken mt2">
+            <input type="checkbox" name="einwilligung" required />
+            <span>Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage verwendet werden. Hinweise in der <a class="textlink" href="/datenschutz/">Datenschutzerklärung</a>.</span>
+          </label>
+        </fieldset>
+
+        <div class="stufen__fuss">
+          <button class="btn" type="button" data-stufe-zurueck hidden>← Zurück</button>
+          <button class="btn btn--solid" type="button" data-stufe-weiter>Weiter <Pfeil /></button>
+          <button class="btn btn--solid" type="submit" data-stufe-senden hidden>Angebot anfordern <Pfeil /></button>
+        </div>
+        {!endpunkt && <p class="feld__hinweis">Ihre Angaben öffnen sich als vorbereitete E-Mail an das gewählte Haus. Fotos hängen Sie dort bitte an.</p>}
+        <p class="anfrage__meldung" role="status" aria-live="polite" data-meldung hidden></p>
+      </form>
+
+      <aside class="ankauf__seite">
+        <div class="ankauf__kasten" data-reveal>
+          <p class="label label--dim">So läuft es ab</p>
+          <ol class="ankauf__ablauf" role="list">
+            <li><span class="mono dim">01</span><span>Sie senden uns die Angaben zu Ihrem Motorrad.</span></li>
+            <li><span class="mono dim">02</span><span>Wir reagieren prompt mit einem soliden und fairen Angebot.</span></li>
+            <li><span class="mono dim">03</span><span>Übergabe in einem unserer Häuser – oder wir holen ab.</span></li>
+          </ol>
+        </div>
+        <div class="ankauf__kasten" data-reveal style="--i:1">
+          <p class="label label--dim">Übergabe</p>
+          <p>Oy-Mittelberg, Schongau oder Weyarn. Abholung für 399,– €, Abholung im Ausland auf Anfrage.</p>
+        </div>
+        <div class="ankauf__kasten" data-reveal style="--i:2">
+          <p class="label label--dim">Lieber persönlich?</p>
+          <ul role="list" class="ankauf__tel">
+            {standorte.map((s) => <li><span>{s.ort}</span><a class="mono" href={`tel:${s.tel}`}>{s.telefon}</a></li>)}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .schritte-kurz {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--fg);
+  }
+  .schritte-kurz li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .ankauf {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .stufen__leiste {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line-2);
+  }
+  .stufen__leiste li {
+    padding: 0.8rem 0;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    border-top: 3px solid transparent;
+    margin-top: -2px;
+    transition:
+      color 0.3s,
+      border-color 0.3s;
+  }
+  .stufen__leiste li[aria-current='step'],
+  .stufen__leiste li[data-fertig] {
+    color: var(--fg);
+    border-top-color: var(--fg);
+  }
+  .stufe > legend {
+    padding: 0;
+    font-family: var(--font);
+    text-transform: none;
+    letter-spacing: -0.028em;
+    color: var(--fg);
+    margin-bottom: 0;
+  }
+  .stufe__gruppen {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem var(--gap);
+  }
+  .stufen__fuss {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .stufen__fuss .btn--solid {
+    min-width: 15rem;
+  }
+  .wahl--block {
+    display: grid;
+  }
+  .wahl--block label {
+    line-height: 1.35;
+    padding-block: 0.8rem;
+  }
+  .datei {
+    padding: 0.9rem !important;
+    min-height: 0 !important;
+    font-size: 0.95rem !important;
+    cursor: pointer;
+  }
+  .datei::file-selector-button {
+    font: inherit;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 1rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+    cursor: pointer;
+  }
+  .ankauf__seite {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--fg);
+  }
+  .ankauf__kasten {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .ankauf__ablauf {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .ankauf__ablauf li {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+  .ankauf__tel li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.25rem 0;
+  }
+  @media (max-width: 1000px) {
+    .ankauf {
+      grid-template-columns: 1fr;
+    }
+    .ankauf__seite {
+      position: static;
+    }
+  }
+  @media (max-width: 640px) {
+    .stufe__gruppen {
+      grid-template-columns: 1fr;
+    }
+    .stufen__leiste li span {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  import '../scripts/formular.ts';
+
+  // Mehrstufiges Formular: jede Stufe wird vor dem Weitergehen geprüft
+  document.querySelectorAll<HTMLFormElement>('form[data-stufen]').forEach((form) => {
+    const stufen = Array.from(form.querySelectorAll<HTMLFieldSetElement>('[data-stufe]'));
+    const marken = Array.from(form.querySelectorAll<HTMLElement>('[data-stufe-marke]'));
+    const zurueck = form.querySelector<HTMLButtonElement>('[data-stufe-zurueck]')!;
+    const weiter = form.querySelector<HTMLButtonElement>('[data-stufe-weiter]')!;
+    const senden = form.querySelector<HTMLButtonElement>('[data-stufe-senden]')!;
+    let i = 0;
+
+    const zeige = (n: number, fokus = true) => {
+      i = Math.max(0, Math.min(stufen.length - 1, n));
+      stufen.forEach((s, k) => (s.hidden = k !== i));
+      marken.forEach((m, k) => {
+        if (k === i) m.setAttribute('aria-current', 'step');
+        else m.removeAttribute('aria-current');
+        m.toggleAttribute('data-fertig', k < i);
+      });
+      zurueck.hidden = i === 0;
+      weiter.hidden = i === stufen.length - 1;
+      senden.hidden = i !== stufen.length - 1;
+      if (fokus) {
+        const erstes = stufen[i].querySelector<HTMLElement>('input, select, textarea');
+        form.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        erstes?.focus({ preventScroll: true });
+      }
+    };
+    const gueltig = () => {
+      const felder = Array.from(stufen[i].querySelectorAll<HTMLInputElement>('input, select, textarea')).filter((f) => f.willValidate);
+      const falsch = felder.find((f) => !f.checkValidity());
+      if (falsch) {
+        falsch.reportValidity();
+        return false;
+      }
+      return true;
+    };
+    weiter.addEventListener('click', () => gueltig() && zeige(i + 1));
+    zurueck.addEventListener('click', () => zeige(i - 1));
+    // Enter in einem Feld springt zur nächsten Stufe statt abzusenden
+    form.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && (e.target as HTMLElement).tagName === 'INPUT' && i < stufen.length - 1) {
+        e.preventDefault();
+        if (gueltig()) zeige(i + 1);
+      }
+    });
+    // Fehlerhafte Felder in verborgenen Stufen sichtbar machen
+    form.addEventListener(
+      'invalid',
+      (e) => {
+        const stufe = (e.target as HTMLElement).closest<HTMLFieldSetElement>('[data-stufe]');
+        if (stufe && stufe.hidden) zeige(stufen.indexOf(stufe), false);
+      },
+      true,
+    );
+    // Auswahl der Fotos begrenzen und anzeigen
+    form.querySelectorAll<HTMLInputElement>('input[type="file"][data-max-dateien]').forEach((eingabe) => {
+      const liste = eingabe.closest('.feld')?.querySelector<HTMLElement>('[data-datei-liste]');
+      const max = Number(eingabe.dataset.maxDateien);
+      eingabe.addEventListener('change', () => {
+        const n = eingabe.files?.length ?? 0;
+        if (n > max) {
+          eingabe.value = '';
+          if (liste) liste.textContent = `Bitte höchstens ${max} Fotos auswählen.`;
+          return;
+        }
+        if (liste && n) liste.textContent = `${n} Foto(s) ausgewählt: ${Array.from(eingabe.files!).map((f) => f.name).join(', ')}`;
+      });
+    });
+    zeige(0, false);
+  });
+</script>

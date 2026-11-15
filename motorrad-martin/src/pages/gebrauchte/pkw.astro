@@ -1,0 +1,22 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import Einbettung from '../../components/Einbettung.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { standort, mobileDeUrl } from '../../data/standorte';
+const s = standort('schongau');
+---
+
+<Basis titel="Gebrauchte PKW in Schongau" beschreibung="Gebrauchte PKW bei der Erwin Martin GmbH in Schongau – freier Servicebetrieb mit Spezialisierung auf BMW und MINI. Aktueller Bestand und Kontakt.">
+  <Seitenkopf krumen={[{ titel: 'Gebrauchte', href: '/gebrauchte/' }, { titel: 'PKW' }]} lines={['Gebrauchte PKW']} linesSm={['Gebrauchte', 'PKW']} rechts={s.name} einleitung="Im PKW-Bereich sind wir in Schongau freier Servicebetrieb mit Spezialisierung auf BMW und MINI. Unseren aktuellen PKW-Bestand finden Sie in unserem Fahrzeugportal.">
+    <div class="stack" style="--stack:.5rem">
+      <a class="btn btn--solid btn--block" href={`tel:${s.tel}`}>{s.telefon} <Pfeil /></a>
+      <a class="btn btn--block" href="/standorte/schongau/">Zum Haus Schongau <Pfeil /></a>
+    </div>
+  </Seitenkopf>
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Einbettung src={mobileDeUrl(s)} titel="Fahrzeugbestand Schongau" anbieter="mobile.de" />
+    </div>
+  </section>
+</Basis>

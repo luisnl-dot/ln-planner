@@ -1,0 +1,338 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Anfrage from '../components/Anfrage.astro';
+import Kopf from '../components/Kopf.astro';
+import Pfeil from '../components/Pfeil.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import { mietflotte, mietRegeln as r } from '../data/miete';
+import { bild } from '../lib/bilder';
+
+const eur = (n: number) => n.toLocaleString('de-DE', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' €';
+const alle = mietflotte.flatMap((g) => g.modelle.map((m) => ({ ...m, gruppe: g.gruppe, name: m.modell + (m.hinweis ? ` (${m.hinweis})` : '') })));
+const ab = Math.min(...alle.map((m) => m.tag));
+---
+
+<Basis
+  titel="BMW Motorrad mieten – Mietflotte und Preise 2026"
+  beschreibung={`BMW Motorrad mieten bei Motorrad Martin in Schongau, Weyarn und Oy-Mittelberg: ${alle.length} Modelle ab ${ab} € pro Tag inkl. 300 km. Mit Preisrechner, Wochenend- und Wochenpauschale.`}
+  bildOg={bild('standorte/weyarn-eingang')}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Mieten' }]}
+    lines={['Mieten']}
+    rechts={`Mietfahrzeuge 2026 · Stand ${r.stand}`}
+    einleitung="Wenig Zeit zum Fahren? Kein Platz für ein eigenes Motorrad in der Garage? Dann nutzen Sie unser Verleih-Angebot – vom CE 02 bis zur M 1000 RR."
+  >
+    <div class="stack">
+      <p class="muted">Bitte beachten Sie bei Ihrer Buchung, an welchem Standort Sie mieten möchten: Schongau, Weyarn oder Oy-Mittelberg.</p>
+      <a class="btn btn--solid" href="#rechner">Preis berechnen <Pfeil /></a>
+    </div>
+  </Seitenkopf>
+
+  <!-- ============ Rechner ============ -->
+  <section class="section section--flush-top" id="rechner">
+    <div class="wrap">
+      <Kopf nr="01" label="Preisrechner" titel="Was kostet Ihre Tour?" />
+      <div class="rechner" data-rechner data-regeln={JSON.stringify(r)}>
+        <form class="rechner__eingabe" onsubmit="return false">
+          <div class="feld">
+            <label for="r-modell">Modell</label>
+            <select id="r-modell" data-r-modell>
+              {
+                mietflotte.map((g) => (
+                  <optgroup label={g.gruppe}>
+                    {g.modelle.map((m) => (
+                      <option value={m.modell + (m.hinweis ? ` (${m.hinweis})` : '')} data-tag={m.tag} data-ab23={m.ab23 ? '1' : undefined} data-sb={m.sb5000 ? r.sbM : r.sb} selected={m.modell === 'R 1300 GS' && !m.hinweis}>
+                        {m.modell}{m.hinweis ? ` (${m.hinweis})` : ''} · {eur(m.tag)}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))
+              }
+            </select>
+          </div>
+          <fieldset>
+            <legend>Dauer</legend>
+            <div class="wahl" data-r-dauer>
+              <label><input type="radio" name="dauer" value="2h" />2 Stunden</label>
+              <label><input type="radio" name="dauer" value="halb" />Halber Tag</label>
+              <label><input type="radio" name="dauer" value="1" checked />1 Tag</label>
+              <label><input type="radio" name="dauer" value="2" />2 Tage</label>
+              <label><input type="radio" name="dauer" value="3" />3 Tage</label>
+              <label><input type="radio" name="dauer" value="7" />1 Woche</label>
+            </div>
+            <p class="feld__hinweis mt1" data-r-dauerhinweis></p>
+          </fieldset>
+          <fieldset>
+            <legend>Zubehör <span class="dim">(auf Anfrage bei manchen Modellen)</span></legend>
+            <div class="wahl">
+              <label><input type="checkbox" data-r-koffer />Koffer</label>
+              <label><input type="checkbox" data-r-navi />Navigationsgerät</label>
+            </div>
+          </fieldset>
+          <div class="feld">
+            <label for="r-km">Geplante Strecke in km <span class="dim">(optional)</span></label>
+            <input id="r-km" type="number" inputmode="numeric" min="0" step="10" placeholder="z. B. 450" data-r-km />
+          </div>
+        </form>
+
+        <div class="rechner__ergebnis" aria-live="polite">
+          <p class="label label--dim">Unverbindliche Beispielrechnung</p>
+          <p class="rechner__summe"><span data-r-summe>–</span></p>
+          <p class="rechner__modell h3" data-r-titel></p>
+          <dl class="rechner__posten" data-r-posten></dl>
+          <p class="feld__hinweis" data-r-fuss></p>
+          <a class="btn btn--solid btn--block" href="#anfrage" data-r-anfrage>Dieses Motorrad anfragen <Pfeil /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Flotte ============ -->
+  <section class="section flotte" data-theme="dark">
+    <div class="wrap">
+      <Kopf nr="02" label="Mietflotte 2026" titel="Tagespreise inklusive 300 Kilometer." rechts={`${alle.length} Modelle`} />
+      <div class="flotte__raster">
+        {
+          mietflotte.map((g) => (
+            <div class="flotte__gruppe" data-reveal>
+              <table class="tabelle">
+                <caption class="h3">{g.gruppe}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Modell</th>
+                    <th scope="col" class="r">kW/PS</th>
+                    <th scope="col" class="r">pro Tag</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {g.modelle.map((m) => (
+                    <tr>
+                      <th scope="row">
+                        {m.modell}
+                        {m.hinweis && <span class="flotte__tief"> {m.hinweis}</span>}
+                        {m.ab23 && <sup aria-label="ab 23 Jahren">1</sup>}
+                      </th>
+                      <td class="r mono">{m.leistung}</td>
+                      <td class="r flotte__preis">{eur(m.tag)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))
+        }
+      </div>
+      <p class="label label--dim mt3"><sup>1</sup> ab 23 Jahren, mind. 2 Jahre im Besitz des Führerscheins · Mehrkilometer {eur(r.mehrKm)} pro km · Alle Modelle je nach Verfügbarkeit · Andere Modelle auf Anfrage und unter Vorbehalt · Stand {r.stand} – Änderungen und Irrtümer vorbehalten</p>
+    </div>
+  </section>
+
+  <!-- ============ Bedingungen ============ -->
+  <section class="section">
+    <div class="wrap">
+      <Kopf nr="03" label="Konditionen" titel="Gut zu wissen." />
+      <dl class="kond">
+        <div data-reveal>
+          <dt class="h3">Pauschalen</dt>
+          <dd>
+            <p><strong>3-Tages-Pauschale:</strong> 3 Tage fahren, 2 Tage bezahlen – inklusive {r.dreiTage.freiKm} Frei-Kilometer (Mehrkilometer zwischen 0,55 € und 0,90 €). Abholung ab 13.00 Uhr, Rückgabe nach 3 Tagen bis 10.00 Uhr. Anmietung an Samstag und Sonntag nur über die 3-Tages-Pauschale.</p>
+            <p><strong>Wochenpauschale:</strong> 7 Tage fahren, 5 Tage bezahlen – inklusive {r.woche.freiKm.toLocaleString('de-DE')} Frei-Kilometer.</p>
+            <p><strong>Probefahrtenpauschale:</strong> Montag bis Freitag von 9.00 – 13.00 Uhr oder 13.00 – 17.00 Uhr zum halben Tagespreis; 2 Stunden für 30 % vom Tagespreis.</p>
+          </dd>
+        </div>
+        <div data-reveal>
+          <dt class="h3">Versicherung &amp; Kaution</dt>
+          <dd>
+            <p>Alle Fahrzeuge sind in {r.laender.slice(0, -1).join(', ')} und in der {r.laender.at(-1)} mit {eur(r.sb)} Selbstbeteiligung Teil- und Vollkasko versichert. Für die M 1000 R, M 1000 RR und M 1000 XR beträgt die Selbstbeteiligung {eur(r.sbM)}.</p>
+            <p>Bei Anmietung werden {eur(r.kaution)} als Kaution fällig – bar oder per Kreditkarte (Mastercard, VISA). EC-Karten und AMEX können wir leider nicht akzeptieren. Bitte prüfen Sie vorher das Limit Ihrer Kreditkarte.</p>
+          </dd>
+        </div>
+        <div data-reveal>
+          <dt class="h3">Zubehör</dt>
+          <dd>
+            <p><strong>Koffer</strong> (auf Anfrage bei manchen Modellen): pro Tag {eur(r.koffer.tag)}, mindestens jedoch {eur(r.koffer.min)}.</p>
+            <p><strong>Navigationsgerät</strong> (auf Anfrage bei manchen Modellen): pro Tag {eur(r.navi.tag)}, ab {r.navi.festAb} Tagen Festpreis {eur(r.navi.fest)}.</p>
+            <p>Reinigungspauschale {eur(r.reinigung)}. Kraftstoff-Füllmenge wie bei Abholung.</p>
+          </dd>
+        </div>
+        <div data-reveal>
+          <dt class="h3">Stornierung</dt>
+          <dd>
+            <p>Die Buchung kann bis zu 5 Tage vor Mietbeginn kostenfrei storniert werden. Danach werden 50 % Stornogebühren vom Gesamtpreis in Rechnung gestellt.</p>
+          </dd>
+        </div>
+        <div data-reveal>
+          <dt class="h3">Hol- und Bringservice</dt>
+          <dd>
+            <p>Alles ist möglich – sprechen Sie uns einfach an. Sie möchten ein Motorrad länger mieten? Gerne erstellen wir Ihnen ein individuelles Angebot.</p>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ Anfrage ============ -->
+  <section class="section miet-anfrage" id="anfrage">
+    <div class="wrap miet-anfrage__raster">
+      <div>
+        <p class="label label--dim">04 — Anfrage</p>
+        <h2 class="h1 h1--s mt2" data-reveal>Miete anfragen.</h2>
+        <p class="lead muted mt2 measure-s" data-reveal style="--i:1">Nennen Sie uns Modell, Zeitraum und Ihr Wunsch-Haus – wir prüfen die Verfügbarkeit.</p>
+      </div>
+      <Anfrage anliegen="miete" termin knopf="Miete anfragen" nachrichtLabel="Zeitraum und Wünsche" />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .rechner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2.5rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .rechner__eingabe {
+    display: grid;
+    gap: 1.6rem;
+  }
+  .rechner__ergebnis {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: 0.9rem;
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    background: var(--ink);
+    color: var(--paper);
+    --fg: var(--paper);
+    --bg: var(--ink);
+    --fg-2: var(--chalk-2);
+    --fg-3: var(--chalk-3);
+    --line: rgb(236 233 226 / 0.16);
+    --line-2: rgb(236 233 226 / 0.34);
+    --accent: var(--blau-hell);
+    --accent-fg: var(--night);
+  }
+  .rechner__summe {
+    font-size: clamp(3.4rem, 2rem + 6vw, 7rem);
+    font-weight: 800;
+    font-stretch: 112%;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+  }
+  .rechner__posten {
+    display: grid;
+    border-top: 1px solid var(--line-2);
+    margin-top: 0.4rem;
+  }
+  .rechner__posten :global(div) {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.94rem;
+  }
+  .rechner__posten :global(dt) {
+    color: var(--fg-2);
+  }
+  .rechner__posten :global(dd) {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+  @media (max-width: 900px) {
+    .rechner {
+      grid-template-columns: 1fr;
+    }
+    .rechner__ergebnis {
+      position: static;
+    }
+  }
+  .flotte__raster {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3rem var(--gap);
+    align-items: start;
+  }
+  .flotte__gruppe caption {
+    text-align: left;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--fg);
+    margin-bottom: 0.4rem;
+  }
+  .flotte__gruppe th[scope='row'] {
+    font-weight: 560;
+  }
+  .flotte__tief {
+    color: var(--fg-3);
+    font-weight: 400;
+  }
+  .flotte__preis {
+    font-weight: 650;
+    white-space: nowrap;
+  }
+  .flotte sup {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.7em;
+    margin-left: 0.2em;
+  }
+  @media (max-width: 1100px) {
+    .flotte__raster {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 700px) {
+    .flotte__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+  .kond {
+    border-top: 1px solid var(--fg);
+  }
+  .kond > div {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 1rem var(--gap);
+    padding: clamp(1.25rem, 2.4vw, 2rem) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .kond dd {
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+    max-width: 66ch;
+    color: var(--fg-2);
+  }
+  .kond dd strong {
+    color: var(--fg);
+    font-weight: 640;
+  }
+  @media (max-width: 800px) {
+    .kond > div {
+      grid-template-columns: 1fr;
+    }
+  }
+  .miet-anfrage {
+    background: var(--paper-2);
+    --bg: var(--paper-2);
+  }
+  .miet-anfrage__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  @media (max-width: 1000px) {
+    .miet-anfrage__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import '../scripts/miete.ts';
+</script>

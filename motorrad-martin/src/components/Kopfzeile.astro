@@ -1,0 +1,673 @@
+---
+import { hauptnav, menue, recht } from '../data/navigation';
+import { standorte, routeUrl, social } from '../data/standorte';
+import Pfeil from './Pfeil.astro';
+import Status from './Status.astro';
+
+const pfad = Astro.url.pathname;
+const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(href));
+---
+
+<header class="kopfzeile" data-kopfzeile data-ton="hell">
+  <div class="kopfzeile__innen wrap">
+    <a class="logo" href="/" aria-label="BMW Motorrad Martin – zur Startseite">
+      <svg class="logo__balken" viewBox="0 0 26 16" aria-hidden="true" focusable="false">
+        <path d="M5 0h5L5 16H0z" opacity=".38"></path>
+        <path d="M13 0h5l-5 16H8z" opacity=".68"></path>
+        <path d="M21 0h5l-5 16h-5z"></path>
+      </svg>
+      <span class="logo__name">Martin</span>
+      <span class="logo__zusatz label" aria-hidden="true">BMW Motorrad<br />seit 1954</span>
+    </a>
+
+    <nav class="hauptnav" aria-label="Hauptnavigation">
+      <ul role="list">
+        {
+          hauptnav.map((n) => (
+            <li>
+              <a href={n.href} aria-current={aktiv(n.href) ? 'page' : undefined}>
+                {n.titel}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="kopfzeile__rechts">
+      <button class="status hauswahl-knopf" type="button" data-status="auto" data-hauswahl-oeffnen aria-haspopup="dialog" aria-controls="hauswahl" aria-expanded="false">
+        <span class="status__punkt" aria-hidden="true"></span>
+        <span data-status-text>Öffnungszeiten</span>
+      </button>
+      <a class="btn btn--small btn--solid kopfzeile__cta" href="/kontakt/?anliegen=probefahrt">
+        Probefahrt <Pfeil />
+      </a>
+      <button class="menue-knopf" type="button" data-dialog-oeffnen="menue" aria-haspopup="dialog" aria-controls="menue" aria-expanded="false">
+        <span class="label">Menü</span>
+        <span class="menue-knopf__striche" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Vollflächiges Menü -->
+<dialog class="menue" id="menue" data-dialog data-theme="dark" aria-label="Menü">
+  <div class="menue__innen" data-lenis-prevent>
+    <div class="menue__kopf wrap">
+      <a class="logo" href="/" aria-label="BMW Motorrad Martin – zur Startseite">
+        <svg class="logo__balken" viewBox="0 0 26 16" aria-hidden="true" focusable="false">
+          <path d="M5 0h5L5 16H0z" opacity=".38"></path>
+          <path d="M13 0h5l-5 16H8z" opacity=".68"></path>
+          <path d="M21 0h5l-5 16h-5z"></path>
+        </svg>
+        <span class="logo__name">Martin</span>
+      </a>
+      <button class="menue-knopf" type="button" data-dialog-schliessen>
+        <span class="label">Schließen</span>
+        <span class="menue-knopf__striche ist-kreuz" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+
+    <nav class="menue__nav wrap" aria-label="Alle Bereiche">
+      {
+        menue.map((g, gi) => (
+          <div class="menue__gruppe" style={`--g:${gi}`}>
+            <p class="label label--dim menue__titel">
+              0{gi + 1} — {g.titel}
+            </p>
+            <ul role="list">
+              {g.links.map((l) => (
+                <li>
+                  <a href={l.href} class:list={[l.gross ? 'menue__gross' : 'menue__klein']} aria-current={aktiv(l.href) && !l.href.includes('#') ? 'page' : undefined}>
+                    <span>{l.titel}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+
+    <div class="menue__fuss wrap">
+      <ul class="menue__haeuser" role="list">
+        {
+          standorte.map((s) => (
+            <li>
+              <a href={`/standorte/${s.slug}/`} class="menue__haus">
+                <span class="h4">{s.ort}</span>
+                <Status haus={s.slug} />
+              </a>
+              <a class="mono" href={`tel:${s.tel}`}>
+                {s.telefon}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="menue__meta label" role="list">
+        <li><a href={social.instagram} rel="noopener" target="_blank">Instagram</a></li>
+        <li><a href={social.facebook} rel="noopener" target="_blank">Facebook</a></li>
+        {recht.map((r) => <li><a href={r.href}>{r.titel}</a></li>)}
+      </ul>
+    </div>
+  </div>
+</dialog>
+
+<!-- Hauswahl: Status, Telefon und Route aller drei Häuser -->
+<dialog class="hauswahl" id="hauswahl" data-dialog aria-labelledby="hauswahl-titel">
+  <div class="hauswahl__innen" data-lenis-prevent>
+    <div class="hauswahl__kopf">
+      <div>
+        <p class="label label--dim">Drei Häuser</p>
+        <h2 class="h3" id="hauswahl-titel">Welches ist Ihres?</h2>
+      </div>
+      <button class="menue-knopf" type="button" data-dialog-schliessen aria-label="Schließen">
+        <span class="menue-knopf__striche ist-kreuz" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+    <p class="muted hauswahl__text">Merken Sie sich Ihr Haus – dann zeigen wir Öffnungsstatus, Telefon und Formulare gleich passend an.</p>
+    <ul class="hauswahl__liste" role="list">
+      {
+        standorte.map((s) => (
+          <li class="hauswahl__haus" data-mein-haus={s.slug}>
+            <div class="hauswahl__zeile">
+              <div>
+                <p class="h4">{s.ort}</p>
+                <p class="label label--dim">{s.rolle}</p>
+              </div>
+              <Status haus={s.slug} />
+            </div>
+            <p class="muted hauswahl__adresse">
+              {s.strasse}, {s.plz} {s.ort}
+            </p>
+            <div class="hauswahl__aktionen">
+              <a class="btn btn--small" href={`tel:${s.tel}`}>
+                {s.telefon}
+              </a>
+              <a class="btn btn--small" href={routeUrl(s)} target="_blank" rel="noopener">
+                Route <Pfeil raus />
+              </a>
+              <a class="btn btn--small" href={`/standorte/${s.slug}/`}>
+                Zum Haus <Pfeil />
+              </a>
+            </div>
+            <button class="hauswahl__merken label" type="button" data-haus-merken={s.slug} aria-pressed="false">
+              Als mein Haus merken
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</dialog>
+
+<!-- Mobile Aktionsleiste -->
+<nav class="leiste nur-mobil" aria-label="Schnellzugriff">
+  <a href="#hauswahl" data-mein-tel data-hauswahl-oeffnen>
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 2.5h3.2l1.5 4-2 1.4a10.5 10.5 0 0 0 5.4 5.4l1.4-2 4 1.5V16a1.5 1.5 0 0 1-1.6 1.5C8.6 17 3 11.400 2.500 4.100A1.500 1.500 0 0 1 4 2.500Z" fill="none" stroke="currentColor" stroke-width="1.4"></path></svg>
+    <span>Anrufen</span>
+  </a>
+  <a href="/standorte/">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 18s5.500-5.200 5.500-9.500a5.500 5.500 0 1 0-11 0C4.500 12.800 10 18 10 18Z" fill="none" stroke="currentColor" stroke-width="1.4"></path><circle cx="10" cy="8.500" r="1.800" fill="none" stroke="currentColor" stroke-width="1.400"></circle></svg>
+    <span>Standorte</span>
+  </a>
+  <a href="/kontakt/" class="leiste__haupt">
+    <span>Termin anfragen</span>
+    <Pfeil />
+  </a>
+</nav>
+
+<style is:global>
+  /* ---------- Kopfzeile ---------- */
+  .kopfzeile {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 60;
+    height: var(--header-h);
+    color: var(--ink);
+    view-transition-name: kopfzeile;
+    transition:
+      transform 0.6s var(--ease),
+      background-color 0.4s,
+      color 0.4s,
+      border-color 0.4s;
+    border-bottom: 1px solid transparent;
+    --fg: var(--ink);
+    --bg: var(--paper);
+    --fg-3: var(--ink-3);
+    --line-2: rgb(14 15 15 / 0.32);
+    --accent: var(--blau);
+    --accent-fg: #fff;
+  }
+  .kopfzeile[data-ton='dunkel'] {
+    color: var(--chalk);
+    --fg: var(--chalk);
+    --bg: var(--night);
+    --fg-3: var(--chalk-3);
+    --line-2: rgb(236 233 226 / 0.34);
+    --accent: var(--edition, var(--blau-hell));
+    --accent-fg: var(--night);
+  }
+  .kopfzeile.ist-fest {
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    backdrop-filter: blur(14px) saturate(1.3);
+    border-bottom-color: color-mix(in srgb, var(--fg) 14%, transparent);
+  }
+  .kopfzeile.ist-weg {
+    transform: translateY(-101%);
+  }
+  .kopfzeile__innen {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex: none;
+  }
+  .logo__balken {
+    width: 1.55rem;
+    height: 0.95rem;
+    fill: currentColor;
+  }
+  .logo__name {
+    font-size: 1.42rem;
+    font-weight: 800;
+    font-stretch: 125%;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .logo__zusatz {
+    display: none;
+    font-size: 0.58rem;
+    line-height: 1.25;
+    padding-left: 0.7rem;
+    margin-left: 0.2rem;
+    border-left: 1px solid currentColor;
+    opacity: 0.72;
+  }
+  @media (min-width: 560px) {
+    .logo__zusatz {
+      display: block;
+    }
+  }
+  @media (min-width: 1180px) and (max-width: 1479px) {
+    .logo__zusatz {
+      display: none;
+    }
+  }
+  .hauptnav {
+    display: none;
+  }
+  @media (min-width: 1180px) {
+    .hauptnav {
+      display: block;
+    }
+  }
+  .hauptnav ul {
+    display: flex;
+    gap: clamp(1rem, 1.9vw, 2.1rem);
+  }
+  .hauptnav a {
+    position: relative;
+    display: block;
+    white-space: nowrap;
+    padding: 0.5rem 0;
+    font-size: 0.94rem;
+    font-weight: 520;
+    letter-spacing: -0.005em;
+  }
+  .hauptnav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.2rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s var(--ease);
+  }
+  .hauptnav a:hover::after,
+  .hauptnav a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .kopfzeile__rechts {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.6rem, 1.4vw, 1.4rem);
+  }
+  .hauswahl-knopf {
+    display: none;
+    min-height: 2.5rem;
+    color: inherit;
+  }
+  @media (min-width: 760px) {
+    .hauswahl-knopf {
+      display: inline-flex;
+    }
+  }
+  @media (min-width: 1180px) and (max-width: 1359px) {
+    .hauswahl-knopf {
+      display: none;
+    }
+  }
+  .hauswahl-knopf:hover [data-status-text] {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .kopfzeile__cta {
+    display: none;
+  }
+  @media (min-width: 900px) {
+    .kopfzeile__cta {
+      display: inline-flex;
+    }
+  }
+  .menue-knopf {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    justify-content: flex-end;
+    color: inherit;
+  }
+  .menue-knopf__striche {
+    position: relative;
+    width: 1.6rem;
+    height: 0.6rem;
+  }
+  .menue-knopf__striche i {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.5s var(--ease);
+  }
+  .menue-knopf__striche i:first-child {
+    top: 0;
+  }
+  .menue-knopf__striche i:last-child {
+    bottom: 0;
+  }
+  .menue-knopf:hover .menue-knopf__striche i:first-child {
+    transform: translateX(-0.25rem);
+  }
+  .menue-knopf:hover .menue-knopf__striche i:last-child {
+    transform: translateX(0.25rem);
+  }
+  .menue-knopf__striche.ist-kreuz i:first-child {
+    top: 50%;
+    transform: rotate(45deg);
+  }
+  .menue-knopf__striche.ist-kreuz i:last-child {
+    bottom: auto;
+    top: 50%;
+    transform: rotate(-45deg);
+  }
+  .menue-knopf:hover .menue-knopf__striche.ist-kreuz i:first-child {
+    transform: rotate(135deg);
+  }
+  .menue-knopf:hover .menue-knopf__striche.ist-kreuz i:last-child {
+    transform: rotate(45deg);
+  }
+
+  /* ---------- Menü ---------- */
+  dialog {
+    border: 0;
+    padding: 0;
+    max-width: none;
+    max-height: none;
+    color: var(--fg);
+  }
+  dialog::backdrop {
+    background: rgb(11 12 12 / 0);
+    transition: background 0.5s;
+  }
+  dialog.ist-offen::backdrop {
+    background: rgb(11 12 12 / 0.55);
+  }
+  .dialog-offen {
+    overflow: hidden;
+  }
+  .menue {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--night);
+    color: var(--chalk);
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.75s var(--ease-io);
+  }
+  .menue.ist-offen {
+    clip-path: inset(0 0 0 0);
+  }
+  .menue__innen {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  .menue__kopf {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .menue__nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(2rem, 3vw, 3.5rem) var(--gap);
+    padding-block: clamp(2rem, 6vh, 5rem);
+    align-content: center;
+  }
+  @media (max-width: 1100px) {
+    .menue__nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+    }
+  }
+  @media (max-width: 620px) {
+    .menue__nav {
+      grid-template-columns: 1fr;
+    }
+  }
+  .menue__gruppe {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 0.7s var(--ease) calc(0.22s + var(--g) * 70ms),
+      transform 0.9s var(--ease) calc(0.22s + var(--g) * 70ms);
+  }
+  .menue.ist-offen .menue__gruppe {
+    opacity: 1;
+    transform: none;
+  }
+  .menue__titel {
+    padding-bottom: 0.9rem;
+    margin-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .menue__gross {
+    display: block;
+    font-size: clamp(1.9rem, 1.2rem + 2.2vw, 3.3rem);
+    font-weight: 760;
+    font-stretch: 108%;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    text-transform: uppercase;
+    padding-block: 0.16em;
+    overflow: hidden;
+  }
+  .menue__gross span {
+    display: inline-block;
+    transition:
+      font-stretch 0.5s var(--ease),
+      color 0.3s;
+  }
+  .menue__gross:hover span,
+  .menue__gross:focus-visible span {
+    font-stretch: 125%;
+    color: var(--accent);
+  }
+  .menue__gross[aria-current='page'] span {
+    color: var(--accent);
+  }
+  .menue__klein {
+    display: inline-block;
+    font-size: 1.05rem;
+    color: var(--chalk-2);
+    padding-block: 0.3rem;
+    transition: color 0.3s;
+  }
+  .menue__klein:hover {
+    color: var(--chalk);
+  }
+  .menue__gruppe li + li:has(.menue__klein) {
+    margin-top: 0.1rem;
+  }
+  .menue__gruppe li:has(.menue__gross) + li:has(.menue__klein) {
+    margin-top: 0.7rem;
+  }
+  .menue__fuss {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem 3rem;
+    align-items: end;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .menue__haeuser {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem clamp(1.5rem, 4vw, 4rem);
+  }
+  .menue__haeuser li {
+    display: grid;
+    gap: 0.3rem;
+  }
+  .menue__haus {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+  .menue__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.4rem;
+    color: var(--chalk-3);
+  }
+  .menue__meta a:hover {
+    color: var(--chalk);
+  }
+  @media (max-width: 800px) {
+    .menue__fuss {
+      grid-template-columns: 1fr;
+      padding-bottom: 5rem;
+    }
+  }
+
+  /* ---------- Hauswahl ---------- */
+  .hauswahl {
+    position: fixed;
+    inset: 0 0 0 auto;
+    margin: 0;
+    width: min(31rem, 100%);
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    transform: translateX(100%);
+    transition: transform 0.6s var(--ease-io);
+  }
+  .hauswahl.ist-offen {
+    transform: none;
+  }
+  .hauswahl__innen {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.25rem clamp(1.1rem, 4vw, 2rem) 2.5rem;
+  }
+  .hauswahl__kopf {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .hauswahl__kopf .h3 {
+    margin-top: 0.35rem;
+  }
+  .hauswahl__text {
+    margin-top: 0.9rem;
+    font-size: 0.95rem;
+  }
+  .hauswahl__liste {
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--ink);
+  }
+  .hauswahl__haus {
+    padding: 1.25rem 0 1.35rem;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s var(--ease);
+  }
+  .hauswahl__haus[data-ist-mein] {
+    padding-left: 0.9rem;
+    box-shadow: inset 3px 0 0 var(--blau);
+  }
+  .hauswahl__zeile {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .hauswahl__adresse {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .hauswahl__aktionen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.9rem;
+  }
+  .hauswahl__merken {
+    margin-top: 0.9rem;
+    color: var(--ink-3);
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+    text-decoration-color: var(--line-2);
+    min-height: 1.75rem;
+  }
+  .hauswahl__merken:hover,
+  .hauswahl__merken[aria-pressed='true'] {
+    color: var(--blau);
+  }
+  @media (max-width: 640px) {
+    .hauswahl {
+      inset: auto 0 0 0;
+      width: 100%;
+      height: auto;
+      max-height: 88dvh;
+      transform: translateY(100%);
+    }
+    .hauswahl__innen {
+      max-height: 88dvh;
+    }
+  }
+
+  /* ---------- Mobile Aktionsleiste ---------- */
+  .leiste {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 55;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    background: var(--ink);
+    color: var(--paper);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid rgb(236 233 226 / 0.18);
+    view-transition-name: leiste;
+  }
+  .leiste a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3.5rem;
+    padding: 0 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-right: 1px solid rgb(236 233 226 / 0.18);
+  }
+  .leiste svg:not(.pfeil) {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .leiste__haupt {
+    justify-content: space-between !important;
+    background: var(--paper);
+    color: var(--ink);
+    border-right: 0 !important;
+  }
+  @media (max-width: 899px) {
+    body {
+      padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+    }
+  }
+</style>

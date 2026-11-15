@@ -1,0 +1,109 @@
+---
+import { getCollection, render } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Schild from '../../components/Schild.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { standort } from '../../data/standorte';
+
+export async function getStaticPaths() {
+  const alle = await getCollection('jobs');
+  return alle.map((j) => ({ params: { slug: j.id }, props: { j, alle } }));
+}
+const { j, alle } = Astro.props;
+const { Content } = await render(j);
+const d = j.data;
+const s = standort(d.standort);
+const andere = alle.filter((x) => x.id !== j.id && x.data.standort === d.standort);
+const an = d.kontakt ?? s.email;
+const betreff = `Bewerbung: ${d.title} – ${s.ort}`;
+
+const iso = d.gueltigBis?.split('.').reverse().join('-');
+const art: Record<string, string> = { Vollzeit: 'FULL_TIME', Teilzeit: 'PART_TIME', 'Freiberuflich / Werkvertrag': 'CONTRACTOR' };
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: d.title,
+    description: d.teaser,
+    employmentType: art[d.art] ?? 'FULL_TIME',
+    ...(iso ? { validThrough: iso } : {}),
+    hiringOrganization: { '@type': 'Organization', name: s.firma, sameAs: new URL('/', Astro.site).href },
+    jobLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', streetAddress: s.strasse, postalCode: s.plz, addressLocality: s.ort, addressRegion: 'Bayern', addressCountry: 'DE' } },
+    directApply: false,
+    url: new URL(`/karriere/${j.id}/`, Astro.site).href,
+  },
+];
+---
+
+<Basis titel={`${d.title} – ${s.ort}`} beschreibung={d.teaser} schema={schema}>
+  <Seitenkopf krumen={[{ titel: 'Karriere', href: '/karriere/' }, { titel: s.ort }]} lines={[d.title.replace(/\s*\(m\/w\/d\)/g, '').replace(' oder ', ' / ')]} label={`${d.title} – ${s.ort}`} rechts={`${s.ort} · ${d.art}`} />
+
+  <section class="section section--flush-top">
+    <div class="wrap job">
+      <article class="prosa">
+        <Content />
+      </article>
+      <aside class="job__seite">
+        <Schild zeilen={[['Stelle', d.title], ['Einsatzort', s.ort], ['Art', d.art], ...(d.gueltigBis ? ([['Gültig bis', d.gueltigBis]] as [string, string][]) : []), ['Arbeitgeber', s.firma]]} />
+        <a class="btn btn--solid btn--block mt2" href={`mailto:${an}?subject=${encodeURIComponent(betreff)}`}>Jetzt per E-Mail bewerben <Pfeil /></a>
+        <p class="feld__hinweis mt1">Unterlagen bitte als PDF an <a class="textlink" href={`mailto:${an}`}>{an}</a> – mit Ihrem frühestmöglichen Einstiegstermin.</p>
+        {
+          andere.length > 0 && (
+            <div class="job__andere">
+              <p class="label label--dim">Weitere Stellen in {s.ort}</p>
+              <ul role="list">
+                {andere.map((a) => (
+                  <li>
+                    <a href={`/karriere/${a.id}/`}>
+                      <span>{a.data.title}</span>
+                      <Pfeil />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        <a class="link mt2" href="/karriere/">← Alle Stellen</a>
+      </aside>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .job {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: 3rem clamp(2rem, 7vw, 8rem);
+    align-items: start;
+  }
+  .job__seite {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  .job__andere {
+    margin-top: 2rem;
+  }
+  .job__andere ul {
+    margin-top: 0.6rem;
+    border-top: 1px solid var(--fg);
+  }
+  .job__andere a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 1000px) {
+    .job {
+      grid-template-columns: 1fr;
+    }
+    .job__seite {
+      position: static;
+      max-width: 32rem;
+    }
+  }
+</style>

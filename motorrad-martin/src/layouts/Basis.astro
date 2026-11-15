@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Kopfzeile from '../components/Kopfzeile.astro';
+import Fuss from '../components/Fuss.astro';
+import { statusDaten, social } from '../data/standorte';
+import { bild } from '../lib/bilder';
+import archivo from '../assets/fonts/archivo-latin-wdth-normal.woff2?url';
+import archivoExt from '../assets/fonts/archivo-latin-ext-wdth-normal.woff2?url';
+import plex400 from '../assets/fonts/ibm-plex-mono-latin-400-normal.woff2?url';
+import plex500 from '../assets/fonts/ibm-plex-mono-latin-500-normal.woff2?url';
+import plex400Ext from '../assets/fonts/ibm-plex-mono-latin-ext-400-normal.woff2?url';
+import plex500Ext from '../assets/fonts/ibm-plex-mono-latin-ext-500-normal.woff2?url';
+
+interface Props {
+  titel: string;
+  beschreibung: string;
+  /** Vorschaubild für Social Media. */
+  bildOg?: ImageMetadata;
+  /** Dunkle Seite (Manufaktur-Welt). */
+  dunkel?: boolean;
+  /** Signaturfarbe einer Edition. */
+  akzent?: string;
+  noindex?: boolean;
+  schema?: Record<string, unknown>[];
+  /** Titel ohne Namenszusatz ausgeben. */
+  titelRoh?: boolean;
+  /** Fußzeile ausblenden (z. B. 404). */
+  ohneFuss?: boolean;
+}
+
+const { titel, beschreibung, bildOg, dunkel = false, akzent, noindex = false, schema = [], titelRoh = false, ohneFuss = false } = Astro.props;
+
+const seite = Astro.site ?? new URL('https://www.motorrad-martin.de');
+const kanonisch = new URL(Astro.url.pathname, seite).href;
+const voll = titelRoh ? titel : `${titel} | BMW Motorrad Martin`;
+const og = await getImage({ src: bildOg ?? bild('editionen/r-18-bobber-2'), width: 1200, height: 630, format: 'jpg', quality: 78 });
+const ogUrl = new URL(og.src, seite).href;
+
+const LATIN = 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
+const EXT = 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF';
+const schrift = (familie: string, url: string, gewicht: string, bereich: string, extra = '') =>
+  `@font-face{font-family:'${familie}';font-style:normal;font-display:swap;font-weight:${gewicht};${extra}src:url(${url}) format('woff2');unicode-range:${bereich}}`;
+const schriften = [
+  schrift('Archivo', archivo, '100 900', LATIN, 'font-stretch:62% 125%;'),
+  schrift('Archivo', archivoExt, '100 900', EXT, 'font-stretch:62% 125%;'),
+  schrift('IBM Plex Mono', plex400, '400', LATIN),
+  schrift('IBM Plex Mono', plex500, '500', LATIN),
+  schrift('IBM Plex Mono', plex400Ext, '400', EXT),
+  schrift('IBM Plex Mono', plex500Ext, '500', EXT),
+].join('');
+
+const basisSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${seite.origin}/#organisation`,
+    name: 'BMW Motorrad Martin',
+    alternateName: 'Motorrad Martin',
+    url: `${seite.origin}/`,
+    foundingDate: '1954-04-01',
+    sameAs: [social.instagram, social.facebook],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${seite.origin}/#website`,
+    url: `${seite.origin}/`,
+    name: 'BMW Motorrad Martin',
+    inLanguage: 'de-DE',
+    publisher: { '@id': `${seite.origin}/#organisation` },
+  },
+];
+---
+
+<!doctype html>
+<html lang="de" class="no-js" style={akzent ? `--edition:${akzent}` : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>
+      document.documentElement.classList.replace('no-js', 'js');
+    </script>
+    <title>{voll}</title>
+    <meta name="description" content={beschreibung} />
+    <link rel="canonical" href={kanonisch} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content={dunkel ? '#0b0c0c' : '#f1eee8'} />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plex500} as="font" type="font/woff2" crossorigin />
+    <style set:html={schriften}></style>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content="BMW Motorrad Martin" />
+    <meta property="og:title" content={voll} />
+    <meta property="og:description" content={beschreibung} />
+    <meta property="og:url" content={kanonisch} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {[...basisSchema, ...schema].map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    <slot name="head" />
+  </head>
+  <body data-theme={dunkel ? 'dark' : undefined} class:list={[dunkel && 'ist-dunkel']}>
+    <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+    <Kopfzeile />
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+    {!ohneFuss && <Fuss />}
+    <script type="application/json" id="haeuser-daten" set:html={JSON.stringify(statusDaten)} />
+    <script>
+      import '../scripts/app.ts';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  html:has(body.ist-dunkel) {
+    background: var(--night);
+  }
+  main:focus {
+    outline: none;
+  }
+</style>

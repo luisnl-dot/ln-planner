@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Abschluss from '../../components/Abschluss.astro';
+import Bild from '../../components/Bild.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { bild } from '../../lib/bilder';
+const aktion = (await getCollection('journal')).find((j) => j.id === 'highlight-der-monate-november-und-dezember');
+---
+
+<Basis
+  titel="BMW Motorrad Bekleidung & Original Zubehör"
+  beschreibung="BMW Motorrad Kollektionen und Original BMW Motorrad Zubehör bei Motorrad Martin: entspannt von zuhause auswählen, im Haus beraten lassen und kaufen – in Schongau, Weyarn und Oy-Mittelberg."
+  bildOg={bild('standorte/schongau-teile')}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Service', href: '/service/' }, { titel: 'Bekleidung & Zubehör' }]}
+    lines={['Bekleidung', '& Zubehör']}
+    label="Bekleidung & Zubehör"
+    rechts="BMW Motorrad Kollektionen · Original Zubehör"
+    einleitung="Entspannt von zuhause auswählen und einfach bei uns kaufen – mit Beratung und Montage im Haus."
+  />
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <div class="bz">
+        <article class="bz__block">
+          <Bild src={bild('standorte/schongau-teile')} alt="Helme und Zubehör an der Theke in Schongau" ratio="32" sizes="(min-width: 900px) 46vw, 100vw" reveal />
+          <p class="label label--dim mt2">BMW Motorrad Kollektionen</p>
+          <h2 class="h2" data-reveal>Passion for every day.</h2>
+          <p class="lead muted" data-reveal style="--i:1">Sicherheit, Innovation und Qualität – auf und neben dem Motorrad.</p>
+          <p class="muted" data-reveal style="--i:2">Fahrfreude, die keine Grenzen kennt, bedeutet Abenteuerlust. Es bedeutet aber auch, auf alles vorbereitet zu sein. Mit BMW Motorrad Bekleidung sind Sie abfahrbereit: jederzeit, bei jedem Wetter, für jedes Abenteuer. Komfort und Schutz verschmelzen hautnah.</p>
+          <a class="btn mt1" href="https://www.bmw-motorrad.de/de/wear/new-products/collection-2026.html" target="_blank" rel="noopener">Zur Kollektion 2026 bei BMW Motorrad <Pfeil raus /></a>
+        </article>
+        <article class="bz__block bz__block--versetzt">
+          <Bild src={bild('standorte/weyarn-laden-3')} alt="Ausstellungsfläche mit Zubehör in Weyarn" ratio="32" sizes="(min-width: 900px) 46vw, 100vw" reveal />
+          <p class="label label--dim mt2">Original BMW Motorrad Zubehör</p>
+          <h2 class="h2" data-reveal>Unbegrenzte Möglichkeiten.</h2>
+          <p class="lead muted" data-reveal style="--i:1">Individualität, Komfort, Performance – für Sie und Ihre Maschine.</p>
+          <p class="muted" data-reveal style="--i:2">Auch Leidenschaft lässt sich steigern: für mehr Individualität, mehr Komfort, mehr Sicherheit und mehr Sportlichkeit. Das Original BMW Motorrad Zubehör ist genau darauf ausgelegt – ob es um Ihren Alltag, Ihr Abenteuer oder um mehr Performance geht.</p>
+          <a class="btn mt1" href="https://www.bmw-motorrad.de/de/individualisation/accessories.html" target="_blank" rel="noopener">Zubehör bei BMW Motorrad finden <Pfeil raus /></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {
+    aktion && (
+      <section class="section section--tight bz-aktion" data-theme="dark">
+        <div class="wrap bz-aktion__raster">
+          <div>
+            <p class="label label--dim">Aktuelle Aktion</p>
+            <p class="h2 mt2">{aktion.data.title}</p>
+          </div>
+          <div class="stack">
+            <p class="muted">{aktion.data.teaser}</p>
+            <a class="btn btn--solid" href={`/journal/${aktion.id}/`}>
+              Zur Aktion <Pfeil />
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <Abschluss titel="Lieber anprobieren als raten?" text="Zubehörmontage und Bekleidungsberatung gibt es in allen drei Häusern." knopf="Beratung anfragen" href="/kontakt/?anliegen=zubehoer" knopf2="Standorte & Öffnungszeiten" href2="/standorte/" />
+</Basis>
+
+<style>
+  .bz {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3.5rem clamp(1.5rem, 5vw, 6rem);
+    align-items: start;
+  }
+  .bz__block {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+  }
+  .bz__block :global(.bild) {
+    width: 100%;
+  }
+  @media (min-width: 901px) {
+    .bz__block--versetzt {
+      margin-top: clamp(3rem, 8vw, 9rem);
+    }
+  }
+  @media (max-width: 900px) {
+    .bz {
+      grid-template-columns: 1fr;
+    }
+  }
+  .bz-aktion__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2rem var(--gap);
+    align-items: end;
+  }
+  @media (max-width: 900px) {
+    .bz-aktion__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

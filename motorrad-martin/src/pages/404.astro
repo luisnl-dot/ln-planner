@@ -1,0 +1,46 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Fit from '../components/Fit.astro';
+import Pfeil from '../components/Pfeil.astro';
+import { hauptnav } from '../data/navigation';
+---
+
+<Basis titel="Seite nicht gefunden" beschreibung="Diese Seite gibt es nicht (mehr). Hier geht es weiter zu Martin Edition, Motorrädern, Service und Standorten." noindex dunkel>
+  <section class="fehler">
+    <div class="wrap">
+      <p class="label label--dim fehler__ober">Fehler 404 · Diese Strecke ist gesperrt</p>
+      <Fit tag="h1" lines={['Falsch', 'abgebogen.']} label="Falsch abgebogen – Seite nicht gefunden" />
+      <div class="fehler__unten">
+        <p class="lead muted">Die Seite gibt es nicht oder nicht mehr. Hier geht es zurück auf die Strecke:</p>
+        <ul role="list" class="fehler__liste">
+          <li><a class="btn btn--solid" href="/">Zur Startseite <Pfeil /></a></li>
+          {hauptnav.map((n) => <li><a class="btn" href={n.href}>{n.titel} <Pfeil /></a></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .fehler {
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    padding-block: calc(var(--header-h) + 2rem) 4rem;
+  }
+  .fehler__ober {
+    padding-bottom: 0.9rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--fg);
+  }
+  .fehler__unten {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+  }
+  .fehler__liste {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

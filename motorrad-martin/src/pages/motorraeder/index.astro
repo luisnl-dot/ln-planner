@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Abschluss from '../../components/Abschluss.astro';
+import Fragen from '../../components/Fragen.astro';
+import JournalKarte from '../../components/JournalKarte.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { bild } from '../../lib/bilder';
+
+const neuheiten = (await getCollection('journal')).filter((j) => j.data.kategorie === 'neuheiten').sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const pflege: [string, string][] = [
+  ['Alle Modelle', 'Sonderausstattung: neue Navigationsvorbereitung mit elektrischer Entriegelung. Die bisherige Entriegelung mit dem Schlüssel entfällt.'],
+  ['BMW M 1000 XR', 'Exklusives zusätzliches M Farbschema Aurelius Green metallic matt.'],
+  ['BMW F 800 GS', 'Windschild hoch inklusive Windschildverstellung wird Inhalt der Modellvarianten Sport und Triple Black. Sport: neues Farbschema Gravityblue metallic mit Sitzbank in Schwarz/Grau, Racingblue metallic entfällt.'],
+  ['BMW F 900 GS', 'Passion: Sao Paulo Yellow. Trophy: Lightwhite uni / Racingblue metallic. Tape auf dem Vorderradkotflügel entfällt jeweils.'],
+  ['BMW F 900 GS Adventure', 'Anpassung Ride Pro Paket: Dynamic ESA und Hauptständer werden Einzelsonderausstattungen, das Paket ist mit Tieferlegung kombinierbar. Ride Pro: neues Farbschema Sage Green metallic.'],
+  ['BMW R 1300 GS', 'Adaptive Lichtmodi werden Inhalt im Innovations-Paket und Einzelsonderausstattung. Basis: neues Farbschema Racingred uni. Option 719 „Biscaya“: Imperialblau metallic / Weißaluminium metallic matt.'],
+  ['BMW R 12 nineT', 'Sonderausstattung M Lightweight Batterie. Option 719: Scheinwerfer Schwarz ersetzt Silber. Neues Farbschema Imperialblau metallic.'],
+  ['BMW R 12', 'Sonderausstattung M Lightweight Batterie. Option 719 „Beryllium“: neues Farbschema Meteoric Dust II metallic. Gravityblue metallic gegen Aufpreis.'],
+];
+---
+
+<Basis
+  titel="Neue BMW Motorräder – Modelle, Neuheiten, Probefahrt"
+  beschreibung="Neue BMW Motorräder bei Motorrad Martin in Schongau, Weyarn und Oy-Mittelberg: aktuelles Modellprogramm, Modellpflege, Neuheiten wie F 450 RR und M 1000 RS – und Probefahrt nach Vereinbarung."
+  bildOg={bild('standorte/weyarn-laden-1')}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Motorräder' }]}
+    lines={['Neue BMW']}
+    rechts="Modellprogramm · Neuheiten · Probefahrt"
+    einleitung="Das aktuelle BMW Motorrad Programm – beraten, konfiguriert und übergeben in drei Häusern. Auf Wunsch veredelt in unserer Manufaktur."
+    bild={bild('standorte/weyarn-laden-1')}
+    bildAlt="Showroom mit neuen BMW Motorrädern in Weyarn"
+  >
+    <div class="stack" style="--stack:.5rem">
+      <a class="btn btn--solid btn--block" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
+      <a class="btn btn--block" href="https://www.bmw-motorrad.de/de/models/modeloverview.html" target="_blank" rel="noopener">Alle Modelle bei BMW Motorrad <Pfeil raus /></a>
+    </div>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="01" label="Neuheiten" titel="Frisch vorgestellt.">
+        <a slot="seite" class="link" href="/journal/?kategorie=neuheiten">Alle Neuheiten <Pfeil /></a>
+      </Kopf>
+      <div class="neu">
+        <JournalKarte eintrag={neuheiten[0]} gross sizes="(min-width: 1000px) 58vw, 100vw" />
+        <ul class="neu__liste" role="list">
+          {
+            neuheiten.slice(1, 5).map((n, i) => (
+              <li>
+                <JournalKarte eintrag={n} i={i + 1} sizes="(min-width: 1000px) 18vw, 40vw" />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <Kopf nr="02" label="Modellpflege" titel="Modelljahr 2026: was sich ändert." rechts="bestellbar seit August 2025" />
+      <p class="lead measure" data-reveal>Auch zum Modelljahr 2026 fließen wieder diverse Modellpflegemaßnahmen in das BMW Motorrad Programm ein.</p>
+      <div class="mt3">
+        <Fragen fragen={pflege} schema={false} />
+      </div>
+      <p class="mt3">
+        <a class="link" href="/journal/bmw-motorrad-modellpflege-2027/">Ausblick: Modellpflege 2027 <Pfeil /></a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section wege" data-theme="dark">
+    <div class="wrap">
+      <Kopf nr="03" label="Ihr Weg zur neuen BMW" titel="Erst fahren, dann entscheiden." />
+      <ul class="wege__liste" role="list">
+        <li data-reveal>
+          <a href="/kontakt/?anliegen=probefahrt"><span class="wege__titel">Probefahrt</span><span class="muted">Nach Vereinbarung in allen drei Häusern – in Weyarn auf Wunsch auf Ihrer Hausstrecke.</span><Pfeil /></a>
+        </li>
+        <li data-reveal style="--i:1">
+          <a href="/mieten/"><span class="wege__titel">Erst mieten</span><span class="muted">Einen Tag, ein Wochenende oder eine Woche mit Ihrem Wunschmodell.</span><Pfeil /></a>
+        </li>
+        <li data-reveal style="--i:2">
+          <a href="/ankauf/"><span class="wege__titel">In Zahlung geben</span><span class="muted">Faire Bewertung Ihrer aktuellen Maschine.</span><Pfeil /></a>
+        </li>
+        <li data-reveal style="--i:3">
+          <a href="/martin-edition/"><span class="wege__titel">Veredeln</span><span class="muted">Aus der neuen BMW wird eine Martin Edition.</span><Pfeil /></a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <Abschluss titel="Welche darf es sein?" text="Fragen zu Modellen, Ausstattung und Lieferzeiten beantworten wir Ihnen gern." knopf="Beratung anfragen" href="/kontakt/?anliegen=neu" knopf2="Gebrauchte ansehen" href2="/gebrauchte/" />
+</Basis>
+
+<style>
+  .neu {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2.5rem var(--gap);
+    align-items: start;
+  }
+  .neu__liste {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem var(--gap);
+    padding-left: clamp(0rem, 2vw, 2.5rem);
+  }
+  .neu__liste :global(.j-karte__titel) {
+    font-size: 1.05rem;
+  }
+  @media (max-width: 1000px) {
+    .neu {
+      grid-template-columns: 1fr;
+    }
+    .neu__liste {
+      padding-left: 0;
+    }
+  }
+  .wege__liste {
+    border-top: 1px solid var(--fg);
+  }
+  .wege__liste a {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) 1.5rem;
+    gap: var(--gap);
+    align-items: baseline;
+    padding: clamp(1rem, 1.8vw, 1.5rem) 0;
+    border-bottom: 1px solid var(--line);
+    transition:
+      padding 0.5s var(--ease),
+      border-color 0.3s;
+  }
+  .wege__titel {
+    font-size: clamp(1.7rem, 1rem + 3vw, 4rem);
+    font-weight: 780;
+    font-stretch: 100%;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    text-transform: uppercase;
+    transition: font-stretch 0.6s var(--ease);
+  }
+  .wege__liste a:hover {
+    padding-left: 1rem;
+    border-bottom-color: var(--fg);
+  }
+  .wege__liste a:hover .wege__titel {
+    font-stretch: 120%;
+  }
+  .wege__liste :global(.pfeil) {
+    align-self: center;
+  }
+  @media (max-width: 800px) {
+    .wege__liste a {
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
+    }
+    .wege__liste a .muted {
+      grid-column: 1;
+      grid-row: 2;
+    }
+  }
+</style>

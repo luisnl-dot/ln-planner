@@ -1,0 +1,11 @@
+---
+interface Props {
+  raus?: boolean;
+  class?: string;
+}
+const { raus = false, class: c } = Astro.props;
+---
+
+<svg class:list={['pfeil', raus && 'pfeil--raus', c]} viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+  <path d="M1 8h13M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.4"></path>
+</svg>

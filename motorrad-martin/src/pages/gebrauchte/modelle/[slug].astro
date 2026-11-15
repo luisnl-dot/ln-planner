@@ -1,0 +1,127 @@
+---
+import { getCollection, render } from 'astro:content';
+import Basis from '../../../layouts/Basis.astro';
+import Abschluss from '../../../components/Abschluss.astro';
+import Pfeil from '../../../components/Pfeil.astro';
+import Seitenkopf from '../../../components/Seitenkopf.astro';
+import Status from '../../../components/Status.astro';
+import { standorte } from '../../../data/standorte';
+
+export async function getStaticPaths() {
+  const alle = (await getCollection('modelle')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+  return alle.map((m) => ({ params: { slug: m.id }, props: { m, alle } }));
+}
+const { m, alle } = Astro.props;
+const { Content } = await render(m);
+const andere = alle.filter((x) => x.id !== m.id);
+
+// Fragen & Antworten aus dem Text für strukturierte Daten herauslösen
+const roh = m.body ?? '';
+const teil = roh.split(/^## Häufige Fragen\s*$/m)[1]?.split(/^## /m)[0] ?? '';
+const fragen = [...teil.matchAll(/^### (.+)\n+([\s\S]*?)(?=^### |\s*$(?![\s\S]))/gm)].map((x) => [x[1].trim(), x[2].trim().replace(/\s+/g, ' ')]).filter((x) => x[1]);
+const schema = fragen.length
+  ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: fragen.map(([f, a]) => ({ '@type': 'Question', name: f, acceptedAnswer: { '@type': 'Answer', text: a } })) }]
+  : [];
+---
+
+<Basis titel={m.data.title} beschreibung={m.data.teaser} schema={schema}>
+  <Seitenkopf
+    krumen={[{ titel: 'Gebrauchte', href: '/gebrauchte/' }, { titel: 'Modelle', href: '/gebrauchte/#ratgeber' }, { titel: m.data.modell }]}
+    lines={[m.data.modell, 'gebraucht kaufen']}
+    label={m.data.title}
+    rechts="Modell-Ratgeber"
+  />
+  <section class="section section--flush-top">
+    <div class="wrap rat">
+      <article class="prosa">
+        <Content />
+      </article>
+      <aside class="rat__seite">
+        <div class="rat__kasten">
+          <p class="label label--dim">Aktueller Bestand</p>
+          <p class="h3">BMW {m.data.modell} in unseren Häusern</p>
+          <ul role="list" class="rat__haeuser">
+            {
+              standorte.map((s) => (
+                <li>
+                  <a href={`/gebrauchte/${s.slug}/#bestand`}>
+                    <span class="h4">{s.ort}</span>
+                    <Pfeil />
+                  </a>
+                  <Status haus={s.slug} />
+                  <a class="mono" href={`tel:${s.tel}`}>{s.telefon}</a>
+                </li>
+              ))
+            }
+          </ul>
+          <a class="btn btn--solid btn--block" href={`/kontakt/?anliegen=gebraucht&fahrzeug=${encodeURIComponent('BMW ' + m.data.modell)}`}>Suchauftrag senden <Pfeil /></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <p class="label label--dim">Weitere Modelle</p>
+      <ul class="rat__andere" role="list">
+        {
+          andere.map((a) => (
+            <li>
+              <a class="chip" href={`/gebrauchte/modelle/${a.id}/`}>{a.data.modell}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Abschluss dunkel titel="Über den Serienzustand hinaus?" text="In unserer Manufaktur entstehen die veredelten BMW Motorräder der Martin Edition – handmontiert, streng limitiert." knopf="Zur Martin Edition" href="/martin-edition/" knopf2="Probefahrt anfragen" href2="/kontakt/?anliegen=probefahrt" />
+</Basis>
+
+<style>
+  .rat {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: 3rem clamp(2rem, 7vw, 8rem);
+    align-items: start;
+  }
+  .rat__seite {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  .rat__kasten {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line-2);
+  }
+  .rat__haeuser {
+    border-top: 1px solid var(--fg);
+  }
+  .rat__haeuser li {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .rat__haeuser li > a:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rat__andere {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+  @media (max-width: 1000px) {
+    .rat {
+      grid-template-columns: 1fr;
+    }
+    .rat__seite {
+      position: static;
+      max-width: 30rem;
+    }
+  }
+</style>

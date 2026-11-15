@@ -1,0 +1,420 @@
+---
+/**
+ * Revierkarte: schematische Karte des Alpenrands mit den drei Häusern.
+ * Orte sind nach ihren realen Koordinaten projiziert (Ortsmitte), Straßen und Seen
+ * sind vereinfacht gezeichnet. Kein Kartendienst, keine Fremdanfrage.
+ */
+import { standorte } from '../data/standorte';
+
+interface Props {
+  /** Hervorgehobenes Haus (Standortseite). */
+  aktiv?: string;
+  class?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { aktiv, class: c, ...rest } = Astro.props;
+
+const W = 1000;
+const H = 540;
+const LNG0 = 9.55;
+const LNG1 = 13.15;
+const LAT0 = 47.2;
+const LAT1 = 48.5;
+const px = (lng: number) => +(((lng - LNG0) / (LNG1 - LNG0)) * W).toFixed(1);
+const py = (lat: number) => +(((LAT1 - lat) / (LAT1 - LAT0)) * H).toFixed(1);
+const linie = (p: [number, number][]) => p.map(([lat, lng], i) => `${i ? 'L' : 'M'}${px(lng)} ${py(lat)}`).join(' ');
+
+type Ort = { n: string; lat: number; lng: number; dx?: number; dy?: number; a?: 'start' | 'end' | 'middle'; gross?: boolean };
+const orte: Ort[] = [
+  { n: 'München', lat: 48.137, lng: 11.575, gross: true, dy: -10, a: 'middle' },
+  { n: 'Augsburg', lat: 48.371, lng: 10.898, dx: 9 },
+  { n: 'Landsberg', lat: 48.048, lng: 10.883, dx: -9, a: 'end' },
+  { n: 'Memmingen', lat: 47.984, lng: 10.18, dx: -9, a: 'end' },
+  { n: 'Kempten', lat: 47.727, lng: 10.314, dx: -9, a: 'end' },
+  { n: 'Kaufbeuren', lat: 47.88, lng: 10.622, dx: -9, a: 'end' },
+  { n: 'Marktoberdorf', lat: 47.778, lng: 10.617, dx: 0, dy: 17, a: 'middle' },
+  { n: 'Füssen', lat: 47.572, lng: 10.702, dx: 9, dy: 4 },
+  { n: 'Sonthofen', lat: 47.514, lng: 10.282, dx: -9, a: 'end' },
+  { n: 'Garmisch-P.', lat: 47.492, lng: 11.096, dx: 9, dy: 4 },
+  { n: 'Weilheim', lat: 47.84, lng: 11.142, dx: 9, dy: -5 },
+  { n: 'Murnau', lat: 47.679, lng: 11.202, dx: 9 },
+  { n: 'Bad Tölz', lat: 47.761, lng: 11.557, dx: -9, dy: 12, a: 'end' },
+  { n: 'Holzkirchen', lat: 47.876, lng: 11.701, dx: -9, dy: -5, a: 'end' },
+  { n: 'Miesbach', lat: 47.789, lng: 11.833, dx: 9, dy: 10 },
+  { n: 'Rosenheim', lat: 47.856, lng: 12.129, dx: 0, dy: -10, a: 'middle' },
+  { n: 'Salzburg', lat: 47.81, lng: 13.055, dx: -9, dy: -8, a: 'end' },
+  { n: 'Kufstein', lat: 47.583, lng: 12.167, dx: 9 },
+  { n: 'Innsbruck', lat: 47.269, lng: 11.404, dx: 9 },
+  { n: 'Lindau', lat: 47.546, lng: 9.684, dx: 9, dy: 14 },
+];
+
+// Vereinfachte Verläufe
+const strassen: { n: string; p: [number, number][]; lx: number; ly: number; dick?: boolean }[] = [
+  { n: 'A8', dick: true, p: [[48.42, 9.55], [48.38, 10.6], [48.37, 10.9], [48.2, 11.35], [48.07, 11.6], [47.88, 11.7], [47.855, 11.8], [47.85, 12.13], [47.84, 12.5], [47.8, 13.05], [47.79, 13.15]], lx: 12.62, ly: 47.9 },
+  { n: 'A96', dick: true, p: [[47.56, 9.7], [47.7, 9.9], [47.98, 10.18], [48.02, 10.6], [48.05, 10.88], [48.08, 11.2], [48.13, 11.5]], lx: 10.53, ly: 48.07 },
+  { n: 'A7', dick: true, p: [[48.5, 10.12], [47.98, 10.18], [47.73, 10.33], [47.645, 10.43], [47.6, 10.6], [47.57, 10.7]], lx: 10.08, ly: 48.25 },
+  { n: 'A95', dick: true, p: [[48.1, 11.52], [47.98, 11.36], [47.75, 11.28], [47.62, 11.2], [47.5, 11.1]], lx: 11.44, ly: 47.99 },
+  { n: 'B17', p: [[48.37, 10.9], [48.05, 10.88], [47.812, 10.896], [47.68, 10.85], [47.572, 10.702]], lx: 10.94, ly: 47.93 },
+  { n: 'B472', p: [[47.778, 10.617], [47.812, 10.896], [47.8, 11.05], [47.77, 11.3], [47.761, 11.557], [47.789, 11.833], [47.83, 11.9]], lx: 11.38, ly: 47.8 },
+];
+
+const seen = [
+  { lat: 48.0, lng: 11.125, rx: 6, ry: 27, r: 0 },
+  { lat: 47.905, lng: 11.31, rx: 6, ry: 36, r: 12 },
+  { lat: 47.87, lng: 12.45, rx: 25, ry: 15, r: 0 },
+  { lat: 47.6, lng: 9.42, rx: 95, ry: 26, r: -24 },
+  { lat: 47.6, lng: 10.72, rx: 9, ry: 5, r: -30 },
+  { lat: 47.715, lng: 11.745, rx: 3.5, ry: 11, r: 0 },
+];
+
+const alpenrand: [number, number][] = [
+  [47.47, 9.55], [47.5, 9.9], [47.545, 10.2], [47.59, 10.5], [47.56, 10.75], [47.585, 11.0], [47.63, 11.25], [47.68, 11.5], [47.71, 11.8], [47.73, 12.1], [47.745, 12.45], [47.76, 12.8], [47.74, 13.15],
+];
+const alpenFlaeche = `${linie(alpenrand)} L${W} ${H} L0 ${H} Z`;
+
+const km = (a: { lat: number; lng: number }, b: { lat: number; lng: number }) => {
+  const R = 6371;
+  const r = (x: number) => (x * Math.PI) / 180;
+  const h = Math.sin(r(b.lat - a.lat) / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(r(b.lng - a.lng) / 2) ** 2;
+  return Math.round(2 * R * Math.asin(Math.sqrt(h)));
+};
+const nachLng = [...standorte].sort((a, b) => a.karte.lng - b.karte.lng);
+const strecken = nachLng.slice(0, -1).map((a, i) => {
+  const b = nachLng[i + 1];
+  return { a, b, km: km(a.karte, b.karte), mx: (px(a.karte.lng) + px(b.karte.lng)) / 2, my: (py(a.karte.lat) + py(b.karte.lat)) / 2 };
+});
+const etikett: Record<string, { dx: number; dy: number; a: 'start' | 'end' | 'middle' }> = {
+  'oy-mittelberg': { dx: 0, dy: 34, a: 'middle' },
+  schongau: { dx: 0, dy: -22, a: 'middle' },
+  weyarn: { dx: 16, dy: -18, a: 'start' },
+};
+---
+
+<figure class:list={['karte', c]} data-karte data-aktiv={aktiv} {...rest}>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="karte-titel karte-text" preserveAspectRatio="xMidYMid meet">
+    <title id="karte-titel">Die drei Häuser von BMW Motorrad Martin am Alpenrand</title>
+    <desc id="karte-text">
+      Schematische Karte von Oberbayern und dem Allgäu. Oy-Mittelberg liegt im Westen bei Kempten an der A7, Schongau in der Mitte an der B17, Weyarn im Osten an der A8 zwischen München und Rosenheim.
+    </desc>
+    <defs>
+      <pattern id="k-schraffur" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+        <line x1="0" y1="0" x2="0" y2="7" class="karte__schraffur"></line>
+      </pattern>
+    </defs>
+
+    <!-- Raster -->
+    <g class="karte__raster" aria-hidden="true">
+      {[10, 10.5, 11, 11.5, 12, 12.5, 13].map((l) => <line x1={px(l)} y1="0" x2={px(l)} y2={H} />)}
+      {[47.5, 48].map((l) => <line x1="0" y1={py(l)} x2={W} y2={py(l)} />)}
+    </g>
+
+    <!-- Alpen -->
+    <path d={alpenFlaeche} fill="url(#k-schraffur)" aria-hidden="true"></path>
+    <path d={linie(alpenrand)} class="karte__alpenrand" pathLength="1" aria-hidden="true"></path>
+    <text x={px(12.72)} y={py(47.62)} class="karte__klein karte__gesperrt" text-anchor="middle" aria-hidden="true">Alpen</text>
+
+    <!-- Seen -->
+    <g class="karte__seen" aria-hidden="true">
+      {seen.map((s) => <ellipse cx={px(s.lng)} cy={py(s.lat)} rx={s.rx} ry={s.ry} transform={`rotate(${s.r} ${px(s.lng)} ${py(s.lat)})`} />)}
+    </g>
+
+    <!-- Straßen -->
+    <g aria-hidden="true">
+      {
+        strassen.map((s) => (
+          <>
+            <path d={linie(s.p)} class:list={['karte__strasse', s.dick && 'karte__strasse--a']} pathLength="1" />
+            <g transform={`translate(${px(s.lx)} ${py(s.ly)})`}>
+              <rect x="-15" y="-8" width="30" height="16" class="karte__schild" />
+              <text class="karte__klein" text-anchor="middle" y="3.6">
+                {s.n}
+              </text>
+            </g>
+          </>
+        ))
+      }
+    </g>
+
+    <!-- Luftlinie zwischen den Häusern -->
+    <g aria-hidden="true">
+      {
+        strecken.map((s) => (
+          <>
+            <line x1={px(s.a.karte.lng)} y1={py(s.a.karte.lat)} x2={px(s.b.karte.lng)} y2={py(s.b.karte.lat)} class="karte__luftlinie" />
+            <text x={s.mx} y={s.my + 22} class="karte__klein karte__akzent" text-anchor="middle">
+              {s.km} km
+            </text>
+          </>
+        ))
+      }
+    </g>
+
+    <!-- Orte -->
+    <g aria-hidden="true">
+      {
+        orte.map((o) => (
+          <g class="karte__ort" data-ort={o.n}>
+            <circle cx={px(o.lng)} cy={py(o.lat)} r={o.gross ? 4.5 : 2.4} />
+            <text x={px(o.lng) + (o.dx ?? 8)} y={py(o.lat) + (o.dy ?? 4)} text-anchor={o.a ?? 'start'} class:list={[o.gross ? 'karte__gross' : 'karte__klein']}>
+              {o.n}
+            </text>
+          </g>
+        ))
+      }
+    </g>
+
+    <!-- Häuser -->
+    {
+      standorte.map((s) => {
+        const e = etikett[s.slug];
+        return (
+          <a href={`/standorte/${s.slug}/`} class="karte__haus" data-karte-haus={s.slug} data-einzug={s.einzugsgebiet.join('|')} aria-label={`${s.name}, ${s.strasse}, ${s.plz} ${s.ort}`}>
+            <circle class="karte__ring" cx={px(s.karte.lng)} cy={py(s.karte.lat)} r="16" />
+            <circle class="karte__punkt" cx={px(s.karte.lng)} cy={py(s.karte.lat)} r="7" />
+            <text x={px(s.karte.lng) + e.dx} y={py(s.karte.lat) + e.dy} text-anchor={e.a} class="karte__name">
+              {s.ort}
+            </text>
+          </a>
+        );
+      })
+    }
+  </svg>
+  <figcaption class="karte__legende label label--dim">
+    <span>Schematische Darstellung · Entfernungen als Luftlinie</span>
+    <span>N ↑</span>
+  </figcaption>
+</figure>
+
+<style is:global>
+  .karte {
+    position: relative;
+  }
+  .karte svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .karte__raster line {
+    stroke: var(--line);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+    vector-effect: non-scaling-stroke;
+  }
+  .karte__schraffur {
+    stroke: var(--fg);
+    stroke-width: 1;
+    opacity: 0.16;
+  }
+  .karte__alpenrand {
+    fill: none;
+    stroke: var(--fg);
+    stroke-width: 1.4;
+    vector-effect: non-scaling-stroke;
+  }
+  .karte__seen ellipse {
+    fill: var(--bg);
+    stroke: var(--line-2);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .karte__strasse {
+    fill: none;
+    stroke: var(--fg-3);
+    stroke-width: 1;
+    stroke-dasharray: 0.006 0.006;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.9;
+  }
+  .karte__strasse--a {
+    stroke: var(--fg-2);
+    stroke-width: 1.6;
+    stroke-dasharray: none;
+  }
+  .karte__schild {
+    fill: var(--bg);
+    stroke: var(--line-2);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .karte__luftlinie {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 5;
+    vector-effect: non-scaling-stroke;
+  }
+  .karte__klein,
+  .karte__gross,
+  .karte__name {
+    font-family: var(--mono);
+    fill: var(--fg-2);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .karte__gesperrt {
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    fill: var(--fg-3);
+  }
+  .karte__akzent {
+    fill: var(--accent);
+    font-weight: 500;
+  }
+  .karte__gross {
+    font-size: 13px;
+    font-weight: 500;
+    fill: var(--fg);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .karte__ort circle {
+    fill: var(--bg);
+    stroke: var(--fg-2);
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+  .karte__ort {
+    transition: opacity 0.35s;
+  }
+  .karte__ort.ist-nah circle {
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+  .karte__ort.ist-nah text {
+    fill: var(--fg);
+    font-weight: 500;
+  }
+  .karte.hat-fokus .karte__ort:not(.ist-nah) {
+    opacity: 0.35;
+  }
+  .karte__haus {
+    cursor: pointer;
+  }
+  .karte__punkt {
+    fill: var(--fg);
+    transition: fill 0.3s, r 0.4s var(--ease);
+  }
+  .karte__ring {
+    fill: none;
+    stroke: var(--fg);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: karte-puls 3.2s var(--ease) infinite;
+  }
+  .karte__haus:nth-of-type(2) .karte__ring {
+    animation-delay: 0.5s;
+  }
+  .karte__haus:nth-of-type(3) .karte__ring {
+    animation-delay: 1s;
+  }
+  @keyframes karte-puls {
+    0% {
+      transform: scale(0.45);
+      opacity: 0.9;
+    }
+    80%,
+    100% {
+      transform: scale(1.35);
+      opacity: 0;
+    }
+  }
+  .karte__name {
+    font-family: var(--font);
+    font-size: 21px;
+    font-weight: 750;
+    font-stretch: 112%;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    fill: var(--fg);
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+  }
+  .karte__haus:hover .karte__punkt,
+  .karte__haus:focus-visible .karte__punkt,
+  .karte__haus.ist-aktiv .karte__punkt,
+  .karte[data-aktiv='weyarn'] [data-karte-haus='weyarn'] .karte__punkt,
+  .karte[data-aktiv='schongau'] [data-karte-haus='schongau'] .karte__punkt,
+  .karte[data-aktiv='oy-mittelberg'] [data-karte-haus='oy-mittelberg'] .karte__punkt {
+    fill: var(--accent);
+    r: 9px;
+  }
+  .karte__haus:focus-visible {
+    outline: none;
+  }
+  .karte__haus:focus-visible .karte__ring {
+    animation: none;
+    opacity: 1;
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+  .karte__legende {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+  /* Zeichnen beim Einblenden */
+  .js .karte[data-reveal] .karte__alpenrand,
+  .js .karte[data-reveal] .karte__strasse--a {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 2.2s var(--ease-io) 0.2s;
+  }
+  .js .karte[data-reveal].is-in .karte__alpenrand,
+  .js .karte[data-reveal].is-in .karte__strasse--a {
+    stroke-dashoffset: 0;
+  }
+  @media (max-width: 700px) {
+    .karte__klein {
+      font-size: 14px;
+    }
+    .karte__gross {
+      font-size: 16px;
+    }
+    .karte__name {
+      font-size: 27px;
+    }
+    .karte__ort:not([data-ort='München']):not([data-ort='Kempten']):not([data-ort='Rosenheim']):not([data-ort='Salzburg']):not([data-ort='Augsburg']):not([data-ort='Innsbruck']):not([data-ort='Füssen']):not(.ist-nah) text {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .karte__ring {
+      animation: none;
+      opacity: 0.5;
+    }
+  }
+</style>
+
+<script>
+  // Karte und Hausliste gegenseitig hervorheben; Einzugsgebiet eines Hauses markieren
+  document.querySelectorAll<HTMLElement>('[data-karte]').forEach((karte) => {
+    const orte = Array.from(karte.querySelectorAll<SVGGElement>('[data-ort]'));
+    const haeuser = Array.from(karte.querySelectorAll<SVGAElement>('[data-karte-haus]'));
+    const zeige = (slug: string | null) => {
+      const haus = haeuser.find((h) => h.dataset.karteHaus === slug);
+      const nah = haus ? (haus.dataset.einzug ?? '').split('|') : [];
+      karte.classList.toggle('hat-fokus', !!haus);
+      haeuser.forEach((h) => h.classList.toggle('ist-aktiv', h === haus));
+      orte.forEach((o) => o.classList.toggle('ist-nah', nah.some((n) => o.dataset.ort!.startsWith(n.split(' ')[0]) || n.startsWith(o.dataset.ort!.replace('.', '')))));
+      document.querySelectorAll<HTMLElement>('[data-haus-karte]').forEach((k) => k.classList.toggle('ist-aktiv', k.dataset.hausKarte === slug));
+    };
+    const start = karte.dataset.aktiv ?? null;
+    haeuser.forEach((h) => {
+      h.addEventListener('pointerenter', () => zeige(h.dataset.karteHaus!));
+      h.addEventListener('focus', () => zeige(h.dataset.karteHaus!));
+      h.addEventListener('pointerleave', () => zeige(start));
+      h.addEventListener('blur', () => zeige(start));
+    });
+    document.querySelectorAll<HTMLElement>('[data-haus-karte]').forEach((k) => {
+      k.addEventListener('pointerenter', () => zeige(k.dataset.hausKarte!));
+      k.addEventListener('pointerleave', () => zeige(start));
+      k.addEventListener('focusin', () => zeige(k.dataset.hausKarte!));
+      k.addEventListener('focusout', () => zeige(start));
+    });
+    if (start) zeige(start);
+  });
+</script>

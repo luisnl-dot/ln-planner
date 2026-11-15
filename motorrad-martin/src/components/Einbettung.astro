@@ -1,0 +1,51 @@
+---
+/** Fremdinhalt (z. B. Fahrzeugbestand von mobile.de) – wird erst nach Klick geladen. */
+import Pfeil from './Pfeil.astro';
+interface Props {
+  src: string;
+  titel: string;
+  anbieter: string;
+  /** Direktlink als Alternative zur Einbettung. */
+  extern?: string;
+  hoehe?: string;
+}
+const { src, titel, anbieter, extern = src, hoehe = '80vh' } = Astro.props;
+---
+
+<div class="einbettung" data-einbettung={src} data-titel={titel} style={`--hoehe:${hoehe}`}>
+  <div class="einbettung__platz">
+    <p class="label label--dim">Externer Inhalt · {anbieter}</p>
+    <p class="h3">{titel}</p>
+    <p class="muted measure-s">
+      Der Bestand wird direkt aus unserem Fahrzeugportal bei {anbieter} geladen. Dabei werden Daten an {anbieter} übertragen.
+    </p>
+    <div class="flex umbruch g1 mt1">
+      <button class="btn btn--solid" type="button" data-einbetten>Hier laden <Pfeil /></button>
+      <a class="btn" href={extern} target="_blank" rel="noopener">Bei {anbieter} öffnen <Pfeil raus /></a>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .einbettung {
+    border: 1px solid var(--line-2);
+    background: var(--bg-2);
+  }
+  .einbettung__platz {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+  }
+  .einbettung iframe {
+    display: block;
+    width: 100%;
+    height: var(--hoehe);
+    min-height: 34rem;
+    border: 0;
+    background: #fff;
+  }
+  .einbettung.ist-geladen {
+    background: #fff;
+  }
+</style>

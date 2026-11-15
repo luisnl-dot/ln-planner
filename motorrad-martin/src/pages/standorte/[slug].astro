@@ -1,0 +1,388 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Anfrage from '../../components/Anfrage.astro';
+import Bild from '../../components/Bild.astro';
+import Karte from '../../components/Karte.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Schild from '../../components/Schild.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import Status from '../../components/Status.astro';
+import Zeiten from '../../components/Zeiten.astro';
+import { haeuser } from '../../data/haeuser';
+import { standorte, routeUrl, type Standort } from '../../data/standorte';
+import { team } from '../../data/team';
+import { bild } from '../../lib/bilder';
+import { schemaZeiten } from '../../lib/zeiten';
+
+export function getStaticPaths() {
+  return standorte.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props as { s: Standort };
+const h = haeuser[s.slug];
+const leute = team[s.slug] ?? [];
+const stellen = (await getCollection('jobs')).filter((j) => j.data.standort === s.slug);
+const andere = standorte.filter((x) => x !== s);
+
+const url = new URL(`/standorte/${s.slug}/`, Astro.site).href;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MotorcycleDealer',
+    '@id': `${url}#haus`,
+    name: s.name,
+    legalName: s.firma,
+    url,
+    image: new URL(bild(h.held).src, Astro.site).href,
+    telephone: s.telefon,
+    email: s.email,
+    address: { '@type': 'PostalAddress', streetAddress: s.strasse, postalCode: s.plz, addressLocality: s.ort, addressRegion: 'Bayern', addressCountry: 'DE' },
+    openingHoursSpecification: schemaZeiten(s.zeiten),
+    vatID: s.ustId,
+    brand: { '@type': 'Brand', name: 'BMW Motorrad' },
+    parentOrganization: { '@id': `${new URL('/', Astro.site).origin}/#organisation` },
+    areaServed: s.einzugsgebiet,
+  },
+];
+---
+
+<Basis titel={`${s.name} – BMW Motorrad in ${s.ort}`} beschreibung={`${s.name}: ${s.strasse}, ${s.plz} ${s.ort}. ${h.einleitung} Öffnungszeiten, Team, Anfahrt und Kontakt.`} bildOg={bild(h.held)} schema={schema}>
+  <Seitenkopf
+    krumen={[{ titel: 'Standorte', href: '/standorte/' }, { titel: s.ort }]}
+    lines={h.titel}
+    label={s.name}
+    rechts={s.rolle}
+    einleitung={h.einleitung}
+    bild={bild(h.held)}
+    bildAlt={h.heldAlt}
+    fokus={h.fokus}
+  >
+    <div class="haus-kontakt">
+      <Status haus={s.slug} />
+      <address>
+        {s.strasse}<br />{s.plz} {s.ort}
+      </address>
+      <div class="haus-kontakt__knoepfe">
+        <a class="btn btn--solid" href={`tel:${s.tel}`}>{s.telefon} <Pfeil /></a>
+        <a class="btn" href={routeUrl(s)} target="_blank" rel="noopener">Route planen <Pfeil raus /></a>
+      </div>
+      <button class="link haus-kontakt__merken" type="button" data-haus-merken={s.slug} aria-pressed="false">Als mein Haus merken</button>
+    </div>
+  </Seitenkopf>
+
+  <!-- ============ Über das Haus ============ -->
+  <section class="section section--flush-top">
+    <div class="wrap haus-ueber">
+      <div class="prosa">
+        {h.absaetze.map((p, i) => <p data-reveal style={`--i:${i}`}>{p}</p>)}
+      </div>
+      <aside class="haus-ueber__seite" data-reveal>
+        <Schild zeilen={[...h.kennwerte, ['Telefon', s.telefon], ['E-Mail', s.email]]} />
+        <div class="haus-zeiten">
+          <p class="label label--dim">Öffnungszeiten</p>
+          <Zeiten haus={s} />
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ Leistungen ============ -->
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="01" label="Im Haus" titel={`Was Sie in ${s.ort} bekommen.`} />
+      <ul class="haus-leist" role="list">
+        {
+          h.leistungen.map(([t, x], i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <span class="mono dim">{String(i + 1).padStart(2, '0')}</span>
+              <span class="h3">{t}</span>
+              <span class="muted">{x}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="flex umbruch g1 mt3">
+        <a class="btn" href={`/gebrauchte/${s.slug}/`}>Gebrauchte in {s.ort} <Pfeil /></a>
+        <a class="btn" href="/service/">Werkstatt <Pfeil /></a>
+        <a class="btn" href="/mieten/">Mieten <Pfeil /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Galerie ============ -->
+  <section class="haus-galerie" aria-label={`Bilder aus ${s.ort}`}>
+    <ul class="haus-galerie__band" role="list" data-lenis-prevent-touch>
+      {
+        h.galerie.map(([name, alt], i) => (
+          <li>
+            <Bild src={bild(name)} alt={alt} ratio="32" sizes="(min-width: 900px) 42vw, 82vw" widths={[480, 800, 1200]} reveal i={Math.min(i, 3)} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- ============ Team ============ -->
+  <section class="section" id="team">
+    <div class="wrap">
+      <Kopf nr="02" label="Team" titel={`Ihre Ansprechpartner in ${s.ort}.`} rechts={`${leute.length} Kolleginnen und Kollegen`} />
+      <ul class="haus-team" role="list">
+        {
+          leute.map((p) => (
+            <li>
+              <span class="haus-team__name">{p.name}</span>
+              <span class="muted">{p.rolle}</span>
+              <a class="mono" href={`tel:${p.telefon.replace(/\s/g, '')}`}>{p.telefon}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Anfahrt ============ -->
+  <section class="section haus-anfahrt">
+    <div class="wrap">
+      <Kopf nr="03" label="Anfahrt" titel={s.anfahrt} />
+      <div class="haus-anfahrt__raster">
+        <Karte aktiv={s.slug} data-reveal />
+        <div class="stack" style="--stack:1.5rem">
+          <p class="lead" data-reveal>Aus {s.einzugsgebiet.slice(0, -1).join(', ')} und {s.einzugsgebiet.at(-1)} sind Sie schnell bei uns.</p>
+          <a class="btn btn--solid" href={routeUrl(s)} target="_blank" rel="noopener">Route planen <Pfeil raus /></a>
+          <ul class="haus-andere" role="list">
+            {
+              andere.map((a) => (
+                <li>
+                  <a href={`/standorte/${a.slug}/`}>
+                    <span class="label label--dim">Auch für Sie da</span>
+                    <span class="h3">{a.ort}</span>
+                    <Status haus={a.slug} />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Stellen ============ -->
+  {
+    stellen.length > 0 && (
+      <section class="section">
+        <div class="wrap">
+          <Kopf nr="04" label="Karriere" titel={`${stellen.length === 1 ? 'Eine offene Stelle' : `${stellen.length} offene Stellen`} in ${s.ort}.`}>
+            <a slot="seite" class="link" href="/karriere/">
+              Alle Stellen <Pfeil />
+            </a>
+          </Kopf>
+          <ul class="haus-stellen" role="list">
+            {stellen.map((j) => (
+              <li>
+                <a href={`/karriere/${j.id}/`}>
+                  <span class="h3">{j.data.title}</span>
+                  <span class="label label--dim">{j.data.art}</span>
+                  <Pfeil />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ============ Anfrage ============ -->
+  <section class="section haus-anfrage" data-theme="dark" id="anfrage">
+    <div class="wrap haus-anfrage__raster">
+      <div>
+        <p class="label label--dim">Kontakt · {s.name}</p>
+        <h2 class="h1 h1--s mt2" data-reveal>Termin anfragen.</h2>
+        <p class="lead muted mt2 measure-s" data-reveal style="--i:1">Probefahrt, Werkstatt oder Beratung – wir melden uns bei Ihnen.</p>
+      </div>
+      <Anfrage haus={s.slug} anliegen="probefahrt" termin />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .haus-kontakt {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+  .haus-kontakt address {
+    font-style: normal;
+    color: var(--fg-2);
+  }
+  .haus-kontakt__knoepfe {
+    display: grid;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 22rem;
+  }
+  .haus-kontakt__merken {
+    color: var(--fg-2);
+  }
+  .haus-kontakt__merken[aria-pressed='true'] {
+    color: var(--blau);
+  }
+  .haus-ueber {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: 3rem clamp(2rem, 7vw, 8rem);
+    align-items: start;
+  }
+  .haus-ueber__seite {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .haus-zeiten {
+    display: grid;
+    gap: 0.6rem;
+  }
+  @media (max-width: 1000px) {
+    .haus-ueber {
+      grid-template-columns: 1fr;
+    }
+    .haus-ueber__seite {
+      max-width: 32rem;
+    }
+  }
+  .haus-leist {
+    border-top: 1px solid var(--fg);
+  }
+  .haus-leist li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 4fr) minmax(0, 6fr);
+    gap: var(--gap);
+    align-items: baseline;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 700px) {
+    .haus-leist li {
+      grid-template-columns: 2rem 1fr;
+    }
+    .haus-leist li .muted {
+      grid-column: 2;
+    }
+  }
+  .haus-galerie {
+    padding-bottom: var(--section);
+    overflow: clip;
+  }
+  .haus-galerie__band {
+    display: flex;
+    gap: var(--gap);
+    padding-inline: var(--pad);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .haus-galerie__band::-webkit-scrollbar {
+    display: none;
+  }
+  .haus-galerie__band li {
+    flex: 0 0 min(82vw, 42rem);
+    scroll-snap-align: center;
+  }
+  .haus-galerie__band li:nth-child(even) {
+    margin-top: clamp(1.5rem, 4vw, 4rem);
+  }
+  .haus-team {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gap);
+    border-top: 1px solid var(--fg);
+  }
+  .haus-team li {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 5fr) auto;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .haus-team__name {
+    font-weight: 620;
+    font-size: 1.08rem;
+    letter-spacing: -0.01em;
+  }
+  .haus-team a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  @media (max-width: 1100px) {
+    .haus-team {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .haus-team li {
+      grid-template-columns: 1fr auto;
+    }
+    .haus-team li .muted {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      font-size: 0.92rem;
+    }
+  }
+  .haus-anfahrt {
+    background: var(--paper-2);
+    --bg: var(--paper-2);
+  }
+  .haus-anfahrt__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: 2.5rem var(--gap);
+    align-items: start;
+  }
+  .haus-andere {
+    border-top: 1px solid var(--fg);
+    margin-top: 1rem;
+  }
+  .haus-andere a {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s var(--ease);
+  }
+  .haus-andere a:hover {
+    padding-left: 0.75rem;
+  }
+  @media (max-width: 1000px) {
+    .haus-anfahrt__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+  .haus-stellen {
+    border-top: 1px solid var(--fg);
+  }
+  .haus-stellen a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 1.5rem;
+    gap: var(--gap);
+    align-items: baseline;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s var(--ease);
+  }
+  .haus-stellen a:hover {
+    padding-left: 0.75rem;
+  }
+  .haus-anfrage__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  @media (max-width: 1000px) {
+    .haus-anfrage__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

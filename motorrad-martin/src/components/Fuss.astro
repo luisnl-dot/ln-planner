@@ -1,0 +1,193 @@
+---
+import { menue, recht } from '../data/navigation';
+import { standorte, routeUrl, social } from '../data/standorte';
+import Fit from './Fit.astro';
+import Pfeil from './Pfeil.astro';
+import Status from './Status.astro';
+import Zeiten from './Zeiten.astro';
+const jahr = new Date().getFullYear();
+---
+
+<footer class="fuss" data-theme="dark">
+  <div class="wrap">
+    <div class="fuss__oben">
+      <div class="fuss__claim">
+        <p class="label label--dim">BMW Motorrad Vertragshändler · Oberbayern &amp; Allgäu</p>
+        <p class="h2 mt2">Kein gewöhnlicher BMW Partner. Präzision seit 1954.</p>
+        <div class="flex umbruch g1 mt3">
+          <a class="btn btn--solid" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
+          <a class="btn" href="/kontakt/">Kontakt <Pfeil /></a>
+        </div>
+      </div>
+      <nav class="fuss__nav" aria-label="Seitenübersicht">
+        {
+          menue.map((g) => (
+            <div>
+              <p class="label label--dim">{g.titel}</p>
+              <ul role="list">
+                {g.links.map((l) => (
+                  <li>
+                    <a href={l.href}>{l.titel}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </nav>
+    </div>
+
+    <ul class="fuss__haeuser" role="list">
+      {
+        standorte.map((s) => (
+          <li class="fuss__haus">
+            <div class="fuss__hauskopf">
+              <a class="h3" href={`/standorte/${s.slug}/`}>
+                {s.ort}
+              </a>
+              <Status haus={s.slug} />
+            </div>
+            <address>
+              {s.strasse}
+              <br />
+              {s.plz} {s.ort}
+            </address>
+            <p class="fuss__kontakt">
+              <a href={`tel:${s.tel}`}>{s.telefon}</a>
+              <br />
+              <a href={`mailto:${s.email}`}>{s.email}</a>
+            </p>
+            <Zeiten haus={s} />
+            <a class="link mt2" href={routeUrl(s)} target="_blank" rel="noopener">
+              Route planen <Pfeil raus />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <Fit tag="p" class="fuss__marke" lines={['Martin']} label="Martin" />
+
+    <div class="fuss__unten label">
+      <p>© {jahr} Motorrad Martin</p>
+      <ul role="list">
+        {recht.map((r) => <li><a href={r.href}>{r.titel}</a></li>)}
+        <li><a href={social.instagram} target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href={social.facebook} target="_blank" rel="noopener">Facebook</a></li>
+      </ul>
+      <p class="fuss__foto">Fotos Martin Edition: Darren Jacklin</p>
+    </div>
+  </div>
+</footer>
+
+<style is:global>
+  .fuss {
+    background: var(--bg);
+    color: var(--fg);
+    padding-top: clamp(4rem, 8vw, 8rem);
+    padding-bottom: 1.5rem;
+    overflow: clip;
+  }
+  .fuss__oben {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem var(--gap);
+  }
+  .fuss__claim .h2 {
+    max-width: 14ch;
+  }
+  .fuss__nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem var(--gap);
+    align-content: start;
+  }
+  .fuss__nav ul {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.45rem;
+  }
+  .fuss__nav a {
+    color: var(--fg-2);
+    transition: color 0.25s;
+  }
+  .fuss__nav a:hover {
+    color: var(--fg);
+  }
+  .fuss__haeuser {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--gap);
+    margin-top: clamp(3.5rem, 7vw, 7rem);
+    border-top: 1px solid var(--fg);
+  }
+  .fuss__haus {
+    padding: 1.4rem 0 0.5rem;
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+  }
+  .fuss__haus + .fuss__haus {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  .fuss__hauskopf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+  }
+  .fuss address {
+    font-style: normal;
+    color: var(--fg-2);
+  }
+  .fuss__kontakt a {
+    text-decoration: underline;
+    text-decoration-color: var(--line-2);
+    text-underline-offset: 0.22em;
+  }
+  .fuss__kontakt a:hover {
+    text-decoration-color: currentColor;
+  }
+  .fuss__marke {
+    margin-top: clamp(3rem, 6vw, 6rem);
+    color: var(--fg);
+    opacity: 0.96;
+  }
+  .fuss__unten {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+    color: var(--fg-3);
+  }
+  .fuss__unten ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .fuss__unten a:hover {
+    color: var(--fg);
+  }
+  @media (max-width: 1000px) {
+    .fuss__oben {
+      grid-template-columns: 1fr;
+    }
+    .fuss__nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .fuss__haeuser {
+      grid-template-columns: 1fr;
+    }
+    .fuss__haus + .fuss__haus {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      margin-top: 1rem;
+    }
+  }
+</style>

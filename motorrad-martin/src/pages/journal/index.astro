@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Einbettung from '../../components/Einbettung.astro';
+import JournalKarte, { kategorien } from '../../components/JournalKarte.astro';
+import Kopf from '../../components/Kopf.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+
+const alle = (await getCollection('journal')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const zahl = (k: string) => alle.filter((a) => a.data.kategorie === k).length;
+const [erster, ...rest] = alle;
+---
+
+<Basis titel="Journal – Neuheiten, Editionen, Übergaben" beschreibung="Das Journal von BMW Motorrad Martin: neue BMW Modelle, Martin Editionen, Fahrzeugübergaben, Aktionen und Neuigkeiten aus Schongau, Weyarn und Oy-Mittelberg.">
+  <Seitenkopf krumen={[{ titel: 'Journal' }]} lines={['Journal']} rechts={`${alle.length} Beiträge`} einleitung="Neue Modelle, neue Editionen, Übergaben und alles, was sich in unseren drei Häusern tut." />
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <div class="chips j-filter" data-filter="kategorie" role="group" aria-label="Nach Thema filtern">
+        <button class="chip" type="button" data-wert="alle" aria-pressed="true">Alle <sup>{alle.length}</sup></button>
+        {
+          Object.entries(kategorien)
+            .filter(([k]) => zahl(k))
+            .map(([k, v]) => (
+              <button class="chip" type="button" data-wert={k} aria-pressed="false">
+                {v} <sup>{zahl(k)}</sup>
+              </button>
+            ))
+        }
+      </div>
+      <div class="j-erster" data-kategorie={erster.data.kategorie}>
+        <JournalKarte eintrag={erster} gross sizes="(min-width: 1000px) 60vw, 100vw" />
+      </div>
+      <ul class="j-raster" role="list">
+        {
+          rest.map((e, i) => (
+            <li data-kategorie={e.data.kategorie} data-karte>
+              <JournalKarte eintrag={e} i={i % 3} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section racing" data-theme="dark" id="racing">
+    <div class="wrap">
+      <Kopf nr="01" label="Racing & Events" titel="Ergebnisse und Termine." />
+      <div class="racing__raster">
+        <Einbettung src="https://mybaunzer.de/sportergebnisse/index.php" titel="Sportergebnisse" anbieter="mybaunzer.de" hoehe="70vh" />
+        <Einbettung src="https://mybaunzer.de/kalender/" titel="Rennkalender" anbieter="mybaunzer.de" hoehe="70vh" />
+      </div>
+      <p class="muted mt3">Events: Aktuell sind keine Veranstaltungen angekündigt.</p>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .j-filter {
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .j-erster {
+    max-width: 70rem;
+    padding-bottom: clamp(2.5rem, 5vw, 5rem);
+    margin-bottom: clamp(2.5rem, 5vw, 5rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .j-raster {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2.5rem, 4vw, 4rem) var(--gap);
+  }
+  @media (max-width: 1000px) {
+    .j-raster {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 620px) {
+    .j-raster {
+      grid-template-columns: 1fr;
+    }
+  }
+  .racing__raster {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+  @media (max-width: 900px) {
+    .racing__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Themenfilter aus der Adresse übernehmen (?kategorie=uebergaben)
+  const k = new URLSearchParams(location.search).get('kategorie');
+  if (k) document.querySelector<HTMLButtonElement>(`[data-filter="kategorie"] [data-wert="${CSS.escape(k)}"]`)?.click();
+</script>

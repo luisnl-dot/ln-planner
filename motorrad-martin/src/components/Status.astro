@@ -1,0 +1,17 @@
+---
+/**
+ * Live-Öffnungsstatus eines Hauses. Serverseitig neutral gerendert,
+ * im Browser nach Europe/Berlin berechnet (scripts/status.ts).
+ */
+interface Props {
+  haus: string;
+  ort?: boolean;
+  class?: string;
+}
+const { haus, ort = false, class: c } = Astro.props;
+---
+
+<span class:list={['status', c]} data-status={haus} data-mit-ort={ort ? '' : undefined}>
+  <span class="status__punkt" aria-hidden="true"></span>
+  <span data-status-text>Öffnungszeiten</span>
+</span>

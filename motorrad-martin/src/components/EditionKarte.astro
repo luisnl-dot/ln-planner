@@ -1,0 +1,85 @@
+---
+import Bild from './Bild.astro';
+import { bild } from '../lib/bilder';
+import type { EditionMitNr } from '../data/editionen';
+
+interface Props {
+  e: EditionMitNr;
+  sizes?: string;
+  /** Übergangsname setzen (nur einmal pro Seite und Edition). */
+  vt?: boolean;
+  eager?: boolean;
+  class?: string;
+}
+const { e, sizes = '(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 100vw', vt = false, eager = false, class: c } = Astro.props;
+---
+
+<a class:list={['ed-karte', c]} href={`/martin-edition/${e.slug}/`} data-karte data-familie={e.familie} style={`--edition:${e.akzent}`}>
+  <Bild src={bild(`editionen/${e.slug}-1`)} alt={e.titel} ratio="32" sizes={sizes} widths={[480, 800, 1200]} vt={vt ? `ed-${e.slug}` : undefined} eager={eager} />
+  <span class="ed-karte__text">
+    <span class="label ed-karte__ober">
+      <span class="ed-karte__nr">{e.nr}</span>
+      <span>BMW {e.basis}</span>
+    </span>
+    <span class="ed-karte__name">{e.name}</span>
+    <span class="ed-karte__zeile muted">{e.zeile}</span>
+  </span>
+</a>
+
+<style is:global>
+  .ed-karte {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    color: var(--fg);
+  }
+  .ed-karte .bild img {
+    transition: transform 1.2s var(--ease);
+  }
+  .ed-karte:hover .bild img,
+  .ed-karte:focus-visible .bild img {
+    transform: scale(1.045);
+  }
+  .ed-karte .bild::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 3px;
+    background: var(--edition, var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease);
+  }
+  .ed-karte:hover .bild::after,
+  .ed-karte:focus-visible .bild::after {
+    transform: scaleX(1);
+  }
+  .ed-karte__text {
+    display: grid;
+    gap: 0.3rem;
+  }
+  .ed-karte__ober {
+    display: flex;
+    gap: 0.8rem;
+    color: var(--fg-3);
+  }
+  .ed-karte__nr {
+    color: var(--edition, var(--accent));
+  }
+  .ed-karte__name {
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.4rem);
+    font-weight: 760;
+    font-stretch: 100%;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    transition: font-stretch 0.6s var(--ease);
+  }
+  .ed-karte:hover .ed-karte__name,
+  .ed-karte:focus-visible .ed-karte__name {
+    font-stretch: 118%;
+  }
+  .ed-karte__zeile {
+    font-size: 0.95rem;
+  }
+</style>

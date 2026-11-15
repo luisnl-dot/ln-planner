@@ -1,0 +1,458 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Anfrage from '../../components/Anfrage.astro';
+import Bild from '../../components/Bild.astro';
+import EditionKarte from '../../components/EditionKarte.astro';
+import JournalKarte from '../../components/JournalKarte.astro';
+import Kopf from '../../components/Kopf.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { editionen, familien, komponenten } from '../../data/editionen';
+import { standort } from '../../data/standorte';
+import { bild } from '../../lib/bilder';
+
+const weyarn = standort('weyarn');
+const zahl = (f: string) => editionen.filter((e) => e.familie === f).length;
+const uebergaben = (await getCollection('journal')).filter((j) => j.data.kategorie === 'uebergaben').sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const umbau = uebergaben.find((u) => u.id === 'fahrzeuguebergabe-bmw-r-ninet-masterpiece');
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Martin Edition – veredelte BMW Motorräder',
+    url: new URL('/martin-edition/', Astro.site).href,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: editionen.length,
+      itemListElement: editionen.map((e, i) => ({ '@type': 'ListItem', position: i + 1, name: e.titel, url: new URL(`/martin-edition/${e.slug}/`, Astro.site).href })),
+    },
+  },
+];
+---
+
+<Basis
+  titel="Martin Edition – veredelte BMW Motorräder aus Weyarn"
+  beschreibung="Martin Edition: veredelte BMW Motorräder in Handarbeit – streng limitiert, jedes ein Einzelstück. Die aktuelle Kollektion von R 1300 GS bis M 1000 RR, gebaut in der Manufaktur in Weyarn."
+  dunkel
+  bildOg={bild('editionen/r-1300-gs-adventure-black-2')}
+  schema={schema}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Martin Edition' }]}
+    lines={['Martin Edition']}
+    linesSm={['Martin', 'Edition']}
+    label="Martin Edition"
+    rechts={`Manufaktur Weyarn · ${editionen.length} Editionen`}
+    einleitung="Veredelte BMW Motorräder, in Handarbeit gebaut – streng limitiert, jedes ein Einzelstück. Kein gewöhnlicher BMW Partner."
+    bild={bild('editionen/r-1300-gs-adventure-black-2')}
+    bildAlt="BMW R 1300 GS Adventure Martin Edition Black in einem orange beleuchteten Tunnel"
+    fokus="50% 62%"
+  >
+    <div class="stack">
+      <p class="muted">Wir bauen Ihnen Ihr Motorrad nach Ihren Wünschen um. Für BMW gibt es eine breite Palette von Umbauteilen – wir geben Ihnen gerne Auskunft über die Möglichkeiten eines sinnvollen An- oder Umbaus.</p>
+      <a class="btn btn--solid" href="#anfrage">Edition anfragen <Pfeil /></a>
+    </div>
+  </Seitenkopf>
+
+  <!-- ============ Kollektion ============ -->
+  <section class="section section--flush-top" id="kollektion">
+    <div class="wrap">
+      <Kopf nr="01" label="Kollektion" titel="Die aktuelle Kollektion." />
+
+      <div class="werkzeug">
+        <div class="chips" data-filter="familie" role="group" aria-label="Nach Baureihe filtern">
+          <button class="chip" type="button" data-wert="alle" aria-pressed="true">Alle <sup>{editionen.length}</sup></button>
+          {
+            familien.map((f) => (
+              <button class="chip" type="button" data-wert={f} aria-pressed="false">
+                {f} <sup>{zahl(f)}</sup>
+              </button>
+            ))
+          }
+        </div>
+        <div class="chips werkzeug__ansicht" data-ansicht-wahl="#sammlung" role="group" aria-label="Ansicht">
+          <button class="chip" type="button" data-ansicht="tafeln" aria-pressed="true">Tafeln</button>
+          <button class="chip" type="button" data-ansicht="register" aria-pressed="false">Register</button>
+        </div>
+      </div>
+
+      <div class="sammlung" id="sammlung" data-ansicht="tafeln">
+        <!-- Tafeln -->
+        <ul class="tafeln" role="list">
+          {
+            editionen.map((e, i) => (
+              <li data-familie={e.familie} data-karte>
+                <EditionKarte e={e} vt eager={i < 3} />
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- Register -->
+        <div class="register" data-register>
+          <div class="register__kopf label label--dim" aria-hidden="true">
+            <span>Nº</span>
+            <span>Basis</span>
+            <span>Edition</span>
+            <span>Signatur</span>
+            <span></span>
+          </div>
+          <ul role="list">
+            {
+              editionen.map((e) => (
+                <li data-familie={e.familie} data-zeile={e.slug} style={`--edition:${e.akzent}`}>
+                  <a class="register__zeile" href={`/martin-edition/${e.slug}/`}>
+                    <span class="mono register__nr">{e.nr}</span>
+                    <span class="mono register__basis">BMW {e.basis}</span>
+                    <span class="register__name">{e.name}</span>
+                    <span class="mono register__teile">{e.teile.slice(0, 2).join(' · ') || e.zeile}</span>
+                    <Pfeil />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="register__vorschau" data-vorschau aria-hidden="true">
+            {
+              editionen.map((e) => (
+                <div class="register__vorschau-bild" data-vorschau-bild={e.slug}>
+                  <Bild src={bild(`editionen/${e.slug}-1`)} alt="" ratio="32" sizes="420px" widths={[480, 800]} />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+      <p class="label label--dim mt3">
+        <span data-filter-zahl="familie">{editionen.length}</span> Editionen · Katalognummern bezeichnen die Position in dieser Übersicht · Fotos: Darren Jacklin
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Komponenten ============ -->
+  <section class="komp" aria-label="Verbaute Komponenten">
+    <div class="wrap">
+      <p class="label label--dim">In den Umbauten verbaut: Komponenten von</p>
+    </div>
+    <div class="komp__lauf" aria-hidden="true">
+      <div class="komp__band">
+        {[...komponenten, ...komponenten].map((k) => <span>{k}</span>)}
+      </div>
+    </div>
+    <p class="sr-only">{komponenten.join(', ')}</p>
+  </section>
+
+  <!-- ============ Ihr Motorrad ============ -->
+  <section class="section">
+    <div class="wrap">
+      <Kopf nr="02" label="Einzelanfertigung" titel="Vom Serienmotorrad zum Einzelstück." />
+      <div class="einzel">
+        <div class="einzel__text">
+          <p class="lead" data-reveal>Eine Martin Edition muss nicht aus der Kollektion stammen. Auch ein bestehendes Motorrad wird bei uns zum Einzelstück – wie diese umfassend transformierte BMW R nineT.</p>
+          <ol class="einzel__liste" role="list">
+            {
+              [
+                ['Engineering Concept', 'Kompletter Umbau einer bestehenden BMW R nineT.'],
+                ['Signature Paintwork', 'Vollständige Lackierung und exklusive Pulverbeschichtung in Schwarz Matt.'],
+                ['Precision Hardware', 'Ein spezielles Schrauben-Kit in Tiefschwarz – technische Perfektion bis ins letzte Detail.'],
+                ['Advanced Coating', 'Auspuffkrümmer mit hitzebeständiger Beschichtung in Schwarz Matt.'],
+                ['Suspension Excellence', 'Wilbers Fahrwerk mit individueller Abstimmung.'],
+                ['High-Performance Contact', 'Metzeler Roadtec 02 für Grip unter allen Bedingungen.'],
+              ].map(([t, x], i) => (
+                <li data-reveal style={`--i:${i}`}>
+                  <span class="mono dim">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="h4">{t}</span>
+                  <span class="muted">{x}</span>
+                </li>
+              ))
+            }
+          </ol>
+          {
+            umbau && (
+              <a class="link mt3" href={`/journal/${umbau.id}/`}>
+                Zum Bericht über den Umbau <Pfeil />
+              </a>
+            )
+          }
+        </div>
+        <div class="einzel__bild">{umbau?.data.cover && <Bild src={umbau.data.cover} alt="Übergabe einer umgebauten BMW R nineT Black Edition in Weyarn" ratio="45" sizes="(min-width: 900px) 40vw, 100vw" reveal />}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Übergaben ============ -->
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="03" label="Übergaben" titel="Willkommen in der Martin Edition Family.">
+        <a slot="seite" class="link" href="/journal/?kategorie=uebergaben">Alle Übergaben <Pfeil /></a>
+      </Kopf>
+      <ul class="familie" role="list">
+        {
+          uebergaben.slice(0, 3).map((u, i) => (
+            <li>
+              <JournalKarte eintrag={u} i={i} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Anfrage ============ -->
+  <section class="section anfrage-band" id="anfrage">
+    <div class="wrap anfrage-band__raster">
+      <div class="anfrage-band__text">
+        <p class="label label--dim">04 — Anfrage</p>
+        <h2 class="h1 h1--s mt2" data-reveal>Ihre Edition beginnt mit einer Frage.</h2>
+        <p class="lead mt2 muted" data-reveal style="--i:1">Welche BMW fahren Sie – oder möchten Sie fahren? Schreiben Sie uns, was Sie sich vorstellen.</p>
+        <dl class="anfrage-band__haus mt3" data-reveal style="--i:2">
+          <dt class="label label--dim">Manufaktur</dt>
+          <dd>
+            {weyarn.name}<br />{weyarn.strasse}, {weyarn.plz} {weyarn.ort}<br />
+            <a class="textlink" href={`tel:${weyarn.tel}`}>{weyarn.telefon}</a>
+          </dd>
+        </dl>
+      </div>
+      <Anfrage anliegen="edition" haus="weyarn" nachrichtLabel="Ihre Vorstellung" knopf="Edition anfragen" />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .werkzeug {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  @media (max-width: 899px), (hover: none) {
+    .werkzeug__ansicht {
+      display: none;
+    }
+  }
+  /* Ansichten */
+  .sammlung[data-ansicht='tafeln'] .register,
+  .sammlung[data-ansicht='register'] .tafeln {
+    display: none;
+  }
+  .tafeln {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2.5rem, 4vw, 4.5rem) var(--gap);
+  }
+  @media (max-width: 1100px) {
+    .tafeln {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .tafeln {
+      grid-template-columns: 1fr;
+    }
+  }
+  /* erste Tafel jeder Dreierreihe etwas versetzt – ruhiger Rhythmus statt starrem Raster */
+  @media (min-width: 1101px) {
+    .tafeln > li:nth-child(3n + 2) {
+      margin-top: clamp(2rem, 4vw, 4.5rem);
+    }
+  }
+
+  .register {
+    position: relative;
+  }
+  .register__kopf,
+  .register__zeile {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 3fr) minmax(0, 5fr) minmax(0, 5fr) 1.5rem;
+    gap: var(--gap);
+    align-items: baseline;
+  }
+  .register__kopf {
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--fg);
+  }
+  .register__zeile {
+    padding: clamp(0.8rem, 1.4vw, 1.25rem) 0;
+    border-bottom: 1px solid var(--line);
+    transition:
+      padding 0.5s var(--ease),
+      border-color 0.3s;
+  }
+  .register__nr {
+    color: var(--edition);
+  }
+  .register__basis,
+  .register__teile {
+    color: var(--fg-2);
+  }
+  .register__name {
+    font-size: clamp(1.6rem, 0.9rem + 2.6vw, 3.4rem);
+    font-weight: 780;
+    font-stretch: 100%;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-transform: uppercase;
+    transition: font-stretch 0.6s var(--ease);
+  }
+  .register__zeile :global(.pfeil) {
+    align-self: center;
+  }
+  .register__zeile:hover,
+  .register__zeile:focus-visible {
+    padding-left: 1rem;
+    border-bottom-color: var(--edition);
+  }
+  .register__zeile:hover .register__name,
+  .register__zeile:focus-visible .register__name {
+    font-stretch: 120%;
+  }
+  .register__vorschau {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: clamp(18rem, 28vw, 27rem);
+    margin: -9rem 0 0 2.5rem;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0;
+    clip-path: inset(50% 0 50% 0);
+    transition:
+      opacity 0.3s,
+      clip-path 0.6s var(--ease);
+  }
+  :global(.register__vorschau.ist-sichtbar) {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+  .register__vorschau-bild {
+    position: absolute;
+    inset: 0 0 auto 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  :global(.register__vorschau-bild.ist-aktiv) {
+    opacity: 1;
+  }
+
+  /* Komponenten-Laufband */
+  .komp {
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+    border-block: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    overflow: clip;
+  }
+  .komp__lauf {
+    margin-top: 1.25rem;
+    display: flex;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .komp__band {
+    display: flex;
+    gap: clamp(2rem, 4vw, 4.5rem);
+    padding-right: clamp(2rem, 4vw, 4.5rem);
+    white-space: nowrap;
+    animation: lauf 46s linear infinite;
+    font-size: clamp(1.6rem, 1rem + 2.4vw, 3.2rem);
+    font-weight: 300;
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  .komp__band span:nth-child(even) {
+    font-weight: 800;
+  }
+  .komp:hover .komp__band {
+    animation-play-state: paused;
+  }
+  @keyframes lauf {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .komp__lauf {
+      overflow-x: auto;
+    }
+    .komp__band {
+      animation: none;
+    }
+  }
+
+  /* Einzelanfertigung */
+  .einzel {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3rem var(--gap);
+    align-items: start;
+  }
+  .einzel__text .lead {
+    max-width: 30em;
+  }
+  .einzel__liste {
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    border-top: 1px solid var(--fg);
+    max-width: 44rem;
+  }
+  .einzel__liste li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 2fr) minmax(0, 3fr);
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .einzel__bild {
+    padding-left: clamp(0rem, 3vw, 4rem);
+  }
+  @media (max-width: 900px) {
+    .einzel {
+      grid-template-columns: 1fr;
+    }
+    .einzel__bild {
+      padding-left: 0;
+      max-width: 30rem;
+    }
+    .einzel__liste li {
+      grid-template-columns: 2rem 1fr;
+    }
+    .einzel__liste li .muted {
+      grid-column: 2;
+    }
+  }
+
+  .familie {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem var(--gap);
+  }
+  @media (max-width: 900px) {
+    .familie {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Anfrage */
+  .anfrage-band {
+    background: var(--bg-2);
+    --bg: var(--night-2);
+  }
+  .anfrage-band__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .anfrage-band__haus dd {
+    margin: 0.5rem 0 0;
+    color: var(--fg-2);
+  }
+  @media (max-width: 1000px) {
+    .anfrage-band__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+/** Typenschild: Kennwerte als geprägte Zeilen. */
+interface Props {
+  zeilen: [string, string][];
+  class?: string;
+}
+const { zeilen, class: c } = Astro.props;
+---
+
+<dl class:list={['schild schild__zeilen', c]}>
+  {
+    zeilen.map(([k, v]) => (
+      <div class="schild__zeile">
+        <dt>{k}</dt>
+        <dd>{v}</dd>
+      </div>
+    ))
+  }
+</dl>

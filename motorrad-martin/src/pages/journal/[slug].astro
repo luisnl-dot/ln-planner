@@ -1,0 +1,215 @@
+---
+import { getCollection, render } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Bild from '../../components/Bild.astro';
+import JournalKarte, { kategorien } from '../../components/JournalKarte.astro';
+import Pfeil from '../../components/Pfeil.astro';
+import { editionen } from '../../data/editionen';
+import { standort } from '../../data/standorte';
+
+export async function getStaticPaths() {
+  const alle = (await getCollection('journal')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+  return alle.map((e) => ({ params: { slug: e.id }, props: { e, alle } }));
+}
+const { e, alle } = Astro.props;
+const { Content } = await render(e);
+const d = e.data;
+const haus = d.standort ? standort(d.standort) : undefined;
+const verwandt = alle.filter((x) => x.id !== e.id && x.data.kategorie === d.kategorie).slice(0, 3);
+const ed = editionen.find((x) => x.journal === e.id);
+const url = new URL(`/journal/${e.id}/`, Astro.site).href;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.title,
+    description: d.teaser,
+    image: d.cover ? [new URL(d.cover.src, Astro.site).href] : undefined,
+    mainEntityOfPage: url,
+    author: { '@id': `${new URL('/', Astro.site).origin}/#organisation` },
+    publisher: { '@id': `${new URL('/', Astro.site).origin}/#organisation` },
+    articleSection: kategorien[d.kategorie],
+    inLanguage: 'de-DE',
+  },
+];
+---
+
+<Basis titel={d.title} beschreibung={d.teaser} bildOg={d.cover} schema={schema}>
+  <article class="art">
+    <header class="art__kopf wrap">
+      <div class="art__leiste label">
+        <nav aria-label="Brotkrumen">
+          <ol role="list" class="art__krumen">
+            <li><a href="/">Start</a></li>
+            <li><a href="/journal/">Journal</a></li>
+            <li><a href={`/journal/?kategorie=${d.kategorie}`}>{kategorien[d.kategorie]}</a></li>
+          </ol>
+        </nav>
+        {haus && <a class="dim" href={`/standorte/${haus.slug}/`}>{haus.ort}</a>}
+      </div>
+      <h1 class="art__titel" data-reveal>{d.title}</h1>
+    </header>
+
+    {
+      d.cover && (
+        <div class="wrap">
+          <Bild src={d.cover} alt="" ratio="219" sizes="100vw" eager reveal class="art__bild" />
+        </div>
+      )
+    }
+
+    <div class="wrap art__koerper">
+      <div class="prosa">
+        <Content />
+      </div>
+      <aside class="art__seite">
+        {
+          ed && (
+            <a class="art__kasten" href={`/martin-edition/${ed.slug}/`} style={`--edition:${ed.akzent}`}>
+              <span class="label label--dim">Zur Edition · Nº {ed.nr}</span>
+              <span class="h3">
+                BMW {ed.basis} {ed.name}
+              </span>
+              <Pfeil />
+            </a>
+          )
+        }
+        <a class="art__kasten" href={`/kontakt/${haus ? `?haus=${haus.slug}` : ''}`}>
+          <span class="label label--dim">Fragen dazu?</span>
+          <span class="h3">{haus ? `Team ${haus.ort} kontaktieren` : 'Kontakt aufnehmen'}</span>
+          <Pfeil />
+        </a>
+      </aside>
+    </div>
+
+    {
+      d.galerie.length > 0 && (
+        <div class="wrap">
+          <ul class="art__galerie" role="list">
+            {d.galerie.map((g, i) => (
+              <li>
+                <Bild src={g} alt="" ratio="32" sizes="(min-width: 800px) 33vw, 100vw" widths={[480, 800, 1200]} reveal i={i} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </article>
+
+  {
+    verwandt.length > 0 && (
+      <section class="section">
+        <div class="wrap">
+          <div class="kopf">
+            <div class="kopf__nr label">
+              <span>Mehr aus {kategorien[d.kategorie]}</span>
+              <a href="/journal/">Alle Beiträge →</a>
+            </div>
+          </div>
+          <ul class="art__mehr" role="list">
+            {verwandt.map((v, i) => (
+              <li>
+                <JournalKarte eintrag={v} i={i} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+</Basis>
+
+<style>
+  .art__kopf {
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+  }
+  .art__leiste {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(0.5rem, 1.6vh, 1.1rem);
+    border-bottom: 1px solid var(--fg);
+  }
+  .art__krumen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+  }
+  .art__krumen li + li::before {
+    content: '/';
+    margin-right: 0.6rem;
+    color: var(--fg-3);
+  }
+  .art__krumen a {
+    color: var(--fg-3);
+  }
+  .art__krumen a:hover {
+    color: var(--fg);
+  }
+  .art__titel {
+    font-size: clamp(2.2rem, 1.1rem + 5vw, 6rem);
+    font-weight: 780;
+    font-stretch: 104%;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    max-width: 18em;
+    padding-block: clamp(1.5rem, 4vw, 4rem);
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+  @media (max-width: 700px) {
+    :global(.art__bild) {
+      aspect-ratio: 3 / 2;
+    }
+  }
+  .art__koerper {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: 3rem clamp(2rem, 7vw, 8rem);
+    align-items: start;
+    padding-block: clamp(2.5rem, 6vw, 6rem);
+  }
+  .art__seite {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    border-top: 1px solid var(--fg);
+  }
+  .art__kasten {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.4rem 1rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+    transition: padding 0.4s var(--ease);
+  }
+  .art__kasten .label {
+    grid-column: 1 / -1;
+  }
+  .art__kasten:hover {
+    padding-left: 0.75rem;
+  }
+  .art__galerie {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+    padding-bottom: var(--section);
+  }
+  .art__mehr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem var(--gap);
+  }
+  @media (max-width: 900px) {
+    .art__koerper,
+    .art__galerie,
+    .art__mehr {
+      grid-template-columns: 1fr;
+    }
+    .art__seite {
+      position: static;
+    }
+  }
+</style>

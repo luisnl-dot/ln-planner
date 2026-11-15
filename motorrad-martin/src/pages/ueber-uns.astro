@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../layouts/Basis.astro';
+import Abschluss from '../components/Abschluss.astro';
+import Bild from '../components/Bild.astro';
+import Kopf from '../components/Kopf.astro';
+import Massband from '../components/Massband.astro';
+import Pfeil from '../components/Pfeil.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import { chronik } from '../data/chronik';
+import { standorte } from '../data/standorte';
+import { bild } from '../lib/bilder';
+
+const stellen = (await getCollection('jobs')).length;
+const bilder: Record<string, [string, string]> = {
+  '1964': ['standorte/schongau-front', 'Das Stammhaus Erwin Martin in Schongau'],
+  '1969': ['haus/classic-firma', 'BMW Motorräder vor dem Betrieb in Schongau'],
+  '2018': ['standorte/oy-neubau', 'Rohbau des neuen Gebäudes in Oy-Mittelberg'],
+  '2022': ['haus/weyarn-bau-nacht', 'Baustelle des Motorradhauses in Weyarn bei Nacht'],
+};
+---
+
+<Basis
+  titel="Seit 1954 – die Geschichte des Hauses Martin"
+  beschreibung="Von der Tankstelle in Ingenried zum BMW Motorrad Händler mit drei Häusern: die Geschichte der Familie Martin seit 1954 – BMW Vertragspartner seit 1967, heute in dritter Generation."
+  bildOg={bild('standorte/schongau-front')}
+>
+  <Seitenkopf
+    krumen={[{ titel: 'Seit 1954' }]}
+    lines={['Präzision', 'seit 1954']}
+    label="Präzision seit 1954"
+    rechts="Familie Martin · dritte Generation"
+    einleitung="Was 1954 als Familienbetrieb begann, wird heute in dritter Generation geführt: BMW Martin ist einer der größten BMW Motorrad Händler in Deutschland."
+  >
+    <p class="muted">Drei Standorte in Weyarn, Schongau und Oy-Mittelberg – jeder mit eigenem Team in Verkauf, Werkstatt, Service und Verwaltung. Ein Betrieb, der seit 1954 in Familienhand ist: keine Kette, kein Investor.</p>
+  </Seitenkopf>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Massband />
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="01" label="Chronik" titel="Acht Stationen." />
+      <ol class="chr" role="list">
+        {
+          chronik.map((c) => (
+            <li class="chr__eintrag">
+              <div class="chr__jahr" data-reveal>
+                {c.jahr}
+              </div>
+              <div class="chr__text" data-reveal style="--i:1">
+                <p class="label label--dim">{c.datum}</p>
+                <h3 class="h2">{c.titel}</h3>
+                <p class="lead muted">{c.text}</p>
+              </div>
+              {bilder[c.jahr] && (
+                <div class="chr__bild">
+                  <Bild src={bild(bilder[c.jahr][0])} alt={bilder[c.jahr][1]} ratio="32" sizes="(min-width: 900px) 32vw, 100vw" widths={[480, 800, 1200]} reveal />
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section heute" data-theme="dark">
+    <div class="wrap">
+      <Kopf nr="02" label="Heute" titel="Drei Häuser, eine Familie." />
+      <ul class="heute__liste" role="list">
+        {
+          standorte.map((s, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <p class="label label--dim">{s.firma}</p>
+              <p class="heute__ort"><a href={`/standorte/${s.slug}/`}>{s.ort}</a></p>
+              <p class="muted">Vertreten durch {s.vertretung}</p>
+              <a class="link" href={`/standorte/${s.slug}/#team`}>Team {s.ort} <Pfeil /></a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="lead heute__zitat mt4" data-reveal>Im Bereich Motorrad einer der größten Händler deutschland- und weltweit – und mit der Martin Edition Heimat einer eigenen Custom-Marke.</p>
+    </div>
+  </section>
+
+  <Abschluss titel="Bauen Sie mit." text={`Wer bei uns anfängt, schraubt nicht nur an Serienmaschinen, sondern baut an einer eigenen Marke mit. Aktuell ${stellen} offene Stellen.`} knopf="Zur Karriere" href="/karriere/" knopf2="Martin Edition" href2="/martin-edition/" />
+</Basis>
+
+<style>
+  .chr {
+    border-top: 1px solid var(--fg);
+  }
+  .chr__eintrag {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
+    gap: 1.25rem var(--gap);
+    align-items: start;
+    padding: clamp(1.5rem, 3vw, 3rem) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .chr__jahr {
+    font-size: clamp(3.6rem, 1.6rem + 9vw, 11rem);
+    font-weight: 800;
+    font-stretch: 112%;
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+  }
+  .chr__text {
+    display: grid;
+    gap: 0.7rem;
+    padding-top: 0.4rem;
+  }
+  .chr__text .lead {
+    max-width: 30em;
+  }
+  @media (max-width: 900px) {
+    .chr__eintrag {
+      grid-template-columns: 1fr;
+    }
+    .chr__bild {
+      max-width: 26rem;
+    }
+  }
+  .heute__liste {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--fg);
+  }
+  .heute__liste li {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    padding: 1.25rem var(--gap) 0 0;
+  }
+  .heute__liste li + li {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  .heute__ort {
+    font-size: clamp(2rem, 1.2rem + 3vw, 4.2rem);
+    font-weight: 800;
+    font-stretch: 106%;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .heute__zitat {
+    max-width: 28em;
+  }
+  @media (max-width: 900px) {
+    .heute__liste {
+      grid-template-columns: 1fr;
+    }
+    .heute__liste li + li {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      margin-top: 1.5rem;
+    }
+  }
+</style>
