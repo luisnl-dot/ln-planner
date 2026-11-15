@@ -147,13 +147,15 @@ import { team } from '../data/team';
   }
   .kon-team__ort {
     font-size: clamp(1.7rem, 1.1rem + 2.4vw, 3.2rem);
-    font-weight: 560;
-    font-stretch: 100%;
-    letter-spacing: -0.028em;
+    font-weight: 780;
+    font-stretch: 104%;
+    letter-spacing: -0.035em;
     line-height: 0.96;
-    transition: color 0.3s;
+    transition: font-stretch 0.6s var(--ease);
+    text-transform: uppercase;
   }
   .kon-team a:hover .kon-team__ort {
+  font-stretch: 118%;
   }
   @media (max-width: 900px) {
     .kon-team {

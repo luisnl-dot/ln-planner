@@ -124,13 +124,15 @@ const zeile: Record<string, string> = {
   }
   .bestand__ort {
     font-size: clamp(2rem, 1.3rem + 2.6vw, 3.6rem);
-    font-weight: 560;
+    font-weight: 800;
     font-stretch: 100%;
-    letter-spacing: -0.028em;
+    letter-spacing: -0.035em;
     line-height: 0.95;
-    transition: color 0.3s;
+    transition: font-stretch 0.6s var(--ease);
+    text-transform: uppercase;
   }
   .bestand__karte:hover .bestand__ort {
+  font-stretch: 118%;
   }
   .bestand__fuss {
     display: flex;
@@ -171,17 +173,19 @@ const zeile: Record<string, string> = {
   }
   .ratgeber__modell {
     font-size: clamp(1.4rem, 1rem + 1.6vw, 2.4rem);
-    font-weight: 560;
+    font-weight: 760;
     font-stretch: 100%;
-    letter-spacing: -0.028em;
+    letter-spacing: -0.03em;
     line-height: 1;
-    transition: color 0.3s;
+    transition: font-stretch 0.6s var(--ease);
+    text-transform: uppercase;
   }
   .ratgeber__liste a:hover {
     padding-left: 0.75rem;
     border-bottom-color: var(--fg);
   }
   .ratgeber__liste a:hover .ratgeber__modell {
+  font-stretch: 118%;
   }
   @media (max-width: 1000px) {
     .ratgeber__liste {
@@ -194,6 +198,8 @@ const zeile: Record<string, string> = {
     }
     .ratgeber__liste a {
       grid-template-columns: 2rem minmax(0, 1fr) 1.25rem;
+      transition: padding 0.45s var(--ease),
+      border-color 0.3s;
     }
   }
 </style>

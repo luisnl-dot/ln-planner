@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Basis from '../layouts/Basis.astro';
 import Bild from '../components/Bild.astro';
+import Fit from '../components/Fit.astro';
 import EditionKarte from '../components/EditionKarte.astro';
 import JournalKarte from '../components/JournalKarte.astro';
 import Karte from '../components/Karte.astro';
@@ -15,14 +16,12 @@ import { bild } from '../lib/bilder';
 
 const held = edition('r-18-bobber');
 const schau = [
-  'r-1300-gs-adventure-black',
+  'r-1300-gs-adventure-hunter',
   'r-ninet-100-rs',
   'r-12-ninet-big-foot-military',
-  'r-1300-gs-supermoto-neon',
   'm-1000-rr-black',
   'r-ninet-90s-daytona',
   'r-12-gs-rallye-dakar-blue',
-  'r-1300-gs-adventure-hunter',
 ].map(edition);
 
 const leistungen = [
@@ -72,7 +71,7 @@ const schema = [
         </span>
       </p>
 
-      <h1 class="start__titel" data-reveal>Kein gewöhnlicher<br /> BMW Partner.</h1>
+      <Fit tag="h1" class="start__titel" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
 
       <div class="start__unten">
         <div class="start__text" data-tor-vorn>
@@ -121,7 +120,7 @@ const schema = [
     <div class="wrap manu__kopf">
       <Kopf nr="01" label="Manufaktur" rechts={`${editionen.length} Editionen in der Kollektion`} />
       <div class="manu__auftakt">
-        <h2 class="manu__titel titel-xl" data-reveal>Martin Edition</h2>
+        <Fit tag="h2" lines={['Martin', 'Edition']} class="manu__titel" label="Martin Edition" />
         <div class="manu__text">
           <p class="lead" data-reveal>Unter dem Namen Martin Edition entstehen veredelte BMW Motorräder in Handarbeit – streng limitiert, jedes ein Einzelstück.</p>
           <p class="muted mt2 measure-s" data-reveal style="--i:1">Wir bauen Ihnen Ihr Motorrad nach Ihren Wünschen um. Für BMW gibt es eine breite Palette von Umbauteilen – wir geben Ihnen gerne Auskunft über die Möglichkeiten eines sinnvollen An- oder Umbaus.</p>
@@ -147,8 +146,8 @@ const schema = [
         </a>
       </div>
       <div class="schau__fuss wrap">
-        <span class="label label--dim nur-desktop">Weiterscrollen</span>
-        <span class="label label--dim nur-mobil">Wischen</span>
+        <span class="label label--dim schau__hinweis schau__hinweis--scroll">Weiterscrollen</span>
+        <span class="label label--dim schau__hinweis schau__hinweis--wisch">Wischen</span>
         <span class="schau__balken" aria-hidden="true"><i data-fortschritt></i></span>
         <span class="label label--dim">{String(schau.length).padStart(2, '0')} von {editionen.length}</span>
       </div>
@@ -366,12 +365,8 @@ const schema = [
     text-decoration: underline;
     text-underline-offset: 0.3em;
   }
-  .start__titel {
-    margin-top: clamp(1.25rem, 4vh, 3.25rem);
-    font-size: clamp(2.9rem, 1rem + 7.2vw, 9.6rem);
-    font-weight: 500;
-    line-height: 0.95;
-    letter-spacing: -0.05em;
+  :global(.start__titel) {
+    margin-top: clamp(0.6rem, 2vh, 1.4rem);
   }
   .start__unten {
     display: grid;
@@ -389,7 +384,7 @@ const schema = [
     padding-right: 1rem;
   }
   .start__text .lead {
-    font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.3rem);
+    font-size: clamp(1.05rem, 0.85rem + 0.72vw, 1.45rem);
   }
   .start__aktionen {
     display: grid;
@@ -451,10 +446,12 @@ const schema = [
     justify-items: start;
   }
   .start__etikett-name {
-    font-size: clamp(1.4rem, 1rem + 2vw, 3rem);
-    font-weight: 540;
+    font-size: clamp(1.4rem, 1rem + 2.4vw, 3.4rem);
+    font-weight: 780;
     letter-spacing: -0.03em;
-    line-height: 1;
+    line-height: 0.98;
+    font-stretch: 112%;
+    text-transform: uppercase;
   }
   .start__weiter {
     display: none;
@@ -583,16 +580,25 @@ const schema = [
   }
   .schau__ende-zahl {
     font-size: clamp(4rem, 9vw, 9rem);
-    font-weight: 300;
-    font-stretch: 100%;
+    font-weight: 800;
+    font-stretch: 125%;
     line-height: 0.82;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.04em;
   }
   .schau__fuss {
     display: flex;
     align-items: center;
     gap: 1.25rem;
     margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .schau__hinweis--scroll {
+    display: none;
+  }
+  :global(.schau.ist-gekoppelt) .schau__hinweis--scroll {
+    display: inline;
+  }
+  :global(.schau.ist-gekoppelt) .schau__hinweis--wisch {
+    display: none;
   }
   .schau__balken {
     flex: 1;
@@ -623,7 +629,7 @@ const schema = [
     will-change: transform;
   }
   :global(.schau.ist-gekoppelt) .schau__tafel {
-    flex-basis: min(54vw, calc((100svh - 15rem) * 1.5));
+    flex-basis: min(44vw, calc((100svh - 15rem) * 1.5));
   }
   :global(.schau.ist-gekoppelt) .schau__ende {
     flex-basis: min(30vw, 28rem);
@@ -647,8 +653,8 @@ const schema = [
   }
   .werte__zahl {
     font-size: clamp(2.6rem, 1.4rem + 4.6vw, 6rem);
-    font-weight: 300;
-    font-stretch: 100%;
+    font-weight: 800;
+    font-stretch: 118%;
     line-height: 0.9;
     letter-spacing: -0.045em;
     font-variant-numeric: tabular-nums;
@@ -691,11 +697,12 @@ const schema = [
   }
   .leist__titel {
     font-size: clamp(1.9rem, 1rem + 4vw, 5rem);
-    font-weight: 560;
+    font-weight: 780;
     font-stretch: 100%;
     line-height: 0.95;
-    letter-spacing: -0.028em;
-    transition: color 0.3s;
+    letter-spacing: -0.035em;
+    transition: font-stretch 0.6s var(--ease);
+    text-transform: uppercase;
   }
   .leist__text {
     max-width: 44ch;
@@ -713,15 +720,17 @@ const schema = [
   }
   .leist__zeile:hover .leist__titel,
   .leist__zeile:focus-visible .leist__titel {
+  font-stretch: 122%;
   }
   @media (max-width: 800px) {
     .leist__zeile {
       grid-template-columns: minmax(0, 1fr) 1.25rem;
+      transition: padding 0.5s var(--ease),
+      border-color 0.3s;
     }
     .leist__text {
       grid-column: 1 / 2;
       grid-row: 2;
-      font-size: 0.95rem;
     }
   }
   .leist__vorschau {
@@ -755,6 +764,8 @@ const schema = [
   @media (hover: none), (max-width: 1000px) {
     .leist__vorschau {
       display: none;
+      transition: opacity 0.3s,
+      clip-path 0.6s var(--ease);
     }
   }
 
@@ -775,7 +786,8 @@ const schema = [
     align-content: start;
     gap: 0.55rem;
     padding: 1.25rem var(--gap) 0.5rem 0;
-    transition: box-shadow 0.3s;
+    transition: padding 0.5s var(--ease),
+      box-shadow 0.3s;
   }
   .haus-karte + .haus-karte {
     padding-left: var(--gap);
@@ -792,10 +804,12 @@ const schema = [
     gap: 0.4rem 1rem;
   }
   .haus-karte__name {
-    font-size: clamp(1.7rem, 1.2rem + 1.4vw, 2.5rem);
-    font-weight: 540;
-    letter-spacing: -0.035em;
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem);
+    font-weight: 760;
+    letter-spacing: -0.03em;
     line-height: 1;
+    font-stretch: 108%;
+    text-transform: uppercase;
   }
   .haus-karte__name:hover {
     text-decoration: underline;
@@ -862,8 +876,9 @@ const schema = [
   }
   .seit__jahr {
     font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem);
-    font-weight: 250;
-    letter-spacing: -0.05em;
+    font-weight: 800;
+    font-stretch: 112%;
+    letter-spacing: -0.045em;
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
@@ -873,7 +888,7 @@ const schema = [
   }
   .seit__station strong {
     font-size: 1.15rem;
-    font-weight: 600;
+    font-weight: 650;
     letter-spacing: -0.01em;
   }
   @media (max-width: 900px) {
@@ -943,10 +958,10 @@ const schema = [
   }
   .karriere-band__zahl {
     font-size: clamp(5rem, 11vw, 11rem);
-    font-weight: 300;
-    font-stretch: 100%;
+    font-weight: 800;
+    font-stretch: 125%;
     line-height: 0.8;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.05em;
   }
   @media (max-width: 900px) {
     .karriere-band__raster {
@@ -997,7 +1012,7 @@ const schema = [
         scrollTrigger: {
           trigger: sektion,
           start: 'top top',
-          end: '+=105%',
+          end: '+=60%',
           pin: true,
           scrub: 0.5,
           refreshPriority: 10,

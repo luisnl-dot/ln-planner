@@ -68,14 +68,16 @@ const { e, sizes = '(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 100vw', v
   }
   .ed-karte__name {
     font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.4rem);
-    font-weight: 560;
+    font-weight: 760;
     font-stretch: 100%;
     line-height: 1;
-    letter-spacing: -0.028em;
-    transition: color 0.3s;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    transition: font-stretch 0.6s var(--ease);
   }
   .ed-karte:hover .ed-karte__name,
   .ed-karte:focus-visible .ed-karte__name {
+    font-stretch: 118%;
   }
   .ed-karte__zeile {
     font-size: 0.95rem;

@@ -1,11 +1,12 @@
 /**
  * Globales Verhalten: sanftes Scrollen, Einblendungen, Kopfzeile, Dialoge,
- * und Live-Status. Alles ist Progressive Enhancement –
+ * Typenschild-Satz und Live-Status. Alles ist Progressive Enhancement –
  * ohne JavaScript bleibt jede Seite vollständig les- und bedienbar.
  */
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { initFit } from './fit';
 import { initStatus } from './status';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,7 +18,7 @@ const html = document.documentElement;
 /* ---- Sanftes Scrollen (nur Maus/Trackpad, nie bei „Bewegung reduzieren“) ---- */
 let lenis: Lenis | null = null;
 if (!ruhig && fein) {
-  lenis = new Lenis({ lerp: 0.12, anchors: { offset: -72 }, stopInertiaOnNavigate: true });
+  lenis = new Lenis({ lerp: 0.18, anchors: { offset: -72 }, stopInertiaOnNavigate: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis!.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
@@ -27,7 +28,7 @@ export const scrollStart = () => lenis?.start();
 
 /* ---- Einblendungen ---- */
 function initReveal() {
-  const ziele = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+  const ziele = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal], .fit'));
   if (ruhig || !('IntersectionObserver' in window)) {
     ziele.forEach((el) => el.classList.add('is-in'));
     return;
@@ -189,9 +190,10 @@ function initHorizontal() {
         scrollTrigger: {
           trigger: buehne,
           start: 'top top',
-          end: () => `+=${weg()}`,
+          // Die Galerie läuft schneller als gescrollt wird: weniger Weg bis zum nächsten Abschnitt
+          end: () => `+=${weg() * 0.45}`,
           pin: true,
-          scrub: 0.6,
+          scrub: 0.3,
           invalidateOnRefresh: true,
           anticipatePin: 1,
           onUpdate: (s) => balken && (balken.style.transform = `scaleX(${s.progress})`),
@@ -325,7 +327,7 @@ initStatus();
 initFilter();
 initAnsicht();
 initEinbettung();
-(document.fonts?.ready ?? Promise.resolve()).then(() => {
+initFit().then(() => {
   initReveal();
   initParallaxe();
   initHorizontal();

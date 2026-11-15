@@ -11,16 +11,14 @@ npm run preview   # Build lokal ansehen
 
 ---
 
-## Konzept: ruhig, präzise, hochwertig
+## Konzept: das Typenschild
 
-**Die Idee.** Martin baut Einzelstücke und ist seit 1954 ein Familienbetrieb. Die Seite tritt deshalb auf wie ein Premium-Automobilhersteller: viel Ruhe, klare Hierarchie, die Fotos stehen im Mittelpunkt. Laute Effekte gibt es nicht.
+**Die Idee.** Jedes Motorrad trägt ein Typenschild: eingeprägte Daten, exakt bündig, nichts Überflüssiges. Martin baut Einzelstücke, also ist die Schrift wie ein Typenschild gesetzt. Der Aufbau bleibt ruhig: keine Abschnittsnummern, keine Laufbänder, die Fotos stehen im Mittelpunkt.
 
-**Typografie.** Eine einzige variable Grotesk (Archivo) in gemischter Schreibweise.
+**Typografie.** Eine variable Grotesk (Archivo, Breitenachse 62–125 %) und eine Mono-Schrift (IBM Plex Mono) für alles, was gezählt, gemessen oder verbaut wird.
 
-- Große Titel sind leicht und eng gesetzt, Fließtext ist gut lesbar.
-- Kleine Etiketten nutzen dieselbe Schrift schmal und gesperrt, wie ein geprägtes Typenschild.
-- Zahlen stehen in Tabellenziffern.
-- Großbuchstaben-Schlagzeilen, Abschnittsnummern und Laufbänder wurden bewusst entfernt.
+- Große Seitentitel werden per Skript Zeile für Zeile auf die exakte Spaltenbreite gesetzt (`src/scripts/fit.ts`). Dafür wird die Breite der Buchstaben verändert, nicht nur die Größe, wie bei einer Prägung.
+- Bei Hover dehnen sich Titel in die Breite, statt die Farbe zu wechseln.
 
 **Farbe.**
 - Zwei Welten: Papier (Haus und Service) und Graphit (Manufaktur).
@@ -32,7 +30,7 @@ npm run preview   # Build lokal ansehen
 **Bewegung.** Bewegung gibt es nur dort, wo sie etwas erzählt:
 
 - **Das Tor (Startseite):** Das Bildfenster unter der Schlagzeile öffnet sich beim Scrollen zur ganzen Bühne, wie ein Hallentor.
-- **Die Manufaktur-Galerie:** Am Desktop ist sie an den Scroll gekoppelt, mobil wischt man nativ.
+- **Die Manufaktur-Galerie:** Am Desktop ist sie an den Scroll gekoppelt und läuft schneller als gescrollt wird, damit sie nicht aufhält. Mobil wischt man nativ.
 - **Bild-Einblendungen:** Bilder und Texte werden beim Scrollen ruhig eingeblendet.
 - **Chronik:** Auf „Seit 1954“ läuft die Jahreszahl beim Lesen mit, eine Skala zeigt die Stationen.
 - **Seitenübergänge:** Sie laufen über View Transitions. Das Bild einer Edition wandert aus der Übersicht in die Detailseite.
@@ -89,10 +87,10 @@ Die bisherige Navigation (Standorte, News, Events, Gebrauchte, Ankauf, Motorräd
 ```
 src/
   pages/        eine Datei je Seite bzw. Seitentyp ([slug].astro)
-  components/   Kopfzeile, Fuß, Seitenkopf, Karte, Anfrage, EditionKarte …
+  components/   Kopfzeile, Fuß, Seitenkopf, Fit (Typenschild-Satz), Karte, Anfrage …
   content/      Markdown-Inhalte (aus der alten Seite importiert)
   data/         Standorte, Editionen, Miete, Team, Chronik, Weiterleitungen
-  scripts/      app.ts (Bewegung, Dialoge, Filter), status.ts, formular.ts, miete.ts
+  scripts/      app.ts (Bewegung, Dialoge, Filter), fit.ts, status.ts, formular.ts, miete.ts
   styles/       global.css – Design-Tokens und Grundbausteine
   assets/       Fotos und Schriften
 scripts/import/ einmalige Import-Skripte (Inhalte und Bildauswahl von der alten Seite)
@@ -143,7 +141,7 @@ npm i -D playwright && DIST=./dist node tests/pruefung.cjs
 
 Geprüft wird Folgendes:
 
-- **Alle Seiten** in drei Breiten (390 / 820 / 1440 px): keine Konsolenfehler, kein horizontales Überlaufen, genau eine H1.
+- **Alle Seiten** in drei Breiten (390 / 820 / 1440 px): keine Konsolenfehler, kein horizontales Überlaufen, genau eine H1, jede Typenschild-Zeile bündig.
 - **Navigation:** Menü und Hauswahl samt Fokus und Escape, „Mein Haus“ über Seiten hinweg.
 - **Formulare:** Formularprüfung und E-Mail-Versand, dazu der Ankauf mit seinen drei Stufen.
 - **Mietrechner:** sechs Rechenfälle.

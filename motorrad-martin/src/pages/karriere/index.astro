@@ -136,15 +136,16 @@ const vorteile = [
   }
   .stellen__ort {
     font-size: clamp(2.2rem, 1.2rem + 4vw, 5rem);
-    font-weight: 560;
-    font-stretch: 100%;
-    letter-spacing: -0.028em;
+    font-weight: 800;
+    font-stretch: 108%;
+    letter-spacing: -0.04em;
     line-height: 0.92;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--fg);
+    text-transform: uppercase;
   }
   .stellen__ort sup {
-    font-family: var(--font);
+    font-family: var(--mono);
     font-size: 0.2em;
     font-weight: 500;
     letter-spacing: 0.05em;
@@ -176,6 +177,8 @@ const vorteile = [
   @media (max-width: 600px) {
     .stellen__haus a {
       grid-template-columns: minmax(0, 1fr) 1.25rem;
+      transition: padding 0.45s var(--ease),
+      border-color 0.3s;
     }
     .stellen__haus a .label {
       grid-column: 1;
