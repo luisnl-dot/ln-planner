@@ -1,0 +1,1059 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../layouts/Basis.astro';
+import Bild from './Bild.astro';
+import Fit from './Fit.astro';
+import EditionKarte from './EditionKarte.astro';
+import JournalKarte from './JournalKarte.astro';
+import Karte from './Karte.astro';
+import Kopf from './Kopf.astro';
+import { chronik } from '../data/chronik';
+import Pfeil from './Pfeil.astro';
+import Status from './Status.astro';
+import { edition, editionen } from '../data/editionen';
+import { standorte, routeUrl } from '../data/standorte';
+import { bild } from '../lib/bilder';
+
+import HeroDurchblick from './hero/HeroDurchblick.astro';
+import HeroShowroom from './hero/HeroShowroom.astro';
+import HeroHaeuser from './hero/HeroHaeuser.astro';
+
+interface Props {
+  /** Auftakt der Startseite: tor (Standard), durchblick, showroom oder haeuser. */
+  variante?: 'tor' | 'durchblick' | 'showroom' | 'haeuser';
+  noindex?: boolean;
+}
+const { variante = 'tor', noindex = false } = Astro.props;
+
+const held = edition('r-18-bobber');
+const schau = [
+  'r-1300-gs-adventure-hunter',
+  'r-ninet-100-rs',
+  'r-12-ninet-big-foot-military',
+  'm-1000-rr-black',
+  'r-ninet-90s-daytona',
+  'r-12-gs-rallye-dakar-blue',
+].map(edition);
+
+const leistungen = [
+  { id: 'neu', titel: 'Neue BMW', text: 'Das aktuelle Programm – beraten, konfiguriert und übergeben in drei Häusern.', href: '/motorraeder/', bild: 'standorte/weyarn-laden-1' },
+  { id: 'gebraucht', titel: 'Gebrauchte', text: 'Geprüft, gewartet und mit nachvollziehbarer Historie. Jede Maschine durchläuft unsere Werkstatt.', href: '/gebrauchte/', bild: 'standorte/weyarn-halle-2' },
+  { id: 'werkstatt', titel: 'Werkstatt', text: 'Computergestützte Diagnose, geschultes Personal und Zugriff auf über 24.000 BMW Originalteile.', href: '/service/', bild: 'standorte/weyarn-werkstatt' },
+  { id: 'mieten', titel: 'Mieten', text: 'Vom CE 02 bis zur M 1000 RR – tageweise, übers Wochenende oder für die ganze Woche.', href: '/mieten/', bild: 'standorte/weyarn-eingang' },
+  { id: 'ankauf', titel: 'Ankauf', text: 'Ein solides, faires Angebot für Ihr Motorrad – als Inzahlungnahme oder ohne Neukauf.', href: '/ankauf/', bild: 'standorte/weyarn-beratung' },
+  { id: 'winter', titel: 'Winter-Wellness', text: 'Einlagerung in trockenen, beheizten Hallen. Mit Batterieservice und Frühjahrscheck.', href: '/service/winter-wellness/', bild: 'standorte/schongau-halle' },
+  { id: 'classic', titel: 'BMW Classic', text: 'Restaurierung und Instandsetzung klassischer BMW – vom Vergaser bis zum Zweiventilboxer.', href: '/service/bmw-classic/', bild: 'haus/classic-vorkrieg' },
+];
+
+const journal = (await getCollection('journal')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const neues = [journal.find((j) => j.id === 'bmw-r-1300-gs-adventure-martin-edition-hunter') ?? journal[0], ...journal.filter((j) => j.data.kategorie === 'neuheiten').slice(0, 2)];
+const stellen = (await getCollection('jobs')).length;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Standorte von BMW Motorrad Martin',
+    itemListElement: standorte.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: new URL(`/standorte/${s.slug}/`, Astro.site).href })),
+  },
+];
+---
+
+<Basis
+  titel="BMW Motorrad Martin – Vertragshändler in Oberbayern & Allgäu"
+  titelRoh
+  beschreibung="BMW Motorrad Martin: Familienbetrieb seit 1954 mit drei Häusern in Schongau, Weyarn und Oy-Mittelberg. Neue und gebrauchte BMW Motorräder, Werkstatt, Vermietung – und die Manufaktur der Martin Edition."
+  schema={schema}
+  noindex={noindex}
+>
+  {variante === 'durchblick' && <HeroDurchblick />}
+  {variante === 'showroom' && <HeroShowroom />}
+  {variante === 'haeuser' && <HeroHaeuser />}
+  <!-- ============ Auftakt: das Tor ============ -->
+  {variante === 'tor' && (
+  <section class="start" data-tor data-kopf="hell">
+    <div class="start__innen wrap">
+      <p class="start__ober label" data-tor-vorn>
+        <span>BMW Motorrad Vertragshändler</span>
+        <span class="dim start__orte">Schongau · Weyarn · Oy-Mittelberg</span>
+        <span class="start__live">
+          {
+            standorte.map((s) => (
+              <a href={`/standorte/${s.slug}/`}>
+                <Status haus={s.slug} ort />
+              </a>
+            ))
+          }
+        </span>
+      </p>
+
+      <Fit tag="h1" class="start__titel" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
+
+      <div class="start__unten">
+        <div class="start__text" data-tor-vorn>
+          <p class="lead" data-reveal style="--i:2">
+            Familienbetrieb seit 1954, heute in dritter Generation. Drei Häuser am Alpenrand – und eine eigene Manufaktur, in der aus BMW Motorrädern Einzelstücke werden.
+          </p>
+          <div class="start__aktionen" data-reveal style="--i:3">
+            <a class="btn btn--solid" href="/martin-edition/">Martin Edition ansehen <Pfeil /></a>
+            <a class="btn" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
+          </div>
+        </div>
+
+        <div class="start__platz" data-tor-platz>
+          <div class="start__film" data-tor-film>
+            <div class="start__bild" data-tor-bild>
+              <Bild src={bild(`editionen/${held.slug}-2`)} alt={`${held.titel} im Gegenlicht vor den Bergen`} sizes="(min-width: 900px) 100vw, 100vw" widths={[640, 960, 1280, 1800]} eager />
+            </div>
+            <div class="start__schleier" data-tor-schleier aria-hidden="true"></div>
+            <div class="start__etikett wrap" data-tor-etikett>
+              <a class="start__etikett-link" href={`/martin-edition/${held.slug}/`}>
+                <span class="label">Martin Edition · Katalog Nº {held.nr}</span>
+                <span class="start__etikett-name">BMW {held.basis} {held.name}</span>
+                <span class="link">Zur Edition <Pfeil /></span>
+              </a>
+              <span class="label start__weiter" aria-hidden="true">Weiter ↓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="start__status" role="list">
+        {
+          standorte.map((s) => (
+            <li>
+              <a href={`/standorte/${s.slug}/`}>
+                <Status haus={s.slug} ort />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+  )}
+
+  <!-- ============ Manufaktur ============ -->
+  <section class="manu" data-theme="dark">
+    <div class="wrap manu__kopf">
+      <Kopf nr="01" label="Manufaktur" rechts={`${editionen.length} Editionen in der Kollektion`} />
+      <div class="manu__auftakt">
+        <Fit tag="h2" lines={['Martin', 'Edition']} class="manu__titel" label="Martin Edition" />
+        <div class="manu__text">
+          <p class="lead" data-reveal>Unter dem Namen Martin Edition entstehen veredelte BMW Motorräder in Handarbeit – streng limitiert, jedes ein Einzelstück.</p>
+          <p class="muted mt2 measure-s" data-reveal style="--i:1">Wir bauen Ihnen Ihr Motorrad nach Ihren Wünschen um. Für BMW gibt es eine breite Palette von Umbauteilen – wir geben Ihnen gerne Auskunft über die Möglichkeiten eines sinnvollen An- oder Umbaus.</p>
+          <a class="btn mt3" href="/martin-edition/" data-reveal style="--i:2">Zur Kollektion <Pfeil /></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="schau" data-horizontal>
+      <div class="schau__band" data-band data-lenis-prevent-touch>
+        {
+          schau.map((e, i) => (
+            <div class="schau__tafel">
+              <EditionKarte e={e} sizes="(min-width: 900px) 46vw, 86vw" />
+            </div>
+          ))
+        }
+        <a class="schau__ende" href="/martin-edition/">
+          <span class="label label--dim">Kollektion</span>
+          <span class="schau__ende-zahl">{editionen.length}</span>
+          <span class="h3">Alle Editionen ansehen</span>
+          <Pfeil />
+        </a>
+      </div>
+      <div class="schau__fuss wrap">
+        <span class="label label--dim schau__hinweis schau__hinweis--scroll">Weiterscrollen</span>
+        <span class="label label--dim schau__hinweis schau__hinweis--wisch">Wischen</span>
+        <span class="schau__balken" aria-hidden="true"><i data-fortschritt></i></span>
+        <span class="label label--dim">{String(schau.length).padStart(2, '0')} von {editionen.length}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Kennwerte ============ -->
+  <section class="section section--tight werte">
+    <div class="wrap">
+      <ul class="werte__liste" role="list">
+        <li data-reveal>
+          <span class="werte__zahl">1954</span>
+          <span class="label">gegründet</span>
+          <span class="muted">Erwin Martin, Ingenried bei Schongau. Tankstelle, Kfz-Reparatur, Werksvertretung.</span>
+        </li>
+        <li data-reveal style="--i:1">
+          <span class="werte__zahl">3.</span>
+          <span class="label">Generation</span>
+          <span class="muted">In Familienhand – keine Kette, kein Investor.</span>
+        </li>
+        <li data-reveal style="--i:2">
+          <span class="werte__zahl">3</span>
+          <span class="label">Häuser</span>
+          <span class="muted">Schongau, Weyarn und Oy-Mittelberg – jedes mit eigenem Team.</span>
+        </li>
+        <li data-reveal style="--i:3">
+          <span class="werte__zahl">24.000</span>
+          <span class="label">Originalteile im Zugriff</span>
+          <span class="muted">Nicht vorrätige Teile kommen in der Regel innerhalb von 24 Stunden.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Leistungen ============ -->
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="02" label="Leistungen" titel="Was können wir für Sie tun?">
+        <a slot="seite" class="link" href="/kontakt/">Direkt anfragen <Pfeil /></a>
+      </Kopf>
+      <div class="leist" data-register>
+        <ul class="leist__liste" role="list">
+          {
+            leistungen.map((l, i) => (
+              <li data-zeile={l.id} data-reveal style={`--i:${Math.min(i, 5)}`}>
+                <a class="leist__zeile" href={l.href}>
+                  <span class="leist__titel">{l.titel}</span>
+                  <span class="leist__text muted">{l.text}</span>
+                  <Pfeil />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="leist__vorschau" data-vorschau aria-hidden="true">
+          {
+            leistungen.map((l) => (
+              <div class="leist__vorschau-bild" data-vorschau-bild={l.id}>
+                <Bild src={bild(l.bild)} alt="" ratio="43" sizes="360px" widths={[480, 800]} />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Drei Häuser ============ -->
+  <section class="section haeuser">
+    <div class="wrap">
+      <Kopf nr="03" label="Standorte" titel="Drei Häuser, rund 100 Kilometer Alpenrand.">
+        <a slot="seite" class="link" href="/standorte/">Alle Standorte <Pfeil /></a>
+      </Kopf>
+      <Karte class="haeuser__karte" data-reveal />
+      <ul class="haeuser__liste" role="list">
+        {
+          standorte.map((s, i) => (
+            <li class="haus-karte" data-haus-karte={s.slug} data-reveal style={`--i:${i}`}>
+              <p class="label label--dim">{s.rolle}</p>
+              <div class="haus-karte__kopf">
+                <a class="haus-karte__name" href={`/standorte/${s.slug}/`}>
+                  {s.ort}
+                </a>
+                <Status haus={s.slug} />
+              </div>
+              <p class="muted haus-karte__text">{s.anfahrt}</p>
+              <p class="haus-karte__adresse">
+                {s.strasse}, {s.plz} {s.ort}
+              </p>
+              <div class="haus-karte__aktionen">
+                <a class="link" href={`tel:${s.tel}`}>
+                  {s.telefon}
+                </a>
+                <a class="link" href={routeUrl(s)} target="_blank" rel="noopener">
+                  Route <Pfeil raus />
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Seit 1954 ============ -->
+  <section class="section seit">
+    <div class="wrap">
+      <Kopf label="Geschichte" rechts="Seit 1954 in Familienhand" />
+      <div class="seit__raster">
+        <figure class="seit__bild">
+          <Bild src={bild('standorte/schongau-front')} alt="Das Stammhaus Erwin Martin in der Marktoberdorfer Straße in Schongau" ratio="45" sizes="(min-width: 900px) 40vw, 100vw" widths={[480, 800, 1200]} reveal fokus="38% 50%" />
+          <figcaption>Das Stammhaus in der Marktoberdorfer Straße, Schongau</figcaption>
+        </figure>
+        <div class="seit__text">
+          <h2 class="h1" data-reveal>Präzision seit 1954.</h2>
+          <p class="lead muted mt2" data-reveal style="--i:1">
+            Was 1954 als Familienbetrieb begann, wird heute in dritter Generation geführt: BMW Martin ist einer der größten BMW Motorrad Händler in Deutschland.
+          </p>
+          <ol class="seit__stationen" role="list">
+            {
+              chronik
+                .filter((c) => ['1954', '1967', '1998', '2022'].includes(c.jahr))
+                .map((c, i) => (
+                  <li data-reveal style={`--i:${i}`}>
+                    <span class="seit__jahr">{c.jahr}</span>
+                    <span class="seit__station">
+                      <strong>{c.titel}</strong>
+                      <span class="muted">{c.text}</span>
+                    </span>
+                  </li>
+                ))
+            }
+          </ol>
+          <a class="btn mt3" href="/ueber-uns/">Die ganze Geschichte <Pfeil /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Journal ============ -->
+  <section class="section section--flush-top">
+    <div class="wrap">
+      <Kopf nr="05" label="Journal" titel="Neues aus Haus und Halle.">
+        <a slot="seite" class="link" href="/journal/">Alle Beiträge <Pfeil /></a>
+      </Kopf>
+      <div class="neues">
+        <JournalKarte eintrag={neues[0]} gross sizes="(min-width: 1000px) 58vw, 100vw" />
+        <div class="neues__seite">
+          {neues.slice(1).map((n, i) => <JournalKarte eintrag={n} i={i + 1} sizes="(min-width: 1000px) 30vw, 100vw" />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Karriere ============ -->
+  <section class="section karriere-band" data-theme="dark">
+    <div class="wrap karriere-band__raster">
+      <div>
+        <p class="label label--dim">Karriere</p>
+        <p class="h2 mt2" data-reveal>Wer bei uns anfängt, schraubt nicht nur an Serienmaschinen – sondern baut an einer eigenen Marke mit.</p>
+      </div>
+      <div class="karriere-band__seite" data-reveal style="--i:1">
+        <p class="karriere-band__zahl">{stellen}</p>
+        <p class="label">offene Stellen in Schongau, Weyarn und Oy-Mittelberg</p>
+        <a class="btn btn--solid mt2" href="/karriere/">Stellen ansehen <Pfeil /></a>
+      </div>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  /* ---------- Auftakt ---------- */
+  .start {
+    position: relative;
+    min-height: max(100svh, 40rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    background: var(--paper);
+    overflow: clip;
+  }
+  .start__innen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr auto;
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: var(--pad);
+    min-height: 0;
+  }
+  .start__ober {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(0.5rem, 1.6vh, 1.1rem);
+    border-bottom: 1px solid var(--ink);
+  }
+  .start__orte,
+  .start__live {
+    display: none;
+  }
+  @media (min-width: 560px) {
+    .start__orte {
+      display: inline;
+    }
+  }
+  @media (min-width: 1240px) {
+    .start__orte {
+      display: none;
+    }
+    .start__live {
+      display: flex;
+      gap: clamp(1rem, 2vw, 2.25rem);
+    }
+  }
+  .start__live a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+  :global(.start__titel) {
+    margin-top: clamp(0.6rem, 2vh, 1.4rem);
+  }
+  .start__unten {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: 1.75rem;
+    margin-top: clamp(1.5rem, 4vh, 3rem);
+    min-height: 0;
+  }
+  .start__text {
+    grid-column: 1 / span 4;
+    align-self: end;
+    display: grid;
+    gap: 1.5rem;
+    padding-right: 1rem;
+  }
+  .start__text .lead {
+    font-size: clamp(1.05rem, 0.85rem + 0.72vw, 1.45rem);
+  }
+  .start__aktionen {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 23rem;
+  }
+  .start__platz {
+    grid-column: 5 / -1;
+    min-height: clamp(14rem, 34vh, 32rem);
+    position: static;
+  }
+  .start__status {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 1rem;
+  }
+  @media (min-width: 900px) {
+    .start__status {
+      display: none;
+    }
+  }
+  .start__film {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--night);
+  }
+  .start__bild,
+  .start__bild :global(.bild) {
+    width: 100%;
+    height: 100%;
+  }
+  .start__bild :global(img) {
+    object-position: 50% 55%;
+  }
+  .start__schleier {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgb(11 12 12 / 0.55), transparent 24%),
+      linear-gradient(to top, rgb(11 12 12 / 0.72), transparent 40%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .start__etikett {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    padding-bottom: clamp(1rem, 3vh, 2.25rem);
+    color: var(--chalk);
+  }
+  .start__etikett-link {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+  }
+  .start__etikett-name {
+    font-size: clamp(1.4rem, 1rem + 2.4vw, 3.4rem);
+    font-weight: 780;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    font-stretch: 112%;
+    text-transform: uppercase;
+  }
+  .start__weiter {
+    display: none;
+  }
+  .start:not(.tor-aktiv) .start__schleier {
+    opacity: 1;
+    background: linear-gradient(to top, rgb(11 12 12 / 0.75), transparent 55%);
+  }
+  .start:not(.tor-aktiv) .start__etikett {
+    padding-inline: 1rem;
+    padding-bottom: 1rem;
+  }
+  .start:not(.tor-aktiv) .start__etikett-name {
+    font-size: clamp(1.15rem, 0.9rem + 1.2vw, 1.8rem);
+  }
+  .start.tor-aktiv {
+    height: 100svh;
+    min-height: 0;
+  }
+  .start.tor-aktiv .start__platz {
+    min-height: 0;
+  }
+  .start.tor-aktiv .start__film {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    will-change: clip-path;
+  }
+  .start.tor-aktiv .start__bild {
+    will-change: transform;
+  }
+  .start.tor-aktiv .start__weiter {
+    display: block;
+  }
+  @media (max-width: 899px) {
+    .start {
+      min-height: 0;
+    }
+    .start__unten {
+      display: flex;
+      flex-direction: column;
+    }
+    .start__text {
+      padding-right: 0;
+    }
+    .start__aktionen {
+      max-width: none;
+    }
+    .start__platz {
+      aspect-ratio: 4 / 3;
+      min-height: 0;
+    }
+  }
+
+  /* ---------- Manufaktur ---------- */
+  .manu {
+    background: var(--bg);
+    color: var(--fg);
+    padding-top: clamp(3.5rem, 8vw, 8rem);
+  }
+  .manu__auftakt {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: 2.5rem;
+    align-items: end;
+  }
+  :global(.manu__titel) {
+    grid-column: 1 / span 8;
+  }
+  .manu__text {
+    grid-column: 10 / -1;
+    padding-bottom: 0.6rem;
+  }
+  @media (max-width: 1400px) {
+    .manu__text {
+      grid-column: 9 / -1;
+    }
+  }
+  @media (max-width: 1000px) {
+    :global(.manu__titel),
+    .manu__text {
+      grid-column: 1 / -1;
+    }
+  }
+  .schau {
+    position: relative;
+    overflow-x: clip;
+    margin-top: clamp(3rem, 6vw, 6rem);
+    padding-bottom: clamp(3rem, 6vw, 6rem);
+  }
+  .schau__band {
+    display: flex;
+    gap: var(--gap);
+    padding-inline: var(--pad);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .schau__band::-webkit-scrollbar {
+    display: none;
+  }
+  .schau__tafel {
+    flex: 0 0 min(86vw, 46rem);
+    scroll-snap-align: center;
+  }
+  .schau__ende {
+    flex: 0 0 min(70vw, 26rem);
+    scroll-snap-align: center;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 0.75rem;
+    padding: 2rem;
+    border: 1px solid var(--line-2);
+    aspect-ratio: 3 / 2;
+    align-self: start;
+    transition:
+      background 0.4s,
+      color 0.4s;
+  }
+  .schau__ende:hover {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .schau__ende-zahl {
+    font-size: clamp(4rem, 9vw, 9rem);
+    font-weight: 800;
+    font-stretch: 125%;
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+  }
+  .schau__fuss {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .schau__hinweis--scroll {
+    display: none;
+  }
+  :global(.schau.ist-gekoppelt) .schau__hinweis--scroll {
+    display: inline;
+  }
+  :global(.schau.ist-gekoppelt) .schau__hinweis--wisch {
+    display: none;
+  }
+  .schau__balken {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    position: relative;
+  }
+  .schau__balken i {
+    position: absolute;
+    inset: -0.5px 0;
+    background: var(--fg);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  /* an den Scroll gekoppelt (Desktop) */
+  :global(.schau.ist-gekoppelt) {
+    height: 100svh;
+    margin-top: 0;
+    padding-bottom: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+  }
+  :global(.schau.ist-gekoppelt) .schau__band {
+    overflow: visible;
+    scroll-snap-type: none;
+    width: max-content;
+    will-change: transform;
+  }
+  :global(.schau.ist-gekoppelt) .schau__tafel {
+    flex-basis: min(44vw, calc((100svh - 15rem) * 1.5));
+  }
+  :global(.schau.ist-gekoppelt) .schau__ende {
+    flex-basis: min(30vw, 28rem);
+  }
+
+  /* ---------- Kennwerte ---------- */
+  .werte__liste {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--fg);
+  }
+  .werte__liste li {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    padding: 1.25rem var(--gap) 0.5rem 0;
+  }
+  .werte__liste li + li {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  .werte__zahl {
+    font-size: clamp(2.6rem, 1.4rem + 4.6vw, 6rem);
+    font-weight: 800;
+    font-stretch: 118%;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+  }
+  .werte__liste .muted {
+    font-size: 0.95rem;
+    max-width: 30ch;
+  }
+  @media (max-width: 900px) {
+    .werte__liste {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .werte__liste li:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .werte__liste li:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+      margin-top: 1rem;
+    }
+  }
+
+  /* ---------- Leistungen ---------- */
+  .leist {
+    position: relative;
+  }
+  .leist__liste {
+    border-top: 1px solid var(--fg);
+  }
+  .leist__zeile {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) 1.5rem;
+    gap: var(--gap);
+    align-items: baseline;
+    padding: clamp(1rem, 2vw, 1.75rem) 0;
+    border-bottom: 1px solid var(--line);
+    transition:
+      padding 0.5s var(--ease),
+      border-color 0.3s;
+  }
+  .leist__titel {
+    font-size: clamp(1.9rem, 1rem + 4vw, 5rem);
+    font-weight: 780;
+    font-stretch: 100%;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    transition: font-stretch 0.6s var(--ease);
+    text-transform: uppercase;
+  }
+  .leist__text {
+    max-width: 44ch;
+    align-self: center;
+  }
+  .leist__zeile :global(.pfeil) {
+    align-self: center;
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+  .leist__zeile:hover,
+  .leist__zeile:focus-visible {
+    padding-left: clamp(0.5rem, 1.5vw, 1.5rem);
+    border-bottom-color: var(--fg);
+  }
+  .leist__zeile:hover .leist__titel,
+  .leist__zeile:focus-visible .leist__titel {
+  font-stretch: 122%;
+  }
+  @media (max-width: 800px) {
+    .leist__zeile {
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
+      transition: padding 0.5s var(--ease),
+      border-color 0.3s;
+    }
+    .leist__text {
+      grid-column: 1 / 2;
+      grid-row: 2;
+    }
+  }
+  .leist__vorschau {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: clamp(15rem, 23vw, 23rem);
+    margin: -8rem 0 0 2rem;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0;
+    transform-origin: center;
+    clip-path: inset(50% 0 50% 0);
+    transition:
+      opacity 0.3s,
+      clip-path 0.6s var(--ease);
+  }
+  :global(.leist__vorschau.ist-sichtbar) {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+  .leist__vorschau-bild {
+    position: absolute;
+    inset: 0 0 auto 0;
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  :global(.leist__vorschau-bild.ist-aktiv) {
+    opacity: 1;
+  }
+  @media (hover: none), (max-width: 1000px) {
+    .leist__vorschau {
+      display: none;
+      transition: opacity 0.3s,
+      clip-path 0.6s var(--ease);
+    }
+  }
+
+  /* ---------- Häuser ---------- */
+  .haeuser {
+    background: var(--paper-2);
+    --bg: var(--paper-2);
+  }
+  .haeuser__liste {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--gap);
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    border-top: 1px solid var(--fg);
+  }
+  .haus-karte {
+    display: grid;
+    align-content: start;
+    gap: 0.55rem;
+    padding: 1.25rem var(--gap) 0.5rem 0;
+    transition: padding 0.5s var(--ease),
+      box-shadow 0.3s;
+  }
+  .haus-karte + .haus-karte {
+    padding-left: var(--gap);
+    border-left: 1px solid var(--line);
+  }
+  :global(.haus-karte.ist-aktiv) {
+    box-shadow: inset 0 3px 0 var(--fg);
+  }
+  .haus-karte__kopf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+  }
+  .haus-karte__name {
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem);
+    font-weight: 760;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-stretch: 108%;
+    text-transform: uppercase;
+  }
+  .haus-karte__name:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+  .haus-karte__text {
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+  }
+  .haus-karte__adresse {
+    font-size: 0.95rem;
+  }
+  .haus-karte__aktionen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    margin-top: 0.4rem;
+  }
+  @media (max-width: 1000px) {
+    .haeuser__liste {
+      grid-template-columns: 1fr;
+    }
+    .haus-karte + .haus-karte {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      margin-top: 1rem;
+    }
+  }
+
+  /* ---------- Seit 1954 ---------- */
+  .seit__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .seit__bild {
+    margin: 0;
+  }
+  .seit__bild figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--fg-3);
+  }
+  .seit__text .h1 {
+    max-width: 12ch;
+  }
+  .seit__text .lead {
+    max-width: 30em;
+  }
+  .seit__stationen {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    border-top: 1px solid var(--fg);
+  }
+  .seit__stationen li {
+    display: grid;
+    grid-template-columns: minmax(6rem, 1.4fr) minmax(0, 5fr);
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .seit__jahr {
+    font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem);
+    font-weight: 800;
+    font-stretch: 112%;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .seit__station {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .seit__station strong {
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  @media (max-width: 900px) {
+    .seit__raster {
+      grid-template-columns: 1fr;
+    }
+    .seit__bild {
+      max-width: 26rem;
+    }
+  }
+
+  /* ---------- Journal ---------- */
+  .neues {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2.5rem var(--gap);
+    align-items: start;
+  }
+  .neues__seite {
+    display: grid;
+    gap: 2.25rem;
+    padding-left: clamp(0rem, 3vw, 3.5rem);
+  }
+  .neues__seite :global(.j-karte) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    column-gap: 1.25rem;
+  }
+  .neues__seite :global(.j-karte .bild) {
+    grid-row: 1 / span 3;
+  }
+  .neues__seite :global(.j-karte__kat) {
+    margin-top: 0;
+  }
+  @media (max-width: 1000px) {
+    .neues {
+      grid-template-columns: 1fr;
+    }
+    .neues__seite {
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 520px) {
+    .neues__seite :global(.j-karte) {
+      grid-template-columns: 1fr;
+    }
+    .neues__seite :global(.j-karte .bild) {
+      grid-row: auto;
+    }
+  }
+
+  /* ---------- Karriere ---------- */
+  .karriere-band__raster {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: 3rem var(--gap);
+    align-items: end;
+  }
+  .karriere-band__raster .h2 {
+    max-width: 22ch;
+  }
+  .karriere-band__seite {
+    display: grid;
+    justify-items: start;
+    gap: 0.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--fg);
+  }
+  .karriere-band__zahl {
+    font-size: clamp(5rem, 11vw, 11rem);
+    font-weight: 800;
+    font-stretch: 125%;
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+  }
+  @media (max-width: 900px) {
+    .karriere-band__raster {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { bereit } from '../scripts/bereit';
+
+  /**
+   * Das Tor: das Bildfenster im Auftakt öffnet sich beim Scrollen zur ganzen Bühne.
+   * Das Bild liegt von Beginn an bildschirmfüllend vor und wird nur freigeschnitten –
+   * es ruckelt nichts, weil sich allein clip-path und transform ändern.
+   */
+  function tor() {
+    const sektion = document.querySelector<HTMLElement>('[data-tor]');
+    if (!sektion) return;
+    const platz = sektion.querySelector<HTMLElement>('[data-tor-platz]')!;
+    const film = sektion.querySelector<HTMLElement>('[data-tor-film]')!;
+    const bildEl = sektion.querySelector<HTMLElement>('[data-tor-bild]')!;
+    const schleier = sektion.querySelector<HTMLElement>('[data-tor-schleier]')!;
+    const etikett = sektion.querySelector<HTMLElement>('[data-tor-etikett]')!;
+
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 900px) and (min-height: 660px) and (prefers-reduced-motion: no-preference)', () => {
+      sektion.classList.add('tor-aktiv');
+      const r = { t: 0, r: 0, b: 0, l: 0, dx: 0, dy: 0, s: 1 };
+      const miss = () => {
+        const s = sektion.getBoundingClientRect();
+        const p = platz.getBoundingClientRect();
+        r.t = p.top - s.top;
+        r.l = p.left - s.left;
+        r.r = s.right - p.right;
+        r.b = s.bottom - p.bottom;
+        r.s = Math.max(p.width / s.width, p.height / s.height) * 1.03;
+        r.dx = p.left + p.width / 2 - (s.left + s.width / 2);
+        r.dy = p.top + p.height / 2 - (s.top + s.height / 2);
+      };
+      miss();
+      const zu = () => `inset(${r.t}px ${r.r}px ${r.b}px ${r.l}px)`;
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.inOut' },
+        scrollTrigger: {
+          trigger: sektion,
+          start: 'top top',
+          end: '+=60%',
+          pin: true,
+          scrub: 0.5,
+          refreshPriority: 10,
+          invalidateOnRefresh: true,
+          onRefreshInit: miss,
+          onUpdate: (st) => {
+            sektion.dataset.kopf = st.progress > 0.5 ? 'dunkel' : 'hell';
+          },
+        },
+      });
+      tl.fromTo(film, { clipPath: zu }, { clipPath: 'inset(0px 0px 0px 0px)', duration: 1 }, 0)
+        .fromTo(bildEl, { x: () => r.dx, y: () => r.dy, scale: () => r.s }, { x: 0, y: 0, scale: 1, duration: 1 }, 0)
+        .fromTo(schleier, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'none' }, 0.45)
+        .fromTo(etikett, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 0.72);
+
+      return () => {
+        sektion.classList.remove('tor-aktiv');
+        sektion.dataset.kopf = 'hell';
+        gsap.set([film, bildEl, schleier, etikett], { clearProps: 'all' });
+      };
+    });
+    // Das Tor liegt vor allen anderen gepinnten Abschnitten – Reihenfolge neu ordnen
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+  }
+  bereit(tor);
+</script>

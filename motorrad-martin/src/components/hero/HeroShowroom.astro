@@ -1,0 +1,316 @@
+---
+/**
+ * Hero-Variante „Showroom“: Vollbild-Bühne, auf der beim Scrollen vier Martin Editionen
+ * nacheinander von unten auffahren. Jede Edition rastet ein. Mobil wischt man seitwärts.
+ */
+import Bild from '../Bild.astro';
+import Pfeil from '../Pfeil.astro';
+import { edition } from '../../data/editionen';
+import { bild } from '../../lib/bilder';
+
+const auswahl = [
+  { e: edition('r-1300-gs-adventure-rallye-dakar'), bild: 1, fokus: '50% 55%' },
+  { e: edition('r-ninet-90s-daytona'), bild: 1, fokus: '50% 60%' },
+  { e: edition('r-1300-gs-adventure-hunter'), bild: 1, fokus: '50% 62%' },
+  { e: edition('m-1000-rr-black'), bild: 1, fokus: '50% 60%' },
+];
+const n = String(auswahl.length).padStart(2, '0');
+---
+
+<section class="sr" data-showroom data-theme="dark">
+  <div class="sr__buehne" data-sr-buehne data-lenis-prevent-touch>
+    {
+      auswahl.map(({ e, bild: nr, fokus }, i) => (
+        <article class="sr__slide" data-sr-slide style={`--edition:${e.akzent}`} aria-label={e.titel}>
+          <div class="sr__bild" data-sr-bild>
+            <Bild src={bild(`editionen/${e.slug}-${nr}`)} alt={e.titel} sizes="100vw" widths={[640, 960, 1280, 1800]} eager={i === 0} fokus={fokus} />
+          </div>
+          <div class="sr__verlauf" aria-hidden="true" />
+          <div class="sr__text wrap" data-sr-text>
+            <p class="label sr__nr">
+              <span class="sr__punkt" aria-hidden="true" />
+              Martin Edition · Katalog Nº {e.nr}
+            </p>
+            <p class="sr__basis">BMW {e.basis}</p>
+            <p class="sr__name">{e.name}</p>
+            <a class="link sr__link" href={`/martin-edition/${e.slug}/`}>
+              Zur Edition <Pfeil />
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="sr__rahmen wrap">
+    <div class="sr__kopf">
+      <p class="label sr__ober">BMW Motorrad Vertragshändler · Familienbetrieb seit 1954</p>
+      <h1 class="sr__titel h1">Kein gewöhnlicher<br /> BMW Partner.</h1>
+    </div>
+    <div class="sr__seite">
+      <p class="sr__zaehler label" aria-hidden="true"><span data-sr-nr>01</span> / {n}</p>
+      <ol class="sr__striche" role="list" aria-hidden="true">
+        {auswahl.map((_, i) => <li class:list={[i === 0 && 'ist-aktiv']} data-sr-strich />)}
+      </ol>
+      <div class="sr__aktionen">
+        <a class="btn btn--solid" href="/martin-edition/">Alle 23 Editionen <Pfeil /></a>
+        <a class="btn" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sr {
+    position: relative;
+    height: 100svh;
+    min-height: 38rem;
+    overflow: clip;
+    background: var(--night);
+    color: var(--chalk);
+  }
+  .sr__buehne {
+    position: absolute;
+    inset: 0;
+  }
+  .sr__slide {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .sr__bild,
+  .sr__bild :global(.bild) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .sr__verlauf {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgb(11 12 12 / 0.7), transparent 30%),
+      linear-gradient(to top, rgb(11 12 12 / 0.85), transparent 48%);
+    pointer-events: none;
+  }
+  .sr__text {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: grid;
+    justify-items: start;
+    gap: 0.35rem;
+    padding-bottom: clamp(1.5rem, 4vh, 3rem);
+  }
+  .sr__nr {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .sr__punkt {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--edition);
+  }
+  .sr__basis {
+    font-size: clamp(1rem, 0.85rem + 0.6vw, 1.4rem);
+    font-weight: 500;
+    color: var(--chalk-2);
+  }
+  .sr__name {
+    font-size: clamp(2.8rem, 0.6rem + 6vw, 7.2rem);
+    max-width: calc(100vw - 2 * var(--pad) - 19rem);
+    font-weight: 800;
+    font-stretch: 112%;
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    color: var(--edition);
+  }
+  .sr__link {
+    margin-top: 0.9rem;
+  }
+  .sr__rahmen {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 2rem;
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: clamp(1.5rem, 4vh, 3rem);
+    pointer-events: none;
+  }
+  .sr__rahmen a,
+  .sr__rahmen button {
+    pointer-events: auto;
+  }
+  .sr__kopf {
+    display: grid;
+    gap: 1rem;
+  }
+  .sr__ober {
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgb(236 233 226 / 0.5);
+    max-width: 34rem;
+  }
+  .sr__titel {
+    font-size: clamp(2rem, 0.9rem + 3vw, 4rem);
+    hyphens: manual;
+    -webkit-hyphens: manual;
+  }
+  .sr__seite {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    justify-items: end;
+    align-content: start;
+    gap: 0.9rem;
+  }
+  .sr__zaehler {
+    font-size: 0.86rem;
+  }
+  .sr__striche {
+    display: flex;
+    gap: 0.35rem;
+  }
+  .sr__striche li {
+    width: 2rem;
+    height: 2px;
+    background: rgb(236 233 226 / 0.3);
+    transition: background 0.3s;
+  }
+  .sr__striche li.ist-aktiv {
+    background: var(--chalk);
+  }
+  .sr__aktionen {
+    align-self: end;
+    display: grid;
+    gap: 0.5rem;
+    min-width: 17rem;
+  }
+  .sr__aktionen .btn:not(.btn--solid) {
+    background: rgb(11 12 12 / 0.35);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  /* gestapelte Bühne (Desktop mit Bewegung): Folgeslides warten unten */
+  :global(.sr.ist-gekoppelt) .sr__slide + .sr__slide {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  /* Mobil / reduzierte Bewegung: seitlich wischen */
+  @media (max-width: 899px), (prefers-reduced-motion: reduce) {
+    .sr {
+      height: auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .sr__buehne {
+      position: relative;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      height: 78svh;
+    }
+    .sr__buehne::-webkit-scrollbar {
+      display: none;
+    }
+    .sr__slide {
+      position: relative;
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+    }
+    .sr__rahmen {
+      height: auto;
+      grid-template-columns: 1fr;
+      padding-bottom: 1.5rem;
+      pointer-events: auto;
+    }
+    .sr__seite {
+      justify-items: start;
+    }
+    .sr__name {
+      max-width: none;
+    }
+    .sr__aktionen {
+      min-width: 0;
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { bereit } from '../../scripts/bereit';
+
+  function showroom() {
+    const sektion = document.querySelector<HTMLElement>('[data-showroom]');
+    if (!sektion) return;
+    const slides = Array.from(sektion.querySelectorAll<HTMLElement>('[data-sr-slide]'));
+    const striche = Array.from(sektion.querySelectorAll<HTMLElement>('[data-sr-strich]'));
+    const nr = sektion.querySelector<HTMLElement>('[data-sr-nr]')!;
+    const buehne = sektion.querySelector<HTMLElement>('[data-sr-buehne]')!;
+    let aktiv = -1;
+    const zeige = (i: number) => {
+      if (i === aktiv) return;
+      aktiv = i;
+      nr.textContent = String(i + 1).padStart(2, '0');
+      striche.forEach((s, n) => s.classList.toggle('ist-aktiv', n === i));
+      slides.forEach((s, n) => s.toggleAttribute('inert', n !== i && sektion.classList.contains('ist-gekoppelt')));
+    };
+    zeige(0);
+
+    // Mobil: Zähler folgt dem Wischen
+    buehne.addEventListener(
+      'scroll',
+      () => {
+        if (sektion.classList.contains('ist-gekoppelt')) return;
+        zeige(Math.round(buehne.scrollLeft / Math.max(buehne.clientWidth, 1)));
+      },
+      { passive: true },
+    );
+
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
+      sektion.classList.add('ist-gekoppelt');
+      const schritte = slides.length - 1;
+      const tl = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: sektion,
+          start: 'top top',
+          end: () => `+=${window.innerHeight * 0.55 * schritte}`,
+          pin: true,
+          scrub: 0.35,
+          snap: { snapTo: 1 / schritte, duration: { min: 0.2, max: 0.5 }, ease: 'power2.inOut', delay: 0.05 },
+          invalidateOnRefresh: true,
+          onUpdate: (st) => zeige(Math.round(st.progress * schritte)),
+        },
+      });
+      slides.forEach((s, i) => {
+        if (i === 0) return;
+        const vorher = slides[i - 1];
+        const t = i - 1;
+        tl.fromTo(s, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power2.inOut' }, t)
+          .fromTo(s.querySelector('[data-sr-bild]'), { scale: 1.18, yPercent: 8 }, { scale: 1, yPercent: 0, duration: 1, ease: 'power2.out' }, t)
+          .fromTo(s.querySelector('[data-sr-text]'), { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.7, ease: 'power2.out' }, t + 0.3)
+          .fromTo(vorher.querySelector('[data-sr-bild]'), { scale: 1, yPercent: 0, filter: 'brightness(1)' }, { scale: 0.94, yPercent: -6, filter: 'brightness(0.55)', duration: 1, ease: 'power2.inOut', immediateRender: false }, t);
+      });
+      return () => {
+        sektion.classList.remove('ist-gekoppelt');
+        slides.forEach((s) => s.removeAttribute('inert'));
+        gsap.set(slides.flatMap((s) => [s, s.querySelector('[data-sr-bild]'), s.querySelector('[data-sr-text]')]), { clearProps: 'all' });
+      };
+    });
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+  }
+  bereit(showroom);
+</script>

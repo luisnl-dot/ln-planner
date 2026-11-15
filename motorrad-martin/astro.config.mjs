@@ -13,7 +13,7 @@ export default defineConfig({
   // Alte Adressen der Joomla-Seite. Statisch als Weiterleitungsseite erzeugt; auf Netlify/Cloudflare
   // greift zusätzlich public/_redirects mit echten 301-Antworten (siehe README).
   redirects: Object.fromEntries(Object.entries(weiterleitungen).map(([von, nach]) => [von, { status: 301, destination: nach }])),
-  integrations: [sitemap({ filter: (seite) => !seite.includes('/index.php') })],
+  integrations: [sitemap({ filter: (seite) => !seite.includes('/index.php') && !seite.includes('/varianten/') })],
   image: { responsiveStyles: false },
   devToolbar: { enabled: false },
   server: { host: true, port: 4321 },

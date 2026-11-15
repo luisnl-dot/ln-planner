@@ -46,6 +46,19 @@ npm run preview   # Build lokal ansehen
 | **Miet-Preisrechner** | Rechnet ausschließlich mit den veröffentlichten Tarifen (Stand 20.05.2026): 3-Tages- und Wochenpauschale, Probefahrtenpauschale, Mehrkilometer, Koffer, Navi und Reinigung. |
 | **Katalog-Register** der Martin Edition | Filter nach Baureihe und eine Umschaltung zwischen Tafel- und Register-Ansicht. Im Register folgt eine Bildvorschau dem Mauszeiger. |
 
+## Hero-Varianten (Vorschau)
+
+Unter `/varianten/` liegen vier Varianten für den Auftakt der Startseite zum Vergleich. Sie sind nicht indexiert und stehen nicht in der Sitemap. Jede Variante zeigt die komplette Startseite, nur der erste Bildschirm unterscheidet sich.
+
+| Variante | Seite | Scroll-Animation |
+|---|---|---|
+| Das Tor (live) | `/` | Das Bildfenster unter der Schlagzeile öffnet sich zur ganzen Bühne. |
+| A Durchblick | `/varianten/durchblick/` | MARTIN ist aus der Papierfläche gestanzt, die Kamera fährt durch das „I“ ins Vollbild. |
+| B Showroom | `/varianten/showroom/` | Vier Martin Editionen fahren nacheinander auf und rasten ein. Mobil wischt man. |
+| C Drei Häuser | `/varianten/haeuser/` | Drei Bildsäulen mit Live-Status gleiten unterschiedlich schnell, die Schlagzeile teilt sich. Hält das Scrollen nicht auf. |
+
+Umschalten der Startseite: In `src/pages/index.astro` `<Startseite variante="durchblick" />` (bzw. `showroom`, `haeuser`) setzen. Die Varianten liegen in `src/components/hero/`.
+
 ## Seitenstruktur
 
 | Bereich | Seiten |

@@ -1,0 +1,280 @@
+---
+/**
+ * Hero-Variante „Durchblick“: Ein großes MARTIN ist aus der Papierfläche gestanzt,
+ * durch die Buchstaben sieht man das Motorrad. Beim Scrollen fährt die Kamera durch
+ * das „I“ hindurch, bis das Foto die ganze Bühne füllt.
+ */
+import Bild from '../Bild.astro';
+import Pfeil from '../Pfeil.astro';
+import Status from '../Status.astro';
+import { edition } from '../../data/editionen';
+import { standorte } from '../../data/standorte';
+import { bild } from '../../lib/bilder';
+
+const e = edition('r-18-bobber');
+---
+
+<section class="db" data-durchblick data-kopf="hell">
+  <div class="db__bild" data-db-bild>
+    <Bild src={bild(`editionen/${e.slug}-2`)} alt={`${e.titel} im Gegenlicht vor den Bergen`} sizes="100vw" widths={[640, 960, 1280, 1800]} eager />
+  </div>
+  <div class="db__schleier" data-db-schleier aria-hidden="true"></div>
+
+  <svg class="db__maske" data-db-maske aria-hidden="true" focusable="false">
+    <defs>
+      <mask id="db-loch" maskUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
+        <rect x="-50%" y="-50%" width="200%" height="200%" fill="white"></rect>
+        <text data-db-text x="50%" y="58%" text-anchor="middle" fill="black" class="db__wort">MARTIN</text>
+      </mask>
+    </defs>
+    <rect x="-50%" y="-50%" width="200%" height="200%" class="db__papier" mask="url(#db-loch)"></rect>
+  </svg>
+
+  <div class="db__inhalt wrap">
+    <p class="db__ober label" data-db-vorn>
+      <span>BMW Motorrad Vertragshändler</span>
+      <span class="db__live">
+        {
+          standorte.map((s) => (
+            <a href={`/standorte/${s.slug}/`}>
+              <Status haus={s.slug} ort />
+            </a>
+          ))
+        }
+      </span>
+    </p>
+
+    <div class="db__unten" data-db-vorn>
+      <h1 class="db__titel h1">Kein gewöhnlicher<br /> BMW Partner.</h1>
+      <div class="db__text">
+        <p class="lead">Familienbetrieb seit 1954, heute in dritter Generation. Drei Häuser am Alpenrand – und eine eigene Manufaktur.</p>
+        <div class="db__aktionen">
+          <a class="btn btn--solid" href="/martin-edition/">Martin Edition ansehen <Pfeil /></a>
+          <a class="btn" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
+        </div>
+      </div>
+    </div>
+
+    <a class="db__etikett" href={`/martin-edition/${e.slug}/`} data-db-etikett>
+      <span class="label">Martin Edition · Katalog Nº {e.nr}</span>
+      <span class="db__etikett-name">BMW {e.basis} {e.name}</span>
+      <span class="link">Zur Edition <Pfeil /></span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .db {
+    position: relative;
+    height: 100svh;
+    min-height: 38rem;
+    overflow: clip;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .db__bild,
+  .db__schleier,
+  .db__maske {
+    position: absolute;
+    inset: 0;
+  }
+  .db__bild :global(.bild) {
+    width: 100%;
+    height: 100%;
+  }
+  .db__bild :global(img) {
+    object-position: 50% 60%;
+  }
+  .db__schleier {
+    background: linear-gradient(to top, rgb(11 12 12 / 0.78), transparent 45%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .db__maske {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    will-change: transform;
+  }
+  .db__papier {
+    fill: var(--paper);
+  }
+  .db__wort {
+    font-family: var(--font);
+    font-size: 19vw;
+    font-weight: 800;
+    font-stretch: 100%;
+    letter-spacing: -0.02em;
+  }
+  @media (max-width: 899px) {
+    .db__wort {
+      font-stretch: 72%;
+      font-size: 30vw;
+    }
+  }
+  .db__inhalt {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: var(--pad);
+  }
+  .db__ober {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(0.5rem, 1.6vh, 1.1rem);
+    border-bottom: 1px solid var(--ink);
+  }
+  .db__live {
+    display: none;
+    gap: clamp(1rem, 2vw, 2.25rem);
+  }
+  @media (min-width: 1100px) {
+    .db__live {
+      display: flex;
+    }
+  }
+  .db__unten {
+    grid-row: 3;
+    grid-column: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 1.5rem var(--gap);
+    align-items: end;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ink);
+  }
+  .db__titel {
+    font-size: clamp(2rem, 0.9rem + 3.1vw, 4rem);
+    hyphens: manual;
+    -webkit-hyphens: manual;
+  }
+  .db__text {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .db__text .lead {
+    font-size: clamp(1.02rem, 0.9rem + 0.45vw, 1.25rem);
+  }
+  .db__aktionen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .db__etikett {
+    grid-row: 3;
+    grid-column: 1;
+    align-self: end;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+    color: var(--chalk);
+    opacity: 0;
+    visibility: hidden;
+  }
+  .db__etikett-name {
+    font-size: clamp(1.6rem, 1rem + 2.6vw, 3.6rem);
+    font-weight: 780;
+    font-stretch: 112%;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-transform: uppercase;
+  }
+  @media (max-width: 899px) {
+    .db {
+      height: auto;
+      min-height: 0;
+    }
+    .db__inhalt {
+      min-height: 100svh;
+    }
+    .db__unten {
+      grid-template-columns: 1fr;
+      background: var(--paper);
+    }
+    .db__aktionen {
+      display: grid;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { bereit } from '../../scripts/bereit';
+
+  function durchblick() {
+    const sektion = document.querySelector<HTMLElement>('[data-durchblick]');
+    if (!sektion) return;
+    const svg = sektion.querySelector<SVGSVGElement>('[data-db-maske]')!;
+    const text = sektion.querySelector<SVGTextElement>('[data-db-text]')!;
+    const bildEl = sektion.querySelector<HTMLElement>('[data-db-bild]')!;
+    const schleier = sektion.querySelector<HTMLElement>('[data-db-schleier]')!;
+    const etikett = sektion.querySelector<HTMLElement>('[data-db-etikett]')!;
+    const vorn = sektion.querySelectorAll<HTMLElement>('[data-db-vorn]');
+
+    // Wort bündig auf 94 % der Breite setzen und optisch zwischen Kopf- und Fußzeile mitteln
+    const setze = () => {
+      const r = svg.getBoundingClientRect();
+      text.style.fontSize = '100px';
+      const l = text.getComputedTextLength() || 1;
+      const groesse = (100 * r.width * 0.94) / l;
+      text.style.fontSize = `${groesse}px`;
+      const ober = sektion.querySelector<HTMLElement>('.db__ober')!.getBoundingClientRect();
+      const unten = sektion.querySelector<HTMLElement>('.db__unten')!.getBoundingClientRect();
+      const mitte = (ober.bottom + unten.top) / 2 - r.top;
+      text.setAttribute('y', String(mitte + groesse * 0.36));
+    };
+    setze();
+    window.addEventListener('resize', setze);
+
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
+      // Drehpunkt: Mitte des „I“ (5. Zeichen)
+      const ursprung = () => {
+        const box = text.getExtentOfChar(4);
+        return { x: box.x + box.width / 2, y: box.y + box.height * 0.62, w: box.width };
+      };
+      let o = ursprung();
+      const faktor = () => (Math.max(window.innerWidth, window.innerHeight) / Math.max(o.w * 0.4, 1)) * 1.4;
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.in' },
+        scrollTrigger: {
+          trigger: sektion,
+          start: 'top top',
+          end: '+=90%',
+          pin: true,
+          scrub: 0.4,
+          invalidateOnRefresh: true,
+          onRefreshInit: () => {
+            gsap.set(svg, { clearProps: 'transform' });
+            setze();
+            o = ursprung();
+          },
+          onUpdate: (st) => {
+            sektion.dataset.kopf = st.progress > 0.45 ? 'dunkel' : 'hell';
+          },
+        },
+      });
+      tl.to(vorn, { opacity: 0, y: -12, duration: 0.18, ease: 'power1.in' }, 0)
+        .fromTo(svg, { scale: 1, transformOrigin: () => `${o.x}px ${o.y}px` }, { scale: faktor, duration: 0.7 }, 0.05)
+        .fromTo(bildEl, { scale: 1.12 }, { scale: 1, duration: 0.75, ease: 'power1.out' }, 0)
+        .set(svg, { autoAlpha: 0 }, 0.76)
+        .fromTo(schleier, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none' }, 0.75)
+        .fromTo(etikett, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.8);
+
+      return () => {
+        sektion.dataset.kopf = 'hell';
+        gsap.set([svg, bildEl, schleier, etikett, ...vorn], { clearProps: 'all' });
+      };
+    });
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+  }
+  bereit(durchblick);
+</script>
