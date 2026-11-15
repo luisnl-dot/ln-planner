@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Datenschutz – cotralog</title>
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#f3f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="format-detection" content="telephone=no">
+
+  <link rel="preload" href="assets/fonts/sofia-sans-extra-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/sofia-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/sofia-sans-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <script>
+    /* Vor dem ersten Bild: Skript vorhanden? Bewegung erwünscht? */
+    (function (root) {
+      var cls = 'js';
+      if (window.matchMedia && window.IntersectionObserver &&
+          window.matchMedia('(prefers-reduced-motion: no-preference)').matches) cls += ' motion';
+      root.className = cls;
+      /* Lädt das Hauptskript nicht, bleibt nichts im Ausgangszustand hängen. */
+      window.setTimeout(function () {
+        if (window.cotralogReady) return;
+        root.classList.remove('motion');
+        var sheet = document.querySelector('[data-sheet]');
+        if (sheet) sheet.setAttribute('data-state', 'full');
+      }, 5000);
+    })(document.documentElement);
+  </script>
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="logo" href="index.html" aria-label="cotralog – zur Startseite">
+      <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="logo__word">cotralog</span>
+    </a>
+
+    <button class="top__menu" type="button" aria-expanded="false" aria-controls="nav" hidden>
+      <span class="top__menu-label">Menü</span>
+      <span class="top__menu-icon" aria-hidden="true"></span>
+    </button>
+
+    <nav class="nav" id="nav" aria-label="Hauptnavigation">
+      <ul class="nav__list">
+        <li><a href="index.html#nutzen">Nutzen</a></li>
+        <li><a href="index.html#module">Module</a></li>
+        <li><a href="index.html#voraussetzungen">Voraussetzungen</a></li>
+        <li><a href="index.html#testangebot">Testangebot</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--small top__cta" href="index.html#anfrage">Test anfragen</a>
+  </div>
+</header>
+
+<main id="inhalt" class="legal">
+  <div class="wrap">
+    <h1 class="legal__h">Daten&shy;schutz</h1>
+
+    <!-- PLATZHALTER: Diese Seite enthält noch keine Datenschutzerklärung. Vor Veröffentlichung vollständig ausarbeiten und rechtlich prüfen lassen. -->
+    <p class="legal__note"><strong>Platzhalterseite.</strong> Die Datenschutzerklärung liegt noch nicht vor. Sie ist vor der Veröffentlichung auszuarbeiten und rechtlich zu prüfen. Die Abschnitte unten nennen, was dafür noch fehlt.</p>
+
+    <section class="legal__sec" aria-labelledby="ds-1">
+      <h2 id="ds-1">Verantwortliche Stelle</h2>
+      <div>
+        <p><span class="ph">Firma, Anschrift und Kontakt der verantwortlichen Stelle</span></p>
+        <p><span class="ph">Kontakt für Datenschutzanfragen</span></p>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="ds-2">
+      <h2 id="ds-2">Hosting</h2>
+      <div>
+        <p><span class="ph">Anbieter und Standort des Hostings, Umgang mit Zugriffsdaten</span></p>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="ds-3">
+      <h2 id="ds-3">Anfrage zum Testangebot</h2>
+      <div>
+        <p><span class="ph">Zweck, Rechtsgrundlage, Empfänger und Speicherdauer der Formulardaten</span></p>
+        <p>Das Formular fragt folgende Angaben ab:</p>
+        <ul>
+          <li>Name, Unternehmen und E-Mail-Adresse</li>
+          <li>Telefonnummer und Nachricht, beides freiwillig</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="ds-4">
+      <h2 id="ds-4">Ihre Rechte</h2>
+      <div>
+        <p><span class="ph">Rechte der betroffenen Personen und zuständige Aufsichtsbehörde</span></p>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="ds-5">
+      <h2 id="ds-5">Technischer Stand dieser Website</h2>
+      <div>
+        <p>Diese Angaben beschreiben die Website, wie sie gebaut ist, und dienen als Grundlage für die Ausarbeitung:</p>
+        <ul>
+          <li>Die Website setzt keine Cookies.</li>
+          <li>Sie enthält keine Analyse- oder Werbedienste.</li>
+          <li>Schriften, Skripte und Grafiken liegen auf dem eigenen Server; es werden keine Inhalte von Dritten nachgeladen.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div class="foot__brand">
+      <a class="logo" href="index.html" aria-label="cotralog – zur Startseite">
+        <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="logo__word">cotralog</span>
+      </a>
+      <p>cotralog&nbsp;Insider. Tankkosten verstehen, kontrollieren und senken.</p>
+    </div>
+    <nav class="foot__nav" aria-label="Seitenübersicht">
+      <ul>
+        <li><a href="index.html#nutzen">Nutzen</a></li>
+        <li><a href="index.html#module">Module</a></li>
+        <li><a href="index.html#voraussetzungen">Voraussetzungen</a></li>
+        <li><a href="index.html#testangebot">Testangebot</a></li>
+      </ul>
+    </nav>
+    <nav class="foot__nav" aria-label="Rechtliches">
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html" aria-current="page">Datenschutz</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

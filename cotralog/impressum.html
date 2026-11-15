@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Impressum – cotralog</title>
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#f3f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="format-detection" content="telephone=no">
+
+  <link rel="preload" href="assets/fonts/sofia-sans-extra-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/sofia-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/sofia-sans-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <script>
+    /* Vor dem ersten Bild: Skript vorhanden? Bewegung erwünscht? */
+    (function (root) {
+      var cls = 'js';
+      if (window.matchMedia && window.IntersectionObserver &&
+          window.matchMedia('(prefers-reduced-motion: no-preference)').matches) cls += ' motion';
+      root.className = cls;
+      /* Lädt das Hauptskript nicht, bleibt nichts im Ausgangszustand hängen. */
+      window.setTimeout(function () {
+        if (window.cotralogReady) return;
+        root.classList.remove('motion');
+        var sheet = document.querySelector('[data-sheet]');
+        if (sheet) sheet.setAttribute('data-state', 'full');
+      }, 5000);
+    })(document.documentElement);
+  </script>
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="logo" href="index.html" aria-label="cotralog – zur Startseite">
+      <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="logo__word">cotralog</span>
+    </a>
+
+    <button class="top__menu" type="button" aria-expanded="false" aria-controls="nav" hidden>
+      <span class="top__menu-label">Menü</span>
+      <span class="top__menu-icon" aria-hidden="true"></span>
+    </button>
+
+    <nav class="nav" id="nav" aria-label="Hauptnavigation">
+      <ul class="nav__list">
+        <li><a href="index.html#nutzen">Nutzen</a></li>
+        <li><a href="index.html#module">Module</a></li>
+        <li><a href="index.html#voraussetzungen">Voraussetzungen</a></li>
+        <li><a href="index.html#testangebot">Testangebot</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--small top__cta" href="index.html#anfrage">Test anfragen</a>
+  </div>
+</header>
+
+<main id="inhalt" class="legal">
+  <div class="wrap">
+    <h1 class="legal__h">Impressum</h1>
+
+    <!-- PLATZHALTER: Diese Seite enthält noch keine Angaben. Vor Veröffentlichung vollständig ausfüllen und rechtlich prüfen lassen. -->
+    <p class="legal__note"><strong>Platzhalterseite.</strong> Die gesetzlich erforderlichen Angaben liegen noch nicht vor. Sie sind vor der Veröffentlichung einzutragen und rechtlich zu prüfen.</p>
+
+    <section class="legal__sec" aria-labelledby="imp-1">
+      <h2 id="imp-1">Anbieter</h2>
+      <div>
+        <p><span class="ph">Firma und Rechtsform</span></p>
+        <p><span class="ph">Straße und Hausnummer</span><br><span class="ph">Postleitzahl und Ort</span></p>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="imp-2">
+      <h2 id="imp-2">Vertretung</h2>
+      <div>
+        <p><span class="ph">Vertretungsberechtigte Person oder Personen</span></p>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="imp-3">
+      <h2 id="imp-3">Kontakt</h2>
+      <div>
+        <p>Telefon: <span class="ph">Telefonnummer</span></p>
+        <p>E-Mail: <span class="ph">E-Mail-Adresse</span></p>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="imp-4">
+      <h2 id="imp-4">Register und Steuer</h2>
+      <div>
+        <p><span class="ph">Registergericht und Registernummer</span></p>
+        <p><span class="ph">Umsatzsteuer-Identifikationsnummer</span></p>
+      </div>
+    </section>
+
+    <section class="legal__sec" aria-labelledby="imp-5">
+      <h2 id="imp-5">Inhaltlich verantwortlich</h2>
+      <div>
+        <p><span class="ph">Name und Anschrift</span></p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div class="foot__brand">
+      <a class="logo" href="index.html" aria-label="cotralog – zur Startseite">
+        <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="logo__word">cotralog</span>
+      </a>
+      <p>cotralog&nbsp;Insider. Tankkosten verstehen, kontrollieren und senken.</p>
+    </div>
+    <nav class="foot__nav" aria-label="Seitenübersicht">
+      <ul>
+        <li><a href="index.html#nutzen">Nutzen</a></li>
+        <li><a href="index.html#module">Module</a></li>
+        <li><a href="index.html#voraussetzungen">Voraussetzungen</a></li>
+        <li><a href="index.html#testangebot">Testangebot</a></li>
+      </ul>
+    </nav>
+    <nav class="foot__nav" aria-label="Rechtliches">
+      <ul>
+        <li><a href="impressum.html" aria-current="page">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

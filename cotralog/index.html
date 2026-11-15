@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>cotralog Insider – Tankkosten verstehen, kontrollieren und senken</title>
+  <meta name="description" content="cotralog ist Ihr Controller für Kraftstoffkosten. Wir werten Ihre Tankabrechnungen und Fahrzeugdaten automatisch aus und sagen Ihnen, wo Geld verloren geht und wo Sie günstiger tanken können.">
+  <meta name="theme-color" content="#f3f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- PLATZHALTER: Sobald die Domain feststeht, hier canonical und og:url ergänzen
+       und og:image als absolute Adresse eintragen. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:site_name" content="cotralog">
+  <meta property="og:title" content="cotralog Insider – Tankkosten verstehen, kontrollieren und senken">
+  <meta property="og:description" content="Ihr Controller für Kraftstoffkosten: Tankabrechnungen und Fahrzeugdaten automatisch ausgewertet.">
+  <meta property="og:image" content="assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="cotralog Insider – Tankkosten verstehen, kontrollieren und senken">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preload" href="assets/fonts/sofia-sans-extra-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/sofia-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/sofia-sans-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <script>
+    /* Vor dem ersten Bild: Skript vorhanden? Bewegung erwünscht? */
+    (function (root) {
+      var cls = 'js';
+      if (window.matchMedia && window.IntersectionObserver &&
+          window.matchMedia('(prefers-reduced-motion: no-preference)').matches) cls += ' motion';
+      root.className = cls;
+      /* Lädt das Hauptskript nicht, bleibt nichts im Ausgangszustand hängen. */
+      window.setTimeout(function () {
+        if (window.cotralogReady) return;
+        root.classList.remove('motion');
+        var sheet = document.querySelector('[data-sheet]');
+        if (sheet) sheet.setAttribute('data-state', 'full');
+      }, 5000);
+    })(document.documentElement);
+  </script>
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M2.5 8.6l3.6 3.6 7.4-8" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 20 20"><path d="M3 10h13M11 4.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-down" viewBox="0 0 20 20"><path d="M10 3v13M4.5 11l5.5 5.5 5.5-5.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+</svg>
+
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="logo" href="#top" aria-label="cotralog – zum Seitenanfang">
+      <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="logo__word">cotralog</span>
+    </a>
+
+    <button class="top__menu" type="button" aria-expanded="false" aria-controls="nav" hidden>
+      <span class="top__menu-label">Menü</span>
+      <span class="top__menu-icon" aria-hidden="true"></span>
+    </button>
+
+    <nav class="nav" id="nav" aria-label="Hauptnavigation">
+      <ul class="nav__list">
+        <li><a href="#nutzen">Nutzen</a></li>
+        <li><a href="#module">Module</a></li>
+        <li><a href="#voraussetzungen">Voraussetzungen</a></li>
+        <li><a href="#testangebot">Testangebot</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--small top__cta" href="#anfrage">Test anfragen</a>
+  </div>
+</header>
+
+<main id="inhalt">
+
+  <!-- ====================================================== Einstieg -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap">
+      <p class="eyebrow">cotralog Insider</p>
+      <h1 class="hero__h" id="hero-h">Tankkosten verstehen, kontrollieren <span class="nb">und <span class="mark mark--h1">senken</span></span></h1>
+
+      <div class="hero__grid">
+        <div class="hero__text">
+          <p class="lead">cotralog ist Ihr Controller für Kraftstoff&shy;kosten. Wir werten Ihre Tank&shy;abrechnungen und Fahrzeug&shy;daten automatisch aus, prüfen sie im cotralog&nbsp;Insider im Detail und sagen Ihnen, wo Geld verloren geht und wo Sie günstiger tanken können.</p>
+
+          <div class="hero__actions">
+            <a class="btn" href="#anfrage">Zwei Monate testen <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-down" href="#module">Sechs Module ansehen <svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></a>
+          </div>
+
+          <ul class="facts" aria-label="Kurz gesagt">
+            <li>Erst testen, dann entscheiden</li>
+            <li>Keine zusätzliche Hardware</li>
+            <li>Keine Stammdaten&shy;pflege notwendig</li>
+          </ul>
+        </div>
+
+        <figure class="sheet" data-sheet data-state="full" aria-labelledby="sheet-title">
+          <div class="sheet__paper">
+            <p class="sheet__title" id="sheet-title"><span class="tag">Schema</span> Tankabrechnung</p>
+            <fieldset class="seg">
+              <legend class="vh">Prüfumfang</legend>
+              <label class="seg__opt"><input type="radio" name="pruefumfang" id="pruefumfang-stichprobe" value="sample"><span>Manuelle Stichprobe</span></label>
+              <label class="seg__opt"><input type="radio" name="pruefumfang" id="pruefumfang-alle" value="full" checked><span>Jeder Tankvorgang</span></label>
+            </fieldset>
+
+            <div class="sheet__table" aria-hidden="true">
+              <div class="sheet__cols">
+                <span>Datum</span><span>Ort</span><span>Fahrzeug</span><span class="num">Menge</span><span class="num">Preis</span><span></span>
+              </div>
+              <ol class="sheet__rows">
+                <li class="row" style="--i:0"><i style="--w:70%"></i><i style="--w:85%"></i><i style="--w:60%"></i><i class="num" style="--w:55%"></i><i class="num" style="--w:62%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+                <li class="row is-sample" style="--i:1;--s:0"><i style="--w:70%"></i><i style="--w:62%"></i><i style="--w:74%"></i><i class="num" style="--w:72%"></i><i class="num" style="--w:58%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+                <li class="row is-flag" style="--i:2;--f:0"><i style="--w:70%"></i><i style="--w:78%"></i><i style="--w:52%"></i><i class="num" style="--w:48%"></i><i class="num" style="--w:66%"></i><b class="chk"><svg><use href="#i-check"/></svg></b><span class="row__note">Ungünstiger Tankstopp</span></li>
+                <li class="row" style="--i:3"><i style="--w:70%"></i><i style="--w:55%"></i><i style="--w:68%"></i><i class="num" style="--w:64%"></i><i class="num" style="--w:60%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+                <li class="row" style="--i:4"><i style="--w:70%"></i><i style="--w:90%"></i><i style="--w:58%"></i><i class="num" style="--w:52%"></i><i class="num" style="--w:64%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+                <li class="row is-sample" style="--i:5;--s:1"><i style="--w:70%"></i><i style="--w:66%"></i><i style="--w:80%"></i><i class="num" style="--w:70%"></i><i class="num" style="--w:56%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+                <li class="row is-flag" style="--i:6;--f:1"><i style="--w:70%"></i><i style="--w:72%"></i><i style="--w:62%"></i><i class="num" style="--w:58%"></i><i class="num" style="--w:60%"></i><b class="chk"><svg><use href="#i-check"/></svg></b><span class="row__note">Mengenabnahme im Tank</span></li>
+                <li class="row" style="--i:7"><i style="--w:70%"></i><i style="--w:82%"></i><i style="--w:70%"></i><i class="num" style="--w:66%"></i><i class="num" style="--w:68%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+                <li class="row is-sample" style="--i:8;--s:2"><i style="--w:70%"></i><i style="--w:58%"></i><i style="--w:56%"></i><i class="num" style="--w:50%"></i><i class="num" style="--w:62%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+                <li class="row is-flag" style="--i:9;--f:2"><i style="--w:70%"></i><i style="--w:76%"></i><i style="--w:66%"></i><i class="num" style="--w:74%"></i><i class="num" style="--w:58%"></i><b class="chk"><svg><use href="#i-check"/></svg></b><span class="row__note">Abrechnungs&shy;differenz</span></li>
+                <li class="row" style="--i:10"><i style="--w:70%"></i><i style="--w:64%"></i><i style="--w:76%"></i><i class="num" style="--w:60%"></i><i class="num" style="--w:64%"></i><b class="chk"><svg><use href="#i-check"/></svg></b></li>
+              </ol>
+            </div>
+          </div>
+
+          <figcaption class="sheet__cap">
+            <p class="sheet__cap-full"><strong>Jeder Tankvorgang geprüft:</strong> Auffälligkeiten und zu teure Tankstopps werden sichtbar, bevor sie sich summieren.</p>
+            <p class="sheet__cap-sample"><strong>Manuelle Stichprobe:</strong> Dieseldiebstahl und fehlerhafte Abrechnungen bleiben meist unentdeckt.</p>
+          </figcaption>
+        </figure>
+        <script>
+          /* Mit Bewegung beginnt das Blatt als Stichprobe; die Vollprüfung folgt sichtbar. */
+          if (document.documentElement.classList.contains('motion')) {
+            (function (sheet) {
+              sheet.setAttribute('data-state', 'sample');
+              sheet.querySelector('input[value="sample"]').checked = true;
+            })(document.querySelector('[data-sheet]'));
+          }
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== Nutzen -->
+  <section class="sec" id="nutzen" aria-labelledby="nutzen-h">
+    <div class="wrap sec__grid">
+      <h2 class="sec__h" id="nutzen-h">Ihr Nutzen</h2>
+      <ul class="gains">
+        <li data-reveal><span class="mark" style="--d:0">Automatisches Controlling</span> statt manueller Stichproben</li>
+        <li data-reveal>Auffälligkeiten und zu teure Tankstopps werden sichtbar, <span class="mark" style="--d:1">bevor sie sich summieren</span></li>
+        <li data-reveal>Klare Empfehlung, wo Sie auf Ihren Routen <span class="mark" style="--d:2">am günstigsten tanken</span></li>
+        <li data-reveal>CO<sub>2</sub>-Nachweise für Ihre Auftraggeber <span class="mark" style="--d:3">ohne Mehraufwand</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ====================================================== Module -->
+  <section class="sec sec--mods" id="module" aria-labelledby="module-h">
+    <div class="wrap">
+      <div class="sec__grid sec__grid--head">
+        <h2 class="sec__h" id="module-h">Sechs Module</h2>
+        <p class="sec__intro">Testen Sie den cotralog&nbsp;Insider zwei Monate lang. Danach entscheiden Sie, welche Module Sie wirklich benötigen. <a class="tlink" href="#testangebot">Zum Testangebot</a></p>
+      </div>
+
+      <div class="mods" data-mods>
+
+        <!-- 1 -->
+        <div class="mod is-open" data-mod>
+          <h3 class="mod__head" id="modul-1"><span class="mod__no">1</span><span class="mod__title">Tankkosten-Analyse</span></h3>
+          <div class="mod__panel" id="modul-1-panel">
+            <div class="mod__body">
+              <p class="mod__lead">Alle Tank&shy;abrechnungen Ihrer Flotte an einem Ort – unabhängig davon, wie viele Tankkarten Sie nutzen.</p>
+
+              <figure class="fig" data-fig aria-labelledby="fig-1-cap">
+                <div class="fig__canvas f1" aria-hidden="true">
+                  <p class="fig__axis"><span>Preis je Betankung</span><svg class="ico"><use href="#i-arrow"/></svg></p>
+                  <div class="f1__plot">
+                    <span class="f1__bench"></span>
+                    <ol class="f1__rows">
+                      <li class="f1__row is-flag" style="--v:97%;--alt:63%;--to:0;--from:4"><span class="f1__bar"><em>Ungünstiger Tankstopp</em></span><span class="f1__alt"><em>günstigere Alternative</em></span></li>
+                      <li class="f1__row is-flag" style="--v:92%;--alt:60%;--to:1;--from:7"><span class="f1__bar"></span><span class="f1__alt"></span></li>
+                      <li class="f1__row is-flag" style="--v:88%;--alt:64%;--to:2;--from:1"><span class="f1__bar"></span><span class="f1__alt"></span></li>
+                      <li class="f1__row" style="--v:76%;--to:3;--from:0"><span class="f1__bar"></span></li>
+                      <li class="f1__row" style="--v:72%;--to:4;--from:6"><span class="f1__bar"></span></li>
+                      <li class="f1__row" style="--v:69%;--to:5;--from:2"><span class="f1__bar"></span></li>
+                      <li class="f1__row" style="--v:64%;--to:6;--from:8"><span class="f1__bar"></span></li>
+                      <li class="f1__row" style="--v:60%;--to:7;--from:3"><span class="f1__bar"></span></li>
+                      <li class="f1__row" style="--v:55%;--to:8;--from:5"><span class="f1__bar"></span></li>
+                    </ol>
+                  </div>
+                </div>
+                <figcaption class="fig__cap" id="fig-1-cap">
+                  <p><span class="tag">Schema</span> Jede Betankung nach Preis, die teuersten zuerst.</p>
+                  <ul class="legend">
+                    <li><span class="sw sw--flag"></span>ungünstiger Tankstopp</li>
+                    <li><span class="sw sw--alt"></span>günstigere Alternative</li>
+                    <li><span class="sw sw--dash"></span>anonymisierte Werte anderer Transport&shy;unternehmen</li>
+                  </ul>
+                </figcaption>
+              </figure>
+
+              <ul class="points">
+                <li><strong>Automatische Auswertung</strong> der Tankabrechnungen aller Tankkarten und Tankstellen, Import aller gängigen Datenformate</li>
+                <li><strong>Jede Betankung</strong> mit Datum, Ort, Fahrzeug, Menge und Preis, die teuersten zuerst</li>
+                <li><strong>Preise und Mengen</strong> nach Land, Anbieter und Tankstelle, für Diesel, HVO, AdBlue, LNG, CNG und Strom</li>
+                <li><strong>Ungünstige Tankstopps</strong> werden automatisch erkannt, günstigere Alternativen ermittelt</li>
+                <li><strong>Verbrauchsauswertung</strong> je Fahrzeug und Fahrer</li>
+                <li><strong>Vergleich Ihrer Tankkosten</strong> mit anonymisierten Werten anderer Transportunternehmen</li>
+                <li><strong>Laufendes Controlling,</strong> damit ungünstige Entwicklungen früh auffallen</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="mod" data-mod>
+          <h3 class="mod__head" id="modul-2"><span class="mod__no">2</span><span class="mod__title">Kontrolle der Betankungen</span></h3>
+          <div class="mod__panel" id="modul-2-panel">
+            <div class="mod__body">
+              <p class="mod__lead">Dieseldiebstahl und fehlerhafte Abrechnungen bleiben bei Stichproben meist unentdeckt. Die Betankungs&shy;kontrolle prüft deshalb jeden Tankvorgang.</p>
+
+              <figure class="fig" data-fig aria-labelledby="fig-2-cap">
+                <div class="fig__canvas f2" aria-hidden="true">
+                  <p class="fig__axis f2__key"><span><i class="f2__key-line"></i>Tankfüllstand</span><span><i class="f2__key-bar"></i>Tankabrechnung</span></p>
+                  <div class="f2__plot">
+                    <span class="f2__band" style="--x:29.3%;--n:0"></span>
+                    <span class="f2__band" style="--x:44%;--n:1"></span>
+                    <span class="f2__band" style="--x:60%;--n:2"></span>
+                    <span class="f2__band" style="--x:74%;--n:3"></span>
+
+                    <div class="f2__track f2__track--level">
+                      <svg class="f2__curve" viewBox="0 0 600 120" preserveAspectRatio="none">
+                        <path pathLength="1" d="M0 50 L72 78 L72 22 L176 62 L176 84 L264 106 L264 52 L360 88 L444 110 L444 30 L540 66 L540 20 L600 42"/>
+                      </svg>
+                    </div>
+
+                    <div class="f2__checks">
+                      <span class="f2__ok" style="--x:12%;--t:.12"><svg><use href="#i-check"/></svg></span>
+                      <span class="f2__call" style="--x:29.3%;--t:.293">a</span>
+                      <span class="f2__call" style="--x:44%;--t:.44">b</span>
+                      <span class="f2__call" style="--x:60%;--t:.6">c</span>
+                      <span class="f2__call" style="--x:74%;--t:.74">d</span>
+                      <span class="f2__ok" style="--x:90%;--t:.9"><svg><use href="#i-check"/></svg></span>
+                    </div>
+
+                    <div class="f2__track f2__track--bill">
+                      <span class="f2__bar" style="--x:12%;--h:60%;--t:.12"></span>
+                      <span class="f2__bar f2__bar--over" style="--x:44%;--h:92%;--over:36%;--t:.44"></span>
+                      <span class="f2__bar f2__bar--only" style="--x:60%;--h:56%;--t:.6"></span>
+                      <span class="f2__bar f2__bar--none" style="--x:74%;--h:86%;--t:.74"></span>
+                      <span class="f2__bar" style="--x:90%;--h:50%;--t:.9"></span>
+                    </div>
+                  </div>
+                </div>
+                <figcaption class="fig__cap" id="fig-2-cap">
+                  <p><span class="tag">Schema</span> Abgleich der Tankabrechnung mit dem Tankfüllstand vor und nach der Betankung.</p>
+                  <ul class="legend legend--calls">
+                    <li><span class="call">a</span>Mengenabnahme im Tank</li>
+                    <li><span class="call">b</span>Abrechnungsdifferenz</li>
+                    <li><span class="call">c</span>Fehlbuchung</li>
+                    <li><span class="call">d</span>fehlende Abrechnung</li>
+                  </ul>
+                </figcaption>
+              </figure>
+
+              <ul class="points">
+                <li><strong>Automatischer Abgleich</strong> von Tankabrechnungen mit den Tankfüllständen vor und nach der Betankung der Fahrzeuge</li>
+                <li><strong>Prüfung</strong> von Zeit, Ort, Fahrzeug, Kühlauflieger und Fahrer</li>
+                <li><strong>Vergleich</strong> von Telematikverbrauch und getankter Menge, auch bei Fahrzeugen mit Doppeltank</li>
+                <li><strong>Getrennte Betrachtung</strong> von Fahrzeug und Kühlauflieger</li>
+                <li><strong>Auffälligkeiten werden sofort sichtbar:</strong> Mengenabnahme im Tank, Abrechnungsdifferenzen, Fehlbuchungen und fehlende Abrechnungen</li>
+                <li><strong>Übersicht</strong> über Kosten der Auffälligkeiten und die betroffenen Fahrzeuge</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="mod" data-mod>
+          <h3 class="mod__head" id="modul-3"><span class="mod__no">3</span><span class="mod__title">CO<sub>2</sub>-Berichte</span></h3>
+          <div class="mod__panel" id="modul-3-panel">
+            <div class="mod__body">
+              <p class="mod__lead">Immer mehr Auftraggeber verlangen Nachweise über die CO<sub>2</sub>-Emissionen ihrer Transporte. Die Berichte entstehen automatisch statt in mühsamer Handarbeit.</p>
+
+              <figure class="fig" data-fig aria-labelledby="fig-3-cap">
+                <div class="fig__canvas f3" aria-hidden="true">
+                  <div class="f3__tree">
+                    <div class="f3__level" style="--l:0"><span class="f3__name">Kunde</span><div class="f3__cells"><i class="is-path" style="--w:58"></i><i style="--w:42"></i></div></div>
+                    <div class="f3__level" style="--l:1"><span class="f3__name">Auftrag</span><div class="f3__cells"><i class="is-path" style="--w:34"></i><i style="--w:24"></i><i style="--w:22"></i><i style="--w:20"></i></div></div>
+                    <div class="f3__level" style="--l:2"><span class="f3__name">Tour</span><div class="f3__cells"><i class="is-path" style="--w:14"></i><i style="--w:20"></i><i style="--w:10"></i><i style="--w:14"></i><i style="--w:12"></i><i style="--w:10"></i><i style="--w:8"></i><i style="--w:12"></i></div></div>
+                  </div>
+                  <div class="f3__fuel">
+                    <span class="f3__name">Kraftstoff</span>
+                    <div class="f3__cells f3__cells--fuel"><i class="pt pt--1" style="--w:38;--n:0"></i><i class="pt pt--2" style="--w:18;--n:1"></i><i class="pt pt--3" style="--w:10;--n:2"></i><i class="pt pt--4" style="--w:12;--n:3"></i><i class="pt pt--5" style="--w:8;--n:4"></i><i class="pt pt--6" style="--w:14;--n:5"></i></div>
+                  </div>
+                </div>
+                <figcaption class="fig__cap" id="fig-3-cap">
+                  <p><span class="tag">Schema</span> Emissionen je Kunde, Auftrag und Tour abgegrenzt, alle Kraftstoffarten getrennt ausgewiesen.</p>
+                  <ul class="legend legend--grid">
+                    <li><span class="sw pt pt--1"></span>Diesel</li>
+                    <li><span class="sw pt pt--2"></span>HVO&nbsp;100</li>
+                    <li><span class="sw pt pt--3"></span>Biodiesel</li>
+                    <li><span class="sw pt pt--4"></span>LNG</li>
+                    <li><span class="sw pt pt--5"></span>CNG</li>
+                    <li><span class="sw pt pt--6"></span>Strom</li>
+                  </ul>
+                </figcaption>
+              </figure>
+
+              <ul class="points">
+                <li><strong>Emissionen auf Basis der tatsächlichen Verbräuche</strong> und der unterschiedlichen verbrauchten Kraftstoffsorten Diesel, HVO&nbsp;100, Biodiesel, LNG, CNG und Strom</li>
+                <li><strong>Je Kunde, Auftrag und Tour</strong> abgegrenzt</li>
+                <li><strong>Nach internationalen Standards</strong> (GHG&nbsp;Protocol, GLEC&nbsp;Framework), über den gesamten Kraftstoff-Lebenszyklus (Well-to-Wheel)</li>
+                <li><strong>Alle Kraftstoffarten getrennt ausgewiesen:</strong> Diesel, HVO&nbsp;100, Biodiesel, LNG, CNG und Strom</li>
+                <li><strong>Automatischer Versand</strong> an Ihre Auftraggeber, Berichtsformate individuell einstellbar</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="mod" data-mod>
+          <h3 class="mod__head" id="modul-4"><span class="mod__no">4</span><span class="mod__title">Flotten&shy;auswertung</span></h3>
+          <div class="mod__panel" id="modul-4-panel">
+            <div class="mod__body">
+              <figure class="fig" data-fig aria-labelledby="fig-4-cap">
+                <div class="fig__canvas f4" aria-hidden="true">
+                  <div class="f4__head"><span>Fahrzeug</span><span>Tag</span><span>km pro Tag</span></div>
+                  <ol class="f4__rows">
+                    <li class="f4__row" style="--i:0"><span class="f4__id"><i style="--w:72%"></i></span><span class="f4__day"><i class="d" style="--w:30"></i><i class="l" style="--w:4"></i><i class="d" style="--w:22"></i><i class="s" style="--w:14"></i><i class="d" style="--w:20"></i><i class="l" style="--w:3"></i><i class="s" style="--w:7"></i></span><span class="f4__km"><i style="--w:72%"></i></span></li>
+                    <li class="f4__row" style="--i:1"><span class="f4__id"><i style="--w:60%"></i></span><span class="f4__day"><i class="s" style="--w:10"></i><i class="d" style="--w:26"></i><i class="l" style="--w:8"></i><i class="d" style="--w:18"></i><i class="s" style="--w:12"></i><i class="d" style="--w:20"></i><i class="l" style="--w:6"></i></span><span class="f4__km"><i style="--w:64%"></i></span></li>
+                    <li class="f4__row" style="--i:2"><span class="f4__id"><i style="--w:80%"></i></span><span class="f4__day"><i class="d" style="--w:18"></i><i class="l" style="--w:10"></i><i class="d" style="--w:14"></i><i class="l" style="--w:9"></i><i class="s" style="--w:19"></i><i class="d" style="--w:24"></i><i class="s" style="--w:6"></i></span><span class="f4__km"><i style="--w:56%"></i></span></li>
+                    <li class="f4__row" style="--i:3"><span class="f4__id"><i style="--w:66%"></i></span><span class="f4__day"><i class="d" style="--w:34"></i><i class="s" style="--w:8"></i><i class="d" style="--w:28"></i><i class="l" style="--w:3"></i><i class="d" style="--w:17"></i><i class="s" style="--w:10"></i></span><span class="f4__km"><i style="--w:79%"></i></span></li>
+                    <li class="f4__row" style="--i:4"><span class="f4__id"><i style="--w:74%"></i></span><span class="f4__day"><i class="s" style="--w:22"></i><i class="d" style="--w:20"></i><i class="l" style="--w:5"></i><i class="d" style="--w:25"></i><i class="s" style="--w:9"></i><i class="d" style="--w:14"></i><i class="l" style="--w:5"></i></span><span class="f4__km"><i style="--w:59%"></i></span></li>
+                  </ol>
+
+                  <div class="f4__mx">
+                    <div class="f4__mx-head"><span>Fahrer</span><span>Verbrauch auf verschiedenen Fahrzeugen</span></div>
+                    <div class="f4__mx-row f4__mx-row--ids"><span></span><i style="--w:58%"></i><i style="--w:70%"></i><i style="--w:52%"></i><i style="--w:64%"></i></div>
+                    <div class="f4__mx-row" style="--i:0"><span class="f4__id"><i style="--w:64%"></i></span><b style="--s:.5"></b><b style="--s:.58"></b><b class="no"></b><b style="--s:.54"></b></div>
+                    <div class="f4__mx-row" style="--i:1"><span class="f4__id"><i style="--w:82%"></i></span><b style="--s:.84"></b><b style="--s:.94"></b><b style="--s:.88"></b><b class="no"></b></div>
+                    <div class="f4__mx-row" style="--i:2"><span class="f4__id"><i style="--w:56%"></i></span><b class="no"></b><b style="--s:.6"></b><b style="--s:.52"></b><b style="--s:.56"></b></div>
+                  </div>
+                </div>
+                <figcaption class="fig__cap" id="fig-4-cap">
+                  <p><span class="tag">Schema</span> Leistung je Fahrzeug und Fahrer: gefahrene Kilometer pro Tag, Leerlauf- und Standzeiten, Verbrauch je Fahrer auf verschiedenen Fahrzeugen.</p>
+                  <ul class="legend">
+                    <li><span class="sw sw--d"></span>gefahren</li>
+                    <li><span class="sw sw--l"></span>Leerlauf</li>
+                    <li><span class="sw sw--s"></span>Stand</li>
+                  </ul>
+                </figcaption>
+              </figure>
+
+              <ul class="points">
+                <li><strong>Leistung je Fahrzeug und Fahrer,</strong> z.&#8239;B. gefahrene Kilometer pro Tag</li>
+                <li><strong>Leerlauf- und Standzeiten</strong></li>
+                <li><strong>Verbrauch je Fahrer</strong> auf verschiedenen Fahrzeugen</li>
+                <li><strong>Wirtschaftlichkeit</strong> von Fahrzeugen und Aufträgen</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="mod" data-mod>
+          <h3 class="mod__head" id="modul-5"><span class="mod__no">5</span><span class="mod__title">Rechnungs&shy;kontrolle im cotralog&nbsp;Insider</span></h3>
+          <div class="mod__panel" id="modul-5-panel">
+            <div class="mod__body">
+              <p class="mod__lead">Hier fließt unser Wissen über Basispreise, Konditionen und die Abrechnungs&shy;preise ein.</p>
+
+              <figure class="fig" data-fig aria-labelledby="fig-5-cap">
+                <div class="fig__canvas f5" aria-hidden="true">
+                  <div class="f5__head"><span class="f5__c">Kondition</span><span class="f5__l">hier sparen Sie</span><span class="f5__r">hier war es teurer</span></div>
+                  <ol class="f5__rows">
+                    <li class="f5__row" style="--i:0"><span class="f5__name">1.–15.</span><span class="f5__neg"><i style="--w:44%"></i></span><span class="f5__pos"></span></li>
+                    <li class="f5__row is-flag" style="--i:1"><span class="f5__name">16.–Monatsende</span><span class="f5__neg"></span><span class="f5__pos"><i style="--w:78%"></i></span></li>
+                    <li class="f5__row" style="--i:2"><span class="f5__name">1.–15.</span><span class="f5__neg"><i style="--w:20%"></i></span><span class="f5__pos"></span></li>
+                    <li class="f5__row is-flag" style="--i:3"><span class="f5__name">16.–Monatsende</span><span class="f5__neg"></span><span class="f5__pos"><i style="--w:34%"></i></span></li>
+                    <li class="f5__row" style="--i:4"><span class="f5__name">Kalenderwoche</span><span class="f5__neg"><i style="--w:62%"></i></span><span class="f5__pos"></span></li>
+                    <li class="f5__row is-flag" style="--i:5"><span class="f5__name">Kalenderwoche</span><span class="f5__neg"></span><span class="f5__pos"><i style="--w:52%"></i></span></li>
+                  </ol>
+                </div>
+                <figcaption class="fig__cap" id="fig-5-cap">
+                  <p><span class="tag">Schema</span> Jede Tankabrechnung je Abrechnungs&shy;periode gegen die vereinbarte bzw. angebotene Kondition gerechnet.</p>
+                </figcaption>
+              </figure>
+
+              <ul class="points">
+                <li><strong>Jede Tankabrechnung</strong> wird je Abrechnungsperiode (Kalenderwoche, 1.–15. und 16.–Monatsende) gegen die vereinbarte bzw. angebotene Kondition gerechnet</li>
+                <li><strong>Jeder Tankstelle</strong> Ihrer Abrechnung wird eine passende Alternativ-Station zugeordnet</li>
+                <li><strong>Ergebnis je Standort, Fahrzeug, Kartenanbieter und Zeitraum:</strong> wo Sie sparen, wo es teurer war</li>
+                <li><strong>Günstigere alternative Tankstellen</strong> in der Nähe Ihrer bisherigen Tankstellen – mit Ihnen abgestimmt, nicht einfach vorgegeben</li>
+                <li><strong>Bericht mit Ergebnis und Empfehlung,</strong> als PDF oder Excel</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="mod" data-mod>
+          <h3 class="mod__head" id="modul-6"><span class="mod__no">6</span><span class="mod__title">Vorläufige Preise und Touren</span></h3>
+          <div class="mod__panel" id="modul-6-panel">
+            <div class="mod__body">
+              <p class="mod__lead">Abgerechnet wird erst nach Ende der Periode. Der cotralog&nbsp;Insider zeigt schon während der laufenden Abrechnungs&shy;periode vorläufige Preise – so können Sie noch reagieren.</p>
+
+              <figure class="fig" data-fig aria-labelledby="fig-6-cap">
+                <div class="fig__canvas f6" aria-hidden="true">
+                  <div class="f6__ends"><span>Start</span><span class="f6__prov">vorläufig</span><span>Ziel</span></div>
+                  <div class="f6__route">
+                    <i class="m" style="--w:12;--n:0"></i><i class="t" style="--w:10;--n:1"></i><i class="g is-best" style="--w:16;--n:2"><svg><use href="#i-check"/></svg></i><i class="m" style="--w:9;--n:3"></i><i class="t" style="--w:14;--n:4"></i><i class="g is-best" style="--w:13;--n:5"><svg><use href="#i-check"/></svg></i><i class="g" style="--w:11;--n:6"></i><i class="m" style="--w:15;--n:7"></i>
+                  </div>
+                  <div class="f6__pins"><b style="--x:79.5%">1</b><b style="--x:30%">2</b><b style="--x:67.5%">3</b></div>
+                  <ol class="f6__stops">
+                    <li class="is-focus" style="--i:0"><b>Ihre Schwerpunkt-Tankstelle</b><span>Anschlussstelle <i style="--w:2.4rem"></i></span><span>Preis <i class="dash" style="--w:2rem"></i></span></li>
+                    <li style="--i:1"><b></b><span>Anschlussstelle <i style="--w:2rem"></i></span><span>Preis <i class="dash" style="--w:2.2rem"></i></span></li>
+                    <li style="--i:2"><b></b><span>Anschlussstelle <i style="--w:2.6rem"></i></span><span>Preis <i class="dash" style="--w:1.9rem"></i></span></li>
+                  </ol>
+                </div>
+                <figcaption class="fig__cap" id="fig-6-cap">
+                  <p><span class="tag">Schema</span> Preislage je Autobahn&shy;abschnitt, die besten Tankstopps fallen sofort auf.</p>
+                  <ul class="legend">
+                    <li><span class="sw sw--g"></span>günstig</li>
+                    <li><span class="sw sw--m"></span>mittel</li>
+                    <li><span class="sw sw--t"></span>teuer</li>
+                    <li><span class="sw sw--best"><svg><use href="#i-check"/></svg></span>beste Tankstopps</li>
+                  </ul>
+                </figcaption>
+              </figure>
+
+              <ul class="points">
+                <li><strong>Start und Ziel genügen:</strong> Der Insider ermittelt den Weg über die Autobahnen und zeigt die günstigsten Tankstellen entlang der Strecke mit Anschlussstelle und Preis</li>
+                <li><strong>Preislage je Autobahnabschnitt</strong> (günstig / mittel / teuer) – die besten Tankstopps fallen sofort auf</li>
+                <li><strong>Ihre Schwerpunkt-Tankstellen</strong> stehen in jeder Auswertung als erstes</li>
+                <li><strong>Vorläufige Preise</strong> sind immer als solche gekennzeichnet</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== Voraussetzungen -->
+  <section class="sec" id="voraussetzungen" aria-labelledby="vor-h">
+    <div class="wrap sec__grid">
+      <h2 class="sec__h" id="vor-h">Voraus&shy;setzungen</h2>
+      <div class="reqs">
+        <ul class="reqs__need">
+          <li>Telematiksystem mit FMS-Anbindung <span class="reqs__sub">(Übertragung des Tankfüllstandes)</span></li>
+          <li>Tank- und Rechnungsdaten</li>
+          <li>Für CO<sub>2</sub>-Berichte je Kunde und Auftrag zusätzlich ein Transport-Management-System (TMS)</li>
+        </ul>
+        <ul class="reqs__none">
+          <li data-reveal><span class="mark" style="--d:0">Keine Stammdaten&shy;pflege</span> notwendig</li>
+          <li data-reveal><span class="mark" style="--d:1">Keine zusätzliche Hardware;</span> die Daten kommen über vorhandene Schnittstellen</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== Testangebot -->
+  <section class="offer" id="testangebot" aria-labelledby="offer-h">
+    <div class="wrap offer__grid">
+      <div class="offer__text">
+        <p class="eyebrow">Aktionsangebot</p>
+        <h2 class="offer__h" id="offer-h"><span>Erst testen,</span> <span>dann entscheiden</span></h2>
+        <p class="lead">Testen Sie den cotralog&nbsp;Insider zwei Monate lang. Danach entscheiden Sie, welche Module Sie wirklich benötigen.</p>
+        <p class="offer__terms">Die Konditionen vereinbaren wir individuell nach Ihren Anforderungen.</p>
+
+        <div class="plan" data-reveal aria-hidden="true">
+          <div class="plan__test"><span class="plan__m" style="--n:0">1. Monat</span><span class="plan__m" style="--n:1">2. Monat</span></div>
+          <div class="plan__then"><span>Sie entscheiden</span></div>
+        </div>
+
+        <!-- PLATZHALTER Kontaktweg: E-Mail-Adresse und Telefonnummer eintragen. -->
+        <dl class="direct">
+          <div><dt>E-Mail</dt><dd><span class="ph">E-Mail-Adresse folgt</span></dd></div>
+          <div><dt>Telefon</dt><dd><span class="ph">Telefonnummer folgt</span></dd></div>
+        </dl>
+      </div>
+
+      <div class="offer__form" id="anfrage">
+        <!-- PLATZHALTER Kontaktweg: Versandadresse des Formulars in data-endpoint (und action) eintragen. -->
+        <form class="form" action="#anfrage" method="post" data-endpoint="" novalidate>
+          <h3 class="form__h">Testangebot anfragen</h3>
+
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="f-name-err">
+            <p class="field__err" id="f-name-err" hidden>Bitte geben Sie Ihren Namen an.</p>
+          </div>
+          <div class="field">
+            <label for="f-firma">Unternehmen</label>
+            <input id="f-firma" name="unternehmen" type="text" autocomplete="organization" required aria-describedby="f-firma-err">
+            <p class="field__err" id="f-firma-err" hidden>Bitte geben Sie Ihr Unternehmen an.</p>
+          </div>
+          <div class="field">
+            <label for="f-mail">E-Mail</label>
+            <input id="f-mail" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="f-mail-err">
+            <p class="field__err" id="f-mail-err" hidden>Bitte geben Sie eine gültige E-Mail-Adresse an, zum Beispiel name@example.com.</p>
+          </div>
+          <div class="field">
+            <label for="f-tel">Telefon <span class="opt">optional</span></label>
+            <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel">
+          </div>
+          <div class="field">
+            <label for="f-msg">Nachricht <span class="opt">optional</span></label>
+            <textarea id="f-msg" name="nachricht" rows="3"></textarea>
+          </div>
+          <div class="field field--hp" aria-hidden="true">
+            <label for="f-web">Bitte frei lassen</label>
+            <input id="f-web" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button class="btn btn--wide" type="submit">Anfrage senden <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+
+          <p class="form__status" role="status" aria-live="polite" tabindex="-1"></p>
+
+          <p class="form__legal">Informationen zur Verarbeitung Ihrer Daten finden Sie in der <a href="datenschutz.html">Datenschutz&shy;erklärung</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div class="foot__brand">
+      <a class="logo" href="#top" aria-label="cotralog – zum Seitenanfang">
+        <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="logo__word">cotralog</span>
+      </a>
+      <p>cotralog&nbsp;Insider. Tankkosten verstehen, kontrollieren und senken.</p>
+    </div>
+    <nav class="foot__nav" aria-label="Seitenübersicht">
+      <ul>
+        <li><a href="#nutzen">Nutzen</a></li>
+        <li><a href="#module">Module</a></li>
+        <li><a href="#voraussetzungen">Voraussetzungen</a></li>
+        <li><a href="#testangebot">Testangebot</a></li>
+      </ul>
+    </nav>
+    <nav class="foot__nav" aria-label="Rechtliches">
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
