@@ -49,7 +49,7 @@
 :root {
   color-scheme: light;
 
-  --paper: #f4f4f2;      /* Seitenpapier, neutral */
+  --paper: #ffffff;      /* Seitengrund: Weiß wie der Grund des Logos */
   --sheet: #ffffff;      /* Blatt: Abrechnung, Auswertung, Formular */
   --ink: #121211;        /* Tinte, nah am Schwarz des Logos */
   --ink-2: #4b4b48;      /* Tinte, zurückgenommen (Text, mind. 7:1 auf Papier) */
