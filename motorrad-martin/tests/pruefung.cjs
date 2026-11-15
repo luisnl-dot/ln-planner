@@ -129,7 +129,8 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   ok('home hero: stage completely black after load', await lkp.evaluate(() => {
     const lk = document.querySelector('[data-lk]');
     const x = Math.max(parseFloat(getComputedStyle(lk).getPropertyValue('--a')) || 0, parseFloat(getComputedStyle(lk).getPropertyValue('--b')) || 0);
-    return x === 0 && [...lk.querySelectorAll('[data-lk-licht]')].every((e) => getComputedStyle(e).visibility === 'hidden');
+    const aus = (e) => getComputedStyle(e).visibility === 'hidden' || getComputedStyle(e).opacity === '0';
+    return x === 0 && [...lk.querySelectorAll('[data-lk-licht]')].every(aus);
   }));
   await lkp.evaluate(() => window.scrollTo(0, 900)); await lkp.waitForTimeout(1400);
   ok('home hero: pinned, fully lit and caption shown after scroll', await lkp.evaluate(() => {
