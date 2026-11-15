@@ -138,6 +138,15 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
     const b = parseFloat(getComputedStyle(lk).getPropertyValue('--b'));
     return lk.parentElement.classList.contains('pin-spacer') && b > 99 && getComputedStyle(lk.querySelector('[data-lk-etikett]')).visibility === 'visible';
   }));
+  // Die festgehaltene Galerie darf erst starten, wenn der Auftakt vorbei ist (Reihenfolge der Pins)
+  for (const [w, h] of [[1440, 900], [1280, 800], [1920, 1080]]) {
+    await lkp.setViewportSize({ width: w, height: h });
+    await lkp.goto(B + '/', { waitUntil: 'networkidle' }); await lkp.waitForTimeout(1200);
+    const oben = await lkp.evaluate(() => { const g = document.querySelector('.schau'); return g.getBoundingClientRect().top + scrollY; });
+    await lkp.evaluate((y) => window.scrollTo(0, y - 200), oben); await lkp.waitForTimeout(900);
+    const lage = await lkp.evaluate(() => Math.round(document.querySelector('.schau').getBoundingClientRect().top));
+    ok(`home ${w}x${h}: gallery not pinned before it reaches the top`, Math.abs(lage - 200) <= 6, `top ${lage}`);
+  }
   await lkx.close();
 
   // ---------- 3. reduced motion + no JS ----------

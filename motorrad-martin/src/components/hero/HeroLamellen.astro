@@ -166,6 +166,7 @@ const fokus = '50% 74%';
 
 <script>
   import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import { bereit } from '../../scripts/bereit';
 
   // Versatz je Streifen (Anteil der Amplitude) – nur nach rechts, damit nichts in den Text ragt
@@ -240,6 +241,7 @@ const fokus = '50% 74%';
           start: 'top top',
           end: '+=80%',
           pin: true,
+          refreshPriority: 10,
           scrub: 0.45,
           invalidateOnRefresh: true,
           onRefresh: () => {
@@ -263,6 +265,9 @@ const fokus = '50% 74%';
         zeichne();
       };
     });
+    // Der Auftakt wird erst nach der Galerie angelegt: Reihenfolge herstellen und neu berechnen
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
   }
   bereit(lamellen);
 </script>

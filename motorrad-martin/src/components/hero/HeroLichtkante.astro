@@ -179,6 +179,7 @@ const foto = bild(`editionen/${e.slug}-2`);
 
 <script>
   import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import { bereit } from '../../scripts/bereit';
 
   function lichtkante() {
@@ -212,7 +213,7 @@ const foto = bild(`editionen/${e.slug}-2`);
     const mm = gsap.matchMedia();
     mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: sektion, start: 'top top', end: '+=90%', pin: true, scrub: 0.5 },
+        scrollTrigger: { trigger: sektion, start: 'top top', end: '+=90%', pin: true, scrub: 0.5, refreshPriority: 10 },
       });
       tl.fromTo(licht, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03, ease: 'none', immediateRender: false }, 0)
         .fromTo(sektion, { '--b': 0 }, { '--b': 100, duration: 0.7, ease: 'none', immediateRender: false }, 0.02)
@@ -222,6 +223,9 @@ const foto = bild(`editionen/${e.slug}-2`);
         .fromTo(etikett, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 0.76);
       return () => gsap.set([sektion, etikett, titel, ...vorn, ...licht], { clearProps: 'all' });
     });
+    // Der Auftakt wird erst nach der Galerie angelegt: Reihenfolge herstellen und neu berechnen
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
   }
   bereit(lichtkante);
 </script>

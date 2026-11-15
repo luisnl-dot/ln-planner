@@ -239,6 +239,7 @@ const e = edition('r-1300-gs-gilles');
 
 <script>
   import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import { bereit } from '../../scripts/bereit';
 
   function zeichnung() {
@@ -282,11 +283,14 @@ const e = edition('r-1300-gs-gilles');
     const mm = gsap.matchMedia();
     mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: sektion, start: 'top top', end: '+=80%', pin: true, scrub: 0.4 },
+        scrollTrigger: { trigger: sektion, start: 'top top', end: '+=80%', pin: true, scrub: 0.4, refreshPriority: 10 },
       });
       tl.fromTo(sektion, { '--s': 0 }, { '--s': 100, duration: 1, ease: 'none', immediateRender: false, onUpdate: () => zeig(lies()) }, 0);
       return () => gsap.set(sektion, { '--s': 0 });
     });
+    // Der Auftakt wird erst nach der Galerie angelegt: Reihenfolge herstellen und neu berechnen
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
   }
   bereit(zeichnung);
 </script>
