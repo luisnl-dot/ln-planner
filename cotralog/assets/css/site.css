@@ -317,8 +317,8 @@ main:focus { outline: none; }
 .hero__text { container-type: inline-size; }
 .hero__h {
   font: 400 clamp(2.625rem, 1.55rem + 4.4vw, 4.5rem)/1.04 var(--f-display);
-  /* zwei Zeilen, die zweite füllt die Textspalte */
-  font-size: clamp(2.625rem, 9.4cqi, 4.75rem);
+  /* ab 600 px zwei Zeilen, die zweite füllt die Textspalte */
+  font-size: clamp(2.625rem, 9.4cqi, 3.75rem);
   letter-spacing: -.024em;
   text-wrap: balance;
 }
@@ -341,6 +341,7 @@ main:focus { outline: none; }
 
 @media (min-width: 56.25em) {
   .hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(2.5rem, 5vw, 5.5rem); align-items: center; }
+  .hero__h { font-size: clamp(2.25rem, 9.4cqi, 4.75rem); }
   .sheet { padding-inline: clamp(.9rem, -1.2rem + 3.3vw, 2.25rem); }
 }
 @media (max-width: 30em) {
@@ -899,8 +900,11 @@ main:focus { outline: none; }
 .offer :focus-visible { outline-color: var(--on-dark); }
 .offer__grid { display: grid; gap: clamp(3rem, 7vw, 4.5rem); }
 .offer .eyebrow { color: var(--accent); }
+.offer__text { container-type: inline-size; }
 .offer__h {
-  font: 400 clamp(2.375rem, 1.5rem + 3.9vw, 4.5rem)/1.04 var(--f-display);
+  font: 400 clamp(2.125rem, 1.4rem + 3.4vw, 4rem)/1.04 var(--f-display);
+  /* so groß, wie die längere der beiden Zeilen es zulässt */
+  font-size: clamp(2.125rem, 12.9cqi, 4.5rem);
   letter-spacing: -.024em; color: #fff;
   margin-bottom: clamp(1.4rem, 2.6vw, 2rem);
 }
