@@ -13,7 +13,7 @@ Es werden keine externen Ressourcen geladen, keine Cookies gesetzt und keine Ana
 | `assets/css/site.css` | Gestaltung, Druckansicht, reduzierte Bewegung |
 | `assets/js/site.js` | Menü, Modulverzeichnis, Einstiegsgrafik, Formular |
 | `assets/fonts/` | Sofia Sans in drei Breiten (SIL Open Font License, siehe `OFL.txt`) |
-| `assets/img/` | Favicon, Touch-Icon, Vorschaubild für geteilte Links |
+| `assets/img/` | Logo, Favicon, Touch-Icon, Vorschaubild für geteilte Links |
 | `vercel.json` | Cache- und Sicherheits-Header für Vercel |
 
 ## Lokal ansehen
@@ -40,5 +40,7 @@ Im Code jeweils mit `PLATZHALTER` markiert.
 2. **E-Mail-Adresse und Telefonnummer** im Abschnitt „Testangebot" (Liste `class="direct"`).
 3. **Impressum und Datenschutzerklärung.** Beide Seiten enthalten nur gekennzeichnete Platzhalter.
 4. **Domain.** In `index.html` `canonical` und `og:url` ergänzen und `og:image` als absolute Adresse eintragen.
-5. **Marke.** Wortmarke, Bildmarke und Farben sind ein Vorschlag. Liegt ein Logo vor, ersetzt es
-   `.logo` in Kopf- und Fußzeile sowie die Dateien in `assets/img/`.
+5. **Logo.** Das Logo stammt aus der Kopfzeile der Word-Textvorlage (PNG, 545 × 179 px,
+   `assets/img/cotralog-logo.png`). Für die Endfassung bitte durch eine Vektordatei (SVG) ersetzen.
+   Favicon und Touch-Icon zeigen das Sonnensymbol aus dem Logo; liegt ein eigenes Bildzeichen vor,
+   ersetzt es `favicon-32.png`, `favicon-48.png` und `apple-touch-icon.png`.
