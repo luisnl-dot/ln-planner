@@ -2,8 +2,8 @@
 /**
  * Hero „Durchblick“: Die Typenschild-Schlagzeile ist aus der Papierfläche gestanzt –
  * durch die Buchstaben sieht man das Motorrad, das sich darin langsam bewegt.
- * Beim Scrollen werden die Buchstaben immer fetter, bis sie ineinanderfließen
- * und das Foto die ganze Bühne füllt.
+ * Beim Scrollen fährt die Kamera in das „I“ hinein – mit harten Kanten, bis der
+ * Buchstabe die ganze Bühne füllt und das Motorrad frei steht.
  *
  * Die Schlagzeile ist echtes HTML (Fit-Komponente, für Suchmaschinen und Screenreader).
  * Ein Skript liest ihre gesetzten Zeilen aus und baut daraus die SVG-Maske. Ohne
@@ -282,8 +282,27 @@ const e = edition('r-1300-gs-adventure-black');
     const vorn = Array.from(sektion.querySelectorAll<HTMLElement>('[data-dx-vorn]'));
     const titel = sektion.querySelector<HTMLElement>('.dx__titel')!;
     let texte: SVGTextElement[] = [];
-    let groesse = 100;
-    let mitte = { x: 0, y: 0 };
+    /** Zielpunkt der Kamerafahrt (Mitte eines „I“-Stamms) und nötige Vergrößerung. */
+    let ziel = { x: 0, y: 0 };
+    let zoomMax = 60;
+    const leinwand = document.createElement('canvas').getContext('2d');
+    // Browser begrenzen die gerenderte Schriftgröße (rund 10.000 px). Damit der Buchstabe
+    // bei starker Vergrößerung nicht schrumpft, liegt ein Balken im Inneren des „I“-Stamms –
+    // unsichtbar, solange die Schrift steht, deckend am Ende der Fahrt.
+    const balken = document.createElementNS(NS, 'rect');
+    balken.setAttribute('fill', 'black');
+    balken.setAttribute('opacity', '0');
+
+    /** Tintenmaße des „I“ relativ zu seiner Dickte (Anteil links, rechts) und Versalhöhe. */
+    const tinte = (cs: CSSStyleDeclaration) => {
+      const groesse = parseFloat(cs.fontSize);
+      const ersatz = { links: 0.25, rechts: 0.75, kappe: groesse * 0.7 };
+      if (!leinwand) return ersatz;
+      leinwand.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      const m = leinwand.measureText('I');
+      if (!m.width || !m.actualBoundingBoxAscent) return ersatz;
+      return { links: -m.actualBoundingBoxLeft / m.width, rechts: m.actualBoundingBoxRight / m.width, kappe: m.actualBoundingBoxAscent };
+    };
 
     /** Stanzform aus den gesetzten HTML-Zeilen bauen: gleiche Schrift, Größe, Breite, Lage. */
     const baue = () => {
@@ -298,16 +317,13 @@ const e = edition('r-1300-gs-adventure-black');
           t.dataset.quelle = zeile.textContent ?? '';
           t.textContent = (zeile.textContent ?? '').trim().toLocaleUpperCase('de-DE');
           t.setAttribute('fill', 'black');
-          t.setAttribute('stroke', 'black');
-          t.setAttribute('stroke-width', '0');
-          t.setAttribute('stroke-linejoin', 'round');
           gruppe.append(t);
           return t;
         });
       }
+      gruppe.append(balken);
       const basis = svg.getBoundingClientRect();
-      let oben = Infinity;
-      let unten = -Infinity;
+      const kandidaten: { x: number; grund: number; stamm: number; kappe: number }[] = [];
       zeilen.forEach((zeile, i) => {
         const t = texte[i];
         const bereich = document.createRange();
@@ -324,20 +340,50 @@ const e = edition('r-1300-gs-adventure-black');
         m.setAttribute('y', '0');
         mess.replaceChildren(m);
         const bb = m.getBBox();
+        const grund = r.top - basis.top - bb.y;
         t.setAttribute('x', String(r.left - basis.left));
-        t.setAttribute('y', String(r.top - basis.top - bb.y));
+        t.setAttribute('y', String(grund));
         if (Math.abs(bb.width - r.width) > 1) {
           t.setAttribute('textLength', String(r.width));
           t.setAttribute('lengthAdjust', 'spacingAndGlyphs');
         } else {
           t.removeAttribute('textLength');
         }
-        groesse = parseFloat(cs.fontSize);
-        oben = Math.min(oben, r.top - basis.top);
-        unten = Math.max(unten, r.bottom - basis.top);
+        // Lage jedes „I“ an der fertig gesetzten Kopie messen
+        const kopie = t.cloneNode(true) as SVGTextElement;
+        Object.assign(kopie.style, stil);
+        mess.replaceChildren(kopie);
+        const { links, rechts, kappe } = tinte(cs);
+        const zeichen = t.textContent ?? '';
+        for (let k = 0; k < zeichen.length; k++) {
+          if (zeichen[k] !== 'I') continue;
+          const ext = kopie.getExtentOfChar(k);
+          const a = ext.x + links * ext.width;
+          const b = ext.x + rechts * ext.width;
+          kandidaten.push({ x: (a + b) / 2, grund, stamm: b - a, kappe });
+        }
       });
       mess.replaceChildren();
-      mitte = { x: basis.width / 2, y: (oben + unten) / 2 };
+      // das „I“, das der Bildmitte am nächsten steht
+      const w = basis.width;
+      const h = basis.height;
+      const z = kandidaten.sort((a, b) => Math.abs(a.x - w / 2) - Math.abs(b.x - w / 2))[0];
+      if (z) {
+        // Balken: 70 % der Stammbreite, 80 % der Versalhöhe, mittig im Stamm
+        const bw = z.stamm * 0.7;
+        const bh = z.kappe * 0.8;
+        ziel = { x: z.x, y: z.grund - z.kappe / 2 };
+        balken.setAttribute('x', String(z.x - bw / 2));
+        balken.setAttribute('y', String(ziel.y - bh / 2));
+        balken.setAttribute('width', String(bw));
+        balken.setAttribute('height', String(bh));
+        const quer = Math.max(ziel.x, w - ziel.x) / (bw / 2);
+        const hoch = Math.max(ziel.y, h - ziel.y) / (bh / 2);
+        zoomMax = Math.max(quer, hoch) * 1.08;
+      } else {
+        ziel = { x: w / 2, y: h / 2 };
+        zoomMax = 8;
+      }
       sektion.classList.add('ist-bereit');
     };
 
@@ -382,7 +428,7 @@ const e = edition('r-1300-gs-adventure-black');
           scrub: 0.45,
           invalidateOnRefresh: true,
           onRefreshInit: () => {
-            gsap.set(gruppe, { clearProps: 'transform' });
+            gruppe.removeAttribute('transform');
             baue();
           },
           onUpdate: (st) => {
@@ -390,19 +436,25 @@ const e = edition('r-1300-gs-adventure-black');
           },
         },
       });
-      tl.to(vorn, { opacity: 0, y: -14, duration: 0.18, ease: 'power1.in' }, 0)
-        .fromTo(texte, { attr: { 'stroke-width': 0 } }, { attr: { 'stroke-width': () => groesse * 1.2 }, duration: 0.6, ease: 'power2.in' }, 0.06)
-        // erst langsam, dann rauscht die Kamera durch die Buchstaben
-        .fromTo(gruppe, { scale: 1 }, { scale: 3.2, svgOrigin: () => `${mitte.x} ${mitte.y}`, duration: 0.6, ease: 'power3.in' }, 0.06)
-        .to(svg, { autoAlpha: 0, duration: 0.08, ease: 'none' }, 0.6)
+      // Kamerafahrt: exponentiell skaliert, damit das Tempo gleichmäßig wirkt
+      const zoom = { p: 0 };
+      const setze = () => {
+        const f = Math.pow(zoomMax, zoom.p);
+        gruppe.setAttribute('transform', `translate(${ziel.x} ${ziel.y}) scale(${f}) translate(${-ziel.x} ${-ziel.y})`);
+      };
+      tl.to(vorn, { opacity: 0, y: -14, duration: 0.16, ease: 'power1.in' }, 0)
+        .fromTo(balken, { attr: { opacity: 0 } }, { attr: { opacity: 1 }, duration: 0.001 }, 0.04)
+        .fromTo(zoom, { p: 0 }, { p: 1, duration: 0.62, ease: 'power2.in', onUpdate: setze }, 0.04)
+        .to(svg, { autoAlpha: 0, duration: 0.02, ease: 'none' }, 0.66)
         .fromTo(bildEl, { scale: 1.08, filter: 'brightness(0.86) contrast(1.12) saturate(1.1)' }, { scale: 1, filter: 'brightness(1) contrast(1) saturate(1)', duration: 0.8, ease: 'power1.out' }, 0)
         .fromTo(schleier, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none' }, 0.7)
         .fromTo(etikett, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.78);
 
       return () => {
         sektion.dataset.kopf = 'hell';
-        gsap.set([gruppe, svg, bildEl, schleier, etikett, ...vorn], { clearProps: 'all' });
-        texte.forEach((t) => t.setAttribute('stroke-width', '0'));
+        gsap.set([svg, bildEl, schleier, etikett, ...vorn], { clearProps: 'all' });
+        gruppe.removeAttribute('transform');
+        balken.setAttribute('opacity', '0');
       };
     });
     ScrollTrigger.sort();
