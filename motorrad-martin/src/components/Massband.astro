@@ -44,7 +44,7 @@ const stationen = new Map(chronik.map((c) => [Number(c.jahr), c]));
     display: grid;
     grid-template-columns: repeat(var(--n), minmax(0, 1fr));
     align-items: end;
-    height: clamp(11rem, 20vw, 15rem);
+    height: clamp(13rem, 22vw, 17rem);
     padding: 0;
     margin: 0;
     list-style: none;
@@ -68,7 +68,7 @@ const stationen = new Map(chronik.map((c) => [Number(c.jahr), c]));
     left: 0.4rem;
     top: -0.35rem;
     font-family: var(--mono);
-    font-size: 0.74rem;
+    font-size: 0.86rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     line-height: 1;
@@ -79,10 +79,10 @@ const stationen = new Map(chronik.map((c) => [Number(c.jahr), c]));
     left: 0.4rem;
     bottom: calc(100% + 0.9rem);
     width: max-content;
-    max-width: 14rem;
+    max-width: 17rem;
     display: grid;
-    gap: 0.25rem;
-    font-size: 0.86rem;
+    gap: 0.3rem;
+    font-size: 0.95rem;
     line-height: 1.3;
     opacity: 0;
     transform: translateY(0.4rem);
@@ -92,8 +92,11 @@ const stationen = new Map(chronik.map((c) => [Number(c.jahr), c]));
     pointer-events: none;
   }
   .massband__text strong {
-    font-weight: 650;
-    font-size: 1rem;
+    font-weight: 700;
+    font-stretch: 106%;
+    font-size: clamp(1.2rem, 1rem + 0.9vw, 1.7rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
   }
   .massband__text span {
     color: var(--fg-2);

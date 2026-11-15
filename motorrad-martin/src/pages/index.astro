@@ -37,7 +37,7 @@ const leistungen = [
 ];
 
 const journal = (await getCollection('journal')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
-const neues = [journal.find((j) => j.data.kategorie === 'martin-edition')!, ...journal.filter((j) => j.data.kategorie === 'neuheiten').slice(0, 2)];
+const neues = [journal.find((j) => j.id === 'bmw-r-1300-gs-adventure-martin-edition-hunter') ?? journal[0], ...journal.filter((j) => j.data.kategorie === 'neuheiten').slice(0, 2)];
 const stellen = (await getCollection('jobs')).length;
 
 const schema = [
@@ -610,7 +610,7 @@ const schema = [
     will-change: transform;
   }
   :global(.schau.ist-gekoppelt) .schau__tafel {
-    flex-basis: min(46vw, calc((100svh - 17rem) * 1.5));
+    flex-basis: min(54vw, calc((100svh - 15rem) * 1.5));
   }
   :global(.schau.ist-gekoppelt) .schau__ende {
     flex-basis: min(30vw, 28rem);

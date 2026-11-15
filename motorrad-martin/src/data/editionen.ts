@@ -32,29 +32,6 @@ export const familien: Familie[] = ['GS Adventure', 'GS', 'R 12 G/S', 'R 12 nine
 
 const roh: Edition[] = [
   {
-    slug: 'r-1300-gs-adventure-rallye-dakar',
-    basis: 'R 1300 GS Adventure',
-    name: 'Rallye Dakar',
-    familie: 'GS Adventure',
-    akzent: '#E2392B',
-    bilder: 2,
-    zeile: 'Wüsten-Legende, neu aufgelegt.',
-    teile: [
-      'Rallye-Dakar-Sonderlackierung in Rot/Weiß',
-      'Gelbe Startnummer 20 an der Frontmaske',
-      'SC-Project Rally-X Sportauspuff',
-      'Motorschutz Trophy',
-      'Schwarze Kreuzspeichenräder mit Geländebereifung',
-      'Rot gefasste Akzente an Heckrahmen, Kühlerblenden, Handprotektoren und GEL-Sitzbank',
-    ],
-    text: [
-      'Am Anfang stand die Verbeugung vor einer Ära, in der Motorräder für Wochen in der Wüste verschwanden. Für unsere neue Rallye Dakar nehmen wir die kompromisslose Langstrecken-Souveränität der BMW R 1300 GS Adventure und verschmelzen sie mit dem unverkennbaren Geist der frühen Dakar-Jahre. So entsteht kein Nachbau, sondern eine eigenständige Maschine.',
-      'Der markante SC-Project Rallye X Sportauspuff schärft Silhouette und Sound des 145-PS-Boxers. Schwarze Kreuzspeichenräder mit Geländebereifung, der 30-Liter-Tank und die volle Assistenz-Elektronik der BMW R 1300 GS Adventure machen die Rallye Dakar zur Langstrecken-Interpretation des Dakar-Themas: souverän auf Asphalt, präzise im Gelände.',
-      'Jede Rallye Dakar entsteht in aufwendiger Handarbeit als nummeriertes Unikat in streng limitierter Auflage.',
-    ],
-    journal: 'martin-edition-bmw-r-1300-gs-adventure-rallye-dakar',
-  },
-  {
     slug: 'r-1300-gs-adventure-hunter',
     basis: 'R 1300 GS Adventure',
     name: 'Hunter',
@@ -89,6 +66,29 @@ const roh: Edition[] = [
     zeile: 'Abenteuerlust in Schwarz.',
     teile: ['Auspuff schwarz matt', 'Motorschutz', 'GEL-Sitzbank'],
     journal: 'bmw-r-1300-gs-adventure-martin-edition',
+  },
+  {
+    slug: 'r-1300-gs-adventure-rallye-dakar',
+    basis: 'R 1300 GS Adventure',
+    name: 'Rallye Dakar',
+    familie: 'GS Adventure',
+    akzent: '#E2392B',
+    bilder: 2,
+    zeile: 'Wüsten-Legende, neu aufgelegt.',
+    teile: [
+      'Rallye-Dakar-Sonderlackierung in Rot/Weiß',
+      'Gelbe Startnummer 20 an der Frontmaske',
+      'SC-Project Rally-X Sportauspuff',
+      'Motorschutz Trophy',
+      'Schwarze Kreuzspeichenräder mit Geländebereifung',
+      'Rot gefasste Akzente an Heckrahmen, Kühlerblenden, Handprotektoren und GEL-Sitzbank',
+    ],
+    text: [
+      'Am Anfang stand die Verbeugung vor einer Ära, in der Motorräder für Wochen in der Wüste verschwanden. Für unsere neue Rallye Dakar nehmen wir die kompromisslose Langstrecken-Souveränität der BMW R 1300 GS Adventure und verschmelzen sie mit dem unverkennbaren Geist der frühen Dakar-Jahre. So entsteht kein Nachbau, sondern eine eigenständige Maschine.',
+      'Der markante SC-Project Rallye X Sportauspuff schärft Silhouette und Sound des 145-PS-Boxers. Schwarze Kreuzspeichenräder mit Geländebereifung, der 30-Liter-Tank und die volle Assistenz-Elektronik der BMW R 1300 GS Adventure machen die Rallye Dakar zur Langstrecken-Interpretation des Dakar-Themas: souverän auf Asphalt, präzise im Gelände.',
+      'Jede Rallye Dakar entsteht in aufwendiger Handarbeit als nummeriertes Unikat in streng limitierter Auflage.',
+    ],
+    journal: 'martin-edition-bmw-r-1300-gs-adventure-rallye-dakar',
   },
   {
     slug: 'r-1300-gs-rallye-dakar',

@@ -72,10 +72,10 @@ Bitte helfen Sie uns dabei, Ihre Angaben aktuell zu halten, indem Sie uns über 
 
 Die folgenden Kategorien von personenbezogenen Daten können über die zahlreichen in diesen Datenschutzhinweisen beschriebenen Dienstleistungen und Kontaktkanäle erhoben werden:
 
-- **Kontaktdaten **► Name, Anschrift, Telefonnummer, E-Mail-Adresse.
+- **Kontaktdaten** ► Name, Anschrift, Telefonnummer, E-Mail-Adresse.
 - **Interessen** ► Von Ihnen bereitgestellte Informationen über Ihre Interessenbereiche, z. B. die für Sie interessanten Fahrzeuge, Hobbies und weitere persönliche Präferenzen.
 - **Weitere persönliche Daten** ► Von Ihnen bereitgestellte Informationen zu Geburtsdatum, Bildung, Haushaltsgröße oder beruflicher Situation.
-- **Vertragsdaten **► Kundennummer, Vertragsnummer.
+- **Vertragsdaten** ► Kundennummer, Vertragsnummer.
 - **Nutzung von Websites und Kommunikation** ► Informationen darüber, wie Sie die Website nutzen und ob Sie Mitteilungen von uns öffnen oder weiterleiten, darunter über Cookies und andere Tracking-Technologien erhobene Daten. Weitere Informationen dazu erhalten Sie in unseren Cookie Richtlinien (siehe weiter unten).
 - **Transaktions- und Interaktionsdaten***►* Informationen zu Käufen von Produkten und Dienstleistungen aus unserem Autohaus und unserem Online Shop, Interaktionen mit uns (Ihre Anfragen und Beschwerden) sowie die Teilnahme an unseren Marktforschungsstudien.
 - **Bonitäts- und Identitätsangaben** *►* Daten zur Feststellung Ihrer Identität, z. B. Führerscheine oder Zulassungsbescheinigung Teil 1; außerdem Informationen zu Transaktionen, etwaig nicht geleistete Zahlungen an uns; dazu Informationen zu Betrugsfällen, strafbaren Handlungen, verdächtigen Transaktionen, politisch exponierten Personen und Sanktionslisten, in denen Ihre Daten enthalten sind.
@@ -255,18 +255,17 @@ Ein hundertprozentiger Schutz vor unberechtigtem Zugriff kann bei Datenübertrag
 
 Wir werden Ihre Daten nur so lange aufbewahren, wie dies für die jeweiligen betreffenden Zwecke, für die wir Ihre Daten verarbeiten, notwendig ist. Falls wir Daten für mehrere Zwecke verarbeiten, werden sie automatisch gelöscht oder in einem Format gespeichert, das keine direkten Rückschlüsse auf Ihre Person zulässt, sobald der letzte spezifische Zweck erfüllt worden ist. Zur Sicherstellung, dass alle Ihre Daten im Einklang mit dem Prinzip der Datenminimierung wieder gelöscht werden, haben wir ein Löschkonzept. Die grundsätzlichen Prinzipien, nach denen dieses Löschkonzept die Löschung Ihrer personenbezogenen Daten vorsieht, sind im Folgenden dargestellt.
 
-**Verwendung zur Erfüllung eines Vertrags\
-**
+**Verwendung zur Erfüllung eines Vertrags**
 
 Zur Erfüllung vertraglicher Verpflichtungen können von Ihnen erhobene Daten so lange aufbewahrt werden, wie der Vertrag in Kraft ist, sowie abhängig vom Charakter und der Tragweite des Vertrages 10 Jahre darüber hinaus, um den gesetzlichen Aufbewahrungspflichten zu entsprechen und um eventuelle Anfragen oder Ansprüche nach Vertragsablauf zu klären.
 
 Darüber hinaus gibt es Verträge zur Lieferung von Produkten und Dienstleistungen, die längere Aufbewahrungsfristen notwendig machen, siehe auch nachfolgend „Verwendung zur Prüfung von Ansprüchen“.
 
-**Verwendung zur Prüfung von Ansprüchen\
-**Daten, die nach unserem Ermessen notwendig sein werden, um Ansprüche an uns zu prüfen, abzuwehren oder um gegen Sie, uns oder Dritte eine strafrechtliche Verfolgung einzuleiten oder Ansprüche vorzubringen, können von uns so lange aufbewahrt werden, wie ein entsprechendes Verfahren angestrengt werden könnte.
+**Verwendung zur Prüfung von Ansprüchen**\
+Daten, die nach unserem Ermessen notwendig sein werden, um Ansprüche an uns zu prüfen, abzuwehren oder um gegen Sie, uns oder Dritte eine strafrechtliche Verfolgung einzuleiten oder Ansprüche vorzubringen, können von uns so lange aufbewahrt werden, wie ein entsprechendes Verfahren angestrengt werden könnte.
 
-**Verwendung zur Kundenbetreuung und zu Marketingzwecken\
-**Zur Kundenbetreuung und zu Marketingzwecken können die von Ihnen erhobenen Daten bis 10 Jahre nach der Erhebung aufbewahrt werden, es sei denn, Sie wünschen die Löschung dieser Daten und es bestehen keine vertraglichen oder gesetzlichen Aufbewahrungspflichten, die diesem Löschverlangen entgegenstehen.
+**Verwendung zur Kundenbetreuung und zu Marketingzwecken**\
+Zur Kundenbetreuung und zu Marketingzwecken können die von Ihnen erhobenen Daten bis 10 Jahre nach der Erhebung aufbewahrt werden, es sei denn, Sie wünschen die Löschung dieser Daten und es bestehen keine vertraglichen oder gesetzlichen Aufbewahrungspflichten, die diesem Löschverlangen entgegenstehen.
 
 **Wem geben wir internationalen Zugriff auf Ihre Daten und wie schützen wir diese dabei?**
 
@@ -320,11 +319,11 @@ Als von der Verarbeitung Ihrer Daten betroffene Person können Sie nach der DSGV
 
 Nach der DSGVO stehen Ihnen gegenüber uns insbesondere die folgenden Rechte als betroffene Person zu:
 
-**Recht auf Auskunft (Art. 15 DSGVO): **Sie können von uns jederzeit Informationen über Ihre Daten, die wir über Sie halten, verlangen. Diese Auskunft betrifft unter anderem die von uns verarbeiteten Datenkategorien, für welche Zwecke wir diese verarbeiten, die Herkunft der Daten, falls wir diese nicht direkt von Ihnen erhoben haben, und gegebenenfalls die Empfänger, an die wir Ihre Daten übermittelt haben. Sie können von uns eine kostenlose Kopie Ihrer Daten erhalten. Sollten Sie Interesse an weiteren Kopien haben, behalten wir uns das Recht vor, Ihnen die weiteren Kopien in Rechnung zu stellen.
+**Recht auf Auskunft (Art. 15 DSGVO):** Sie können von uns jederzeit Informationen über Ihre Daten, die wir über Sie halten, verlangen. Diese Auskunft betrifft unter anderem die von uns verarbeiteten Datenkategorien, für welche Zwecke wir diese verarbeiten, die Herkunft der Daten, falls wir diese nicht direkt von Ihnen erhoben haben, und gegebenenfalls die Empfänger, an die wir Ihre Daten übermittelt haben. Sie können von uns eine kostenlose Kopie Ihrer Daten erhalten. Sollten Sie Interesse an weiteren Kopien haben, behalten wir uns das Recht vor, Ihnen die weiteren Kopien in Rechnung zu stellen.
 
-**Recht auf Berichtigung (Art. 16 DSGVO): **Sie können von uns die Berichtigung Ihrer Daten fordern. Wir werden angemessene Maßnahmen unternehmen, um Ihre Daten, die wir über Sie halten und laufend verarbeiten, richtig, vollständig und aktuell zu halten, basierend auf den aktuellsten uns zur Verfügung stehenden Informationen.
+**Recht auf Berichtigung (Art. 16 DSGVO):** Sie können von uns die Berichtigung Ihrer Daten fordern. Wir werden angemessene Maßnahmen unternehmen, um Ihre Daten, die wir über Sie halten und laufend verarbeiten, richtig, vollständig und aktuell zu halten, basierend auf den aktuellsten uns zur Verfügung stehenden Informationen.
 
-**Recht auf Löschung (Art. 17 DSGVO): **Sie können von uns die Löschung Ihrer Daten verlangen, sofern hierfür die rechtlichen Voraussetzungen vorliegen. Dies kann gemäß Art. 17 DSGVO etwa dann der Fall sein, wenn
+**Recht auf Löschung (Art. 17 DSGVO):** Sie können von uns die Löschung Ihrer Daten verlangen, sofern hierfür die rechtlichen Voraussetzungen vorliegen. Dies kann gemäß Art. 17 DSGVO etwa dann der Fall sein, wenn
 
 - die Daten für die Zwecke, für die sie erhoben oder auf sonstige Weise verarbeitet wurden, nicht länger erforderlich sind;
 - Sie Ihre Einwilligung, die Grundlage der Datenverarbeitung ist, widerrufen und es an einer anderweitigen Rechtsgrundlage für die Verarbeitung fehlt;
@@ -332,16 +331,16 @@ Nach der DSGVO stehen Ihnen gegenüber uns insbesondere die folgenden Rechte als
 - die Daten unrechtmäßig verarbeitet wurden;
 - die Verarbeitung nicht notwendig ist, um die Einhaltung einer gesetzlichen Verpflichtung, die von uns die Verarbeitung Ihrer Daten erfordert, sicherzustellen, insbesondere im Hinblick auf gesetzliche Aufbewahrungsfristen; um Rechtsansprüche geltend zu machen, auszuüben oder zu verteidigen.
 
-**Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO): **Sie können von uns die Einschränkung der Verarbeitung Ihrer Daten verlangen, falls
+**Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO):** Sie können von uns die Einschränkung der Verarbeitung Ihrer Daten verlangen, falls
 
 - Sie die Richtigkeit der Daten bestreiten und zwar für den Zeitraum, den wir benötigen, um die Richtigkeit der Daten zu überprüfen;
 - die Verarbeitung unrechtmäßig ist und Sie die Löschung Ihrer Daten ablehnen und stattdessen die Einschränkung der Nutzung verlangen;
 - wir Ihre Daten nicht länger benötigen, Sie diese aber benötigen, um Rechtsansprüche geltend zu machen, auszuüben oder zu verteidigen;
 - Sie Widerspruch gegen die Verarbeitung eingelegt haben, solange noch nicht feststeht, ob unsere berechtigten Gründe Ihre überwiegen.
 
-**Recht auf Datenübertragbarkeit (Art. 20 DSGVO): **Auf Ihren Antrag hin werden wir Ihre Daten - soweit dies technisch möglich ist - an einen anderen Verantwortlichen übertragen. Dieses Recht steht Ihnen allerdings nur zu, sofern die Datenverarbeitung auf Ihrer Einwilligung beruht oder erforderlich ist, um einen Vertrag durchzuführen. Anstatt eine Kopie Ihrer Daten zu erhalten, können Sie uns auch bitten, dass wir die Daten direkt an einen anderen, von Ihnen konkretisierten Verantwortlichen übermitteln.
+**Recht auf Datenübertragbarkeit (Art. 20 DSGVO):** Auf Ihren Antrag hin werden wir Ihre Daten - soweit dies technisch möglich ist - an einen anderen Verantwortlichen übertragen. Dieses Recht steht Ihnen allerdings nur zu, sofern die Datenverarbeitung auf Ihrer Einwilligung beruht oder erforderlich ist, um einen Vertrag durchzuführen. Anstatt eine Kopie Ihrer Daten zu erhalten, können Sie uns auch bitten, dass wir die Daten direkt an einen anderen, von Ihnen konkretisierten Verantwortlichen übermitteln.
 
-**Recht auf Widerspruch (Art. 21 DSGVO): **Sie können der Verarbeitung Ihrer Daten aus Gründen jederzeit widersprechen, die sich aus Ihrer besonderen Situation ergeben, sofern die Datenverarbeitung auf Ihrer Einwilligung oder auf unseren berechtigten Interessen oder denen eines Dritten beruht. In diesem Fall werden wir Ihre Daten nicht länger verarbeiten. Letzteres gilt nicht, sofern wir zwingende schutzwürdige Gründe für die Verarbeitung nachweisen können, die Ihre Interessen überwiegen oder wir Ihre Daten zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen benötigen.
+**Recht auf Widerspruch (Art. 21 DSGVO):** Sie können der Verarbeitung Ihrer Daten aus Gründen jederzeit widersprechen, die sich aus Ihrer besonderen Situation ergeben, sofern die Datenverarbeitung auf Ihrer Einwilligung oder auf unseren berechtigten Interessen oder denen eines Dritten beruht. In diesem Fall werden wir Ihre Daten nicht länger verarbeiten. Letzteres gilt nicht, sofern wir zwingende schutzwürdige Gründe für die Verarbeitung nachweisen können, die Ihre Interessen überwiegen oder wir Ihre Daten zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen benötigen.
 
 **Fristen zur Erfüllung von Betroffenenrechten**
 

@@ -11,7 +11,7 @@ Für unseren Standort in Oy-Mittelberg im Allgäu suchen wir einen Motorradmecha
 
 Der Familienbetrieb Martin besteht seit 1954 und ist BMW-Vertragshändler in dritter Generation, mit drei Standorten in Weyarn, Schongau und Oy-Mittelberg – samt eigener Custom-Marke Martin Edition.
 
-**Deine Aufgaben: **Servicearbeiten, Reparatur und Instandsetzung von Motorrädern, Unfallinstandsetzung, Fahrzeugumbau
+**Deine Aufgaben:** Servicearbeiten, Reparatur und Instandsetzung von Motorrädern, Unfallinstandsetzung, Fahrzeugumbau
 
 **Dein Profil:**
 
@@ -21,7 +21,7 @@ Der Familienbetrieb Martin besteht seit 1954 und ist BMW-Vertragshändler in dri
 - Flexibilität und Teamfähigkeit
 - Du verfügst über praktische Erfahrungen im Bereich der Kfz-Reparatur, Wartung und Diagnose.
 
-**Für die oben genannten Stellenbeschreibungen bieten wir :**
+**Für die oben genannten Stellenbeschreibungen bieten wir:**
 
 - Einen unbefristeten Arbeitsvertrag
 - Eine anspruchsvolle Tätigkeit mit hoher Eigenverantwortung

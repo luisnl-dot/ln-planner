@@ -7,8 +7,8 @@ reihenfolge: 5
 quelle: "https://www.motorrad-martin.de/index.php/news/winter-wellness"
 ---
 
-**Bring Dein Bike sicher durch den Winter!\
-**Die goldene Herbstsonne verabschiedet sich langsam und die Tage werden spürbar kälter. Das bedeutet leider auch: Die Motorradsaison neigt sich dem Ende zu.\
+**Bring Dein Bike sicher durch den Winter!**\
+Die goldene Herbstsonne verabschiedet sich langsam und die Tage werden spürbar kälter. Das bedeutet leider auch: Die Motorradsaison neigt sich dem Ende zu.\
 Damit Deine Maschine im nächsten Frühjahr wieder ohne Zögern anspringt, bieten wir Dir auch dieses Jahr unseren professionellen **Winter-Einlagerungsservice** an.
 
 Unser Rundum-sorglos-Paket für Dein Bike - auch mit unserem gewohnten **Hol- und Bringservice:**
@@ -26,8 +26,8 @@ Unser Rundum-sorglos-Paket für Dein Bike - auch mit unserem gewohnten **Hol- un
 - Batterie-Leistungstest
 - Fahrzeug Frühjahrscheck
 
-**Zum Komplett-Preis von 259,00 Euro.\
-**Jeder weitere Monat 39,00 Euro
+**Zum Komplett-Preis von 259,00 Euro.**\
+Jeder weitere Monat 39,00 Euro
 
 **Unser Winter-Wellness-Premiumpaket:**
 
@@ -39,8 +39,8 @@ Unser Rundum-sorglos-Paket für Dein Bike - auch mit unserem gewohnten **Hol- un
 - Batterie-Leistungstest
 - Fahrzeug Frühjahrscheck
 
-**Zum Komplett-Preis von 519,00 Euro.\
-**Jeder weitere Monat 39,00 Euro.
+**Zum Komplett-Preis von 519,00 Euro.**\
+Jeder weitere Monat 39,00 Euro.
 
 **Unser Hol- und Bring-Service:**
 

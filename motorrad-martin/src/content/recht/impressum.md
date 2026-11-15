@@ -37,7 +37,7 @@ Tel : 0049 (0) 8020 / 90 450-0\
 [info-lg@motorrad-martin.de](mailto:info-lg@motorrad-martin.de)\
 Unternehmensdaten:\
 Firma: Martin GmbH\
-Vertretungsberechtigte(r): **Patrick Martin **\
+Vertretungsberechtigte(r): **Patrick Martin** \
 UID-Nummer: DE 246117362\
 Firmenbuch-Nummer: HRB 160020\
 Gerichtsstand: München

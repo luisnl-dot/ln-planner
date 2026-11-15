@@ -20,4 +20,4 @@ Die persönliche Übergabe und technische Einweisung erfolgten durch **Patrick M
 
 Lieber Marius – vielen Dank für dein Vertrauen und deine langjährige Treue. Wir wünschen dir grenzenlose Fahrfreude und unvergessliche Touren mit deiner neuen Martin Edition.
 
-**Martin Edition – für alle, die mehr wollen. **
+**Martin Edition – für alle, die mehr wollen.** 

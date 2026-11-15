@@ -23,17 +23,34 @@ interface Props {
 const { lines, tag: Tag = 'h2', class: c, label, auto = false, akzent = 0, akzentSm = 0, id } = Astro.props;
 const text = label ?? lines.join(' ');
 
-/** Teilt eine Zeile in Stücke von höchstens `max` Zeichen (an Leerzeichen, nach Bindestrichen). */
+/**
+ * Teilt eine Zeile für schmale Viewports in Stücke von höchstens `max` Zeichen.
+ * Überlange Komposita mit Bindestrich werden nach dem Bindestrich getrennt; sehr kurze
+ * Reststücke („/ Kfz-“) werden an die Nachbarzeile gehängt, damit keine Zeile riesig wird.
+ */
 export function teile(zeile: string, max = 11): string[] {
-  const worte = zeile.split(/\s+/).flatMap((w) => (w.length > max && w.includes('-') ? w.split(/(?<=-)/) : [w]));
-  const aus: string[] = [];
-  for (const w of worte) {
-    const letzte = aus[aus.length - 1];
-    const naht = letzte?.endsWith('-') ? '' : ' ';
-    if (letzte !== undefined && (letzte + naht + w).length <= max) aus[aus.length - 1] = letzte + naht + w;
-    else aus.push(w);
+  type Stueck = { t: string; fest: boolean }; // fest = schließt ohne Leerzeichen an
+  const tokens: Stueck[] = [];
+  for (const w of zeile.split(/\s+/).filter(Boolean)) {
+    if (w.length > max && /-./.test(w)) w.split(/(?<=-)(?=.)/).forEach((t, i) => tokens.push({ t, fest: i > 0 }));
+    else tokens.push({ t: w, fest: false });
   }
-  return aus;
+  const zeilen: Stueck[][] = [];
+  const text = (z: Stueck[]) => z.map((s, i) => (i && !s.fest ? ' ' : '') + s.t).join('');
+  for (const tok of tokens) {
+    const letzte = zeilen.at(-1);
+    if (letzte && text([...letzte, tok]).length <= max) letzte.push(tok);
+    else zeilen.push([tok]);
+  }
+  const laengste = Math.max(...zeilen.map((z) => text(z).length));
+  for (let i = 0; i < zeilen.length; i++) {
+    if (zeilen.length > 1 && text(zeilen[i]).length < laengste * 0.45) {
+      if (i < zeilen.length - 1) zeilen.splice(i, 2, [...zeilen[i], ...zeilen[i + 1]]);
+      else zeilen.splice(i - 1, 2, [...zeilen[i - 1], ...zeilen[i]]);
+      i--;
+    }
+  }
+  return zeilen.map(text);
 }
 const geteilt = auto ? lines.flatMap((l) => teile(l)) : undefined;
 const linesSm = Astro.props.linesSm ?? (geteilt && geteilt.length > lines.length ? geteilt : undefined);

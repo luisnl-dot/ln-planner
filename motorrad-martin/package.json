@@ -8,7 +8,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "pruefen": "DIST=./dist node tests/pruefung.cjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.5",

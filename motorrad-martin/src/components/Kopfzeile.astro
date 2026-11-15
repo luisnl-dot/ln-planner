@@ -446,6 +446,8 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
     }
   }
   .menue__gruppe {
+    container-type: inline-size;
+    min-width: 0;
     opacity: 0;
     transform: translateY(1.5rem);
     transition:
@@ -463,14 +465,14 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
   }
   .menue__gross {
     display: block;
-    font-size: clamp(1.9rem, 1.2rem + 2.2vw, 3.3rem);
+    /* Größe folgt der Spaltenbreite – das längste Wort („Gebrauchte“) passt auch gedehnt */
+    font-size: clamp(1.6rem, 12.5cqi, 3.1rem);
     font-weight: 760;
-    font-stretch: 108%;
+    font-stretch: 96%;
     letter-spacing: -0.03em;
     line-height: 1.02;
     text-transform: uppercase;
     padding-block: 0.16em;
-    overflow: hidden;
   }
   .menue__gross span {
     display: inline-block;
@@ -480,7 +482,7 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
   }
   .menue__gross:hover span,
   .menue__gross:focus-visible span {
-    font-stretch: 125%;
+    font-stretch: 108%;
     color: var(--accent);
   }
   .menue__gross[aria-current='page'] span {

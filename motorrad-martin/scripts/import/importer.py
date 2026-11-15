@@ -81,6 +81,27 @@ MAP = {
 }
 
 HARD = chr(92) + chr(10)   # CommonMark hard line break
+def fix_bold(t):
+    """Paart **-Marker je Absatz, zieht Leerraum/Umbrüche an den Rändern nach außen."""
+    out = []
+    for absatz in re.split(r'(\n\s*\n)', t):
+        teile = absatz.split('**')
+        if len(teile) < 3 or len(teile) % 2 == 0:
+            out.append(absatz); continue
+        neu = [teile[0]]
+        for i in range(1, len(teile), 2):
+            innen, nach = teile[i], teile[i + 1]
+            m = re.match(r'^((?:[ \t]|\\\n|\n)*)(.*?)((?:[ \t]|\\\n|\n)*)$', innen, re.S)
+            l, kern, r = m.group(1), m.group(2), m.group(3)
+            if not kern:
+                neu[-1] += innen + nach; continue
+            vor = neu[-1] + l
+            if re.search(r'[,;]$', vor): vor += ' '
+            neu[-1] = vor
+            neu.append('**' + kern + '**' + r + nach)
+        out.append(re.sub(r'(\w) :\*\*', r'\1:**', ''.join(neu)))
+    return re.sub(r'\\\n?(?=\n\s*\n|\s*$)', '', ''.join(out))
+
 def to_md(fragment, br=None):
     BR = br if br is not None else HARD
     p = MD(); p.feed(fragment)
@@ -97,7 +118,7 @@ def to_md(fragment, br=None):
     t = re.sub(r'(?m)^(#+)\s*$', '', t)
     t = re.sub(r'\*\*(\s+)', r'\1**', t) if False else t
     t = re.sub(r' {2,}', ' ', t)
-    return t.strip(), p.imgs
+    return fix_bold(t.strip()), p.imgs
 
 def body_of(h):
     i = h.find('com-content-article__body')

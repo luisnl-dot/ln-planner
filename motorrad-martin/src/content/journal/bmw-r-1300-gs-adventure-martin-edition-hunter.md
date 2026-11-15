@@ -30,7 +30,7 @@ Komfort und Sicherheit stehen bei der **Martin Edition** ganz oben. Das **Innova
 
 **Martin Edition Umbauten – wenn Funktion auf Eleganz trifft**
 
-Die **Martin Edition** hebt die GS Adventure auf ein neues Level. Individuell gestaltete **Seitenverkleidungen**,**Tankabdeckungen** und **Kühlerblenden** verleihen ihr ein unverwechselbares Erscheinungsbild. Hochgezogene **Handprotektoren**, eine überarbeitete **Gabelbrücke** sowie fein gefertigte **Sturzbügelblenden** verleihen der Maschine eine geschärfte Silhouette – und schützen gleichzeitig die wichtigen Bauteile, wenn es ernst wird.
+Die **Martin Edition** hebt die GS Adventure auf ein neues Level. Individuell gestaltete **Seitenverkleidungen**, **Tankabdeckungen** und **Kühlerblenden** verleihen ihr ein unverwechselbares Erscheinungsbild. Hochgezogene **Handprotektoren**, eine überarbeitete **Gabelbrücke** sowie fein gefertigte **Sturzbügelblenden** verleihen der Maschine eine geschärfte Silhouette – und schützen gleichzeitig die wichtigen Bauteile, wenn es ernst wird.
 
 **Schutz & Stil – die perfekte SymbioseGetönte Windabweiser** und **Schutzgitter für Zusatzscheinwerfer** erhöhen Komfort und Sicherheit gleichermaßen. **Displayschutzfolie** und **Kühlerschutzgitter** bewahren empfindliche Komponenten vor grobem Gelände. Der **Trophy-Unterfahrschutz** sowie das **Wunderlich-Scheinwerferschutzgitter** bieten zusätzliche Sicherheit – und der **Akrapovic Sportauspuff** liefert den unverkennbaren Sound, der jede Fahrt zur Gänsehaut macht.
 
