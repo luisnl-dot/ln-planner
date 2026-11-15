@@ -191,7 +191,7 @@ const bilder: Record<string, { name: string; alt: string; text: string }> = {
     border-bottom: 1px solid var(--line);
     transition: opacity 0.5s var(--ease);
   }
-  .js .kapitel:not(.ist-aktiv) {
+  :global(.js) .kapitel:not(.ist-aktiv) {
     opacity: 0.38;
   }
   .kapitel__jahr {
@@ -231,7 +231,7 @@ const bilder: Record<string, { name: string; alt: string; text: string }> = {
     .kapitel__jahr {
       display: block;
     }
-    .js .kapitel:not(.ist-aktiv) {
+    :global(.js) .kapitel:not(.ist-aktiv) {
       opacity: 1;
     }
   }
