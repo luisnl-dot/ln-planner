@@ -33,6 +33,8 @@ interface Props {
 const { titel, beschreibung, bildOg, dunkel = false, akzent, noindex = false, schema = [], titelRoh = false, ohneFuss = false } = Astro.props;
 
 const seite = Astro.site ?? new URL('https://www.motorrad-martin.de');
+// Vorschau-Deploys (z. B. Vercel) werden nicht indexiert – die Kanonischen zeigen auf motorrad-martin.de
+const vorschau = import.meta.env.PUBLIC_NOINDEX === '1';
 const kanonisch = new URL(Astro.url.pathname, seite).href;
 const voll = titelRoh ? titel : `${titel} | BMW Motorrad Martin`;
 const og = await getImage({ src: bildOg ?? bild('editionen/r-18-bobber-2'), width: 1200, height: 630, format: 'jpg', quality: 78 });
@@ -85,7 +87,7 @@ const basisSchema = [
     <title>{voll}</title>
     <meta name="description" content={beschreibung} />
     <link rel="canonical" href={kanonisch} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    {(noindex || vorschau) && <meta name="robots" content={vorschau ? 'noindex, nofollow' : 'noindex, follow'} />}
     <meta name="theme-color" content={dunkel ? '#0b0c0c' : '#f1eee8'} />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

@@ -1,0 +1,1317 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "astro build",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/index.php",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/ankauf",
+      "destination": "/ankauf/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/ankauf/",
+      "destination": "/ankauf/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/bmw-martin-oy-mittelberg",
+      "destination": "/standorte/oy-mittelberg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/bmw-martin-oy-mittelberg/",
+      "destination": "/standorte/oy-mittelberg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/bmw-martin-schongau",
+      "destination": "/standorte/schongau/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/bmw-martin-schongau/",
+      "destination": "/standorte/schongau/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/bmw-martin-weyarn",
+      "destination": "/standorte/weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/bmw-martin-weyarn/",
+      "destination": "/standorte/weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/events",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/events/",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/gebrauchte-pkw-2",
+      "destination": "/gebrauchte/pkw/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/gebrauchte-pkw-2/",
+      "destination": "/gebrauchte/pkw/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle",
+      "destination": "/gebrauchte/#ratgeber",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/",
+      "destination": "/gebrauchte/#ratgeber",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-m-1000-rr-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/m-1000-rr/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-m-1000-rr-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/m-1000-rr/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-12-ninet-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-12-ninet/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-12-ninet-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-12-ninet/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1200-gs-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-1200-gs/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1200-gs-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-1200-gs/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1250-gs-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-1250-gs/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1250-gs-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-1250-gs/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1300-gs-adventure-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-1300-gs-adventure/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1300-gs-adventure-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-1300-gs-adventure/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1300-gs-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-1300-gs/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-1300-gs-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-1300-gs/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-18-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-18/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-18-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-18/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-ninet-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-ninet/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r-ninet-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-ninet/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r1250-gs-adventure-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/r-1250-gs-adventure/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-r1250-gs-adventure-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/r-1250-gs-adventure/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-s-1000-rr-gebraucht-kaufen",
+      "destination": "/gebrauchte/modelle/s-1000-rr/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/modelle/bmw-s-1000-rr-gebraucht-kaufen/",
+      "destination": "/gebrauchte/modelle/s-1000-rr/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/oy-mittelberg-2",
+      "destination": "/gebrauchte/oy-mittelberg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/oy-mittelberg-2/",
+      "destination": "/gebrauchte/oy-mittelberg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/schongau-2",
+      "destination": "/gebrauchte/schongau/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/schongau-2/",
+      "destination": "/gebrauchte/schongau/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/schongau-bmws",
+      "destination": "/gebrauchte/schongau/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/schongau-bmws/",
+      "destination": "/gebrauchte/schongau/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/weyarn-2",
+      "destination": "/gebrauchte/weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/gebrauchte/weyarn-2/",
+      "destination": "/gebrauchte/weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere",
+      "destination": "/karriere/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/",
+      "destination": "/karriere/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg",
+      "destination": "/karriere/#stellen",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/",
+      "destination": "/karriere/#stellen",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/automobilverkaeufer-vollzeit-m-w-d",
+      "destination": "/karriere/oy-mittelberg-automobilverkaeufer-vollzeit-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/automobilverkaeufer-vollzeit-m-w-d/",
+      "destination": "/karriere/oy-mittelberg-automobilverkaeufer-vollzeit-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/hausmeister-vollzeit-teilzeit-m-w-d",
+      "destination": "/karriere/oy-mittelberg-hausmeister-vollzeit-teilzeit-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/hausmeister-vollzeit-teilzeit-m-w-d/",
+      "destination": "/karriere/oy-mittelberg-hausmeister-vollzeit-teilzeit-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/motorradmechaniker-m-w-d-oder-kfz-mechatroniker-m-w-d",
+      "destination": "/karriere/oy-mittelberg-motorradmechaniker-m-w-d-oder-kfz-mechatroniker-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/motorradmechaniker-m-w-d-oder-kfz-mechatroniker-m-w-d/",
+      "destination": "/karriere/oy-mittelberg-motorradmechaniker-m-w-d-oder-kfz-mechatroniker-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/sachbearbeiter-m-w-d-fuer-gewaehrleistungsmanagement",
+      "destination": "/karriere/oy-mittelberg-sachbearbeiter-m-w-d-fuer-gewaehrleistungsmanagement/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/sachbearbeiter-m-w-d-fuer-gewaehrleistungsmanagement/",
+      "destination": "/karriere/oy-mittelberg-sachbearbeiter-m-w-d-fuer-gewaehrleistungsmanagement/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/serviceberater-vollzeit-m-w-d",
+      "destination": "/karriere/oy-mittelberg-serviceberater-vollzeit-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-oy-mittelberg/serviceberater-vollzeit-m-w-d/",
+      "destination": "/karriere/oy-mittelberg-serviceberater-vollzeit-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-schongau",
+      "destination": "/karriere/#stellen",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-schongau/",
+      "destination": "/karriere/#stellen",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-schongau/buchhalter-m-w-d-in-vollzeit-gesucht",
+      "destination": "/karriere/schongau-buchhalter-m-w-d-in-vollzeit-gesucht/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-schongau/buchhalter-m-w-d-in-vollzeit-gesucht/",
+      "destination": "/karriere/schongau-buchhalter-m-w-d-in-vollzeit-gesucht/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn",
+      "destination": "/karriere/#stellen",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn/",
+      "destination": "/karriere/#stellen",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn/buchhalter-m-w-d-in-vollzeit-gesucht",
+      "destination": "/karriere/weyarn-buchhalter-m-w-d-in-vollzeit-gesucht/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn/buchhalter-m-w-d-in-vollzeit-gesucht/",
+      "destination": "/karriere/weyarn-buchhalter-m-w-d-in-vollzeit-gesucht/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn/serviceassistent-in-vollzeit-gesucht-m-w-d",
+      "destination": "/karriere/weyarn-serviceassistent-in-vollzeit-gesucht-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn/serviceassistent-in-vollzeit-gesucht-m-w-d/",
+      "destination": "/karriere/weyarn-serviceassistent-in-vollzeit-gesucht-m-w-d/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn/serviceberater-motorrad-m-w-d-weyarn",
+      "destination": "/karriere/weyarn-serviceberater-motorrad-m-w-d-weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/karriere/jobs-weyarn/serviceberater-motorrad-m-w-d-weyarn/",
+      "destination": "/karriere/weyarn-serviceberater-motorrad-m-w-d-weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt",
+      "destination": "/kontakt/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/",
+      "destination": "/kontakt/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/datenschutz",
+      "destination": "/datenschutz/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/datenschutz/",
+      "destination": "/datenschutz/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/impressum",
+      "destination": "/impressum/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/impressum/",
+      "destination": "/impressum/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/angelika-martin",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/angelika-martin/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/annina-michel",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/annina-michel/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/bastian-weiske",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/bastian-weiske/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/drazen-grabovac",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/drazen-grabovac/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/leo-schmied",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/leo-schmied/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/malik-blaize",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/malik-blaize/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/manuela-kugler",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/manuela-kugler/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/maximilian-schneider",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/maximilian-schneider/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/rene-gohl",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/rene-gohl/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/sebastian-martin",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/sebastian-martin/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/simon-meggle",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/simon-meggle/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/wolfgang-haas",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-oy-mittelberg/wolfgang-haas/",
+      "destination": "/standorte/oy-mittelberg/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/andrea-tamas-havasi",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/andrea-tamas-havasi/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/andreas-wiedemann",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/andreas-wiedemann/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/birgit-rupprecht",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/birgit-rupprecht/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/christian-haeussrer",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/christian-haeussrer/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/christof-huebner",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/christof-huebner/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/emil-petrisor",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/emil-petrisor/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/erna-pfann",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/erna-pfann/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/erwin-martin-gmbh",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/erwin-martin-gmbh/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/gabi-hoefler",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/gabi-hoefler/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/georg-martin",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/georg-martin/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/hans-popia",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/hans-popia/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/holger-zwick",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/holger-zwick/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/konny-martin",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/konny-martin/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/maximilian-schilcher",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/maximilian-schilcher/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/mirko-klinder",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/mirko-klinder/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/peter-kuhn",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/peter-kuhn/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/reinhard-woelfl",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/reinhard-woelfl/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/sandor-fueredi",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/sandor-fueredi/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/simona-krasteva",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/simona-krasteva/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/vermietungen-schongau",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-schongau/vermietungen-schongau/",
+      "destination": "/standorte/schongau/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/ahmed-al-osami",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/ahmed-al-osami/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/alexander-aschenbrenner",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/alexander-aschenbrenner/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/alexander-becker",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/alexander-becker/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/carina-martin",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/carina-martin/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/christian-weikert",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/christian-weikert/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/claudia-martin",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/claudia-martin/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/dominik-schneider",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/dominik-schneider/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/florian-riesch",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/florian-riesch/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/gunnar-ruth",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/gunnar-ruth/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/henry-marksteiner",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/henry-marksteiner/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/ionut-dobrogeanu",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/ionut-dobrogeanu/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/jonas-wehner",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/jonas-wehner/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/marco-jopp",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/marco-jopp/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/melvin-kruse",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/melvin-kruse/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/michael-kast",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/michael-kast/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/motorrad-martin-weyarn",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/motorrad-martin-weyarn/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/nathalie-igler",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/nathalie-igler/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/nicola-pederzolli",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/nicola-pederzolli/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/patrick-martin",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/patrick-martin/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/sandra-koepferl",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/sandra-koepferl/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/sebastian-burz",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/sebastian-burz/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/sebastian-fuerg",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/sebastian-fuerg/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/thomas-friedl",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/kontakt/team-weyarn/thomas-friedl/",
+      "destination": "/standorte/weyarn/#team",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder",
+      "destination": "/motorraeder/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/",
+      "destination": "/motorraeder/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/bekleidung",
+      "destination": "/service/bekleidung-zubehoer/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/bekleidung/",
+      "destination": "/service/bekleidung-zubehoer/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/bmw-classic",
+      "destination": "/service/bmw-classic/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/bmw-classic/",
+      "destination": "/service/bmw-classic/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/editionen",
+      "destination": "/martin-edition/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/editionen/",
+      "destination": "/martin-edition/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/rent",
+      "destination": "/mieten/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/rent/",
+      "destination": "/mieten/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/zubehoer",
+      "destination": "/service/bekleidung-zubehoer/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/motorraeder/zubehoer/",
+      "destination": "/service/bekleidung-zubehoer/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-f-450-gs-trophy",
+      "destination": "/journal/bmw-f-450-gs-trophy/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-f-450-gs-trophy/",
+      "destination": "/journal/bmw-f-450-gs-trophy/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-f-450-r-mittelklasse-bmw-mit-spitzenwerten",
+      "destination": "/journal/bmw-f-450-r-mittelklasse-bmw-mit-spitzenwerten/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-f-450-r-mittelklasse-bmw-mit-spitzenwerten/",
+      "destination": "/journal/bmw-f-450-r-mittelklasse-bmw-mit-spitzenwerten/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-f-450-rr-supersportler-a2",
+      "destination": "/journal/bmw-f-450-rr-supersportler-a2/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-f-450-rr-supersportler-a2/",
+      "destination": "/journal/bmw-f-450-rr-supersportler-a2/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-m-1000-rr-2027-m-motorsport-rahmen",
+      "destination": "/journal/bmw-m-1000-rr-2027-m-motorsport-rahmen/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-m-1000-rr-2027-m-motorsport-rahmen/",
+      "destination": "/journal/bmw-m-1000-rr-2027-m-motorsport-rahmen/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-motorrad-modellpflege-2027",
+      "destination": "/journal/bmw-motorrad-modellpflege-2027/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-motorrad-modellpflege-2027/",
+      "destination": "/journal/bmw-motorrad-modellpflege-2027/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-ueberarbeitet-zahlreiche-modelle-fuer-das-modelljahr-2026",
+      "destination": "/journal/bmw-ueberarbeitet-zahlreiche-modelle-fuer-das-modelljahr-2026/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/bmw-ueberarbeitet-zahlreiche-modelle-fuer-das-modelljahr-2026/",
+      "destination": "/journal/bmw-ueberarbeitet-zahlreiche-modelle-fuer-das-modelljahr-2026/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/highlight-der-monate-november-und-dezember",
+      "destination": "/journal/highlight-der-monate-november-und-dezember/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/highlight-der-monate-november-und-dezember/",
+      "destination": "/journal/highlight-der-monate-november-und-dezember/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/neue-bmw-m-1000-rs-218-ps-ohne-verkleidung",
+      "destination": "/journal/neue-bmw-m-1000-rs-218-ps-ohne-verkleidung/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/neue-bmw-m-1000-rs-218-ps-ohne-verkleidung/",
+      "destination": "/journal/neue-bmw-m-1000-rs-218-ps-ohne-verkleidung/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-oy-mittelberg",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-oy-mittelberg/",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-oy-mittelberg/neubau-in-oy-mittelberg",
+      "destination": "/journal/neubau-in-oy-mittelberg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-oy-mittelberg/neubau-in-oy-mittelberg/",
+      "destination": "/journal/neubau-in-oy-mittelberg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-schongau",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-schongau/",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/",
+      "destination": "/journal/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r-12-ninet-big-foot-fuer-hartmut-vom-chiemsee",
+      "destination": "/journal/bmw-r-12-ninet-big-foot-fuer-hartmut-vom-chiemsee/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r-12-ninet-big-foot-fuer-hartmut-vom-chiemsee/",
+      "destination": "/journal/bmw-r-12-ninet-big-foot-fuer-hartmut-vom-chiemsee/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r-1300-gs-adventure-martin-edition",
+      "destination": "/journal/bmw-r-1300-gs-adventure-martin-edition/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r-1300-gs-adventure-martin-edition/",
+      "destination": "/journal/bmw-r-1300-gs-adventure-martin-edition/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r-1300-gs-adventure-martin-edition-hunter",
+      "destination": "/journal/bmw-r-1300-gs-adventure-martin-edition-hunter/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r-1300-gs-adventure-martin-edition-hunter/",
+      "destination": "/journal/bmw-r-1300-gs-adventure-martin-edition-hunter/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r1250gs-adventure-martin-edition-black-fuer-nicole-aus-luxemburg",
+      "destination": "/journal/bmw-r1250gs-adventure-martin-edition-black-fuer-nicole-aus-luxemburg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/bmw-r1250gs-adventure-martin-edition-black-fuer-nicole-aus-luxemburg/",
+      "destination": "/journal/bmw-r1250gs-adventure-martin-edition-black-fuer-nicole-aus-luxemburg/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/eroeffnung-bmw-martin-weyarn",
+      "destination": "/journal/eroeffnung-bmw-martin-weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/eroeffnung-bmw-martin-weyarn/",
+      "destination": "/journal/eroeffnung-bmw-martin-weyarn/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-bmw-r-ninet-masterpiece",
+      "destination": "/journal/fahrzeuguebergabe-bmw-r-ninet-masterpiece/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-bmw-r-ninet-masterpiece/",
+      "destination": "/journal/fahrzeuguebergabe-bmw-r-ninet-masterpiece/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-in-weyarn-bmw-m1000rr-martin-edition-carbon-matt-fuer-marius-aus-wetter-an-der-ruhr",
+      "destination": "/journal/fahrzeuguebergabe-in-weyarn-bmw-m1000rr-martin-edition-carbon-matt-fuer-marius-aus-wetter-an-der-ruhr/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-in-weyarn-bmw-m1000rr-martin-edition-carbon-matt-fuer-marius-aus-wetter-an-der-ruhr/",
+      "destination": "/journal/fahrzeuguebergabe-in-weyarn-bmw-m1000rr-martin-edition-carbon-matt-fuer-marius-aus-wetter-an-der-ruhr/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-in-weyarn-r1250gs-adventure-martin-edition-rallye-dakar-fuer-angi-aus-freising",
+      "destination": "/journal/fahrzeuguebergabe-in-weyarn-r1250gs-adventure-martin-edition-rallye-dakar-fuer-angi-aus-freising/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-in-weyarn-r1250gs-adventure-martin-edition-rallye-dakar-fuer-angi-aus-freising/",
+      "destination": "/journal/fahrzeuguebergabe-in-weyarn-r1250gs-adventure-martin-edition-rallye-dakar-fuer-angi-aus-freising/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-r-1300-gs-martin-edition",
+      "destination": "/journal/fahrzeuguebergabe-r-1300-gs-martin-edition/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/fahrzeuguebergabe-r-1300-gs-martin-edition/",
+      "destination": "/journal/fahrzeuguebergabe-r-1300-gs-martin-edition/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/martin-edition-bmw-r-1300-gs-adventure-rallye-dakar",
+      "destination": "/journal/martin-edition-bmw-r-1300-gs-adventure-rallye-dakar/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/martin-edition-bmw-r-1300-gs-adventure-rallye-dakar/",
+      "destination": "/journal/martin-edition-bmw-r-1300-gs-adventure-rallye-dakar/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/weltklasse-trifft-auf-black-edition-uebergabe-an-thorsten-margis",
+      "destination": "/journal/weltklasse-trifft-auf-black-edition-uebergabe-an-thorsten-margis/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/news-weyarn/weltklasse-trifft-auf-black-edition-uebergabe-an-thorsten-margis/",
+      "destination": "/journal/weltklasse-trifft-auf-black-edition-uebergabe-an-thorsten-margis/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/racing",
+      "destination": "/journal/#racing",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/racing/",
+      "destination": "/journal/#racing",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/winter-wellness",
+      "destination": "/journal/winter-wellness/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/news/winter-wellness/",
+      "destination": "/journal/winter-wellness/",
+      "permanent": true
+    }
+  ]
+}

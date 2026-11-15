@@ -123,6 +123,14 @@ Alle 128 bekannten Joomla-Adressen (`/index.php/…`) zeigen auf die passende ne
 - **Netlify / Cloudflare Pages:** `public/_redirects` liefert echte 301.
 - **Apache / nginx:** dieselbe Liste als Rewrite-Regeln übernehmen.
 
+## Vercel
+
+- **Projekt:** `motorrad-martin` im Team `luisnl-5533s-projects`, erreichbar unter https://motorrad-martin.vercel.app.
+- **Neu deployen:** aus diesem Ordner mit `npx vercel deploy --prod`. `vercel.json` enthält die 301-Weiterleitungen der alten Adressen, Cache-Header für `/_astro/` und `trailingSlash`.
+- **Vorschau-Modus:** Im Vercel-Projekt ist `PUBLIC_NOINDEX=1` gesetzt. Dadurch tragen alle Seiten `noindex, nofollow`, und `robots.txt` sperrt Crawler aus, damit die Vorschau nicht mit motorrad-martin.de konkurriert. Für den echten Livegang wird die Variable entfernt.
+- **Zugriffsschutz:** Die Vercel-Authentifizierung ist aktiv, nur eingeloggte Team-Mitglieder sehen die Seite. Für einen öffentlichen Link wird sie unter Settings → Deployment Protection abgeschaltet.
+- **Keine Git-Verknüpfung:** Das Projekt ist bewusst nicht mit dem Repository verbunden. Pushes lösen also keine Builds aus.
+
 ## Prüfung
 
 ```bash

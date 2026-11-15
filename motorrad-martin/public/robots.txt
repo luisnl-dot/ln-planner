@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://www.motorrad-martin.de/sitemap-index.xml
