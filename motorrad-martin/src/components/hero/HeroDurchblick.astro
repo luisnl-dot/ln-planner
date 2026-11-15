@@ -1,0 +1,412 @@
+---
+/**
+ * Hero „Durchblick“: Die Typenschild-Schlagzeile ist aus der Papierfläche gestanzt –
+ * durch die Buchstaben sieht man das Motorrad, das sich darin langsam bewegt.
+ * Beim Scrollen werden die Buchstaben immer fetter, bis sie ineinanderfließen
+ * und das Foto die ganze Bühne füllt.
+ *
+ * Die Schlagzeile ist echtes HTML (Fit-Komponente, für Suchmaschinen und Screenreader).
+ * Ein Skript liest ihre gesetzten Zeilen aus und baut daraus die SVG-Maske. Ohne
+ * JavaScript bleibt die normale schwarze Schlagzeile stehen.
+ */
+import Bild from '../Bild.astro';
+import Fit from '../Fit.astro';
+import Pfeil from '../Pfeil.astro';
+import Status from '../Status.astro';
+import { edition } from '../../data/editionen';
+import { standorte } from '../../data/standorte';
+import { bild } from '../../lib/bilder';
+
+const e = edition('r-1300-gs-adventure-black');
+---
+
+<section class="dx" data-dx data-kopf="hell">
+  <div class="dx__bild" data-dx-bild>
+    <div class="dx__drift" data-dx-drift>
+      <Bild src={bild(`editionen/${e.slug}-2`)} alt={`${e.titel} in einem orange beleuchteten Tunnel`} sizes="100vw" widths={[960, 1280, 1800]} eager fokus="50% 56%" />
+    </div>
+  </div>
+  <div class="dx__schleier" data-dx-schleier aria-hidden="true"></div>
+
+  <svg class="dx__maske" data-dx-maske aria-hidden="true" focusable="false">
+    <defs>
+      <mask id="dx-loch" maskUnits="userSpaceOnUse" x="-100%" y="-100%" width="300%" height="300%">
+        <rect x="-100%" y="-100%" width="300%" height="300%" fill="white"></rect>
+        <g data-dx-schrift></g>
+      </mask>
+    </defs>
+    <rect x="-100%" y="-100%" width="300%" height="300%" class="dx__papier" mask="url(#dx-loch)"></rect>
+  </svg>
+  <svg class="dx__mess" data-dx-mess aria-hidden="true" focusable="false"></svg>
+
+  <div class="dx__inhalt wrap">
+    <p class="dx__ober label" data-dx-vorn>
+      <span>BMW Motorrad Vertragshändler</span>
+      <span class="dx__live">
+        {
+          standorte.map((s) => (
+            <a href={`/standorte/${s.slug}/`}>
+              <Status haus={s.slug} ort />
+            </a>
+          ))
+        }
+      </span>
+    </p>
+
+    <div class="dx__mitte">
+      <Fit tag="h1" class="dx__titel" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
+    </div>
+
+    <div class="dx__unten" data-dx-vorn>
+      <p class="lead">Familienbetrieb seit 1954, heute in dritter Generation. Drei Häuser am Alpenrand – und eine eigene Manufaktur, in der aus BMW Motorrädern Einzelstücke werden.</p>
+      <div class="dx__aktionen">
+        <a class="btn btn--solid" href="/martin-edition/">Martin Edition ansehen <Pfeil /></a>
+        <a class="btn" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
+      </div>
+      <p class="dx__hinweis label label--dim">Im Bild: BMW {e.basis} {e.name} · Martin Edition Nº {e.nr}</p>
+    </div>
+
+    <a class="dx__etikett" href={`/martin-edition/${e.slug}/`} data-dx-etikett>
+      <span class="label">Martin Edition · Katalog Nº {e.nr}</span>
+      <span class="dx__etikett-name">BMW {e.basis} {e.name}</span>
+      <span class="link">Zur Edition <Pfeil /></span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .dx {
+    position: relative;
+    height: 100svh;
+    min-height: 40rem;
+    overflow: clip;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .dx__bild,
+  .dx__schleier,
+  .dx__maske {
+    position: absolute;
+    inset: 0;
+  }
+  .dx__bild {
+    overflow: hidden;
+    background: var(--night);
+    filter: brightness(0.86) contrast(1.12) saturate(1.1);
+  }
+  .dx__drift {
+    position: absolute;
+    inset: -3%;
+  }
+  .dx__drift :global(.bild) {
+    width: 100%;
+    height: 100%;
+  }
+  .dx__drift :global(img) {
+    animation: dx-drift 26s ease-in-out infinite alternate;
+  }
+  @keyframes dx-drift {
+    from {
+      transform: scale(1.04) translate3d(-1%, 0, 0);
+    }
+    to {
+      transform: scale(1.14) translate3d(1.5%, -1%, 0);
+    }
+  }
+  .dx__schleier {
+    background:
+      linear-gradient(to bottom, rgb(11 12 12 / 0.5), transparent 22%),
+      linear-gradient(to top, rgb(11 12 12 / 0.75), transparent 45%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .dx__maske {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .dx__papier {
+    fill: var(--paper);
+  }
+  .dx__mess {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    overflow: visible;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  /* Ohne Skript: normaler Hero auf Papier (Foto verborgen) */
+  .dx:not(.ist-bereit) .dx__bild {
+    visibility: hidden;
+  }
+  .dx:not(.ist-bereit) .dx__papier {
+    mask: none;
+  }
+
+  .dx__inhalt {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: var(--pad);
+  }
+  .dx__ober {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(0.5rem, 1.6vh, 1.1rem);
+    border-bottom: 1px solid var(--ink);
+  }
+  .dx__live {
+    display: none;
+    gap: clamp(1rem, 2vw, 2.25rem);
+  }
+  @media (min-width: 1240px) {
+    .dx__live {
+      display: flex;
+    }
+  }
+  .dx__live a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+  .dx__mitte {
+    align-self: center;
+    padding-block: clamp(1rem, 3vh, 2rem);
+  }
+  /* Schlagzeile bleibt im Fluss (Messung, Suchmaschinen, Screenreader),
+     sichtbar ist ihre Stanzform in der Maske */
+  .dx :global(.dx__titel .fit__line) {
+    transform: none !important;
+    transition: none !important;
+  }
+  .dx.ist-bereit :global(.dx__titel .fit__line) {
+    color: transparent;
+  }
+  .dx__unten {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) minmax(0, 2fr);
+    gap: 1.5rem var(--gap);
+    align-items: end;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ink);
+  }
+  .dx__unten .lead {
+    max-width: 30em;
+    font-size: clamp(1.02rem, 0.9rem + 0.45vw, 1.25rem);
+  }
+  .dx__aktionen {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .dx__hinweis {
+    justify-self: end;
+    text-align: right;
+    max-width: 14rem;
+  }
+  .dx__etikett {
+    grid-row: 3;
+    grid-column: 1;
+    align-self: end;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+    color: var(--chalk);
+    opacity: 0;
+    visibility: hidden;
+  }
+  .dx__unten {
+    grid-row: 3;
+    grid-column: 1;
+  }
+  .dx__etikett-name {
+    font-size: clamp(1.6rem, 1rem + 2.6vw, 3.6rem);
+    font-weight: 780;
+    font-stretch: 112%;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-transform: uppercase;
+  }
+  @media (max-width: 1100px) {
+    .dx__unten {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    .dx__hinweis {
+      display: none;
+    }
+  }
+  @media (max-width: 899px) {
+    .dx {
+      height: auto;
+      min-height: 0;
+    }
+    .dx__inhalt {
+      min-height: 100svh;
+    }
+    .dx__unten {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dx__drift :global(img) {
+      animation: none;
+      transform: scale(1.06);
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { bereit } from '../../scripts/bereit';
+
+  const NS = 'http://www.w3.org/2000/svg';
+
+  function durchblick() {
+    const sektion = document.querySelector<HTMLElement>('[data-dx]');
+    if (!sektion) return;
+    const svg = sektion.querySelector<SVGSVGElement>('[data-dx-maske]')!;
+    const mess = sektion.querySelector<SVGSVGElement>('[data-dx-mess]')!;
+    const gruppe = sektion.querySelector<SVGGElement>('[data-dx-schrift]')!;
+    const bildEl = sektion.querySelector<HTMLElement>('[data-dx-bild]')!;
+    const drift = sektion.querySelector<HTMLElement>('[data-dx-drift]')!;
+    const schleier = sektion.querySelector<HTMLElement>('[data-dx-schleier]')!;
+    const etikett = sektion.querySelector<HTMLElement>('[data-dx-etikett]')!;
+    const vorn = Array.from(sektion.querySelectorAll<HTMLElement>('[data-dx-vorn]'));
+    const titel = sektion.querySelector<HTMLElement>('.dx__titel')!;
+    let texte: SVGTextElement[] = [];
+    let groesse = 100;
+    let mitte = { x: 0, y: 0 };
+
+    /** Stanzform aus den gesetzten HTML-Zeilen bauen: gleiche Schrift, Größe, Breite, Lage. */
+    const baue = () => {
+      const satz = Array.from(titel.querySelectorAll<HTMLElement>('.fit__satz')).find((s) => getComputedStyle(s).display !== 'none');
+      if (!satz) return;
+      const zeilen = Array.from(satz.querySelectorAll<HTMLElement>('.fit__line'));
+      // Elemente nur neu anlegen, wenn sich die Zeilen ändern (z. B. Wechsel auf den Handy-Satz)
+      if (texte.length !== zeilen.length || texte.some((t, i) => t.dataset.quelle !== zeilen[i].textContent)) {
+        gruppe.replaceChildren();
+        texte = zeilen.map((zeile) => {
+          const t = document.createElementNS(NS, 'text') as SVGTextElement;
+          t.dataset.quelle = zeile.textContent ?? '';
+          t.textContent = (zeile.textContent ?? '').trim().toLocaleUpperCase('de-DE');
+          t.setAttribute('fill', 'black');
+          t.setAttribute('stroke', 'black');
+          t.setAttribute('stroke-width', '0');
+          t.setAttribute('stroke-linejoin', 'round');
+          gruppe.append(t);
+          return t;
+        });
+      }
+      const basis = svg.getBoundingClientRect();
+      let oben = Infinity;
+      let unten = -Infinity;
+      zeilen.forEach((zeile, i) => {
+        const t = texte[i];
+        const bereich = document.createRange();
+        bereich.selectNodeContents(zeile);
+        const r = bereich.getBoundingClientRect();
+        const cs = getComputedStyle(zeile);
+        const stil = { fontFamily: cs.fontFamily, fontWeight: cs.fontWeight, fontSize: cs.fontSize, fontStretch: cs.fontStretch, letterSpacing: cs.letterSpacing };
+        Object.assign(t.style, stil);
+        // Grundlinie über eine sichtbare Messkopie bestimmen
+        const m = t.cloneNode(true) as SVGTextElement;
+        Object.assign(m.style, stil);
+        m.removeAttribute('textLength');
+        m.setAttribute('x', '0');
+        m.setAttribute('y', '0');
+        mess.replaceChildren(m);
+        const bb = m.getBBox();
+        t.setAttribute('x', String(r.left - basis.left));
+        t.setAttribute('y', String(r.top - basis.top - bb.y));
+        if (Math.abs(bb.width - r.width) > 1) {
+          t.setAttribute('textLength', String(r.width));
+          t.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+        } else {
+          t.removeAttribute('textLength');
+        }
+        groesse = parseFloat(cs.fontSize);
+        oben = Math.min(oben, r.top - basis.top);
+        unten = Math.max(unten, r.bottom - basis.top);
+      });
+      mess.replaceChildren();
+      mitte = { x: basis.width / 2, y: (oben + unten) / 2 };
+      sektion.classList.add('ist-bereit');
+    };
+
+    baue();
+
+    // Auftakt: die Buchstaben öffnen sich nacheinander
+    const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!ruhig) {
+      gsap.fromTo(texte, { opacity: 0 }, { opacity: 1, duration: 1.1, stagger: 0.14, ease: 'power2.out', delay: 0.1 });
+      gsap.fromTo(drift, { scale: 1.12 }, { scale: 1, duration: 2.2, ease: 'power3.out' });
+    }
+
+    // Foto folgt leicht der Maus
+    if (!ruhig && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      const mx = gsap.quickTo(drift, 'x', { duration: 1.2, ease: 'power3' });
+      const my = gsap.quickTo(drift, 'y', { duration: 1.2, ease: 'power3' });
+      sektion.addEventListener('pointermove', (ev) => {
+        const r = sektion.getBoundingClientRect();
+        mx(((ev.clientX - r.left) / r.width - 0.5) * -28);
+        my(((ev.clientY - r.top) / r.height - 0.5) * -18);
+      });
+    }
+
+    let breite = window.innerWidth;
+    let warte = 0;
+    window.addEventListener('resize', () => {
+      if (window.innerWidth === breite) return;
+      breite = window.innerWidth;
+      window.clearTimeout(warte);
+      // erst nach dem Neusetzen der Schlagzeile (fit.ts) neu stanzen
+      warte = window.setTimeout(() => ScrollTrigger.refresh(), 160);
+    });
+
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sektion,
+          start: 'top top',
+          end: '+=85%',
+          pin: true,
+          scrub: 0.45,
+          invalidateOnRefresh: true,
+          onRefreshInit: () => {
+            gsap.set(gruppe, { clearProps: 'transform' });
+            baue();
+          },
+          onUpdate: (st) => {
+            sektion.dataset.kopf = st.progress > 0.5 ? 'dunkel' : 'hell';
+          },
+        },
+      });
+      tl.to(vorn, { opacity: 0, y: -14, duration: 0.18, ease: 'power1.in' }, 0)
+        .fromTo(texte, { attr: { 'stroke-width': 0 } }, { attr: { 'stroke-width': () => groesse * 1.2 }, duration: 0.6, ease: 'power2.in' }, 0.06)
+        // erst langsam, dann rauscht die Kamera durch die Buchstaben
+        .fromTo(gruppe, { scale: 1 }, { scale: 3.2, svgOrigin: () => `${mitte.x} ${mitte.y}`, duration: 0.6, ease: 'power3.in' }, 0.06)
+        .to(svg, { autoAlpha: 0, duration: 0.08, ease: 'none' }, 0.6)
+        .fromTo(bildEl, { scale: 1.08, filter: 'brightness(0.86) contrast(1.12) saturate(1.1)' }, { scale: 1, filter: 'brightness(1) contrast(1) saturate(1)', duration: 0.8, ease: 'power1.out' }, 0)
+        .fromTo(schleier, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none' }, 0.7)
+        .fromTo(etikett, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.78);
+
+      return () => {
+        sektion.dataset.kopf = 'hell';
+        gsap.set([gruppe, svg, bildEl, schleier, etikett, ...vorn], { clearProps: 'all' });
+        texte.forEach((t) => t.setAttribute('stroke-width', '0'));
+      };
+    });
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+  }
+  bereit(durchblick);
+</script>
