@@ -1,4 +1,15 @@
-Copyright 2019 The Sofia Sans Project Authors (https://github.com/lettersoup/Sofia-Sans) SofiaSans-Italic[wght].ttf: Copyright 2019 The Sofia Sans Project Authors (https://github.com/lettersoup/Sofia-Sans)
+Schriften in diesem Ordner / Fonts in this folder
+
+newsreader-display-latin.woff2
+  Newsreader. Copyright 2020 The Newsreader Project Authors (http://github.com/productiontype/Newsreader)
+  Angepasst: lateinischer Zeichensatz, optische Größe fest auf 72, Strichstärken 400 bis 600.
+  Modified: Latin subset, optical size fixed at 72, weights 400 to 600.
+
+hanken-grotesk-latin.woff2
+  Hanken Grotesk. Copyright 2021 The Hanken Grotesk Project Authors (https://github.com/marcologous/hanken-grotesk)
+  Lateinischer Zeichensatz. / Latin subset.
+
+Beide Schriften stehen unter der folgenden Lizenz. / Both fonts are licensed as follows.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

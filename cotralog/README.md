@@ -1,6 +1,6 @@
 # cotralog – Homepage
 
-Statische Seite ohne Build-Schritt: HTML, ein Stylesheet, ein Skript, drei selbst gehostete Schriftdateien.
+Statische Seite ohne Build-Schritt: HTML, ein Stylesheet, ein Skript, zwei selbst gehostete Schriftdateien.
 Es werden keine externen Ressourcen geladen, keine Cookies gesetzt und keine Analysedienste eingebunden.
 
 ## Aufbau
@@ -12,7 +12,7 @@ Es werden keine externen Ressourcen geladen, keine Cookies gesetzt und keine Ana
 | `404.html` | Fehlerseite |
 | `assets/css/site.css` | Gestaltung, Druckansicht, reduzierte Bewegung |
 | `assets/js/site.js` | Menü, Modulverzeichnis, Einstiegsgrafik, Formular |
-| `assets/fonts/` | Sofia Sans in drei Breiten (SIL Open Font License, siehe `OFL.txt`) |
+| `assets/fonts/` | Newsreader (Überschriften) und Hanken Grotesk (Text), beide SIL Open Font License, siehe `OFL.txt` |
 | `assets/img/` | Logo, Favicon, Touch-Icon, Vorschaubild für geteilte Links |
 | `vercel.json` | Cache- und Sicherheits-Header für Vercel |
 
@@ -26,7 +26,7 @@ python3 -m http.server 4173
 
 ## Änderungen an Gestaltung oder Logo
 
-Stylesheet, Skript und Bilder sind in den HTML-Dateien mit `?v=5` eingebunden. Nach einer Änderung
+Stylesheet, Skript und Bilder sind in den HTML-Dateien mit `?v=6` eingebunden. Nach einer Änderung
 an diesen Dateien die Zahl in allen vier HTML-Dateien erhöhen, damit Browser die neue Fassung laden.
 
 ## Veröffentlichen
