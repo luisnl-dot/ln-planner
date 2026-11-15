@@ -1,12 +1,12 @@
 ---
 /**
- * Hero „Lichtkante“: Das Motorrad steht fast unsichtbar in der dunklen Halle. Eine
- * harte Lichtkante fährt beim Scrollen von links nach rechts darüber und leuchtet die
- * Maschine Stück für Stück aus – bis sie ganz im Licht steht.
+ * Hero „Lichtkante“: Die Bühne ist zuerst komplett schwarz, nur die Schlagzeile steht
+ * da. Beim Scrollen fährt eine harte Lichtkante von links nach rechts und legt das
+ * farbige Foto Stück für Stück frei – bis die Maschine ganz im Licht steht.
  *
- * Zwei Lagen desselben Fotos: unten abgedunkelt, oben normal und per clip-path bis zur
- * Kante freigelegt. --a ist der Auftakt beim Laden, --b der Scrollweg; sichtbar ist das
- * Maximum. Ohne JavaScript steht das Foto ausgeleuchtet da.
+ * Das Foto wird per clip-path bis zur Kante freigelegt. --a ist der Wert ohne Scroll
+ * (Handy: automatischer Durchlauf), --b der Scrollweg; sichtbar ist das Maximum.
+ * Ohne JavaScript und bei reduzierter Bewegung steht das Foto ausgeleuchtet da.
  */
 import Bild from '../Bild.astro';
 import Fit from '../Fit.astro';
@@ -22,11 +22,8 @@ const foto = bild(`editionen/${e.slug}-2`);
 
 <section class="lk" data-lk data-theme="dark" data-kopf="dunkel">
   <div class="lk__buehne">
-    <div class="lk__lage lk__lage--dunkel" aria-hidden="true">
-      <Bild src={foto} alt="" sizes="100vw" widths={[960, 1280, 1800]} eager fokus="50% 46%" />
-    </div>
     <div class="lk__lage lk__lage--hell" data-lk-hell>
-      <Bild src={foto} alt={`${e.titel} auf einer Bühne in der Werkhalle, schwarz-weiß`} sizes="100vw" widths={[960, 1280, 1800]} eager fokus="50% 46%" />
+      <Bild src={foto} alt={`${e.titel} auf einer beleuchteten Bühne in der Werkhalle`} sizes="100vw" widths={[960, 1280, 1800]} eager fokus="50% 46%" />
     </div>
     <div class="lk__glanz" data-lk-licht aria-hidden="true"></div>
     <div class="lk__kante" data-lk-licht aria-hidden="true"></div>
@@ -76,12 +73,8 @@ const foto = bild(`editionen/${e.slug}-2`);
     height: 100%;
     background: var(--night);
   }
-  /* Komplett schwarz-weiß: keine Farbe auf der Bühne, nur Licht und Schatten */
-  .lk__lage--dunkel {
-    filter: grayscale(1) brightness(0.11) contrast(1.25);
-  }
+  /* Vor der Kante ist die Bühne schwarz, dahinter steht das farbige Foto */
   .lk__lage--hell {
-    filter: grayscale(1) contrast(1.14) brightness(0.96);
     clip-path: inset(0 calc(100% - var(--x)) 0 0);
   }
   /* Lichtkante: harte Linie, davor ein schmaler Streifen Überstrahlung */
@@ -202,17 +195,16 @@ const foto = bild(`editionen/${e.slug}-2`);
       gsap.set(sektion, { '--a': 100 });
       gsap.set(licht, { autoAlpha: 0 });
     } else if (buehne) {
-      // Auftakt: das Licht geht an und erfasst das Vorderrad
-      gsap.fromTo(licht, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, delay: 0.3 });
-      gsap.to(sektion, { '--a': 34, duration: 2.1, ease: 'power3.inOut', delay: 0.35 });
+      // Zuerst komplett schwarz – das Licht kommt erst mit dem Scrollen
+      gsap.set(licht, { autoAlpha: 0 });
     } else {
-      // Handy: einmal komplett ausleuchten, ohne Scrollbindung
-      gsap.fromTo(licht, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, delay: 0.3 });
+      // Handy: nach kurzer Dunkelheit einmal komplett ausleuchten, ohne Scrollbindung
+      gsap.fromTo(licht, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, delay: 1 });
       gsap.to(sektion, {
         '--a': 100,
         duration: 3.2,
         ease: 'power2.inOut',
-        delay: 0.4,
+        delay: 1,
         onComplete: () => gsap.to(licht, { autoAlpha: 0, duration: 0.4 }),
       });
     }
@@ -222,7 +214,8 @@ const foto = bild(`editionen/${e.slug}-2`);
       const tl = gsap.timeline({
         scrollTrigger: { trigger: sektion, start: 'top top', end: '+=90%', pin: true, scrub: 0.5 },
       });
-      tl.fromTo(sektion, { '--b': 34 }, { '--b': 100, duration: 0.72, ease: 'none', immediateRender: false }, 0)
+      tl.fromTo(licht, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03, ease: 'none', immediateRender: false }, 0)
+        .fromTo(sektion, { '--b': 0 }, { '--b': 100, duration: 0.7, ease: 'none', immediateRender: false }, 0.02)
         .to(vorn, { opacity: 0, y: -12, duration: 0.14, ease: 'power1.in' }, 0.3)
         .to(titel, { opacity: 0, duration: 0.2, ease: 'power1.in' }, 0.4)
         .to(licht, { autoAlpha: 0, duration: 0.05, ease: 'none' }, 0.7)

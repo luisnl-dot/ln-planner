@@ -126,8 +126,11 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   const lkx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const lkp = await lkx.newPage();
   await lkp.goto(B + '/', { waitUntil: 'networkidle' }); await lkp.waitForTimeout(2600);
-  const lkVorher = await lkp.evaluate(() => getComputedStyle(document.querySelector('[data-lk]')).getPropertyValue('--a').trim());
-  ok('home hero: light edge stops on the bike after load', Math.abs(parseFloat(lkVorher) - 34) < 1, lkVorher);
+  ok('home hero: stage completely black after load', await lkp.evaluate(() => {
+    const lk = document.querySelector('[data-lk]');
+    const x = Math.max(parseFloat(getComputedStyle(lk).getPropertyValue('--a')) || 0, parseFloat(getComputedStyle(lk).getPropertyValue('--b')) || 0);
+    return x === 0 && [...lk.querySelectorAll('[data-lk-licht]')].every((e) => getComputedStyle(e).visibility === 'hidden');
+  }));
   await lkp.evaluate(() => window.scrollTo(0, 900)); await lkp.waitForTimeout(1400);
   ok('home hero: pinned, fully lit and caption shown after scroll', await lkp.evaluate(() => {
     const lk = document.querySelector('[data-lk]');
