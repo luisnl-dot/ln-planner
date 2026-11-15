@@ -16,7 +16,7 @@
   <meta property="og:site_name" content="cotralog">
   <meta property="og:title" content="cotralog Insider – Tankkosten verstehen, kontrollieren und senken">
   <meta property="og:description" content="Ihr Controller für Kraftstoffkosten: Tankabrechnungen und Fahrzeugdaten automatisch ausgewertet.">
-  <meta property="og:image" content="assets/img/og.png?v=7">
+  <meta property="og:image" content="assets/img/og.png?v=10">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="cotralog Insider – Tankkosten verstehen, kontrollieren und senken">
@@ -24,10 +24,10 @@
 
   <link rel="preload" href="assets/fonts/newsreader-display-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=7">
-  <link rel="icon" href="assets/img/favicon-32.png?v=7" sizes="32x32" type="image/png">
-  <link rel="icon" href="assets/img/favicon-48.png?v=7" sizes="48x48" type="image/png">
-  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png?v=7">
+  <link rel="stylesheet" href="assets/css/site.css?v=10">
+  <link rel="icon" href="assets/img/favicon-32.png?v=10" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/img/favicon-48.png?v=10" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png?v=10">
 
   <script>
     /* Vor dem ersten Bild: Skript vorhanden? Bewegung erwünscht? */
@@ -45,7 +45,7 @@
       }, 5000);
     })(document.documentElement);
   </script>
-  <script src="assets/js/site.js?v=7" defer></script>
+  <script src="assets/js/site.js?v=10" defer></script>
 </head>
 <body>
 
@@ -60,7 +60,7 @@
 <header class="top">
   <div class="wrap top__in">
     <a class="logo" href="#top">
-      <img src="assets/img/cotralog-logo.png?v=7" width="545" height="179" alt="cotralog consulting &amp; investment gmbh">
+      <img src="assets/img/cotralog-logo.png?v=10" width="545" height="179" alt="cotralog consulting &amp; investment gmbh">
       <span class="vh"> – zum Seitenanfang</span>
     </a>
 
@@ -76,6 +76,13 @@
         <li><a href="#voraussetzungen">Voraussetzungen</a></li>
         <li><a href="#testangebot">Testangebot</a></li>
       </ul>
+      <div class="nav__more">
+        <a class="btn btn--wide" href="#anfrage">Zwei Monate testen <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <ul class="nav__legal">
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
     </nav>
 
     <a class="btn btn--small top__cta" href="#anfrage">Test anfragen</a>
@@ -93,7 +100,7 @@
           <p class="lead">cotralog ist Ihr Controller für Kraftstoff&shy;kosten. Wir werten Ihre Tank&shy;abrechnungen und Fahrzeug&shy;daten automatisch aus, prüfen sie im cotralog&nbsp;Insider im Detail und sagen Ihnen, wo Geld verloren geht und wo Sie günstiger tanken können.</p>
 
           <div class="hero__actions">
-            <a class="btn" href="#anfrage">Zwei Monate testen <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn" href="#anfrage" data-bar-watch>Zwei Monate testen <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             <a class="link-down" href="#module">Sechs Module ansehen <svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></a>
           </div>
 
@@ -173,8 +180,8 @@
       <div class="mods" data-mods>
 
         <!-- 1 -->
-        <div class="mod is-open" data-mod>
-          <h3 class="mod__head" id="modul-1"><span class="mod__no">1</span><span class="mod__title">Tankkosten-Analyse</span></h3>
+        <div class="mod" data-mod>
+          <h3 class="mod__head" id="modul-1"><span class="mod__no" id="modul-1-no">1</span><span class="mod__title" id="modul-1-title">Tankkosten-Analyse</span><span class="mod__teaser" id="modul-1-teaser">Alle Tank&shy;abrechnungen an einem Ort</span></h3>
           <div class="mod__panel" id="modul-1-panel">
             <div class="mod__body">
               <p class="mod__lead">Alle Tank&shy;abrechnungen Ihrer Flotte an einem Ort – unabhängig davon, wie viele Tankkarten Sie nutzen.</p>
@@ -222,7 +229,7 @@
 
         <!-- 2 -->
         <div class="mod" data-mod>
-          <h3 class="mod__head" id="modul-2"><span class="mod__no">2</span><span class="mod__title">Kontrolle der Betankungen</span></h3>
+          <h3 class="mod__head" id="modul-2"><span class="mod__no" id="modul-2-no">2</span><span class="mod__title" id="modul-2-title">Kontrolle der Betankungen</span><span class="mod__teaser" id="modul-2-teaser">Prüft jeden Tankvorgang</span></h3>
           <div class="mod__panel" id="modul-2-panel">
             <div class="mod__body">
               <p class="mod__lead">Dieseldiebstahl und fehlerhafte Abrechnungen bleiben bei Stichproben meist unentdeckt. Die Betankungs&shy;kontrolle prüft deshalb jeden Tankvorgang.</p>
@@ -285,7 +292,7 @@
 
         <!-- 3 -->
         <div class="mod" data-mod>
-          <h3 class="mod__head" id="modul-3"><span class="mod__no">3</span><span class="mod__title">CO<sub>2</sub>-Berichte</span></h3>
+          <h3 class="mod__head" id="modul-3"><span class="mod__no" id="modul-3-no">3</span><span class="mod__title" id="modul-3-title">CO<sub>2</sub>-Berichte</span><span class="mod__teaser" id="modul-3-teaser">Automatisch statt in Handarbeit</span></h3>
           <div class="mod__panel" id="modul-3-panel">
             <div class="mod__body">
               <p class="mod__lead">Immer mehr Auftraggeber verlangen Nachweise über die CO<sub>2</sub>-Emissionen ihrer Transporte. Die Berichte entstehen automatisch statt in mühsamer Handarbeit.</p>
@@ -328,7 +335,7 @@
 
         <!-- 4 -->
         <div class="mod" data-mod>
-          <h3 class="mod__head" id="modul-4"><span class="mod__no">4</span><span class="mod__title">Flotten&shy;auswertung</span></h3>
+          <h3 class="mod__head" id="modul-4"><span class="mod__no" id="modul-4-no">4</span><span class="mod__title" id="modul-4-title">Flotten&shy;auswertung</span><span class="mod__teaser" id="modul-4-teaser">Leistung je Fahrzeug und Fahrer</span></h3>
           <div class="mod__panel" id="modul-4-panel">
             <div class="mod__body">
               <figure class="fig" data-fig aria-labelledby="fig-4-cap">
@@ -372,7 +379,7 @@
 
         <!-- 5 -->
         <div class="mod" data-mod>
-          <h3 class="mod__head" id="modul-5"><span class="mod__no">5</span><span class="mod__title">Rechnungs&shy;kontrolle im cotralog&nbsp;Insider</span></h3>
+          <h3 class="mod__head" id="modul-5"><span class="mod__no" id="modul-5-no">5</span><span class="mod__title" id="modul-5-title">Rechnungs&shy;kontrolle im cotralog&nbsp;Insider</span><span class="mod__teaser" id="modul-5-teaser">Jede Abrechnung gegen die Kondition</span></h3>
           <div class="mod__panel" id="modul-5-panel">
             <div class="mod__body">
               <p class="mod__lead">Hier fließt unser Wissen über Basispreise, Konditionen und die Abrechnungs&shy;preise ein.</p>
@@ -407,7 +414,7 @@
 
         <!-- 6 -->
         <div class="mod" data-mod>
-          <h3 class="mod__head" id="modul-6"><span class="mod__no">6</span><span class="mod__title">Vorläufige Preise und Touren</span></h3>
+          <h3 class="mod__head" id="modul-6"><span class="mod__no" id="modul-6-no">6</span><span class="mod__title" id="modul-6-title">Vorläufige Preise und Touren</span><span class="mod__teaser" id="modul-6-teaser">Schon während der laufenden Periode</span></h3>
           <div class="mod__panel" id="modul-6-panel">
             <div class="mod__body">
               <p class="mod__lead">Abgerechnet wird erst nach Ende der Periode. Der cotralog&nbsp;Insider zeigt schon <strong>während der laufenden Abrechnungs&shy;periode vorläufige Preise</strong> – so können Sie noch reagieren.</p>
@@ -481,12 +488,6 @@
           <div class="plan__test"><span class="plan__m" style="--n:0">1. Monat</span><span class="plan__m" style="--n:1">2. Monat</span></div>
           <div class="plan__then"><span>Sie entscheiden</span></div>
         </div>
-
-        <!-- PLATZHALTER Kontaktweg: E-Mail-Adresse und Telefonnummer eintragen. -->
-        <dl class="direct">
-          <div><dt>E-Mail</dt><dd><span class="ph">E-Mail-Adresse folgt</span></dd></div>
-          <div><dt>Telefon</dt><dd><span class="ph">Telefonnummer folgt</span></dd></div>
-        </dl>
       </div>
 
       <div class="offer__form" id="anfrage">
@@ -496,22 +497,22 @@
 
           <div class="field">
             <label for="f-name">Name</label>
-            <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="f-name-err">
+            <input id="f-name" name="name" type="text" autocomplete="name" autocapitalize="words" spellcheck="false" enterkeyhint="next" required aria-describedby="f-name-err">
             <p class="field__err" id="f-name-err" hidden>Bitte geben Sie Ihren Namen an.</p>
           </div>
           <div class="field">
             <label for="f-firma">Unternehmen</label>
-            <input id="f-firma" name="unternehmen" type="text" autocomplete="organization" required aria-describedby="f-firma-err">
+            <input id="f-firma" name="unternehmen" type="text" autocomplete="organization" spellcheck="false" enterkeyhint="next" required aria-describedby="f-firma-err">
             <p class="field__err" id="f-firma-err" hidden>Bitte geben Sie Ihr Unternehmen an.</p>
           </div>
           <div class="field">
             <label for="f-mail">E-Mail</label>
-            <input id="f-mail" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="f-mail-err">
+            <input id="f-mail" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" required aria-describedby="f-mail-err">
             <p class="field__err" id="f-mail-err" hidden>Bitte geben Sie eine gültige E-Mail-Adresse an, zum Beispiel name@example.com.</p>
           </div>
           <div class="field">
             <label for="f-tel">Telefon <span class="opt">optional</span></label>
-            <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel">
+            <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" enterkeyhint="next">
           </div>
           <div class="field">
             <label for="f-msg">Nachricht <span class="opt">optional</span></label>
@@ -529,6 +530,12 @@
           <p class="form__legal">Informationen zur Verarbeitung Ihrer Daten finden Sie in der <a href="datenschutz.html">Datenschutz&shy;erklärung</a>.</p>
         </form>
       </div>
+
+      <!-- PLATZHALTER Kontaktweg: E-Mail-Adresse und Telefonnummer eintragen. -->
+      <dl class="direct">
+        <div><dt>E-Mail</dt><dd><span class="ph">E-Mail-Adresse folgt</span></dd></div>
+        <div><dt>Telefon</dt><dd><span class="ph">Telefonnummer folgt</span></dd></div>
+      </dl>
     </div>
   </section>
 
@@ -538,9 +545,9 @@
   <div class="wrap foot__in">
     <div class="foot__brand">
       <a class="logo" href="#top">
-      <img src="assets/img/cotralog-logo.png?v=7" width="545" height="179" alt="cotralog consulting &amp; investment gmbh">
-      <span class="vh"> – zum Seitenanfang</span>
-    </a>
+        <img src="assets/img/cotralog-logo.png?v=10" width="545" height="179" alt="cotralog consulting &amp; investment gmbh" loading="lazy" decoding="async">
+        <span class="vh"> – zum Seitenanfang</span>
+      </a>
       <p>cotralog&nbsp;Insider. Tankkosten verstehen, kontrollieren und senken.</p>
     </div>
     <div class="foot__navs">
@@ -574,6 +581,11 @@
     </div>
   </div>
 </footer>
+
+<!-- Aktionsleiste für Handys: erscheint, sobald kein anderer Weg zur Anfrage im Bild ist -->
+<aside class="bar" data-bar aria-label="Testangebot" hidden>
+  <a class="btn btn--wide" href="#anfrage">Zwei Monate testen <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</aside>
 
 </body>
 </html>

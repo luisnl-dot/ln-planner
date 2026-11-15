@@ -26,7 +26,7 @@ python3 -m http.server 4173
 
 ## Änderungen an Gestaltung oder Logo
 
-Stylesheet, Skript und Bilder sind in den HTML-Dateien mit `?v=7` eingebunden. Nach einer Änderung
+Stylesheet, Skript und Bilder sind in den HTML-Dateien mit `?v=10` eingebunden. Nach einer Änderung
 an diesen Dateien die Zahl in allen vier HTML-Dateien erhöhen, damit Browser die neue Fassung laden.
 
 ## Veröffentlichen
