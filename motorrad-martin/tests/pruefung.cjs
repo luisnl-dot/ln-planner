@@ -122,11 +122,29 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   ok('skip link is first focus target', await page.evaluate(() => document.activeElement.classList.contains('skip')));
   await ctx.close();
 
+  // ---------- 2b. home hero: light sweep ----------
+  const lkx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const lkp = await lkx.newPage();
+  await lkp.goto(B + '/', { waitUntil: 'networkidle' }); await lkp.waitForTimeout(2600);
+  const lkVorher = await lkp.evaluate(() => getComputedStyle(document.querySelector('[data-lk]')).getPropertyValue('--a').trim());
+  ok('home hero: light edge stops on the bike after load', Math.abs(parseFloat(lkVorher) - 34) < 1, lkVorher);
+  await lkp.evaluate(() => window.scrollTo(0, 900)); await lkp.waitForTimeout(1400);
+  ok('home hero: pinned, fully lit and caption shown after scroll', await lkp.evaluate(() => {
+    const lk = document.querySelector('[data-lk]');
+    const b = parseFloat(getComputedStyle(lk).getPropertyValue('--b'));
+    return lk.parentElement.classList.contains('pin-spacer') && b > 99 && getComputedStyle(lk.querySelector('[data-lk-etikett]')).visibility === 'visible';
+  }));
+  await lkx.close();
+
   // ---------- 3. reduced motion + no JS ----------
   const rm = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
   const p2 = await rm.newPage();
   await p2.goto(B + '/', { waitUntil: 'networkidle' }); await p2.waitForTimeout(500);
-  ok('reduced motion: no pinned hero, no smooth scroll', await p2.evaluate(() => !document.querySelector('.start').classList.contains('tor-aktiv') && !document.documentElement.classList.contains('lenis')));
+  ok('reduced motion: no pinned hero, no smooth scroll', await p2.evaluate(() => !document.querySelector('.pin-spacer > [data-lk], .pin-spacer > [data-tor]') && !document.documentElement.classList.contains('lenis')));
+  ok('reduced motion: home hero fully lit, no light edge', await p2.evaluate(() => {
+    const lk = document.querySelector('[data-lk]');
+    return getComputedStyle(lk).getPropertyValue('--a').trim() === '100' && [...lk.querySelectorAll('[data-lk-licht]')].every((e) => getComputedStyle(e).visibility === 'hidden');
+  }));
   ok('reduced motion: content visible without scrolling', await p2.evaluate(() => [...document.querySelectorAll('[data-reveal]')].every((e) => getComputedStyle(e).opacity === '1')));
   await rm.close();
   const nj = await browser.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false });
@@ -134,6 +152,8 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   await p3.goto(B + '/martin-edition/', { waitUntil: 'load' });
   ok('no JS: reveal content visible', await p3.locator('.tafeln .ed-karte').first().isVisible());
   ok('no JS: headline readable', await p3.locator('h1').first().isVisible());
+  await p3.goto(B + '/', { waitUntil: 'load' });
+  ok('no JS: home hero photo lit and headline visible', await p3.evaluate(() => getComputedStyle(document.querySelector('[data-lk]')).getPropertyValue('--a').trim() === '100') && await p3.locator('h1').first().isVisible());
   await nj.close();
 
   // ---------- 4. opening status at fixed times ----------

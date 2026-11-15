@@ -21,7 +21,7 @@ import HeroLamellen from './hero/HeroLamellen.astro';
 import HeroZeichnung from './hero/HeroZeichnung.astro';
 
 interface Props {
-  /** Auftakt der Startseite: tor (Standard) oder eine der Vorschau-Varianten. */
+  /** Auftakt der Startseite. Live ist „lichtkante“ (siehe pages/index.astro), die übrigen sind Vorschauen. */
   variante?: 'tor' | 'durchblick' | 'lichtkante' | 'fallblatt' | 'lamellen' | 'zeichnung';
   noindex?: boolean;
 }

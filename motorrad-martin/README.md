@@ -29,7 +29,7 @@ npm run preview   # Build lokal ansehen
 
 **Bewegung.** Bewegung gibt es nur dort, wo sie etwas erzählt:
 
-- **Das Tor (Startseite):** Das Bildfenster unter der Schlagzeile öffnet sich beim Scrollen zur ganzen Bühne, wie ein Hallentor.
+- **Die Lichtkante (Startseite):** Eine Martin Edition steht fast unsichtbar in der dunklen Halle. Beim Laden geht das Licht an, beim Scrollen fährt eine harte Lichtkante über die Maschine und leuchtet sie ganz aus, wie bei einer Fahrzeugpräsentation. Andere Auftakte (Tor, Fallblatt, Lamellen, Konstruktionszeichnung, Durchblick) liegen als Vorschau unter `/vorschau/…` und lassen sich in `src/pages/index.astro` über `variante` umschalten.
 - **Die Manufaktur-Galerie:** Am Desktop ist sie an den Scroll gekoppelt und läuft schneller als gescrollt wird, damit sie nicht aufhält. Mobil wischt man nativ.
 - **Bild-Einblendungen:** Bilder und Texte werden beim Scrollen ruhig eingeblendet.
 - **Chronik:** Auf „Seit 1954“ läuft die Jahreszahl beim Lesen mit, eine Skala zeigt die Stationen.
