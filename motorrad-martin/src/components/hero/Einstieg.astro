@@ -1,0 +1,47 @@
+---
+/** Einleitung und die zwei Hauptwege – gleich in allen Hero-Varianten. */
+import Pfeil from '../Pfeil.astro';
+
+interface Props {
+  /** Text und Knöpfe untereinander statt nebeneinander. */
+  stapel?: boolean;
+  class?: string;
+}
+const { stapel = false, class: c } = Astro.props;
+---
+
+<div class:list={['einstieg', stapel && 'einstieg--stapel', c]} data-hero-vorn>
+  <p class="lead">Familienbetrieb seit 1954, heute in dritter Generation. Drei Häuser am Alpenrand – und eine eigene Manufaktur, in der aus BMW Motorrädern Einzelstücke werden.</p>
+  <div class="einstieg__aktionen">
+    <a class="btn btn--solid" href="/martin-edition/">Martin Edition ansehen <Pfeil /></a>
+    <a class="btn" href="/kontakt/?anliegen=probefahrt">Probefahrt anfragen <Pfeil /></a>
+  </div>
+</div>
+
+<style>
+  .einstieg {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 1.25rem var(--gap);
+    align-items: end;
+  }
+  .einstieg--stapel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lead {
+    max-width: 30em;
+    font-size: clamp(1.02rem, 0.9rem + 0.45vw, 1.25rem);
+  }
+  .einstieg__aktionen {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .einstieg--stapel .einstieg__aktionen {
+    max-width: 24rem;
+  }
+  @media (max-width: 899px) {
+    .einstieg {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

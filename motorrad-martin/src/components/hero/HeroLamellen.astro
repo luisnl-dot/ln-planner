@@ -1,0 +1,268 @@
+---
+/**
+ * Hero „Lamellen“: Das Foto ist in harte, waagerechte Streifen geschnitten. Beim Laden
+ * fahren die Streifen abwechselnd von links und rechts ein und bleiben leicht versetzt
+ * stehen. Beim Scrollen rasten sie bündig ein, die Fugen schließen sich und das Bild
+ * wächst aus seinem Feld auf die ganze Bühne.
+ */
+import Bild from '../Bild.astro';
+import Fit from '../Fit.astro';
+import Pfeil from '../Pfeil.astro';
+import Leiste from './Leiste.astro';
+import Einstieg from './Einstieg.astro';
+import { edition } from '../../data/editionen';
+import { bild } from '../../lib/bilder';
+
+const e = edition('r-ninet-100-rs');
+const foto = bild(`editionen/${e.slug}-1`);
+const STREIFEN = 7;
+const fokus = '50% 74%';
+---
+
+<section class="lm" data-lm data-kopf="hell">
+  <div class="lm__inhalt wrap">
+    <Leiste />
+    <div class="lm__titel" data-lm-titel>
+      <Fit tag="h1" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
+    </div>
+    <div class="lm__unten">
+      <Einstieg stapel />
+      <div class="lm__platz" data-lm-platz>
+        <Bild src={foto} alt={`${e.titel} unter Gewitterhimmel`} sizes="(min-width: 900px) 58vw, 100vw" widths={[640, 960, 1280, 1800]} eager fokus={fokus} />
+      </div>
+    </div>
+  </div>
+
+  <div class="lm__buehne" aria-hidden="true">
+    {
+      Array.from({ length: STREIFEN }, () => (
+        <div class="lm__streifen" data-lm-streifen>
+          <div class="lm__bild" data-lm-bild>
+            <Bild src={foto} alt="" sizes="100vw" widths={[960, 1280, 1800]} eager fokus={fokus} />
+          </div>
+        </div>
+      ))
+    }
+    <div class="lm__schleier" data-lm-schleier></div>
+  </div>
+
+  <a class="lm__etikett wrap" href={`/martin-edition/${e.slug}/`} data-lm-etikett>
+    <span class="label">Martin Edition · Katalog Nº {e.nr}</span>
+    <span class="lm__etikett-name">BMW {e.basis} {e.name}</span>
+    <span class="link">Zur Edition <Pfeil /></span>
+  </a>
+</section>
+
+<style>
+  .lm {
+    position: relative;
+    height: 100svh;
+    min-height: 40rem;
+    overflow: clip;
+    background: var(--paper);
+  }
+  .lm__inhalt {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: var(--pad);
+  }
+  .lm__titel {
+    padding-block: clamp(0.75rem, 2.4vh, 1.75rem);
+  }
+  .lm__unten {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--gap);
+    align-items: end;
+    min-height: 0;
+  }
+  .lm__platz {
+    height: 100%;
+    min-height: 13rem;
+  }
+  .lm__platz :global(.bild) {
+    width: 100%;
+    height: 100%;
+  }
+  .lm__buehne {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    display: none;
+  }
+  .lm.ist-bereit .lm__buehne {
+    display: block;
+  }
+  .lm.ist-bereit .lm__platz {
+    visibility: hidden;
+  }
+  .lm__streifen {
+    position: absolute;
+    inset: 0;
+    will-change: transform, clip-path;
+  }
+  .lm__bild {
+    position: absolute;
+    contain: strict;
+  }
+  .lm__bild :global(.bild) {
+    width: 100%;
+    height: 100%;
+  }
+  .lm__schleier {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgb(11 12 12 / 0.45), transparent 26%),
+      linear-gradient(to top, rgb(11 12 12 / 0.7), transparent 42%);
+    opacity: 0;
+  }
+  .lm__etikett {
+    position: absolute;
+    z-index: 4;
+    left: 0;
+    right: 0;
+    bottom: var(--pad);
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+    color: var(--chalk);
+    opacity: 0;
+    visibility: hidden;
+  }
+  .lm__etikett-name {
+    font-size: clamp(1.6rem, 1rem + 2.6vw, 3.6rem);
+    font-weight: 780;
+    font-stretch: 112%;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-transform: uppercase;
+  }
+  @media (max-width: 899px) {
+    .lm {
+      height: auto;
+      min-height: 0;
+    }
+    .lm__inhalt {
+      min-height: 100svh;
+    }
+    .lm__unten {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .lm__platz {
+      order: -1;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      min-height: 0;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { bereit } from '../../scripts/bereit';
+
+  // Versatz je Streifen (Anteil der Amplitude) – nur nach rechts, damit nichts in den Text ragt
+  const MUSTER = [0, 0.62, 0.22, 0.9, 0.38, 0.74, 0.12];
+
+  function lamellen() {
+    const sektion = document.querySelector<HTMLElement>('[data-lm]');
+    if (!sektion) return;
+    const platz = sektion.querySelector<HTMLElement>('[data-lm-platz]')!;
+    const streifen = Array.from(sektion.querySelectorAll<HTMLElement>('[data-lm-streifen]'));
+    const bilder = Array.from(sektion.querySelectorAll<HTMLElement>('[data-lm-bild]'));
+    const schleier = sektion.querySelector<HTMLElement>('[data-lm-schleier]')!;
+    const etikett = sektion.querySelector<HTMLElement>('[data-lm-etikett]')!;
+    const titel = sektion.querySelector<HTMLElement>('[data-lm-titel]')!;
+    const vorn = Array.from(sektion.querySelectorAll<HTMLElement>('[data-hero-vorn]'));
+    const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const n = streifen.length;
+
+    const zustand = { p: 0, amp: 0 };
+    const einflug = streifen.map(() => ({ x: 0 }));
+    let feld = { l: 0, t: 0, r: 0, b: 0 };
+
+    const miss = () => {
+      const s = sektion.getBoundingClientRect();
+      const f = platz.getBoundingClientRect();
+      feld = { l: f.left - s.left, t: f.top - s.top, r: f.right - s.left, b: f.bottom - s.top };
+      // auf dem Handy bleiben die Streifen bündig
+      zustand.amp = window.innerWidth >= 900 ? Math.min(110, sektion.clientWidth * 0.06) : 0;
+    };
+
+    const zeichne = () => {
+      const w = sektion.clientWidth;
+      const h = sektion.clientHeight;
+      const e = zustand.p;
+      const l = feld.l * (1 - e);
+      const t = feld.t * (1 - e);
+      const r = feld.r + (w - feld.r) * e;
+      const b = feld.b + (h - feld.b) * e;
+      const band = (b - t) / n;
+      const fuge = 5 * (1 - e);
+      streifen.forEach((s, i) => {
+        const oben = t + i * band;
+        const unten = i === n - 1 ? b : oben + band - fuge;
+        const x = MUSTER[i % MUSTER.length] * zustand.amp * (1 - e) + einflug[i].x;
+        s.style.clipPath = `inset(${oben}px ${w - r}px ${h - unten}px ${l}px)`;
+        s.style.transform = `translate3d(${x}px, 0, 0)`;
+        Object.assign(bilder[i].style, { left: `${l}px`, top: `${t}px`, width: `${r - l}px`, height: `${b - t}px` });
+      });
+    };
+
+    miss();
+    sektion.classList.add('ist-bereit');
+    zeichne();
+
+    if (!ruhig) {
+      // Auftakt: Streifen fahren abwechselnd von links und rechts ein
+      einflug.forEach((ef, i) => (ef.x = (i % 2 ? 1 : -1) * window.innerWidth));
+      zeichne();
+      gsap.to(einflug, { x: 0, duration: 1.15, ease: 'expo.out', stagger: 0.07, delay: 0.15, onUpdate: zeichne });
+    }
+
+    window.addEventListener('resize', () => {
+      miss();
+      zeichne();
+    });
+
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sektion,
+          start: 'top top',
+          end: '+=80%',
+          pin: true,
+          scrub: 0.45,
+          invalidateOnRefresh: true,
+          onRefresh: () => {
+            miss();
+            zeichne();
+          },
+          onUpdate: (st) => {
+            sektion.dataset.kopf = st.progress > 0.55 ? 'dunkel' : 'hell';
+          },
+        },
+      });
+      tl.to(vorn, { opacity: 0, y: -12, duration: 0.16, ease: 'power1.in' }, 0)
+        .to(titel, { opacity: 0, duration: 0.22, ease: 'power1.in' }, 0.22)
+        .fromTo(zustand, { p: 0 }, { p: 1, duration: 0.72, ease: 'power2.inOut', onUpdate: zeichne }, 0.02)
+        .fromTo(schleier, { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'none' }, 0.72)
+        .fromTo(etikett, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 0.78);
+      return () => {
+        sektion.dataset.kopf = 'hell';
+        zustand.p = 0;
+        gsap.set([schleier, etikett, titel, ...vorn], { clearProps: 'all' });
+        zeichne();
+      };
+    });
+  }
+  bereit(lamellen);
+</script>

@@ -1,0 +1,41 @@
+---
+/** Kopfleiste der Hero-Varianten: Händlerzeile und Live-Status der drei Häuser. */
+import Status from '../Status.astro';
+import { standorte } from '../../data/standorte';
+---
+
+<p class="hleiste label" data-hero-vorn>
+  <span>BMW Motorrad Vertragshändler</span>
+  <span class="hleiste__live">
+    {
+      standorte.map((s) => (
+        <a href={`/standorte/${s.slug}/`}>
+          <Status haus={s.slug} ort />
+        </a>
+      ))
+    }
+  </span>
+</p>
+
+<style>
+  .hleiste {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(0.5rem, 1.6vh, 1.1rem);
+    border-bottom: 1px solid var(--fg);
+  }
+  .hleiste__live {
+    display: none;
+    gap: clamp(1rem, 2vw, 2.25rem);
+  }
+  @media (min-width: 1240px) {
+    .hleiste__live {
+      display: flex;
+    }
+  }
+  .hleiste__live a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+</style>

@@ -1,0 +1,292 @@
+---
+/**
+ * Hero „Konstruktionszeichnung“: Das Motorrad liegt zuerst als technische Linienzeichnung
+ * auf Rasterpapier – mit Schriftfeld wie auf einem Werkstattplan. Beim Scrollen fährt
+ * eine Scanlinie von oben nach unten darüber und macht aus der Zeichnung das echte Foto.
+ * Aus dem Plan wird ein Einzelstück.
+ *
+ * Die Zeichnung ist aus dem Foto abgeleitet (Kantenerkennung, gleiche Abmessungen), daher
+ * liegen beide Lagen deckungsgleich. Ohne JavaScript steht das Foto da.
+ */
+import Bild from '../Bild.astro';
+import Fit from '../Fit.astro';
+import Pfeil from '../Pfeil.astro';
+import Leiste from './Leiste.astro';
+import Einstieg from './Einstieg.astro';
+import { edition } from '../../data/editionen';
+import { bild } from '../../lib/bilder';
+
+const e = edition('r-1300-gs-gilles');
+---
+
+<section class="zn" data-zn data-kopf="hell">
+  <div class="zn__inhalt wrap">
+    <Leiste />
+    <div class="zn__titel">
+      <Fit tag="h1" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
+    </div>
+    <div class="zn__unten">
+      <Einstieg stapel />
+      <div class="zn__blatt">
+        <div class="zn__flaeche">
+          <div class="zn__lage zn__foto">
+            <Bild src={bild(`editionen/${e.slug}-2`)} alt={`${e.titel} vor weißem Hintergrund`} sizes="(min-width: 900px) 52vw, 100vw" widths={[640, 960, 1280, 1800]} eager />
+          </div>
+          <div class="zn__lage zn__linien" aria-hidden="true">
+            <Bild src={bild(`zeichnung/${e.slug}-linien`)} alt="" sizes="(min-width: 900px) 52vw, 100vw" widths={[640, 960, 1280, 1800]} eager />
+          </div>
+          <div class="zn__plotter" data-zn-plotter aria-hidden="true"></div>
+          <div class="zn__scan" data-zn-scan aria-hidden="true"><span class="label" data-zn-wert>Scan 0 %</span></div>
+          <span class="zn__ecke zn__ecke--ol label" aria-hidden="true">Blatt 1 / 1</span>
+        </div>
+        <dl class="zn__schriftfeld">
+          <div><dt>Objekt</dt><dd>BMW {e.basis}</dd></div>
+          <div><dt>Edition</dt><dd>{e.name}</dd></div>
+          <div><dt>Katalog</dt><dd>Nº {e.nr}</dd></div>
+          <div class="zn__teile"><dt>Teile</dt><dd>{e.teile.join(' · ')}</dd></div>
+          <div><dt>Stand</dt><dd data-zn-stand>Einzelstück</dd></div>
+          <div class="zn__ziel">
+            <a class="link" href={`/martin-edition/${e.slug}/`}>Zur Edition <Pfeil /></a>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .zn {
+    --s: 100;
+    --z: 100;
+    position: relative;
+    height: 100svh;
+    min-height: 42rem;
+    overflow: clip;
+    background: var(--paper);
+  }
+  :global(.js) .zn {
+    --s: 0;
+    --z: 0;
+  }
+  .zn__inhalt {
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: var(--pad);
+  }
+  .zn__titel {
+    padding-block: clamp(0.75rem, 2.4vh, 1.75rem);
+  }
+  .zn__unten {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--gap);
+    align-items: end;
+    min-height: 0;
+  }
+  .zn__unten > :global(.einstieg) {
+    align-self: end;
+  }
+
+  /* Zeichenblatt: Raster, Rahmen, Schriftfeld */
+  .zn__blatt {
+    height: 100%;
+    min-height: 16rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 15rem);
+    border: 1px solid var(--ink);
+    background-color: #f6f4ef;
+    background-image:
+      linear-gradient(rgb(14 15 15 / 0.075) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(14 15 15 / 0.075) 1px, transparent 1px),
+      linear-gradient(rgb(14 15 15 / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(14 15 15 / 0.035) 1px, transparent 1px);
+    background-size:
+      60px 60px,
+      60px 60px,
+      12px 12px,
+      12px 12px;
+    background-position: -1px -1px;
+  }
+  .zn__flaeche {
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .zn__lage {
+    position: absolute;
+    inset: 4% 3%;
+    mix-blend-mode: multiply;
+  }
+  .zn__lage :global(.bild) {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+  .zn__lage :global(img) {
+    object-fit: contain;
+  }
+  /* Foto oberhalb der Scanlinie, Zeichnung darunter */
+  .zn__foto {
+    filter: brightness(1.05) contrast(1.04);
+    clip-path: inset(0 0 calc(100% - var(--s) * 1%) 0);
+  }
+  .zn__linien {
+    clip-path: inset(calc(var(--s) * 1%) calc(100% - var(--z) * 1%) 0 0);
+  }
+  .zn__scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--s) * 1%);
+    height: 1px;
+    background: var(--blau);
+    box-shadow: 0 0 0 0.5px rgb(31 79 156 / 0.25);
+    pointer-events: none;
+  }
+  .zn__scan .label {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.4rem;
+    color: var(--blau);
+    font-variant-numeric: tabular-nums;
+  }
+  .zn__plotter {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--z) * 1%);
+    width: 1px;
+    background: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+  }
+  :global(html:not(.js)) .zn__scan {
+    display: none;
+  }
+  .zn__ecke {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.75rem;
+    color: var(--ink-3);
+  }
+  .zn__schriftfeld {
+    align-self: end;
+    margin: 0;
+    border-left: 1px solid var(--ink);
+    border-top: 1px solid var(--ink);
+    background: var(--paper);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+  .zn__schriftfeld > div {
+    display: grid;
+    grid-template-columns: 4.6rem minmax(0, 1fr);
+    border-bottom: 1px solid var(--line-2);
+  }
+  .zn__schriftfeld > div:last-child {
+    border-bottom: 0;
+  }
+  .zn__schriftfeld dt,
+  .zn__schriftfeld dd {
+    margin: 0;
+    padding: 0.4rem 0.6rem;
+  }
+  .zn__schriftfeld dt {
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-right: 1px solid var(--line-2);
+  }
+  .zn__schriftfeld dd {
+    font-weight: 500;
+  }
+  .zn__ziel {
+    padding: 0.25rem 0.6rem;
+    grid-template-columns: 1fr !important;
+  }
+  @media (max-width: 1180px) {
+    .zn__teile {
+      display: none !important;
+    }
+  }
+  @media (max-width: 899px) {
+    .zn {
+      height: auto;
+      min-height: 0;
+    }
+    .zn__inhalt {
+      min-height: 100svh;
+    }
+    .zn__unten {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .zn__blatt {
+      order: -1;
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .zn__flaeche {
+      aspect-ratio: 3 / 2;
+    }
+    .zn__schriftfeld {
+      border-left: 0;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { bereit } from '../../scripts/bereit';
+
+  function zeichnung() {
+    const sektion = document.querySelector<HTMLElement>('[data-zn]');
+    if (!sektion) return;
+    const plotter = sektion.querySelector<HTMLElement>('[data-zn-plotter]')!;
+    const scan = sektion.querySelector<HTMLElement>('[data-zn-scan]')!;
+    const wert = sektion.querySelector<HTMLElement>('[data-zn-wert]')!;
+    const stand = sektion.querySelector<HTMLElement>('[data-zn-stand]')!;
+    const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const buehne = matchMedia('(min-width: 900px) and (min-height: 600px)').matches;
+
+    const zeig = (s: number) => {
+      wert.textContent = s >= 99.5 ? 'Fertig' : `Scan ${Math.round(s)} %`;
+      stand.textContent = s >= 99.5 ? 'Einzelstück' : 'Zeichnung';
+      scan.style.opacity = s <= 0.2 || s >= 99.5 ? '0' : '1';
+    };
+    const lies = () => parseFloat(getComputedStyle(sektion).getPropertyValue('--s')) || 0;
+
+    if (ruhig) {
+      gsap.set(sektion, { '--s': 100, '--z': 100 });
+      zeig(100);
+      return;
+    }
+    zeig(0);
+
+    // Auftakt: der Plotter zieht die Zeichnung von links nach rechts
+    gsap.set(plotter, { opacity: 1 });
+    gsap.to(sektion, {
+      '--z': 100,
+      duration: 1.7,
+      ease: 'power2.inOut',
+      delay: 0.25,
+      onComplete: () => {
+        gsap.to(plotter, { opacity: 0, duration: 0.3 });
+        // Handy: danach einmal von selbst einscannen
+        if (!buehne) gsap.to(sektion, { '--s': 100, duration: 2.6, ease: 'power1.inOut', delay: 0.9, onUpdate: () => zeig(lies()) });
+      },
+    });
+
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sektion, start: 'top top', end: '+=80%', pin: true, scrub: 0.4 },
+      });
+      tl.fromTo(sektion, { '--s': 0 }, { '--s': 100, duration: 1, ease: 'none', immediateRender: false, onUpdate: () => zeig(lies()) }, 0);
+      return () => gsap.set(sektion, { '--s': 0 });
+    });
+  }
+  bereit(zeichnung);
+</script>

@@ -1,0 +1,495 @@
+---
+/**
+ * Hero „Fallblatt“: Eine mechanische Klappanzeige wie auf alten Bahnhöfen zeigt
+ * nacheinander Martin Editionen – Katalognummer, Basis, Name. Das Foto daneben
+ * wechselt im selben Takt: Die obere Hälfte klappt nach vorn, die neue fällt herunter.
+ * Kein Pinning, die Anzeige läuft von selbst und lässt sich vor- und zurückschalten.
+ */
+import Bild from '../Bild.astro';
+import Fit from '../Fit.astro';
+import Pfeil from '../Pfeil.astro';
+import Leiste from './Leiste.astro';
+import Einstieg from './Einstieg.astro';
+import { edition } from '../../data/editionen';
+import { bild } from '../../lib/bilder';
+
+const auswahl = [
+  { slug: 'm-1000-rr-black', foto: 2, fokus: '50% 64%' },
+  { slug: 'r-ninet-90s-daytona', foto: 1, fokus: '50% 62%' },
+  { slug: 'r-12-gs-black', foto: 1, fokus: '50% 66%' },
+  { slug: 'r-ninet-100-rs', foto: 1, fokus: '50% 72%' },
+  { slug: 'r-1300-gs-rallye-dakar', foto: 2, fokus: '50% 58%' },
+].map((a) => ({ ...a, e: edition(a.slug) }));
+
+const gross = (s: string) => s.toLocaleUpperCase('de-DE');
+const daten = auswahl.map(({ e }) => ({ nr: e.nr, basis: gross(e.basis), name: gross(e.name), href: `/martin-edition/${e.slug}/`, titel: `BMW ${e.basis} ${e.name}` }));
+const n = Math.max(...daten.flatMap((d) => [d.basis.length, d.name.length]));
+const erste = daten[0];
+const zellen = (text: string, anzahl: number) => Array.from({ length: anzahl }, (_, i) => text[i] ?? ' ');
+const zwei = (z: number) => String(z).padStart(2, '0');
+---
+
+<section class="fb" data-fb data-kopf="hell">
+  <div class="fb__inhalt wrap">
+    <Leiste />
+    <div class="fb__titel">
+      <Fit tag="h1" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
+    </div>
+
+    <div class="fb__mitte">
+      <div class="fb__links">
+        <div class="fb__tafel" style={`--n:${n}`} aria-hidden="true">
+          <div class="fb__kopf">
+            <span class="label">Martin Edition · Manufaktur</span>
+            <span class="label" data-fb-zaehler>{zwei(1)} / {zwei(daten.length)}</span>
+          </div>
+          {
+            (
+              [
+                ['Katalog Nº', 'nr', erste.nr, 2],
+                ['Basis', 'basis', erste.basis, n],
+                ['Edition', 'name', erste.name, n],
+              ] as const
+            ).map(([was, feld, text, anzahl]) => (
+              <div class="fb__zeile">
+                <span class="fb__was">{was}</span>
+                <span class="fb__zellen" data-fb-feld={feld}>
+                  {zellen(text, anzahl).map((z) => (
+                    <span class="fz" data-z={z}>
+                      <span class="fz__h fz__o">
+                        <span>{z === ' ' ? ' ' : z}</span>
+                      </span>
+                      <span class="fz__h fz__u">
+                        <span>{z === ' ' ? ' ' : z}</span>
+                      </span>
+                    </span>
+                  ))}
+                </span>
+              </div>
+            ))
+          }
+          <div class="fb__takt"><span data-fb-takt></span></div>
+        </div>
+        <p class="sr-only" aria-live="polite" data-fb-ansage>Martin Edition Nº {erste.nr}: {erste.titel}</p>
+      </div>
+
+      <div class="fb__rechts">
+        <a class="fb__foto" href={erste.href} data-fb-foto aria-label={`Zur Martin Edition ${erste.titel}`}>
+          {
+            auswahl.map((a, i) => (
+              <div class:list={['fb__dia', i === 0 && 'ist-aktiv']} data-fb-dia>
+                <Bild src={bild(`editionen/${a.slug}-${a.foto}`)} alt={a.e.titel} sizes="(min-width: 900px) 58vw, 100vw" widths={[640, 960, 1280, 1800]} eager={i === 0} fokus={a.fokus} />
+              </div>
+            ))
+          }
+        </a>
+        <div class="fb__steuer">
+          <button class="fb__knopf label" type="button" data-fb-zurueck aria-label="Vorherige Edition">← Zurück</button>
+          <a class="link" href={erste.href} data-fb-link>Zur Edition <Pfeil /></a>
+          <button class="fb__knopf label" type="button" data-fb-weiter aria-label="Nächste Edition">Weiter →</button>
+        </div>
+      </div>
+    </div>
+    <div class="fb__unten">
+      <Einstieg />
+    </div>
+  </div>
+  <script type="application/json" data-fb-daten set:html={JSON.stringify(daten)} />
+</section>
+
+<style>
+  .fb {
+    position: relative;
+    background: var(--paper);
+  }
+  /* Auf niedrigen Bildschirmen wird die Bühne höher statt das Foto zu quetschen */
+  .fb__inhalt {
+    min-height: 100svh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(17rem, 1fr) auto;
+    padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
+    padding-bottom: var(--pad);
+  }
+  .fb__unten {
+    margin-top: clamp(0.9rem, 2vh, 1.4rem);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--ink);
+  }
+  .fb__titel {
+    padding-block: clamp(0.75rem, 2.4vh, 1.75rem);
+  }
+  .fb__mitte {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--gap);
+    min-height: 0;
+  }
+  .fb__links {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .fb__links .fb__tafel {
+    flex: 1;
+    align-content: space-between;
+  }
+  .fb__rechts {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.6rem;
+    min-height: 0;
+  }
+
+  /* Anzeigetafel */
+  .fb__tafel {
+    --spalt: 3px;
+    --zw: calc((100cqi - 2 * var(--innen) - (var(--n) - 1) * var(--spalt)) / var(--n));
+    --innen: clamp(0.8rem, 1.2vw, 1.15rem);
+    container-type: inline-size;
+    display: grid;
+    gap: 0.7rem;
+    padding: var(--innen);
+    background: var(--night);
+    color: var(--chalk);
+  }
+  .fb__kopf {
+    display: flex;
+    justify-content: space-between;
+    color: var(--chalk-3);
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid rgb(236 233 226 / 0.14);
+  }
+  .fb__zeile {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .fb__was {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-3);
+  }
+  .fb__zellen {
+    display: flex;
+    gap: var(--spalt);
+  }
+  .fz {
+    position: relative;
+    flex: none;
+    width: var(--zw);
+    height: calc(var(--zw) * 1.42);
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: calc(var(--zw) * 0.98);
+    color: var(--chalk);
+    background: #1b1d1c;
+    perspective: 320px;
+  }
+  .fz::after {
+    content: '';
+    position: absolute;
+    z-index: 4;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    margin-top: -0.5px;
+    background: rgb(0 0 0 / 0.7);
+  }
+  .fz__h,
+  :global(.fz__k) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50%;
+    overflow: hidden;
+    background: #1b1d1c;
+  }
+  .fz__o,
+  :global(.fz__k--o) {
+    top: 0;
+  }
+  .fz__u,
+  :global(.fz__k--u) {
+    bottom: 0;
+    background: #181a19;
+  }
+  .fz__h > span,
+  :global(.fz__k > span) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(var(--zw) * 1.42);
+    line-height: calc(var(--zw) * 1.42);
+    text-align: center;
+  }
+  .fz__o > span,
+  :global(.fz__k--o > span) {
+    top: 0;
+  }
+  .fz__u > span,
+  :global(.fz__k--u > span) {
+    bottom: 0;
+  }
+  :global(.fz__k) {
+    z-index: 2;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+  :global(.fz__k--o) {
+    transform-origin: 50% 100%;
+  }
+  :global(.fz__k--u) {
+    transform-origin: 50% 0;
+  }
+  .fb__takt {
+    height: 2px;
+    background: rgb(236 233 226 / 0.14);
+    overflow: hidden;
+  }
+  .fb__takt span {
+    display: block;
+    height: 100%;
+    background: var(--chalk);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
+  /* Foto */
+  .fb__foto {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    perspective: 2200px;
+    background: var(--paper-3);
+  }
+  .fb__dia,
+  :global(.fb__klappe) {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+  }
+  .fb__dia.ist-aktiv {
+    visibility: visible;
+    z-index: 1;
+  }
+  .fb__dia :global(.bild),
+  :global(.fb__klappe .bild) {
+    width: 100%;
+    height: 100%;
+  }
+  :global(.fb__klappe) {
+    visibility: visible;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+  .fb__foto::after {
+    content: '';
+    position: absolute;
+    z-index: 6;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: rgb(0 0 0 / 0.35);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .fb__foto.ist-klappend::after {
+    opacity: 1;
+  }
+  .fb__steuer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .fb__knopf {
+    padding: 0.55rem 0;
+    color: var(--fg-2);
+  }
+  .fb__knopf:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 899px) {
+    .fb__inhalt {
+      grid-template-rows: auto auto auto auto;
+    }
+    .fb__mitte {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+    .fb__rechts {
+      order: -1;
+    }
+    .fb__foto {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>
+
+<script>
+  import { bereit } from '../../scripts/bereit';
+
+  type Daten = { nr: string; basis: string; name: string; href: string; titel: string };
+  const ZEICHEN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const zufall = () => ZEICHEN[Math.floor(Math.random() * ZEICHEN.length)];
+  const warte = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const leer = (z: string) => (z === ' ' ? ' ' : z);
+
+  function fallblatt() {
+    const sektion = document.querySelector<HTMLElement>('[data-fb]');
+    if (!sektion) return;
+    const daten = JSON.parse(sektion.querySelector('[data-fb-daten]')!.textContent || '[]') as Daten[];
+    const foto = sektion.querySelector<HTMLAnchorElement>('[data-fb-foto]')!;
+    const link = sektion.querySelector<HTMLAnchorElement>('[data-fb-link]')!;
+    const dias = Array.from(sektion.querySelectorAll<HTMLElement>('[data-fb-dia]'));
+    const zaehler = sektion.querySelector<HTMLElement>('[data-fb-zaehler]')!;
+    const ansage = sektion.querySelector<HTMLElement>('[data-fb-ansage]')!;
+    const takt = sektion.querySelector<HTMLElement>('[data-fb-takt]')!;
+    const felder = {
+      nr: Array.from(sektion.querySelectorAll<HTMLElement>('[data-fb-feld="nr"] .fz')),
+      basis: Array.from(sektion.querySelectorAll<HTMLElement>('[data-fb-feld="basis"] .fz')),
+      name: Array.from(sektion.querySelectorAll<HTMLElement>('[data-fb-feld="name"] .fz')),
+    };
+    const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const zwei = (z: number) => String(z).padStart(2, '0');
+    let aktiv = 0;
+    let laeuft = false;
+
+    /** Eine Klappe: alte obere Hälfte fällt nach vorn, neue untere Hälfte fällt herunter. */
+    const klappe = async (zelle: HTMLElement, alt: string, neu: string, ms: number) => {
+      const oben = zelle.querySelector<HTMLElement>('.fz__o > span')!;
+      const unten = zelle.querySelector<HTMLElement>('.fz__u > span')!;
+      const ko = document.createElement('span');
+      ko.className = 'fz__k fz__k--o';
+      ko.innerHTML = `<span>${leer(alt)}</span>`;
+      const ku = document.createElement('span');
+      ku.className = 'fz__k fz__k--u';
+      ku.innerHTML = `<span>${leer(neu)}</span>`;
+      ku.style.transform = 'rotateX(90deg)';
+      oben.textContent = leer(neu);
+      zelle.append(ko, ku);
+      await ko.animate([{ transform: 'rotateX(0deg)', filter: 'brightness(1)' }, { transform: 'rotateX(-90deg)', filter: 'brightness(0.5)' }], { duration: ms, easing: 'cubic-bezier(0.55, 0, 1, 0.45)', fill: 'forwards' }).finished;
+      ko.remove();
+      await ku.animate([{ transform: 'rotateX(90deg)', filter: 'brightness(0.6)' }, { transform: 'rotateX(0deg)', filter: 'brightness(1)' }], { duration: ms * 1.15, easing: 'cubic-bezier(0, 0.55, 0.45, 1)', fill: 'forwards' }).finished;
+      unten.textContent = leer(neu);
+      ku.remove();
+    };
+
+    const setzeZelle = async (zelle: HTMLElement, ziel: string, verzug: number) => {
+      let jetzt = zelle.dataset.z ?? ' ';
+      if (jetzt === ziel) return;
+      if (ruhig) {
+        zelle.querySelectorAll('.fz__h > span').forEach((s) => (s.textContent = leer(ziel)));
+        zelle.dataset.z = ziel;
+        return;
+      }
+      await warte(verzug);
+      const folge = Array.from({ length: 2 + Math.floor(Math.random() * 3) }, zufall);
+      folge.push(ziel);
+      for (const z of folge) {
+        await klappe(zelle, jetzt, z, 58);
+        jetzt = z;
+      }
+      zelle.dataset.z = ziel;
+    };
+
+    const setzeFeld = (zellen: HTMLElement[], text: string, start: number) =>
+      Promise.all(zellen.map((z, i) => setzeZelle(z, text[i] ?? ' ', start + i * 28)));
+
+    const bildBereit = async (dia: HTMLElement) => {
+      const img = dia.querySelector('img');
+      if (!img) return;
+      img.loading = 'eager';
+      try {
+        await img.decode();
+      } catch {
+        /* Bild trotzdem zeigen */
+      }
+    };
+
+    /** Foto wie ein großes Fallblatt umklappen. */
+    const blaettere = async (alt: HTMLElement, neu: HTMLElement) => {
+      await bildBereit(neu);
+      if (ruhig) {
+        alt.classList.remove('ist-aktiv');
+        neu.classList.add('ist-aktiv');
+        return;
+      }
+      foto.classList.add('ist-klappend');
+      Object.assign(neu.style, { visibility: 'visible', zIndex: '2', clipPath: 'inset(0 0 50% 0)' });
+      const ko = alt.cloneNode(true) as HTMLElement;
+      ko.className = 'fb__klappe';
+      Object.assign(ko.style, { zIndex: '3', clipPath: 'inset(0 0 50% 0)', transformOrigin: '50% 50%' });
+      foto.append(ko);
+      await ko.animate([{ transform: 'rotateX(0deg)', filter: 'brightness(1)' }, { transform: 'rotateX(-90deg)', filter: 'brightness(0.45)' }], { duration: 340, easing: 'cubic-bezier(0.55, 0, 1, 0.45)', fill: 'forwards' }).finished;
+      ko.remove();
+      const ku = neu.cloneNode(true) as HTMLElement;
+      ku.className = 'fb__klappe';
+      Object.assign(ku.style, { zIndex: '4', clipPath: 'inset(50% 0 0 0)', transformOrigin: '50% 50%', transform: 'rotateX(90deg)' });
+      foto.append(ku);
+      await ku.animate([{ transform: 'rotateX(90deg)', filter: 'brightness(0.5)' }, { transform: 'rotateX(0deg)', filter: 'brightness(1)' }], { duration: 420, easing: 'cubic-bezier(0.2, 0.9, 0.35, 1.08)', fill: 'forwards' }).finished;
+      alt.classList.remove('ist-aktiv');
+      neu.classList.add('ist-aktiv');
+      neu.removeAttribute('style');
+      ku.remove();
+      foto.classList.remove('ist-klappend');
+    };
+
+    let taktAnim: Animation | null = null;
+    const starteTakt = () => {
+      taktAnim?.cancel();
+      if (ruhig) return;
+      taktAnim = takt.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 5200, fill: 'forwards' });
+      if (pausiert()) taktAnim.pause();
+      taktAnim.finished.then(() => zeige(aktiv + 1)).catch(() => {});
+    };
+
+    const zeige = async (ziel: number) => {
+      if (laeuft) return;
+      laeuft = true;
+      taktAnim?.cancel();
+      const neu = (ziel + daten.length) % daten.length;
+      const d = daten[neu];
+      const alt = aktiv;
+      aktiv = neu;
+      zaehler.textContent = `${zwei(neu + 1)} / ${zwei(daten.length)}`;
+      foto.href = d.href;
+      link.href = d.href;
+      foto.setAttribute('aria-label', `Zur Martin Edition ${d.titel}`);
+      ansage.textContent = `Martin Edition Nº ${d.nr}: ${d.titel}`;
+      await Promise.all([setzeFeld(felder.nr, d.nr, 0), setzeFeld(felder.basis, d.basis, 60), setzeFeld(felder.name, d.name, 140), blaettere(dias[alt], dias[neu])]);
+      laeuft = false;
+      starteTakt();
+    };
+
+    // Pausieren, solange man mit der Anzeige interagiert oder sie nicht sieht
+    let drueber = false;
+    let sichtbar = true;
+    const pausiert = () => drueber || !sichtbar || document.hidden;
+    const pruefe = () => {
+      if (!taktAnim) return;
+      if (pausiert()) taktAnim.pause();
+      else if (taktAnim.playState === 'paused') taktAnim.play();
+    };
+    const mitte = sektion.querySelector<HTMLElement>('.fb__mitte')!;
+    mitte.addEventListener('pointerenter', () => ((drueber = true), pruefe()));
+    mitte.addEventListener('pointerleave', () => ((drueber = false), pruefe()));
+    mitte.addEventListener('focusin', () => ((drueber = true), pruefe()));
+    mitte.addEventListener('focusout', () => ((drueber = false), pruefe()));
+    document.addEventListener('visibilitychange', pruefe);
+    new IntersectionObserver(([eintrag]) => ((sichtbar = eintrag.isIntersecting), pruefe()), { threshold: 0.2 }).observe(sektion);
+
+    sektion.querySelector('[data-fb-weiter]')!.addEventListener('click', () => zeige(aktiv + 1));
+    sektion.querySelector('[data-fb-zurueck]')!.addEventListener('click', () => zeige(aktiv - 1));
+
+    // Restliche Fotos im Hintergrund laden, dann den Takt starten
+    dias.slice(1).forEach((d) => bildBereit(d));
+    starteTakt();
+  }
+  bereit(fallblatt);
+</script>
