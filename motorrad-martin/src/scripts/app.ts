@@ -1,30 +1,23 @@
 /**
- * Globales Verhalten: sanftes Scrollen, Einblendungen, Kopfzeile, Dialoge,
- * Typenschild-Satz und Live-Status. Alles ist Progressive Enhancement –
- * ohne JavaScript bleibt jede Seite vollständig les- und bedienbar.
+ * Globales Verhalten: Einblendungen, Kopfzeile, Dialoge, Typenschild-Satz und
+ * Live-Status. Alles ist Progressive Enhancement – ohne JavaScript bleibt jede
+ * Seite vollständig les- und bedienbar.
+ *
+ * Gescrollt wird nativ: Der Browser scrollt auf dem Compositor, unabhängig vom
+ * Hauptprozess. Kein Skript hängt sich in jeden Scroll-Frame, das hält es flüssig.
  */
-import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initFit } from './fit';
 import { initStatus } from './status';
 
 gsap.registerPlugin(ScrollTrigger);
+// Ein- und ausfahrende Adressleiste auf dem Handy löst keine Neuberechnung (und damit keinen Sprung) aus
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fein = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const html = document.documentElement;
-
-/* ---- Sanftes Scrollen (nur Maus/Trackpad, nie bei „Bewegung reduzieren“) ---- */
-let lenis: Lenis | null = null;
-if (!ruhig && fein) {
-  lenis = new Lenis({ lerp: 0.18, anchors: { offset: -72 }, stopInertiaOnNavigate: true });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((t) => lenis!.raf(t * 1000));
-  gsap.ticker.lagSmoothing(0);
-}
-export const scrollStop = () => lenis?.stop();
-export const scrollStart = () => lenis?.start();
 
 /* ---- Einblendungen ---- */
 function initReveal() {
@@ -46,43 +39,71 @@ function initReveal() {
   ziele.forEach((el) => io.observe(el));
 }
 
-/* ---- Kopfzeile: Ton folgt dem Abschnitt darunter, blendet beim Runterscrollen aus ---- */
+/* ---- Kopfzeile: Ton folgt dem Abschnitt darunter, blendet beim Runterscrollen aus ----
+   Kein Ausmessen pro Frame: Ein IntersectionObserver meldet, welche Abschnitte gerade
+   unter der Mittellinie der Kopfzeile liegen; der Scroll-Handler liest nur scrollY. */
 function initKopfzeile() {
   const kopf = document.querySelector<HTMLElement>('[data-kopfzeile]');
   if (!kopf) return;
-  // Abschnitte, die den Ton der Kopfzeile bestimmen: dunkle Flächen oder ausdrücklich per data-kopf
-  const dunkle = () => Array.from(document.querySelectorAll<HTMLElement>('main [data-theme="dark"], main [data-kopf], footer[data-theme="dark"], body[data-theme="dark"]'));
-  let liste = dunkle();
+  const WAEHLER = 'main [data-theme="dark"], main [data-kopf], footer[data-theme="dark"]';
+  const grund = document.body.dataset.theme === 'dark' ? 'dunkel' : 'hell';
+  const darunter = new Set<HTMLElement>();
+
+  const bestimme = () => {
+    let ton = grund;
+    // der im DOM späteste Treffer gewinnt (innerster bzw. weiter unten liegender Abschnitt)
+    const liste = Array.from(darunter).sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+    for (const el of liste) ton = el.dataset.kopf ?? (el.dataset.theme === 'dark' ? 'dunkel' : 'hell');
+    if (kopf.dataset.ton !== ton) kopf.dataset.ton = ton;
+  };
+
+  let io: IntersectionObserver | null = null;
+  const beobachte = () => {
+    io?.disconnect();
+    darunter.clear();
+    const mitte = Math.round(kopf.offsetHeight / 2);
+    io = new IntersectionObserver(
+      (eintraege) => {
+        for (const e of eintraege) {
+          if (e.isIntersecting) darunter.add(e.target as HTMLElement);
+          else darunter.delete(e.target as HTMLElement);
+        }
+        bestimme();
+      },
+      { rootMargin: `-${mitte}px 0px -${Math.max(0, window.innerHeight - mitte - 1)}px 0px` },
+    );
+    document.querySelectorAll<HTMLElement>(WAEHLER).forEach((el) => io!.observe(el));
+  };
+  beobachte();
+  // Abschnitte, die ihren Ton beim Scrollen selbst umstellen (data-kopf), sofort übernehmen
+  new MutationObserver(bestimme).observe(document.querySelector('main') ?? document.body, { subtree: true, attributes: true, attributeFilter: ['data-kopf'] });
+
   let letzte = window.scrollY;
   let wartet = false;
-
   const lauf = () => {
     wartet = false;
     const y = window.scrollY;
-    const mitte = kopf.offsetHeight / 2;
-    // der innerste passende Abschnitt gewinnt (spätere Treffer liegen im DOM tiefer oder weiter unten)
-    let ton = 'hell';
-    for (const el of liste) {
-      const r = el.getBoundingClientRect();
-      if (r.top <= mitte && r.bottom > mitte) ton = el.dataset.kopf ?? (el.dataset.theme === 'dark' ? 'dunkel' : 'hell');
-    }
-    kopf.dataset.ton = ton;
-    kopf.classList.toggle('ist-fest', y > 12);
+    const fest = y > 12;
+    if (kopf.classList.contains('ist-fest') !== fest) kopf.classList.toggle('ist-fest', fest);
     const runter = y > letzte + 4;
     const hoch = y < letzte - 4;
     if (y < 200 || hoch) kopf.classList.remove('ist-weg');
     else if (runter && !kopf.contains(document.activeElement)) kopf.classList.add('ist-weg');
     if (runter || hoch) letzte = y;
   };
-  const an = () => {
-    if (wartet) return;
-    wartet = true;
-    requestAnimationFrame(lauf);
-  };
-  window.addEventListener('scroll', an, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (wartet) return;
+      wartet = true;
+      requestAnimationFrame(lauf);
+    },
+    { passive: true },
+  );
+  let warte = 0;
   window.addEventListener('resize', () => {
-    liste = dunkle();
-    an();
+    window.clearTimeout(warte);
+    warte = window.setTimeout(beobachte, 200);
   });
   kopf.addEventListener('focusin', () => kopf.classList.remove('ist-weg'));
   lauf();
@@ -93,7 +114,6 @@ function initDialoge() {
   const oeffne = (d: HTMLDialogElement, ausloeser?: HTMLElement) => {
     if (d.open) return;
     d.showModal();
-    scrollStop();
     html.classList.add('dialog-offen');
     ausloeser?.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(() => d.classList.add('ist-offen'));
@@ -117,7 +137,6 @@ function initDialoge() {
     d.addEventListener('close', () => {
       d.classList.remove('ist-offen');
       if (!document.querySelector('dialog[open]')) {
-        scrollStart();
         html.classList.remove('dialog-offen');
       }
       document.querySelectorAll(`[aria-controls="${d.id}"]`).forEach((b) => b.setAttribute('aria-expanded', 'false'));

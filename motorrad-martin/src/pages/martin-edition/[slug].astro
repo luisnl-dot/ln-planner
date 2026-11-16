@@ -362,18 +362,19 @@ const schema = [
     background: var(--bg-2);
   }
   .ed-weiter__name {
+    display: inline-block;
     font-size: clamp(1.2rem, 0.8rem + 1.8vw, 2.4rem);
     font-weight: 760;
     font-stretch: 100%;
     letter-spacing: -0.025em;
     line-height: 1;
-    transition: font-stretch 0.6s var(--ease),
+    transition: transform 0.6s var(--ease),
       color 0.3s;
     text-transform: uppercase;
   }
   .ed-weiter__link:hover .ed-weiter__name {
     color: var(--edition);
-    font-stretch: 116%;
+    transform: translateX(0.35rem);
   }
   .ed-weiter__mitte {
     display: grid;

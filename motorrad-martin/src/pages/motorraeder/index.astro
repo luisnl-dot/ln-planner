@@ -136,12 +136,13 @@ const pflege: [string, string][] = [
       border-color 0.3s;
   }
   .wege__titel {
+    display: inline-block;
     font-size: clamp(1.7rem, 1rem + 3vw, 4rem);
     font-weight: 780;
     font-stretch: 100%;
     letter-spacing: -0.035em;
     line-height: 0.96;
-    transition: font-stretch 0.6s var(--ease);
+    transition: transform 0.6s var(--ease);
     text-transform: uppercase;
   }
   .wege__liste a:hover {
@@ -149,7 +150,7 @@ const pflege: [string, string][] = [
     border-bottom-color: var(--fg);
   }
   .wege__liste a:hover .wege__titel {
-  font-stretch: 120%;
+  transform: translateX(0.35rem);
   }
   .wege__liste :global(.pfeil) {
     align-self: center;

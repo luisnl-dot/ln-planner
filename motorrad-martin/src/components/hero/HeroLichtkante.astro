@@ -4,8 +4,9 @@
  * da. Beim Scrollen fährt eine harte Lichtkante von links nach rechts und legt das
  * farbige Foto Stück für Stück frei – bis die Maschine ganz im Licht steht.
  *
- * Das Foto wird per clip-path bis zur Kante freigelegt. --a ist der Wert ohne Scroll
- * (Handy: automatischer Durchlauf), --b der Scrollweg; sichtbar ist das Maximum.
+ * Alles läuft über transform (nur Compositor, kein Layout, kein Neuzeichnen): Ein Rahmen
+ * fährt von links herein und schneidet ab, das Foto darin läuft gegenläufig und bleibt
+ * so auf der Stelle; die Lichtkante sitzt auf einer Schiene an der Rahmenkante.
  * Ohne JavaScript und bei reduzierter Bewegung steht das Foto ausgeleuchtet da.
  */
 import Bild from '../Bild.astro';
@@ -22,11 +23,15 @@ const foto = bild(`editionen/${e.slug}-2`);
 
 <section class="lk" data-lk data-theme="dark" data-kopf="dunkel">
   <div class="lk__buehne">
-    <div class="lk__lage lk__lage--hell" data-lk-hell>
-      <Bild src={foto} alt={`${e.titel} auf einer beleuchteten Bühne in der Werkhalle`} sizes="100vw" widths={[960, 1280, 1800]} eager fokus="50% 46%" />
+    <div class="lk__rahmen" data-lk-rahmen>
+      <div class="lk__lage" data-lk-lage>
+        <Bild src={foto} alt={`${e.titel} auf einer beleuchteten Bühne in der Werkhalle`} sizes="100vw" widths={[960, 1280, 1800]} eager fokus="50% 46%" />
+      </div>
     </div>
-    <div class="lk__glanz" data-lk-licht aria-hidden="true"></div>
-    <div class="lk__kante" data-lk-licht aria-hidden="true"></div>
+    <div class="lk__schiene" data-lk-schiene aria-hidden="true">
+      <div class="lk__glanz"></div>
+      <div class="lk__kante"></div>
+    </div>
     <div class="lk__schleier" aria-hidden="true"></div>
   </div>
 
@@ -49,9 +54,6 @@ const foto = bild(`editionen/${e.slug}-2`);
 
 <style>
   .lk {
-    --a: 100;
-    --b: 0;
-    --x: calc(max(var(--a), var(--b)) * 1%);
     position: relative;
     height: 100svh;
     min-height: 40rem;
@@ -59,51 +61,58 @@ const foto = bild(`editionen/${e.slug}-2`);
     background: var(--night);
     color: var(--fg);
   }
-  :global(.js) .lk {
-    --a: 0;
-  }
   .lk__buehne,
+  .lk__rahmen,
   .lk__lage,
+  .lk__schiene,
   .lk__schleier {
     position: absolute;
     inset: 0;
+  }
+  .lk__rahmen {
+    overflow: hidden;
+  }
+  .lk__rahmen,
+  .lk__lage,
+  .lk__schiene {
+    will-change: transform;
+    backface-visibility: hidden;
   }
   .lk__lage :global(.bild) {
     width: 100%;
     height: 100%;
     background: var(--night);
   }
-  /* Vor der Kante ist die Bühne schwarz, dahinter steht das farbige Foto */
-  .lk__lage--hell {
-    clip-path: inset(0 calc(100% - var(--x)) 0 0);
+  /* Mit Skript zuerst komplett schwarz: Rahmen links draußen, Licht aus */
+  :global(.js) .lk__rahmen {
+    transform: translate3d(-100%, 0, 0);
   }
-  /* Lichtkante: harte Linie, davor ein schmaler Streifen Überstrahlung */
+  :global(.js) .lk__lage {
+    transform: translate3d(100%, 0, 0);
+  }
+  .lk__schiene {
+    pointer-events: none;
+    opacity: 0;
+  }
+  /* Lichtkante: harte Linie am linken Rand der Schiene, davor ein Streifen Überstrahlung */
   .lk__kante {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: var(--x);
+    left: -1px;
     width: 2px;
-    margin-left: -1px;
     background: linear-gradient(to bottom, rgb(255 255 255 / 0.25), rgb(255 255 255 / 0.95) 18%, rgb(255 255 255 / 0.95) 82%, rgb(255 255 255 / 0.25));
     box-shadow:
       0 0 14px 2px rgb(255 255 255 / 0.3),
       0 0 70px 10px rgb(255 255 255 / 0.1);
-    pointer-events: none;
   }
   .lk__glanz {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: calc(var(--x) - 18vw);
+    right: 100%;
     width: 18vw;
     background: linear-gradient(to right, transparent, rgb(255 255 255 / 0.06) 65%, rgb(255 255 255 / 0.18));
-    mix-blend-mode: screen;
-    pointer-events: none;
-  }
-  :global(html:not(.js)) .lk__kante,
-  :global(html:not(.js)) .lk__glanz {
-    display: none;
   }
   .lk__schleier {
     background:
@@ -185,47 +194,60 @@ const foto = bild(`editionen/${e.slug}-2`);
   function lichtkante() {
     const sektion = document.querySelector<HTMLElement>('[data-lk]');
     if (!sektion) return;
-    const licht = Array.from(sektion.querySelectorAll<HTMLElement>('[data-lk-licht]'));
+    const rahmen = sektion.querySelector<HTMLElement>('[data-lk-rahmen]')!;
+    const lage = sektion.querySelector<HTMLElement>('[data-lk-lage]')!;
+    const schiene = sektion.querySelector<HTMLElement>('[data-lk-schiene]')!;
     const etikett = sektion.querySelector<HTMLElement>('[data-lk-etikett]')!;
     const vorn = Array.from(sektion.querySelectorAll<HTMLElement>('.lk__inhalt > [data-hero-vorn]'));
     const titel = sektion.querySelector<HTMLElement>('.lk__titel')!;
     const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const buehne = matchMedia('(min-width: 900px) and (min-height: 600px)').matches;
 
+    // a: Wert ohne Scroll (Handy-Durchlauf), b: Scrollweg – sichtbar ist das Maximum (0–100)
+    const licht = { a: 0, b: 0, an: 0 };
+    const zeichne = () => {
+      const x = Math.max(licht.a, licht.b);
+      rahmen.style.transform = `translate3d(${x - 100}%, 0, 0)`;
+      lage.style.transform = `translate3d(${100 - x}%, 0, 0)`;
+      schiene.style.transform = `translate3d(${x}%, 0, 0)`;
+      schiene.style.opacity = String(x <= 0 || x >= 100 ? 0 : licht.an);
+    };
+
     if (ruhig) {
-      gsap.set(sektion, { '--a': 100 });
-      gsap.set(licht, { autoAlpha: 0 });
+      licht.a = 100;
+      zeichne();
     } else if (buehne) {
       // Zuerst komplett schwarz – das Licht kommt erst mit dem Scrollen
-      gsap.set(licht, { autoAlpha: 0 });
+      zeichne();
     } else {
       // Handy: nach kurzer Dunkelheit einmal komplett ausleuchten, ohne Scrollbindung
-      gsap.fromTo(licht, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, delay: 1 });
-      gsap.to(sektion, {
-        '--a': 100,
-        duration: 3.2,
-        ease: 'power2.inOut',
-        delay: 1,
-        onComplete: () => gsap.to(licht, { autoAlpha: 0, duration: 0.4 }),
-      });
+      licht.an = 1;
+      zeichne();
+      gsap.to(licht, { a: 100, duration: 3.2, ease: 'power2.inOut', delay: 1, onUpdate: zeichne });
     }
 
     const mm = gsap.matchMedia();
     mm.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: sektion, start: 'top top', end: '+=90%', pin: true, scrub: 0.5, refreshPriority: 10 },
+        scrollTrigger: { trigger: sektion, start: 'top top', end: '+=90%', pin: true, scrub: 0.5, anticipatePin: 1, refreshPriority: 10 },
       });
-      tl.fromTo(licht, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03, ease: 'none', immediateRender: false }, 0)
-        .fromTo(sektion, { '--b': 0 }, { '--b': 100, duration: 0.7, ease: 'none', immediateRender: false }, 0.02)
+      tl.fromTo(licht, { an: 0 }, { an: 1, duration: 0.03, ease: 'none', immediateRender: false, onUpdate: zeichne }, 0)
+        .fromTo(licht, { b: 0 }, { b: 100, duration: 0.7, ease: 'none', immediateRender: false, onUpdate: zeichne }, 0.02)
         .to(vorn, { opacity: 0, y: -12, duration: 0.14, ease: 'power1.in' }, 0.3)
         .to(titel, { opacity: 0, duration: 0.2, ease: 'power1.in' }, 0.4)
-        .to(licht, { autoAlpha: 0, duration: 0.05, ease: 'none' }, 0.7)
         .fromTo(etikett, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 0.76);
-      return () => gsap.set([sektion, etikett, titel, ...vorn, ...licht], { clearProps: 'all' });
+      return () => {
+        licht.b = 0;
+        licht.an = 0;
+        zeichne();
+        gsap.set([etikett, titel, ...vorn], { clearProps: 'all' });
+      };
     });
     // Der Auftakt wird erst nach der Galerie angelegt: Reihenfolge herstellen und neu berechnen
     ScrollTrigger.sort();
     ScrollTrigger.refresh();
+    // Zustand für die automatische Prüfung lesbar machen
+    (sektion as HTMLElement & { __licht?: typeof licht }).__licht = licht;
   }
   bereit(lichtkante);
 </script>

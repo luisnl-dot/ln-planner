@@ -120,10 +120,11 @@ import { bild } from '../../lib/bilder';
     text-transform: uppercase;
   }
   .ort__name a {
-    transition: font-stretch 0.6s var(--ease);
+    display: inline-block;
+    transition: transform 0.6s var(--ease);
   }
   .ort__name a:hover {
-  font-stretch: 122%;
+  transform: translateX(0.35rem);
   }
   .ort__daten {
     display: grid;

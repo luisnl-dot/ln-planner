@@ -128,15 +128,15 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   await lkp.goto(B + '/', { waitUntil: 'networkidle' }); await lkp.waitForTimeout(2600);
   ok('home hero: stage completely black after load', await lkp.evaluate(() => {
     const lk = document.querySelector('[data-lk]');
-    const x = Math.max(parseFloat(getComputedStyle(lk).getPropertyValue('--a')) || 0, parseFloat(getComputedStyle(lk).getPropertyValue('--b')) || 0);
-    const aus = (e) => getComputedStyle(e).visibility === 'hidden' || getComputedStyle(e).opacity === '0';
-    return x === 0 && [...lk.querySelectorAll('[data-lk-licht]')].every(aus);
+    const l = lk.__licht;
+    const rahmen = lk.querySelector('[data-lk-rahmen]').getBoundingClientRect();
+    return Math.max(l.a, l.b) === 0 && rahmen.right <= 1 && getComputedStyle(lk.querySelector('[data-lk-schiene]')).opacity === '0';
   }));
   await lkp.evaluate(() => window.scrollTo(0, 900)); await lkp.waitForTimeout(1400);
   ok('home hero: pinned, fully lit and caption shown after scroll', await lkp.evaluate(() => {
     const lk = document.querySelector('[data-lk]');
-    const b = parseFloat(getComputedStyle(lk).getPropertyValue('--b'));
-    return lk.parentElement.classList.contains('pin-spacer') && b > 99 && getComputedStyle(lk.querySelector('[data-lk-etikett]')).visibility === 'visible';
+    const r = lk.querySelector('[data-lk-rahmen]').getBoundingClientRect();
+    return lk.parentElement.classList.contains('pin-spacer') && lk.__licht.b > 99 && Math.abs(r.left) < 2 && getComputedStyle(lk.querySelector('[data-lk-etikett]')).visibility === 'visible';
   }));
   // Die festgehaltene Galerie darf erst starten, wenn der Auftakt vorbei ist (Reihenfolge der Pins)
   for (const [w, h] of [[1440, 900], [1280, 800], [1920, 1080]]) {
@@ -156,7 +156,8 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   ok('reduced motion: no pinned hero, no smooth scroll', await p2.evaluate(() => !document.querySelector('.pin-spacer > [data-lk], .pin-spacer > [data-tor]') && !document.documentElement.classList.contains('lenis')));
   ok('reduced motion: home hero fully lit, no light edge', await p2.evaluate(() => {
     const lk = document.querySelector('[data-lk]');
-    return getComputedStyle(lk).getPropertyValue('--a').trim() === '100' && [...lk.querySelectorAll('[data-lk-licht]')].every((e) => getComputedStyle(e).visibility === 'hidden');
+    const r = lk.querySelector('[data-lk-rahmen]').getBoundingClientRect();
+    return lk.__licht.a === 100 && Math.abs(r.left) < 2 && getComputedStyle(lk.querySelector('[data-lk-schiene]')).opacity === '0';
   }));
   ok('reduced motion: content visible without scrolling', await p2.evaluate(() => [...document.querySelectorAll('[data-reveal]')].every((e) => getComputedStyle(e).opacity === '1')));
   await rm.close();
@@ -166,7 +167,7 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   ok('no JS: reveal content visible', await p3.locator('.tafeln .ed-karte').first().isVisible());
   ok('no JS: headline readable', await p3.locator('h1').first().isVisible());
   await p3.goto(B + '/', { waitUntil: 'load' });
-  ok('no JS: home hero photo lit and headline visible', await p3.evaluate(() => getComputedStyle(document.querySelector('[data-lk]')).getPropertyValue('--a').trim() === '100') && await p3.locator('h1').first().isVisible());
+  ok('no JS: home hero photo lit and headline visible', await p3.evaluate(() => Math.abs(document.querySelector('[data-lk-rahmen]').getBoundingClientRect().left) < 2) && await p3.locator('h1').first().isVisible());
   await nj.close();
 
   // ---------- 4. opening status at fixed times ----------

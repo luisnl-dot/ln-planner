@@ -75,7 +75,8 @@ Die bisherige Navigation (Standorte, News, Events, Gebrauchte, Ankauf, Motorräd
 - **Strukturierte Daten** in `src/data/`: Standorte inkl. Öffnungszeiten, Editionen, Mietpreise, Team, Chronik, Navigation. Öffnungszeiten werden genau einmal gepflegt und speisen Fußzeile, Hausseiten, Live-Status und schema.org.
 - **Bilder** in `src/assets/` werden beim Build automatisch in AVIF (mit JPG-Rückfall) und in passenden Breiten ausgegeben, Lazy Loading inklusive.
 - **Schriften selbst gehostet:** Es gibt keine Verbindung zu Google Fonts.
-- **JavaScript:** etwa 55 KB gzip, davon GSAP/ScrollTrigger und Lenis für die Scroll-Bewegung. Alles ist Progressive Enhancement.
+- **JavaScript:** etwa 50 KB gzip, fast alles davon GSAP/ScrollTrigger. Alles ist Progressive Enhancement.
+- **Flüssiges Scrollen:** Gescrollt wird nativ, der Browser scrollt auf dem Compositor und unabhängig vom Hauptprozess. Animiert werden nur `transform` und `opacity`. Es gibt keine animierten Schriftachsen beim Hover, keinen Unschärfe-Filter hinter der Kopfzeile und kein `will-change` auf Vorrat. Die Kopfzeile erkennt dunkle Abschnitte per IntersectionObserver, ohne pro Frame zu messen. Festgehaltene Abschnitte rasten mit `anticipatePin` ohne Sprung ein. `tests/scrollmessung.cjs` misst die Arbeit im Hauptprozess beim Durchscrollen. Bei der Umstellung sank sie auf allen 23 Seitentypen um 11–47 % (im Schnitt rund ein Drittel), und lange Aufgaben gibt es keine mehr.
 - **SEO:**
   - Eigener Titel und eigene Beschreibung je Seite, Canonical, Open-Graph-Bild je Seite, Sitemap.
   - JSON-LD: `MotorcycleDealer` je Haus mit Öffnungszeiten, `Motorcycle` je Edition, `JobPosting`, `FAQPage`, `Article`, `BreadcrumbList`.
