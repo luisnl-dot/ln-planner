@@ -4,11 +4,16 @@ import { standorte, routeUrl, social } from '../data/standorte';
 import Pfeil from './Pfeil.astro';
 import Status from './Status.astro';
 
+interface Props {
+  /** Ton beim Laden – passend zum ersten Abschnitt der Seite (das Skript übernimmt danach). */
+  ton?: 'hell' | 'dunkel';
+}
+const { ton = 'hell' } = Astro.props;
 const pfad = Astro.url.pathname;
 const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(href));
 ---
 
-<header class="kopfzeile" data-kopfzeile data-ton="hell">
+<header class="kopfzeile" data-kopfzeile data-ton={ton}>
   <div class="kopfzeile__innen wrap">
     <a class="logo" href="/" aria-label="BMW Motorrad Martin – zur Startseite">
       <span class="logo__bmw" aria-hidden="true">BMW<br />Motorrad</span>

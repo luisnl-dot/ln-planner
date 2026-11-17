@@ -122,6 +122,30 @@ const ok = (name, cond, extra = '') => { cond ? pass++ : fail++; console.log((co
   ok('skip link is first focus target', await page.evaluate(() => document.activeElement.classList.contains('skip')));
   await ctx.close();
 
+  // ---------- 2a. header tone follows the section below (also before any scrolling) ----------
+  {
+    const tc = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const tp = await tc.newPage();
+    await tp.goto(B + '/', { waitUntil: 'domcontentloaded' });
+    ok('header: light text on the dark hero right after load', await tp.evaluate(() => document.querySelector('[data-kopfzeile]').dataset.ton) === 'dunkel');
+    let abw = 0, n = 0;
+    for (const pfad of ['/', '/martin-edition/', '/service/', '/ueber-uns/']) {
+      await tp.goto(B + pfad, { waitUntil: 'networkidle' }); await tp.waitForTimeout(600);
+      const h = await tp.evaluate(() => document.documentElement.scrollHeight - innerHeight);
+      for (let f = 0; f <= 1.0001; f += 0.1) {
+        await tp.evaluate((y) => window.scrollTo(0, y), Math.round(f * h)); await tp.waitForTimeout(250);
+        const r = await tp.evaluate(() => {
+          const k = document.querySelector('[data-kopfzeile]'); const mitte = k.offsetHeight / 2; let ton = document.body.dataset.theme === 'dark' ? 'dunkel' : 'hell';
+          for (const el of document.querySelectorAll('main [data-theme="dark"], main [data-kopf], footer[data-theme="dark"]')) { const b = el.getBoundingClientRect(); if (b.top <= mitte && b.bottom > mitte) ton = el.dataset.kopf ?? (el.dataset.theme === 'dark' ? 'dunkel' : 'hell'); }
+          return ton === k.dataset.ton;
+        });
+        n++; if (!r) abw++;
+      }
+    }
+    ok('header: tone matches the section below at every checked position', abw === 0, `${n - abw}/${n}`);
+    await tc.close();
+  }
+
   // ---------- 2b. home hero: light sweep ----------
   const lkx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const lkp = await lkx.newPage();

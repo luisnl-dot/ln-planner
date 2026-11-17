@@ -40,41 +40,42 @@ function initReveal() {
 }
 
 /* ---- Kopfzeile: Ton folgt dem Abschnitt darunter, blendet beim Runterscrollen aus ----
-   Kein Ausmessen pro Frame: Ein IntersectionObserver meldet, welche Abschnitte gerade
-   unter der Mittellinie der Kopfzeile liegen; der Scroll-Handler liest nur scrollY. */
+   Die Lage der Abschnitte wird nur beim Laden, bei Größenänderung und nach jeder
+   Neuberechnung von ScrollTrigger vermessen (festgehaltene Abschnitte über ihren
+   Pin-Platzhalter). Pro Scroll-Frame wird nur scrollY mit diesen Werten verglichen –
+   keine Layout-Abfrage, und es funktioniert in jedem Browser sofort beim Laden. */
 function initKopfzeile() {
   const kopf = document.querySelector<HTMLElement>('[data-kopfzeile]');
   if (!kopf) return;
   const WAEHLER = 'main [data-theme="dark"], main [data-kopf], footer[data-theme="dark"]';
   const grund = document.body.dataset.theme === 'dark' ? 'dunkel' : 'hell';
-  const darunter = new Set<HTMLElement>();
+  let bereiche: { el: HTMLElement; oben: number; unten: number }[] = [];
+  let mitte = 34;
 
   const bestimme = () => {
+    const linie = window.scrollY + mitte;
     let ton = grund;
     // der im DOM späteste Treffer gewinnt (innerster bzw. weiter unten liegender Abschnitt)
-    const liste = Array.from(darunter).sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
-    for (const el of liste) ton = el.dataset.kopf ?? (el.dataset.theme === 'dark' ? 'dunkel' : 'hell');
+    for (const b of bereiche) {
+      if (b.oben <= linie && b.unten > linie) ton = b.el.dataset.kopf ?? (b.el.dataset.theme === 'dark' ? 'dunkel' : 'hell');
+    }
     if (kopf.dataset.ton !== ton) kopf.dataset.ton = ton;
   };
 
-  let io: IntersectionObserver | null = null;
-  const beobachte = () => {
-    io?.disconnect();
-    darunter.clear();
-    const mitte = Math.round(kopf.offsetHeight / 2);
-    io = new IntersectionObserver(
-      (eintraege) => {
-        for (const e of eintraege) {
-          if (e.isIntersecting) darunter.add(e.target as HTMLElement);
-          else darunter.delete(e.target as HTMLElement);
-        }
-        bestimme();
-      },
-      { rootMargin: `-${mitte}px 0px -${Math.max(0, window.innerHeight - mitte - 1)}px 0px` },
-    );
-    document.querySelectorAll<HTMLElement>(WAEHLER).forEach((el) => io!.observe(el));
+  const vermesse = () => {
+    const y = window.scrollY;
+    mitte = Math.round(kopf.offsetHeight / 2) || 34;
+    bereiche = Array.from(document.querySelectorAll<HTMLElement>(WAEHLER)).map((el) => {
+      const huelle = el.parentElement?.classList.contains('pin-spacer') ? el.parentElement : el;
+      const r = huelle.getBoundingClientRect();
+      return { el, oben: r.top + y, unten: r.bottom + y };
+    });
+    bestimme();
   };
-  beobachte();
+  vermesse();
+  ScrollTrigger.addEventListener('refresh', vermesse);
+  document.addEventListener('mm:bereit', vermesse);
+  window.addEventListener('load', vermesse);
   // Abschnitte, die ihren Ton beim Scrollen selbst umstellen (data-kopf), sofort übernehmen
   new MutationObserver(bestimme).observe(document.querySelector('main') ?? document.body, { subtree: true, attributes: true, attributeFilter: ['data-kopf'] });
 
@@ -83,6 +84,7 @@ function initKopfzeile() {
   const lauf = () => {
     wartet = false;
     const y = window.scrollY;
+    bestimme();
     const fest = y > 12;
     if (kopf.classList.contains('ist-fest') !== fest) kopf.classList.toggle('ist-fest', fest);
     const runter = y > letzte + 4;
@@ -103,7 +105,7 @@ function initKopfzeile() {
   let warte = 0;
   window.addEventListener('resize', () => {
     window.clearTimeout(warte);
-    warte = window.setTimeout(beobachte, 200);
+    warte = window.setTimeout(vermesse, 150);
   });
   kopf.addEventListener('focusin', () => kopf.classList.remove('ist-weg'));
   lauf();

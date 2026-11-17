@@ -28,9 +28,11 @@ interface Props {
   titelRoh?: boolean;
   /** Fußzeile ausblenden (z. B. 404). */
   ohneFuss?: boolean;
+  /** Ton der Kopfzeile beim Laden, falls der erste Abschnitt dunkel ist. */
+  kopfTon?: 'hell' | 'dunkel';
 }
 
-const { titel, beschreibung, bildOg, dunkel = false, akzent, noindex = false, schema = [], titelRoh = false, ohneFuss = false } = Astro.props;
+const { titel, beschreibung, bildOg, dunkel = false, akzent, noindex = false, schema = [], titelRoh = false, ohneFuss = false, kopfTon } = Astro.props;
 
 const seite = Astro.site ?? new URL('https://www.motorrad-martin.de');
 // Vorschau-Deploys (z. B. Vercel) werden nicht indexiert – die Kanonischen zeigen auf motorrad-martin.de
@@ -111,7 +113,7 @@ const basisSchema = [
   </head>
   <body data-theme={dunkel ? 'dark' : undefined} class:list={[dunkel && 'ist-dunkel']}>
     <a class="skip" href="#inhalt">Zum Inhalt springen</a>
-    <Kopfzeile />
+    <Kopfzeile ton={kopfTon ?? (dunkel ? 'dunkel' : 'hell')} />
     <main id="inhalt" tabindex="-1">
       <slot />
     </main>
