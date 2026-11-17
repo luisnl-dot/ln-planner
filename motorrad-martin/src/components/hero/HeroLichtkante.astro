@@ -38,7 +38,7 @@ const foto = bild(`editionen/${e.slug}-2`);
   <div class="lk__inhalt wrap">
     <Leiste />
     <div class="lk__titel">
-      <Fit tag="h1" lines={['Kein gewöhnlicher', 'BMW Partner.']} linesSm={['Kein', 'gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
+      <Fit tag="h1" lines={['Kein gewöhnlicher', 'BMW Partner.']} label="Kein gewöhnlicher BMW Partner." />
     </div>
     <div class="lk__unten" data-hero-vorn>
       <Einstieg />
@@ -131,7 +131,9 @@ const foto = bild(`editionen/${e.slug}-2`);
     padding-top: calc(var(--header-h) + clamp(0.5rem, 2vh, 1.5rem));
     padding-bottom: var(--pad);
   }
+  /* Schlagzeile bewusst kleiner als die volle Spalte: Die Bühne gehört dem Motorrad */
   .lk__titel {
+    width: min(100%, 52rem);
     padding-top: clamp(1rem, 3vh, 2.25rem);
   }
   .lk__unten {

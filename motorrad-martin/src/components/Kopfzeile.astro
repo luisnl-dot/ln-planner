@@ -11,13 +11,13 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
 <header class="kopfzeile" data-kopfzeile data-ton="hell">
   <div class="kopfzeile__innen wrap">
     <a class="logo" href="/" aria-label="BMW Motorrad Martin – zur Startseite">
+      <span class="logo__bmw" aria-hidden="true">BMW<br />Motorrad</span>
       <svg class="logo__balken" viewBox="0 0 26 16" aria-hidden="true" focusable="false">
-        <path d="M5 0h5L5 16H0z" opacity=".38"></path>
-        <path d="M13 0h5l-5 16H8z" opacity=".68"></path>
-        <path d="M21 0h5l-5 16h-5z"></path>
+        <path d="M5 0h5L5 16H0z" fill="#3896D2"></path>
+        <path d="M13 0h5l-5 16H8z" fill="#2B5E97"></path>
+        <path d="M21 0h5l-5 16h-5z" fill="#E42A24"></path>
       </svg>
       <span class="logo__name">Martin</span>
-      <span class="logo__zusatz label" aria-hidden="true">BMW Motorrad<br />seit 1954</span>
     </a>
 
     <nav class="hauptnav" aria-label="Hauptnavigation">
@@ -55,10 +55,11 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
   <div class="menue__innen">
     <div class="menue__kopf wrap">
       <a class="logo" href="/" aria-label="BMW Motorrad Martin – zur Startseite">
+        <span class="logo__bmw" aria-hidden="true">BMW<br />Motorrad</span>
         <svg class="logo__balken" viewBox="0 0 26 16" aria-hidden="true" focusable="false">
-          <path d="M5 0h5L5 16H0z" opacity=".38"></path>
-          <path d="M13 0h5l-5 16H8z" opacity=".68"></path>
-          <path d="M21 0h5l-5 16h-5z"></path>
+          <path d="M5 0h5L5 16H0z" fill="#3896D2"></path>
+          <path d="M13 0h5l-5 16H8z" fill="#2B5E97"></path>
+          <path d="M21 0h5l-5 16h-5z" fill="#E42A24"></path>
         </svg>
         <span class="logo__name">Martin</span>
       </a>
@@ -231,10 +232,21 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
     gap: 0.55rem;
     flex: none;
   }
+  /* Wortmarke wie das Logo von Martin: BMW MOTORRAD · drei Streifen · MARTIN */
+  .logo__bmw {
+    font-size: 0.7rem;
+    font-weight: 780;
+    font-stretch: 112%;
+    line-height: 0.98;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    padding-right: 0.65rem;
+    margin-right: 0.1rem;
+    border-right: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  }
   .logo__balken {
     width: 1.55rem;
     height: 0.95rem;
-    fill: currentColor;
   }
   .logo__name {
     font-size: 1.42rem;
@@ -243,29 +255,6 @@ const aktiv = (href: string) => (href === '/' ? pfad === '/' : pfad.startsWith(h
     text-transform: uppercase;
     letter-spacing: -0.02em;
     line-height: 1;
-  }
-  .logo__zusatz {
-    display: none;
-    font-size: 0.58rem;
-    line-height: 1.25;
-    padding-left: 0.7rem;
-    margin-left: 0.2rem;
-    border-left: 1px solid currentColor;
-    opacity: 0.72;
-  }
-  @media (min-width: 560px) {
-    .logo__zusatz {
-      display: block;
-      font-size: 0.58rem;
-      line-height: 1.25;
-    }
-  }
-  @media (min-width: 1180px) and (max-width: 1479px) {
-    .logo__zusatz {
-      display: none;
-      font-size: 0.58rem;
-      line-height: 1.25;
-    }
   }
   .hauptnav {
     display: none;

@@ -536,7 +536,7 @@ const schema = [
     align-items: end;
   }
   :global(.manu__titel) {
-    grid-column: 1 / span 8;
+    grid-column: 1 / span 6;
   }
   .manu__text {
     grid-column: 10 / -1;
@@ -551,6 +551,9 @@ const schema = [
     :global(.manu__titel),
     .manu__text {
       grid-column: 1 / -1;
+    }
+    :global(.manu__titel) {
+      max-width: 80%;
     }
   }
   .schau {
