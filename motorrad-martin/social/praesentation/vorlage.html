@@ -85,23 +85,21 @@ h3 { font-size: 38px; font-weight: 760; font-stretch: 102%; line-height: 1.05; l
 .rund { border-radius: 22px; }
 
 /* ---------- 01 Titel: Lichtkante ---------- */
-.cover { padding: 0; }
-.lk { position: absolute; top: 0; bottom: 0; left: 800px; right: 0; overflow: hidden; background: var(--nacht); }
-.lk-rahmen, .lk-lage, .lk-schiene { position: absolute; inset: 0; will-change: transform; }
-.lk-rahmen { overflow: hidden; transform: translate3d(-100%, 0, 0); }
-.lk-lage { transform: translate3d(100%, 0, 0); }
-.lk-lage img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
-.lk-schiene { transform: translate3d(0, 0, 0); pointer-events: none; }
-.lk-kante { position: absolute; top: 0; bottom: 0; left: -2px; width: 4px; opacity: 0; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), #fff 18%, #fff 82%, rgba(255, 255, 255, 0.25)); box-shadow: 0 0 28px 4px rgba(255, 255, 255, 0.35), 0 0 120px 20px rgba(255, 255, 255, 0.12); }
-.lk-glanz { position: absolute; top: 0; bottom: 0; right: 100%; width: 300px; opacity: 0; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06) 65%, rgba(255, 255, 255, 0.2)); }
-.ist-gespielt .lk-rahmen, .ist-gespielt .lk-lage { transform: none; transition: transform 2.5s cubic-bezier(0.65, 0, 0.35, 1) 0.6s; }
-.ist-gespielt .lk-schiene { transform: translate3d(100%, 0, 0); transition: transform 2.5s cubic-bezier(0.65, 0, 0.35, 1) 0.6s; }
-.ist-gespielt .lk-kante, .ist-gespielt .lk-glanz { animation: lk-licht 2.5s linear 0.6s both; }
-@keyframes lk-licht { 0% { opacity: 0; } 4% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; } }
-.cover-text { position: absolute; left: 120px; top: 104px; bottom: 96px; width: 600px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
-.cover-text .mono { color: var(--kreide3); }
-.cover-titel { margin-bottom: 40px; }
-.cover-fuss { display: flex; align-items: center; justify-content: space-between; color: var(--kreide3); }
+.c2 { padding: 0; overflow: hidden; }
+.c2-glut { position: absolute; inset: 0; background: radial-gradient(48% 62% at 80% 38%, rgba(43, 94, 151, 0.3), transparent 72%), radial-gradient(34% 40% at 95% 96%, rgba(228, 42, 36, 0.2), transparent 70%); }
+.c2-wand { position: absolute; left: 1060px; top: -250px; display: flex; gap: 30px; transform: rotate(-13deg); transform-origin: 50% 50%; }
+.c2-spalte { display: flex; flex-direction: column; gap: 30px; margin-top: var(--y, 0); }
+.c2-karte { width: 330px; height: 412px; border-radius: 6px; overflow: hidden; background: var(--nacht2); box-shadow: 0 0 0 1px rgba(236, 233, 226, 0.07), 0 40px 70px -24px rgba(0, 0, 0, 0.9); }
+.c2-karte img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.c2-text { position: absolute; left: 120px; top: 104px; bottom: 96px; width: 780px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
+.c2-marke { display: inline-flex; align-items: center; gap: 20px; align-self: flex-start; color: var(--kreide); }
+.c2-bmw { font-size: 25px; font-weight: 780; font-stretch: 112%; line-height: 0.98; letter-spacing: 0.01em; text-transform: uppercase; padding-right: 22px; border-right: 2px solid rgba(236, 233, 226, 0.35); }
+.c2-marke svg { width: 58px; height: 36px; }
+.c2-name { font-size: 54px; font-weight: 800; font-stretch: 125%; letter-spacing: -0.02em; line-height: 1; text-transform: uppercase; }
+.c2-kicker { display: flex; align-items: center; gap: 22px; margin-bottom: 44px; font-size: 24px; font-weight: 700; font-stretch: 125%; letter-spacing: 0.15em; text-transform: uppercase; color: var(--kreide); }
+.c2-kicker svg { width: 52px; height: 32px; flex: none; }
+.c2-titel em { font-style: normal; color: var(--m3); }
+.c2-fuss { font-size: 27px; line-height: 1.3; color: var(--kreide3); }
 
 /* ---------- Kapitel ---------- */
 .kapitel-bild { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
@@ -302,8 +300,6 @@ body.ruhend { cursor: none; }
 
 /* Bewegung reduzieren: alles steht sofort */
 .ruhig [data-an], .ruhig [data-an] *, .ruhig .kapitel-bild { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
-.ruhig .lk-rahmen, .ruhig .lk-lage { transform: none !important; transition: none !important; }
-.ruhig .lk-schiene { display: none; }
 .ruhig .folie { transition: none; }
 
 /* Drucken / als PDF sichern: jede Folie eine Seite, alles im Endzustand */
@@ -313,9 +309,8 @@ body.ruhend { cursor: none; }
   .buehne { position: static; transform: none; width: 1920px; height: auto; overflow: visible; }
   .folie { position: relative; width: 1920px; height: 1080px; opacity: 1 !important; visibility: visible !important; break-after: page; page-break-after: always; transition: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   [data-an], [data-an] *, .kapitel-bild { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
-  .lk-rahmen, .lk-lage { transform: none !important; }
   .folie:last-of-type { break-after: auto; page-break-after: auto; }
-  .lk-schiene, .steuer, .ebene, .toast, .lade, .sr, noscript { display: none !important; }
+  .steuer, .ebene, .toast, .lade, .sr, noscript { display: none !important; }
 }
 /* Handy und Tablet: weniger Knöpfe (gewischt wird ohnehin), kleiner */
 @media (pointer: coarse) {
