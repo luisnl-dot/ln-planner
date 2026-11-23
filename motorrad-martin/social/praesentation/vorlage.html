@@ -1,0 +1,1048 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Instagram neu · BMW Motorrad Martin</title>
+<meta name="description" content="Konzept und Startpaket für den Instagram-Auftritt von BMW Motorrad Martin. LN Social, November 2026." />
+<style>
+@font-face { font-family: 'Archivo'; src: url({{f:archivo}}) format('woff2'); font-weight: 100 900; font-stretch: 62% 125%; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215; }
+@font-face { font-family: 'Archivo'; src: url({{f:archivo-ext}}) format('woff2'); font-weight: 100 900; font-stretch: 62% 125%; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C0; }
+@font-face { font-family: 'Plex'; src: url({{f:plex400}}) format('woff2'); font-weight: 400; font-display: block; }
+@font-face { font-family: 'Plex'; src: url({{f:plex500}}) format('woff2'); font-weight: 500; font-display: block; }
+
+:root {
+  --nacht: #0b0c0c; --nacht2: #161817; --nacht3: #212423;
+  --papier: #f1eee8; --papier2: #e6e1d7; --papier3: #d8d2c6;
+  --kreide: #ece9e2; --kreide2: #bdbab3; --kreide3: #918f89;
+  --tinte: #0e0f0f; --tinte2: #3a3c3b; --tinte3: #5b5e5b;
+  --m1: #3896d2; --m2: #2b5e97; --m3: #e42a24;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+  --s: 1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #050606; overflow: hidden; }
+body { font-family: 'Archivo', Arial, sans-serif; color: var(--kreide); -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; -webkit-tap-highlight-color: transparent; }
+img, video { display: block; }
+button { font: inherit; }
+
+/* ---------- Bühne: 1920 × 1080, auf das Fenster skaliert ---------- */
+.buehne { position: fixed; left: 50%; top: 50%; width: 1920px; height: 1080px; transform: translate(-50%, -50%) scale(var(--s)); overflow: hidden; background: var(--nacht); user-select: none; }
+.folie { position: absolute; inset: 0; padding: 104px 120px 150px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: opacity 0.55s var(--ease), visibility 0s linear 0.55s; }
+.folie.ist-aktiv { opacity: 1; visibility: visible; transition: opacity 0.55s var(--ease), visibility 0s; z-index: 1; }
+.dunkel { background: var(--nacht); color: var(--kreide); --fg: var(--kreide); --fg2: var(--kreide2); --fg3: var(--kreide3); --linie: rgba(236, 233, 226, 0.24); --flaeche: var(--nacht2); --spur: rgba(236, 233, 226, 0.12); }
+.hell { background: var(--papier); color: var(--tinte); --fg: var(--tinte); --fg2: var(--tinte2); --fg3: var(--tinte3); --linie: rgba(14, 15, 15, 0.22); --flaeche: var(--papier2); --spur: rgba(14, 15, 15, 0.1); }
+.folie aside { display: none; }
+
+/* ---------- Schrift ---------- */
+.mono { font-family: 'Plex', 'Courier New', monospace; font-size: 21px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.3; }
+.kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 40px; padding-bottom: 18px; margin-bottom: 46px; border-bottom: 2px solid var(--linie); color: var(--fg3); position: relative; z-index: 2; }
+.titel { font-size: 84px; font-weight: 790; font-stretch: 104%; line-height: 0.95; letter-spacing: -0.026em; text-transform: uppercase; color: var(--fg); }
+.titel.kompakt { font-size: 68px; }
+h3 { font-size: 38px; font-weight: 760; font-stretch: 102%; line-height: 1.05; letter-spacing: -0.012em; text-transform: uppercase; color: var(--fg); }
+.text { font-size: 28px; line-height: 1.42; color: var(--fg2); }
+.text.gross { font-size: 36px; line-height: 1.3; color: var(--fg); font-weight: 500; }
+.text b { color: var(--fg); font-weight: 650; }
+.raum { flex: 1; min-height: 0; }
+.bu { font-family: 'Plex', 'Courier New', monospace; font-size: 18px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg3); margin-top: 16px; line-height: 1.35; }
+.bu span { display: block; font-family: 'Archivo', sans-serif; letter-spacing: 0; text-transform: none; font-size: 22px; font-weight: 450; color: var(--fg2); margin-top: 4px; }
+.streifen { width: 52px; height: 32px; flex: none; }
+
+/* Typenschild: Zeilen werden per Skript auf die Breite gesetzt */
+.fit { display: block; width: 100%; font-weight: 800; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9; color: var(--fg); }
+.fit .maske { display: block; overflow: hidden; padding-top: 0.1em; margin-top: -0.1em; padding-bottom: 0.02em; }
+.fit .z { display: block; width: max-content; white-space: nowrap; }
+
+/* ---------- Bewegung: alles steigt ruhig auf, Bilder öffnen sich ---------- */
+[data-an] { opacity: 0; transform: translate3d(0, 30px, 0); }
+[data-an='bild'] { opacity: 1; transform: none; clip-path: inset(0 0 100% 0); }
+[data-an='bild'] img { transform: scale(1.12); }
+[data-an='kachel'] { transform: translate3d(0, 24px, 0) scale(0.94); }
+[data-an='wisch'] { transform: translate3d(90px, 0, 0); }
+[data-an='linie'], [data-an='balken'] { opacity: 1; transform: scaleX(0); transform-origin: 0 50%; }
+[data-an='zeilen'] { opacity: 1; transform: none; }
+[data-an='zeilen'] .z { transform: translate3d(0, 106%, 0); }
+[data-an='punkt'] { transform: scale(0); }
+.ist-gespielt [data-an] { opacity: 1; transform: none; transition: opacity 0.8s var(--ease), transform 1.05s var(--ease); transition-delay: calc(var(--d, 0.12s) + var(--i, 0) * 85ms); }
+.ist-gespielt [data-an='bild'] { clip-path: inset(0); transition: clip-path 1.15s var(--ease-io); transition-delay: calc(var(--d, 0.12s) + var(--i, 0) * 85ms); }
+.ist-gespielt [data-an='bild'] img { transform: none; transition: transform 1.7s var(--ease); transition-delay: calc(var(--d, 0.12s) + var(--i, 0) * 85ms); }
+.ist-gespielt [data-an='linie'], .ist-gespielt [data-an='balken'] { transition: transform 1.2s var(--ease-io); transition-delay: calc(var(--d, 0.12s) + var(--i, 0) * 85ms); }
+.ist-gespielt [data-an='zeilen'] .z { transform: none; transition: transform 1.05s var(--ease); transition-delay: calc(var(--d, 0.12s) + var(--i, 0) * 85ms + var(--zi, 0) * 95ms); }
+.ist-gespielt [data-an='punkt'] { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); transition-delay: calc(var(--d, 0.12s) + var(--i, 0) * 85ms); }
+
+/* ---------- Fußzeile jeder Folie (vom Skript eingesetzt) ---------- */
+.folien-fuss { position: absolute; left: 120px; right: 120px; bottom: 42px; z-index: 3; }
+.spur { height: 2px; background: var(--spur); margin-bottom: 16px; }
+.spur span { display: block; height: 100%; background: var(--fg3); transform-origin: 0 50%; }
+.fuss-zeile { display: flex; justify-content: space-between; align-items: center; font-family: 'Plex', 'Courier New', monospace; font-size: 18px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg3); }
+.fuss-marke { display: flex; align-items: center; gap: 14px; }
+.fuss-marke svg { width: 29px; height: 18px; }
+
+/* ---------- Bildrahmen ---------- */
+.bildrahmen { position: relative; overflow: hidden; background: var(--flaeche); }
+.bildrahmen img, .bildrahmen video { width: 100%; height: 100%; object-fit: cover; }
+.rund { border-radius: 22px; }
+
+/* ---------- 01 Titel: Lichtkante ---------- */
+.cover { padding: 0; }
+.lk { position: absolute; top: 0; bottom: 0; left: 800px; right: 0; overflow: hidden; background: var(--nacht); }
+.lk-rahmen, .lk-lage, .lk-schiene { position: absolute; inset: 0; will-change: transform; }
+.lk-rahmen { overflow: hidden; transform: translate3d(-100%, 0, 0); }
+.lk-lage { transform: translate3d(100%, 0, 0); }
+.lk-lage img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.lk-schiene { transform: translate3d(0, 0, 0); pointer-events: none; }
+.lk-kante { position: absolute; top: 0; bottom: 0; left: -2px; width: 4px; opacity: 0; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), #fff 18%, #fff 82%, rgba(255, 255, 255, 0.25)); box-shadow: 0 0 28px 4px rgba(255, 255, 255, 0.35), 0 0 120px 20px rgba(255, 255, 255, 0.12); }
+.lk-glanz { position: absolute; top: 0; bottom: 0; right: 100%; width: 300px; opacity: 0; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06) 65%, rgba(255, 255, 255, 0.2)); }
+.ist-gespielt .lk-rahmen, .ist-gespielt .lk-lage { transform: none; transition: transform 2.5s cubic-bezier(0.65, 0, 0.35, 1) 0.6s; }
+.ist-gespielt .lk-schiene { transform: translate3d(100%, 0, 0); transition: transform 2.5s cubic-bezier(0.65, 0, 0.35, 1) 0.6s; }
+.ist-gespielt .lk-kante, .ist-gespielt .lk-glanz { animation: lk-licht 2.5s linear 0.6s both; }
+@keyframes lk-licht { 0% { opacity: 0; } 4% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; } }
+.cover-text { position: absolute; left: 120px; top: 104px; bottom: 96px; width: 600px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
+.cover-text .mono { color: var(--kreide3); }
+.cover-titel { margin-bottom: 40px; }
+.cover-fuss { display: flex; align-items: center; justify-content: space-between; color: var(--kreide3); }
+
+/* ---------- Kapitel ---------- */
+.kapitel-bild { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
+.ist-gespielt .kapitel-bild { transform: none; transition: transform 7s cubic-bezier(0.2, 0.6, 0.2, 1); }
+.kapitel-schleier { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11, 12, 12, 0.8), rgba(11, 12, 12, 0.15) 30%, rgba(11, 12, 12, 0.25) 52%, rgba(11, 12, 12, 0.92) 88%); }
+.kapitel .kopf { color: var(--kreide2); border-bottom-color: rgba(236, 233, 226, 0.34); }
+.kapitel > .fit, .kapitel > .kapitel-unter { position: relative; z-index: 2; }
+.kapitel-unter { display: flex; justify-content: space-between; margin-top: 30px; color: var(--kreide2); }
+
+/* ---------- 02 Idee ---------- */
+.idee { display: grid; grid-template-columns: 760px 380px 1fr; gap: 48px; align-items: start; }
+.idee-web { width: 760px; height: 475px; }
+.idee-post { width: 380px; height: 475px; }
+.idee-text { display: flex; flex-direction: column; gap: 26px; padding-top: 4px; }
+
+/* ---------- Karten ---------- */
+.raster4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 44px; }
+.raster3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; }
+.raster2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 44px 72px; }
+.karte { display: flex; flex-direction: column; gap: 16px; padding-top: 26px; border-top: 2px solid var(--linie); }
+.ziffer { font-size: 96px; font-weight: 800; font-stretch: 112%; line-height: 0.82; letter-spacing: -0.045em; color: var(--fg3); margin-bottom: 8px; }
+
+/* ---------- Säulen ---------- */
+.saeulen { border-bottom: 2px solid var(--linie); }
+.saeule { display: grid; grid-template-columns: 440px 1fr 250px 400px; gap: 36px; align-items: center; padding: 22px 0; border-top: 2px solid var(--linie); }
+.saeule .text { font-size: 26px; }
+.saeule .mono { color: var(--fg3); font-size: 19px; }
+.anteil { display: flex; align-items: center; gap: 22px; }
+.balken { flex: 1; height: 12px; background: var(--spur); }
+.balken span { display: block; height: 100%; width: calc(var(--w) * 100%); background: var(--fg); }
+.prozent { width: 108px; text-align: right; font-size: 42px; font-weight: 790; font-stretch: 108%; letter-spacing: -0.02em; color: var(--fg); }
+
+/* ---------- Look ---------- */
+.look { display: grid; grid-template-columns: 820px 1fr; gap: 90px; }
+.farben { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.farbe .feld { height: 210px; }
+.farbe .bu { margin-top: 14px; }
+.probe { font-size: 74px; font-weight: 800; font-stretch: 112%; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; }
+.regeln { display: grid; gap: 12px; margin-top: 8px; }
+.regeln p { display: flex; gap: 18px; align-items: baseline; }
+.regeln p::before { content: ''; flex: none; width: 14px; height: 2px; background: var(--fg); transform: translateY(-8px); }
+
+/* ---------- Profil ---------- */
+.profil-bild { position: absolute; left: 120px; top: 104px; width: 520px; height: 790px; border-radius: 22px; box-shadow: 0 0 0 2px rgba(236, 233, 226, 0.14); }
+.profil-bild img { object-position: 50% 0; }
+.rechts { margin-left: 600px; }
+.rechts-weit { margin-left: 760px; }
+
+/* ---------- Feed ---------- */
+.feed { position: absolute; left: 120px; top: 104px; display: grid; grid-template-columns: repeat(3, 216px); gap: 12px; }
+.feed .bildrahmen { width: 216px; height: 270px; }
+.feed-liste { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 40px; margin-top: 40px; }
+.feed-liste p { color: var(--fg2); }
+.feed-liste b { color: var(--fg); margin-right: 10px; font-weight: 500; }
+
+/* ---------- Aufbau ---------- */
+.post-gross { position: absolute; left: 120px; top: 104px; width: 620px; height: 775px; }
+.post-gross .bildrahmen { width: 100%; height: 100%; }
+.pin { position: absolute; right: -24px; width: 48px; height: 48px; margin-top: -24px; border-radius: 50%; background: var(--kreide); color: var(--nacht); display: grid; place-items: center; font-family: 'Plex', monospace; font-weight: 500; font-size: 19px; letter-spacing: 0.02em; z-index: 2; box-shadow: 0 0 0 6px rgba(11, 12, 12, 0.6); }
+.aufbau { display: grid; gap: 0; }
+.aufbau > div { display: grid; grid-template-columns: 64px 1fr; gap: 24px; padding: 20px 0; border-top: 2px solid var(--linie); }
+.aufbau .nr { font-family: 'Plex', monospace; font-weight: 500; font-size: 21px; letter-spacing: 0.1em; color: var(--fg3); padding-top: 6px; }
+.aufbau .text { font-size: 26px; margin-top: 8px; }
+
+/* ---------- Karussell, Stories, Reels ---------- */
+.reihe { display: flex; gap: 28px; }
+.reihe figure { flex: none; }
+.k5 .bildrahmen { width: 308px; height: 385px; }
+.k4 .bildrahmen { width: 392px; height: 490px; }
+.telefon { width: 292px; height: 519px; border-radius: 30px; box-shadow: 0 0 0 2px var(--linie), 0 40px 60px -40px rgba(0, 0, 0, 0.45); }
+.reels { display: grid; grid-template-columns: auto 1fr; gap: 72px; align-items: start; }
+.reel { width: 282px; height: 501px; border-radius: 28px; background: #000; box-shadow: 0 0 0 2px rgba(236, 233, 226, 0.16); }
+.reel-text { display: flex; flex-direction: column; gap: 0; }
+.reel-text .karte { padding: 24px 0 26px; gap: 10px; }
+.reel-text .karte:last-child { border-bottom: 2px solid var(--linie); }
+
+/* ---------- Drehpläne ---------- */
+.schritte { list-style: none; counter-reset: s; display: grid; gap: 10px; margin-top: 6px; }
+.schritte li { counter-increment: s; display: grid; grid-template-columns: 42px 1fr; font-size: 25px; line-height: 1.35; color: var(--fg2); }
+.schritte li::before { content: counter(s, decimal-leading-zero); font-family: 'Plex', monospace; font-size: 18px; font-weight: 500; color: var(--fg3); padding-top: 4px; }
+
+/* ---------- Redaktionsplan ---------- */
+.kalender { display: grid; grid-template-columns: 220px repeat(3, 1fr) 360px; gap: 10px; }
+.kalender .k-kopf { font-family: 'Plex', monospace; font-size: 18px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg3); padding: 0 4px 6px; }
+.kalender .k-woche { padding: 20px 4px; border-top: 2px solid var(--linie); }
+.kalender .k-woche b { display: block; font-size: 34px; font-weight: 790; font-stretch: 106%; letter-spacing: -0.02em; color: var(--fg); }
+.kalender .k-woche span { font-family: 'Plex', monospace; font-size: 18px; color: var(--fg3); letter-spacing: 0.06em; }
+.k-zelle { background: var(--flaeche); padding: 18px 20px; font-size: 24px; line-height: 1.3; color: var(--fg); min-height: 104px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+.k-zelle.leise { color: var(--fg3); background: transparent; box-shadow: inset 0 0 0 2px var(--spur); }
+.k-zelle.stories { color: var(--fg2); font-size: 22px; }
+.k-zelle .tag { display: flex; align-items: center; gap: 10px; font-family: 'Plex', monospace; font-size: 16px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg3); }
+.k-zelle .tag svg { width: 24px; height: 15px; }
+.k-zelle.reel-tag { background: var(--kreide); color: var(--nacht); }
+.k-zelle.reel-tag .tag { color: var(--tinte3); }
+
+/* ---------- Ablauf ---------- */
+.zeitstrahl { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px; padding-top: 58px; }
+.zeitstrahl .strich { position: absolute; left: 0; right: 0; top: 13px; height: 2px; background: var(--fg); }
+.zeitstrahl .schritt { position: relative; display: flex; flex-direction: column; gap: 14px; }
+.zeitstrahl .punkt { position: absolute; top: -58px; left: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--papier); box-shadow: inset 0 0 0 3px var(--fg); }
+.zeitstrahl .schritt:first-child .punkt { background: var(--fg); }
+
+/* ---------- Kennzahlen ---------- */
+.raster5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 36px; }
+.platzhalter { border: 2px dashed var(--linie); padding: 24px 28px; display: flex; flex-direction: column; gap: 10px; }
+.platzhalter b { font-size: 46px; font-weight: 790; letter-spacing: -0.02em; color: var(--fg); }
+
+/* ---------- Startpaket ---------- */
+.paket { display: grid; grid-template-columns: repeat(4, 1fr); gap: 52px 44px; }
+.paket .zahl { font-size: 156px; font-weight: 800; font-stretch: 112%; line-height: 0.82; letter-spacing: -0.05em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.paket .text { margin-top: 18px; font-size: 26px; }
+.paket .streifen-gross { width: 150px; height: 92px; }
+
+/* ---------- Schluss ---------- */
+.kontakt { display: flex; align-items: center; gap: 30px; }
+.kontakt svg { width: 96px; height: 59px; }
+.kontakt b { font-size: 60px; font-weight: 800; font-stretch: 110%; letter-spacing: -0.025em; text-transform: uppercase; }
+
+/* ---------- Bedienung außerhalb der Bühne ---------- */
+.steuer { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); display: flex; gap: 6px; z-index: 40; transition: opacity 0.4s; }
+.steuer button { all: unset; cursor: pointer; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: rgba(22, 24, 23, 0.78); color: #ece9e2; box-shadow: 0 0 0 1px rgba(236, 233, 226, 0.12); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.steuer button:hover { background: rgba(48, 51, 50, 0.92); }
+.steuer button:focus-visible, .zelle:focus-visible, .schliessen:focus-visible { outline: 2px solid var(--m1); outline-offset: 2px; }
+.steuer svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body.ruhend .steuer { opacity: 0; }
+body.ruhend { cursor: none; }
+
+.ebene { position: fixed; inset: 0; z-index: 60; display: none; }
+.ebene.offen { display: block; }
+.uebersicht { background: rgba(5, 6, 6, 0.96); overflow-y: auto; padding: 72px max(24px, 4vw) 48px; }
+.uebersicht-kopf, .hilfe-kopf { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; font-family: 'Plex', monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--kreide3); }
+.schliessen { all: unset; cursor: pointer; padding: 8px 12px; border-radius: 8px; color: var(--kreide); box-shadow: 0 0 0 1px rgba(236, 233, 226, 0.2); }
+.raster-ueb { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 26px 20px; }
+.zelle { all: unset; cursor: pointer; display: block; }
+.zelle-bild { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; box-shadow: 0 0 0 1px rgba(236, 233, 226, 0.12); transition: box-shadow 0.2s, transform 0.3s var(--ease); }
+.zelle:hover .zelle-bild { transform: translateY(-3px); box-shadow: 0 0 0 2px rgba(236, 233, 226, 0.5); }
+.zelle.ist-hier .zelle-bild { box-shadow: 0 0 0 3px var(--m1); }
+.zelle-innen { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; transform: scale(var(--z, 0.15)); pointer-events: none; }
+.zelle-innen .folie { opacity: 1 !important; visibility: visible !important; }
+.zelle-innen .folie, .zelle-innen .folie * { transition: none !important; animation: none !important; }
+.zelle-nr { display: block; margin-top: 10px; font-family: 'Plex', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--kreide2); }
+
+.notizen { top: auto; background: rgba(12, 13, 13, 0.94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid rgba(236, 233, 226, 0.16); padding: 22px max(24px, 4vw) 28px; max-height: 42vh; overflow-y: auto; }
+.notizen p { font-size: clamp(16px, 1.5vw, 22px); line-height: 1.5; color: var(--kreide); max-width: 70em; margin-top: 10px; }
+.hilfe { background: rgba(5, 6, 6, 0.9); display: none; place-items: center; padding: 24px; }
+.hilfe.offen { display: grid; }
+.hilfe-karte { width: min(560px, 100%); background: var(--nacht2); border-radius: 16px; padding: 28px 30px; box-shadow: 0 0 0 1px rgba(236, 233, 226, 0.14); }
+.hilfe dl { display: grid; grid-template-columns: auto 1fr; gap: 12px 24px; font-size: 17px; color: var(--kreide2); }
+.hilfe dt { font-family: 'Plex', monospace; font-weight: 500; color: var(--kreide); }
+.toast { position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translate(-50%, 20px); z-index: 50; padding: 12px 18px; border-radius: 12px; background: rgba(22, 24, 23, 0.88); color: var(--kreide2); font-family: 'Plex', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0; transition: opacity 0.5s, transform 0.5s var(--ease); pointer-events: none; white-space: nowrap; }
+.toast.zeigen { opacity: 1; transform: translate(-50%, 0); }
+.lade { position: fixed; inset: 0; z-index: 80; background: var(--nacht); display: grid; place-items: center; transition: opacity 0.6s; }
+.lade svg { width: 78px; height: 48px; }
+.lade.weg { opacity: 0; pointer-events: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Bewegung reduzieren: alles steht sofort */
+.ruhig [data-an], .ruhig [data-an] *, .ruhig .kapitel-bild { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
+.ruhig .lk-rahmen, .ruhig .lk-lage { transform: none !important; transition: none !important; }
+.ruhig .lk-schiene { display: none; }
+.ruhig .folie { transition: none; }
+
+/* Drucken / als PDF sichern: jede Folie eine Seite, alles im Endzustand */
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { height: auto; overflow: visible; background: none; }
+  .buehne { position: static; transform: none; width: 1920px; height: auto; overflow: visible; }
+  .folie { position: relative; width: 1920px; height: 1080px; opacity: 1 !important; visibility: visible !important; break-after: page; page-break-after: always; transition: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  [data-an], [data-an] *, .kapitel-bild { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
+  .lk-rahmen, .lk-lage { transform: none !important; }
+  .folie:last-of-type { break-after: auto; page-break-after: auto; }
+  .lk-schiene, .steuer, .ebene, .toast, .lade, .sr, noscript { display: none !important; }
+}
+/* Handy und Tablet: weniger Knöpfe (gewischt wird ohnehin), kleiner */
+@media (pointer: coarse) {
+  .steuer button[data-tu='notizen'], .steuer button[data-tu='zurueck'], .steuer button[data-tu='weiter'] { display: none; }
+}
+@media (max-height: 560px), (max-width: 700px) {
+  .steuer button { width: 34px; height: 34px; border-radius: 9px; }
+  .steuer svg { width: 16px; height: 16px; }
+  .toast { font-size: 11px; padding: 9px 13px; }
+}
+</style>
+</head>
+<body>
+<div class="lade" data-lade><svg viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg></div>
+<noscript><p style="position:fixed;inset:0;display:grid;place-items:center;color:#ece9e2;font:20px Arial;z-index:90;background:#0b0c0c">Bitte JavaScript aktivieren, um die Präsentation zu zeigen.</p></noscript>
+
+<main class="buehne" aria-label="Präsentation: Instagram für BMW Motorrad Martin">
+
+<!-- ============ 01 Titel ============ -->
+<section class="folie dunkel cover" data-titel="Instagram. Neu gedacht." data-ohne-fuss>
+  <div class="lk">
+    <div class="lk-rahmen"><div class="lk-lage"><img data-bild="foto:cover" alt="BMW R 1300 GS Triple Black, Martin Edition, auf der beleuchteten Bühne in der Werkhalle" /></div></div>
+    <div class="lk-schiene" aria-hidden="true"><div class="lk-glanz"></div><div class="lk-kante"></div></div>
+  </div>
+  <div class="cover-text">
+    <p class="mono" data-an style="--d: 0.15s">Konzept · BMW Motorrad Martin</p>
+    <div>
+      <h1 class="fit cover-titel" data-an="zeilen" style="--d: 2.2s"><span class="maske"><span class="z">Instagram.</span></span><span class="maske"><span class="z">Neu gedacht.</span></span></h1>
+      <p class="text" data-an style="--d: 2.55s">Ein Auftritt aus einem Guss mit der neuen Website. Dazu ein fertiges Startpaket für die ersten vier Wochen.</p>
+    </div>
+    <div class="cover-fuss" data-an style="--d: 2.85s">
+      <svg class="streifen" viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>
+      <span class="mono">LN Social · November 2026</span>
+    </div>
+  </div>
+  <aside>Begrüßung. Ziel des Termins: zeigen, wie Instagram für Martin im Look der neuen Website aussieht, und dass der Start schon fertig vorbereitet ist. Das Licht, das gerade über das Motorrad läuft, ist derselbe Auftakt wie auf der neuen Startseite.</aside>
+</section>
+
+<!-- ============ 02 Idee ============ -->
+<section class="folie hell" data-titel="Die Idee">
+  <div class="kopf"><p class="mono">01 · Die Idee</p><p class="mono">Website und Instagram</p></div>
+  <h2 class="titel" data-an>Ein Auftritt. Zwei Kanäle.</h2>
+  <div class="raum"></div>
+  <div class="idee">
+    <figure>
+      <div class="bildrahmen idee-web" data-an="bild"><img data-bild="foto:website" alt="Startseite der neuen Website von BMW Motorrad Martin mit dunkler Bühne und der Schlagzeile Kein gewöhnlicher BMW Partner" /></div>
+      <figcaption class="bu" data-an>Neue Website · Vorschau</figcaption>
+    </figure>
+    <figure>
+      <div class="bildrahmen idee-post" data-an="bild"><img data-bild="post:01-edition-triple-black" alt="Instagram-Post zur BMW R 1300 GS Triple Black im selben Look" /></div>
+      <figcaption class="bu" data-an>Instagram · Post 01</figcaption>
+    </figure>
+    <div class="idee-text" data-an>
+      <p class="text gross">Gleiche Schrift, gleiche Farben, gleiche Haltung.</p>
+      <p class="text">Dunkle Bühne oder Papier, Typenschild-Versalien und die drei Streifen in Martins Farben. Wer vom Post auf die Website wechselt, merkt keinen Bruch.</p>
+    </div>
+  </div>
+  <aside>Der Kern: Instagram bekommt keinen eigenen Stil, sondern wird Teil des neuen Auftritts. Die Website steht als Vorschau, Instagram zieht im selben Look nach.</aside>
+</section>
+
+<!-- ============ Kapitel 1 ============ -->
+<section class="folie dunkel kapitel" data-titel="Teil 1 · Strategie">
+  <img class="kapitel-bild" data-bild="foto:kapitel1" alt="" />
+  <div class="kapitel-schleier"></div>
+  <div class="kopf"><p class="mono">Teil 1 von 3</p><p class="mono">Ziele · Zielgruppen · Inhalte</p></div>
+  <div class="raum"></div>
+  <h2 class="fit" data-an="zeilen"><span class="maske"><span class="z">Strategie.</span></span></h2>
+  <aside>Teil 1: Wofür Instagram da ist, für wen wir posten und mit welchen Inhalten.</aside>
+</section>
+
+<!-- ============ 03 Ziele ============ -->
+<section class="folie dunkel" data-titel="Ziele">
+  <div class="kopf"><p class="mono">02 · Ziele</p><p class="mono">Wozu Instagram</p></div>
+  <h2 class="titel" data-an>Was Instagram leisten soll.</h2>
+  <div class="raum"></div>
+  <div class="raster4">
+    <div class="karte" data-an><p class="ziffer">01</p><h3>Manufaktur zeigen</h3><p class="text">Die Martin Edition hat kein anderer Händler. 23 Editionen, gebaut in Weyarn.</p></div>
+    <div class="karte" data-an><p class="ziffer">02</p><h3>Anfragen auslösen</h3><p class="text">Probefahrt, Umbau, Werkstatt-Termin, Einlagerung: Jeder Beitrag führt zu einer konkreten Handlung.</p></div>
+    <div class="karte" data-an><p class="ziffer">03</p><h3>Drei Häuser nahbar machen</h3><p class="text">Menschen, Übergaben, Werkstatt. Familienbetrieb seit 1954, in dritter Generation.</p></div>
+    <div class="karte" data-an><p class="ziffer">04</p><h3>Fachkräfte gewinnen</h3><p class="text">9 offene Stellen in drei Häusern. Karriere-Posts zeigen, wie bei Martin gearbeitet wird.</p></div>
+  </div>
+  <aside>Vier Ziele, gemessen an Anfragen und Klicks, nicht an Likes. Die 9 offenen Stellen stehen so auf der Website, Stand November 2026.</aside>
+</section>
+
+<!-- ============ 04 Zielgruppen ============ -->
+<section class="folie hell" data-titel="Zielgruppen">
+  <div class="kopf"><p class="mono">03 · Zielgruppen</p><p class="mono">Für wen wir posten</p></div>
+  <h2 class="titel" data-an>Vier Menschen, ein Feed.</h2>
+  <div class="raum"></div>
+  <div class="raster4">
+    <div class="karte" data-an><p class="ziffer">A</p><h3>BMW-Fahrer der Region</h3><p class="text">Oberland, Pfaffenwinkel, Allgäu. Sie wollen Service, Winter-Wellness, Aktionen und gute Touren.</p></div>
+    <div class="karte" data-an><p class="ziffer">B</p><h3>Edition-Fans von weit her</h3><p class="text">Übergaben gingen schon nach Luxemburg und an die Ruhr. Sie suchen das Unikat und wollen jedes Teil sehen.</p></div>
+    <div class="karte" data-an><p class="ziffer">C</p><h3>Einsteiger und Umsteiger</h3><p class="text">A2-Führerschein, F 450 GS, gute Gebrauchte. Sie brauchen Beratung und eine Probefahrt.</p></div>
+    <div class="karte" data-an><p class="ziffer">D</p><h3>Bewerber</h3><p class="text">Mechaniker, Serviceberater, Verkauf, Verwaltung. Sie wollen sehen, wie gearbeitet wird.</p></div>
+  </div>
+  <aside>Die Übergaben nach Luxemburg und an die Ruhr stehen als Berichte auf der Website: Nicole aus Luxemburg und Marius aus Wetter an der Ruhr.</aside>
+</section>
+
+<!-- ============ 05 Säulen ============ -->
+<section class="folie dunkel" data-titel="Fünf Säulen">
+  <div class="kopf"><p class="mono">04 · Inhalte</p><p class="mono">Fünf Säulen</p></div>
+  <h2 class="titel" data-an>Fünf Säulen, ein klarer Mix.</h2>
+  <div class="raum"></div>
+  <div class="saeulen">
+    <div class="saeule" data-an><h3>Manufaktur und Edition</h3><p class="text">Editionen, verbaute Teile, Entstehung</p><p class="mono">Reel · Karussell</p><div class="anteil"><div class="balken"><span data-an="balken" style="--w: 1"></span></div><span class="prozent">30 %</span></div></div>
+    <div class="saeule" data-an><h3>Übergaben</h3><p class="text">Schlüsselmomente mit Kunden</p><p class="mono">Foto · Reel</p><div class="anteil"><div class="balken"><span data-an="balken" style="--w: 0.667"></span></div><span class="prozent">20 %</span></div></div>
+    <div class="saeule" data-an><h3>Werkstatt und Service</h3><p class="text">Winter-Wellness, Tipps, Aktionen</p><p class="mono">Karussell · Story</p><div class="anteil"><div class="balken"><span data-an="balken" style="--w: 0.667"></span></div><span class="prozent">20 %</span></div></div>
+    <div class="saeule" data-an><h3>Häuser und Geschichte</h3><p class="text">Weyarn, Schongau, Oy, seit 1954, Team</p><p class="mono">Foto · Reel</p><div class="anteil"><div class="balken"><span data-an="balken" style="--w: 0.5"></span></div><span class="prozent">15 %</span></div></div>
+    <div class="saeule" data-an><h3>Neu und Karriere</h3><p class="text">BMW-Neuheiten, Probefahrt, Jobs</p><p class="mono">Foto · Story</p><div class="anteil"><div class="balken"><span data-an="balken" style="--w: 0.5"></span></div><span class="prozent">15 %</span></div></div>
+  </div>
+  <aside>Die Manufaktur bekommt den größten Anteil, weil sie Martin von jedem anderen BMW-Händler unterscheidet. Der Mix ist ein Startwert, nach vier Wochen schärfen wir ihn an den echten Zahlen nach.</aside>
+</section>
+
+<!-- ============ Kapitel 2 ============ -->
+<section class="folie dunkel kapitel" data-titel="Teil 2 · Auftritt">
+  <img class="kapitel-bild" data-bild="foto:kapitel2" alt="" />
+  <div class="kapitel-schleier"></div>
+  <div class="kopf"><p class="mono">Teil 2 von 3</p><p class="mono">Look · Profil · Formate</p></div>
+  <div class="raum"></div>
+  <h2 class="fit" data-an="zeilen"><span class="maske"><span class="z">Auftritt.</span></span></h2>
+  <aside>Teil 2: der Look, das neue Profil und alle fertigen Formate, von Posts über Karussells und Stories bis zu den Reels.</aside>
+</section>
+
+<!-- ============ 06 Look ============ -->
+<section class="folie hell" data-titel="Der Look">
+  <div class="kopf"><p class="mono">05 · Der Look</p><p class="mono">Farbe · Schrift · Regeln</p></div>
+  <h2 class="titel" data-an>Der Look.</h2>
+  <div class="raum"></div>
+  <div class="look">
+    <div>
+      <div class="farben">
+        <div class="farbe" data-an="kachel"><div class="feld" style="background: #0b0c0c"></div><p class="bu">Nacht<span>#0B0C0C</span></p></div>
+        <div class="farbe" data-an="kachel"><div class="feld" style="background: #f1eee8; box-shadow: inset 0 0 0 2px rgba(14, 15, 15, 0.2)"></div><p class="bu">Papier<span>#F1EEE8</span></p></div>
+        <div class="farbe" data-an="kachel"><div class="feld" style="background: #3896d2"></div><p class="bu">Hellblau<span>#3896D2</span></p></div>
+        <div class="farbe" data-an="kachel"><div class="feld" style="background: #2b5e97"></div><p class="bu">Dunkelblau<span>#2B5E97</span></p></div>
+        <div class="farbe" data-an="kachel"><div class="feld" style="background: #e42a24"></div><p class="bu">Rot<span>#E42A24</span></p></div>
+      </div>
+      <p class="text" data-an style="margin-top: 34px; max-width: 760px">Die drei Streifen stammen aus Martins Logo. Sie erscheinen als Zeichen, nie als Fläche. Alles andere ist Schwarz und Papier.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 30px">
+      <div data-an><p class="probe">Kein gewöhnlicher BMW Partner.</p><p class="bu">Archivo · Typenschild-Versalien</p></div>
+      <div data-an><p class="mono" style="font-size: 30px; color: var(--fg)">Martin Edition · Nº 05</p><p class="bu">IBM Plex Mono · Etiketten</p></div>
+      <div class="regeln text" data-an><p>Links ausgerichtet, nichts zentriert</p><p>Echte Fotos aus den drei Häusern</p><p>Jede Schlagzeile endet mit einem Punkt</p></div>
+    </div>
+  </div>
+  <aside>Alles ist aus der neuen Website übernommen: dieselben Schriften, dieselben Farben, dieselbe Art, Überschriften zu setzen. Die Farben der Streifen sind direkt aus dem Original-Logo gemessen.</aside>
+</section>
+
+<!-- ============ 07 Profil ============ -->
+<section class="folie dunkel" data-titel="Das Profil">
+  <div class="bildrahmen profil-bild" data-an="bild"><img data-bild="foto:profil" alt="Schematische Vorschau des neuen Instagram-Profils mit Profilbild, Bio, Highlights und Raster" /></div>
+  <div class="rechts">
+    <div class="kopf"><p class="mono">06 · Profil</p><p class="mono">@motorrad_martin</p></div>
+    <h2 class="titel" data-an>Das Profil.</h2>
+  </div>
+  <div class="raum"></div>
+  <div class="rechts raster2">
+    <div class="karte" data-an><p class="mono" style="color: var(--fg3)">Bio · 150 Zeichen</p><p class="text" style="color: var(--fg)">BMW Motorrad Vertragshändler seit 1954, dritte Generation.<br />Weyarn · Schongau · Oy-Mittelberg<br />/// Home of Martin Edition</p></div>
+    <div class="karte" data-an><p class="mono" style="color: var(--fg3)">Highlights</p><p class="text" style="color: var(--fg)">Edition · Übergaben · Werkstatt · Häuser · Neu · Jobs</p><p class="text">Gleich gestaltete Cover in Schwarz mit den drei Streifen.</p></div>
+    <div class="karte" data-an><p class="mono" style="color: var(--fg3)">Profilbild</p><p class="text">Die Wortmarke BMW MOTORRAD /// MARTIN auf Schwarz, für den runden Ausschnitt gesetzt.</p></div>
+    <div class="karte" data-an><p class="mono" style="color: var(--fg3)">Link in der Bio</p><p class="text">Probefahrt, Editionen, Gebrauchte, Werkstatt-Termin, Jobs und das Impressum.</p></div>
+  </div>
+  <aside>Die Vorschau ist schematisch, kein Screenshot. Follower- und Beitragszahlen sind bewusst leer, die echten Ausgangswerte tragen wir beim Start ein.</aside>
+</section>
+
+<!-- ============ 08 Feed ============ -->
+<section class="folie hell" data-titel="Die ersten neun Posts">
+  <div class="feed">
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:01-edition-triple-black" alt="Post 01: Edition Triple Black" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:02a-karussell-manufaktur-titel" alt="Post 02: Karussell Was in einer Martin Edition steckt" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:07-seit-1954" alt="Post 07: Seit 1954" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:03-uebergabe-margis" alt="Post 03: Übergabe an Thorsten Margis" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:06-haus-weyarn" alt="Post 06: Haus Weyarn" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:04a-karussell-winter-titel" alt="Post 04: Karussell Winter-Wellness" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:09-karriere-serviceberater" alt="Post 09: Karriere" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:05-aktion-winter-highlight" alt="Post 05: Aktion Winter-Highlight" /></div>
+    <div class="bildrahmen" data-an="kachel"><img data-bild="post:08-neuheit-f-450-gs-trophy" alt="Post 08: Neu, F 450 GS Trophy" /></div>
+  </div>
+  <div class="rechts-weit">
+    <div class="kopf"><p class="mono">07 · Feed</p><p class="mono">Startpaket</p></div>
+    <h2 class="titel" data-an>Die ersten neun Posts.</h2>
+    <p class="text" data-an style="margin-top: 34px; max-width: 860px">Ein Raster wie ein Katalog: dunkle Bühne und Papier im Wechsel. Jeder Post ist fertig gestaltet und getextet, mit echten Fakten von Martin.</p>
+  </div>
+  <div class="raum"></div>
+  <div class="rechts-weit feed-liste mono" data-an>
+    <p><b>01</b>Edition Triple Black</p><p><b>06</b>Haus Weyarn</p>
+    <p><b>02</b>Karussell Manufaktur</p><p><b>07</b>Seit 1954</p>
+    <p><b>03</b>Übergabe Margis</p><p><b>08</b>Neu: F 450 GS</p>
+    <p><b>04</b>Karussell Winter</p><p><b>09</b>Karriere</p>
+    <p><b>05</b>Aktion Winter</p>
+  </div>
+  <aside>Alle Posts liegen als fertige Bilddateien im Paket, dazu die Bildunterschriften mit Hashtags. Vor dem Posten bestätigen wir nur die markierten Punkte, etwa die Winter-Preise.</aside>
+</section>
+
+<!-- ============ 09 Aufbau ============ -->
+<section class="folie dunkel" data-titel="So ist ein Post gebaut">
+  <div class="post-gross">
+    <div class="bildrahmen" data-an="bild"><img data-bild="post:01-edition-triple-black" alt="Post 01 im Detail: BMW R 1300 GS Triple Black mit Typenschild-Schlagzeile" /></div>
+    <span class="pin" data-an="punkt" style="top: 6.4%; --d: 0.9s">01</span>
+    <span class="pin" data-an="punkt" style="top: 71%; --d: 0.9s">02</span>
+    <span class="pin" data-an="punkt" style="top: 84%; --d: 0.9s">03</span>
+    <span class="pin" data-an="punkt" style="top: 93%; --d: 0.9s">04</span>
+  </div>
+  <div class="rechts-weit">
+    <div class="kopf"><p class="mono">08 · Aufbau</p><p class="mono">Post 01</p></div>
+    <h2 class="titel" data-an>So ist ein Post gebaut.</h2>
+  </div>
+  <div class="raum"></div>
+  <div class="rechts-weit aufbau">
+    <div data-an><span class="nr">01</span><div><h3>Etikett</h3><p class="text">Reihe und Nummer in Mono, oben links: Martin Edition · Nº 05.</p></div></div>
+    <div data-an><span class="nr">02</span><div><h3>Typenschild</h3><p class="text">Die Schlagzeile läuft in Versalien über die volle Breite, wie auf der Website.</p></div></div>
+    <div data-an><span class="nr">03</span><div><h3>Ein Satz, echte Teile</h3><p class="text">Dreimal Schwarz, einmal Licht. Dazu die verbauten Komponenten.</p></div></div>
+    <div data-an><span class="nr">04</span><div><h3>Wortmarke</h3><p class="text">BMW MOTORRAD /// MARTIN unten links. So bleibt jeder Post auch geteilt eindeutig.</p></div></div>
+  </div>
+  <aside>Jeder Post folgt demselben Bauplan. Das macht den Feed ruhig und wiedererkennbar, und neue Posts entstehen schnell aus den Vorlagen.</aside>
+</section>
+
+<!-- ============ 10 Karussell Manufaktur ============ -->
+<section class="folie hell" data-titel="Karussell Manufaktur">
+  <div class="kopf"><p class="mono">09 · Karussell</p><p class="mono">5 Bilder · Manufaktur</p></div>
+  <h2 class="titel kompakt" data-an>Was in einer Martin Edition steckt.</h2>
+  <div class="raum"></div>
+  <div class="reihe k5">
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:02a-karussell-manufaktur-titel" alt="Bild 1: Titel" /></div><figcaption class="bu">1 · Titel</figcaption></figure>
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:02b-karussell-manufaktur-teil-1" alt="Bild 2: Hattech Sidepipe-Auspuff" /></div><figcaption class="bu">2 · Sidepipe</figcaption></figure>
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:02c-karussell-manufaktur-teil-2" alt="Bild 3: Big Spoke 21 Zoll" /></div><figcaption class="bu">3 · Big Spoke</figcaption></figure>
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:02d-karussell-manufaktur-teil-3" alt="Bild 4: Kennzeichenhalter seitlich" /></div><figcaption class="bu">4 · Kennzeichen</figcaption></figure>
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:02e-karussell-manufaktur-ende" alt="Bild 5: Jede Edition ein Unikat" /></div><figcaption class="bu">5 · Abbinder</figcaption></figure>
+  </div>
+  <p class="text" data-an style="margin-top: 30px; max-width: 1300px">Am Beispiel der BMW R 18 Bobber, Nº 20: Jedes Bild zeigt ein verbautes Teil. Das letzte führt zur Kollektion und zum eigenen Umbau.</p>
+  <aside>Karussells werden gespeichert und geteilt. Das Format lässt sich für jede der 23 Editionen wiederholen.</aside>
+</section>
+
+<!-- ============ 11 Karussell Winter ============ -->
+<section class="folie dunkel" data-titel="Karussell Winter-Wellness">
+  <div class="kopf"><p class="mono">10 · Karussell</p><p class="mono">4 Bilder · Service</p></div>
+  <h2 class="titel kompakt" data-an>Winter-Wellness, direkt buchbar.</h2>
+  <div class="raum"></div>
+  <div class="reihe k4">
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:04a-karussell-winter-titel" alt="Bild 1: Dein Bike überwintert bei uns" /></div><figcaption class="bu">1 · Titel</figcaption></figure>
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:04b-karussell-winter-preis" alt="Bild 2: Basispaket 259 Euro" /></div><figcaption class="bu">2 · Preis</figcaption></figure>
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:04c-karussell-winter-leistung" alt="Bild 3: Wir holen, wir bringen" /></div><figcaption class="bu">3 · Leistung</figcaption></figure>
+    <figure data-an="wisch"><div class="bildrahmen"><img data-bild="post:04d-karussell-winter-ende" alt="Bild 4: Ein Anruf genügt" /></div><figcaption class="bu">4 · Anruf</figcaption></figure>
+  </div>
+  <aside>Service-Posts verkaufen am direktesten: Leistung, Preis, Telefonnummer. Die Preise stammen von der Website und werden vor dem Posten noch einmal bestätigt.</aside>
+</section>
+
+<!-- ============ 12 Stories ============ -->
+<section class="folie hell" data-titel="Stories">
+  <div class="kopf"><p class="mono">11 · Stories</p><p class="mono">5 Vorlagen · 9:16</p></div>
+  <h2 class="titel kompakt" data-an>Fünf Stories, sofort einsetzbar.</h2>
+  <div class="raum"></div>
+  <div class="reihe" style="gap: 41px">
+    <figure data-an="kachel"><div class="bildrahmen telefon"><img data-bild="story:s01-drei-haeuser" alt="Story: Drei Häuser, ein Anruf" /></div><figcaption class="bu">Drei Häuser<span>Adressen und Telefon</span></figcaption></figure>
+    <figure data-an="kachel"><div class="bildrahmen telefon"><img data-bild="story:s02-probefahrt" alt="Story: Probefahrt, selbst fahren" /></div><figcaption class="bu">Probefahrt<span>Link-Sticker unten</span></figcaption></figure>
+    <figure data-an="kachel"><div class="bildrahmen telefon"><img data-bild="story:s03-edition-fallblatt" alt="Story: Edition als Fallblatt-Anzeige" /></div><figcaption class="bu">Edition<span>Fallblatt-Anzeige</span></figcaption></figure>
+    <figure data-an="kachel"><div class="bildrahmen telefon"><img data-bild="story:s04-uebergabe-marius" alt="Story: Schlüssel übergeben" /></div><figcaption class="bu">Übergabe<span>Mit Einwilligung</span></figcaption></figure>
+    <figure data-an="kachel"><div class="bildrahmen telefon"><img data-bild="story:s05-umfrage-edition" alt="Story: Umfrage, welche Edition zeigen wir im Detail" /></div><figcaption class="bu">Umfrage<span>Sticker A oder B</span></figcaption></figure>
+  </div>
+  <aside>Stories halten die Follower zwischen den Posts dran. Die Vorlagen lassen oben und unten Platz für die Bedienelemente von Instagram, Sticker kommen direkt in der App dazu.</aside>
+</section>
+
+<!-- ============ 13 Reels ============ -->
+<section class="folie dunkel" data-titel="Reels">
+  <div class="kopf"><p class="mono">12 · Reels</p><p class="mono">3 fertige Videos · 9:16</p></div>
+  <h2 class="titel kompakt" data-an>Drei Reels, fertig geschnitten.</h2>
+  <div class="raum"></div>
+  <div class="reels">
+    <div class="reihe" style="gap: 24px">
+      <figure data-an="kachel"><div class="bildrahmen reel"><video data-video="video:reel-lichtkante" data-poster="poster:reel-lichtkante" muted loop playsinline preload="auto" aria-label="Reel Lichtkante"></video></div><figcaption class="bu">Lichtkante · 9 s</figcaption></figure>
+      <figure data-an="kachel"><div class="bildrahmen reel"><video data-video="video:reel-kollektion" data-poster="poster:reel-kollektion" muted loop playsinline preload="auto" aria-label="Reel Kollektion"></video></div><figcaption class="bu">Kollektion · 12 s</figcaption></figure>
+      <figure data-an="kachel"><div class="bildrahmen reel"><video data-video="video:reel-seit-1954" data-poster="poster:reel-seit-1954" muted loop playsinline preload="auto" aria-label="Reel Seit 1954"></video></div><figcaption class="bu">Seit 1954 · 10 s</figcaption></figure>
+    </div>
+    <div class="reel-text">
+      <div class="karte" data-an><h3>Lichtkante</h3><p class="text">Die Bühne ist schwarz, eine Lichtkante legt die Triple Black frei. Der Auftakt der Website, als Reel.</p></div>
+      <div class="karte" data-an><h3>Kollektion</h3><p class="text">Eine Klappanzeige schaltet durch fünf Editionen. Endet mit „23 Editionen. Jede ein Unikat.“</p></div>
+      <div class="karte" data-an><h3>Seit 1954</h3><p class="text">Die Jahreszahl läuft durch die echten Stationen bis heute. Ideal als erster Beitrag zum Start.</p></div>
+    </div>
+  </div>
+  <aside>Die drei Reels laufen hier live. Sie sind bildgenau mit 30 Bildern pro Sekunde gerendert. Musik kommt beim Hochladen aus der Meta-Soundbibliothek dazu, denn Unternehmensprofile dürfen keine Chart-Musik nutzen.</aside>
+</section>
+
+<!-- ============ Kapitel 3 ============ -->
+<section class="folie dunkel kapitel" data-titel="Teil 3 · Betrieb">
+  <img class="kapitel-bild" data-bild="foto:kapitel3" alt="" />
+  <div class="kapitel-schleier"></div>
+  <div class="kopf"><p class="mono">Teil 3 von 3</p><p class="mono">Drehen · Planen · Messen</p></div>
+  <div class="raum"></div>
+  <h2 class="fit" data-an="zeilen"><span class="maske"><span class="z">Betrieb.</span></span></h2>
+  <aside>Teil 3: wie aus dem Startpaket ein laufender Kanal wird, mit wenig Aufwand für Martin.</aside>
+</section>
+
+<!-- ============ 14 Drehpläne ============ -->
+<section class="folie hell" data-titel="Drei Formate fürs Handy">
+  <div class="kopf"><p class="mono">13 · Selbst drehen</p><p class="mono">Handy · hochkant · 4K</p></div>
+  <h2 class="titel" data-an>Drei Formate fürs Handy.</h2>
+  <div class="raum"></div>
+  <div class="raster3">
+    <div class="karte" data-an><p class="mono" style="color: var(--fg3)">A · 15 Sekunden</p><h3>Schlüsselmoment</h3>
+      <ol class="schritte"><li>Motorrad im Halbdunkel, Totale</li><li>Detail der Edition</li><li>Kunde kommt, Rücken zur Kamera</li><li>Licht an oder Tuch fällt</li><li>Schlüssel in die Hand, nah</li><li>Erster Start, Motorsound</li><li>Abfahrt durchs Tor</li></ol></div>
+    <div class="karte" data-an><p class="mono" style="color: var(--fg3)">B · 12 Sekunden</p><h3>Werkstatt im Detail</h3>
+      <ol class="schritte"><li>Nur Hände und Werkzeug</li><li>Drehmomentschlüssel</li><li>Diagnosegerät</li><li>Reifen und Kette</li><li>Batterie am Ladegerät</li><li>Harte Schnitte im Takt</li><li>Abbinder aus der Vorlage</li></ol></div>
+    <div class="karte" data-an><p class="mono" style="color: var(--fg3)">C · 20 bis 30 Sekunden</p><h3>So entsteht eine Edition</h3>
+      <ol class="schritte"><li>Stativ fest markieren</li><li>Serienmotorrad, Totale</li><li>Teile auf dem Tisch</li><li>Montage im Zeitraffer</li><li>Über Tage, gleiche Position</li><li>Fertiges Einzelstück im Licht</li><li>Basis, Teile, Nummer</li></ol></div>
+  </div>
+  <aside>Für echte Bewegtbilder reicht ein Handy mit Stativ. Pro Reel genügen sechs bis acht Clips von zwei bis drei Sekunden. Kunden nur mit Einwilligung zeigen.</aside>
+</section>
+
+<!-- ============ 15 Redaktionsplan ============ -->
+<section class="folie dunkel" data-titel="Die ersten vier Wochen">
+  <div class="kopf"><p class="mono">14 · Redaktionsplan</p><p class="mono">Mo · Mi · Fr, 18 Uhr</p></div>
+  <h2 class="titel" data-an>Die ersten vier Wochen.</h2>
+  <div class="raum"></div>
+  <div class="kalender">
+    <span class="k-kopf"></span><span class="k-kopf">Montag</span><span class="k-kopf">Mittwoch</span><span class="k-kopf">Freitag</span><span class="k-kopf">Stories</span>
+    <div class="k-woche" data-an><b>KW 49</b><span>ab 30.11.</span></div>
+    <div class="k-zelle reel-tag" data-an="kachel"><span>Seit 1954</span><span class="tag"><svg viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>Reel · Start</span></div>
+    <div class="k-zelle" data-an="kachel"><span>Edition Triple Black</span><span class="tag">Post</span></div>
+    <div class="k-zelle" data-an="kachel"><span>Winter-Wellness</span><span class="tag">Karussell</span></div>
+    <div class="k-zelle stories" data-an="kachel">Häuser · Umfrage · Probefahrt</div>
+    <div class="k-woche" data-an><b>KW 50</b><span>ab 07.12.</span></div>
+    <div class="k-zelle" data-an="kachel"><span>Aktion Winter-Highlight</span><span class="tag">Post</span></div>
+    <div class="k-zelle reel-tag" data-an="kachel"><span>Lichtkante</span><span class="tag"><svg viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>Reel</span></div>
+    <div class="k-zelle" data-an="kachel"><span>Übergabe Margis</span><span class="tag">Post</span></div>
+    <div class="k-zelle stories" data-an="kachel">Edition · Aktion teilen</div>
+    <div class="k-woche" data-an><b>KW 51</b><span>ab 14.12.</span></div>
+    <div class="k-zelle" data-an="kachel"><span>Bobber</span><span class="tag">Karussell</span></div>
+    <div class="k-zelle" data-an="kachel"><span>Haus Weyarn</span><span class="tag">Post</span></div>
+    <div class="k-zelle reel-tag" data-an="kachel"><span>Kollektion</span><span class="tag"><svg viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>Reel</span></div>
+    <div class="k-zelle stories" data-an="kachel">Übergabe Marius · Ergebnis</div>
+    <div class="k-woche" data-an><b>KW 52</b><span>ab 21.12.</span></div>
+    <div class="k-zelle" data-an="kachel"><span>Karriere</span><span class="tag">Post</span></div>
+    <div class="k-zelle" data-an="kachel"><span>F 450 GS Trophy</span><span class="tag">Post</span></div>
+    <div class="k-zelle leise" data-an="kachel"><span>Weihnachten, frei</span></div>
+    <div class="k-zelle stories" data-an="kachel">Zeiten zwischen den Jahren</div>
+  </div>
+  <aside>Start ist Montag, 30. November, mit dem Reel „Seit 1954“. Drei Feed-Beiträge pro Woche, davon ein Reel, dazu vier bis fünf Stories. Die Aktion läuft bis 31.12., deshalb kommt sie früh im Dezember. 18 Uhr ist ein Startwert, nach vier Wochen richten wir die Zeit nach der Statistik aus.</aside>
+</section>
+
+<!-- ============ 16 Ablauf ============ -->
+<section class="folie hell" data-titel="Ablauf">
+  <div class="kopf"><p class="mono">15 · Ablauf</p><p class="mono">Jede Woche gleich</p></div>
+  <h2 class="titel kompakt" data-an>Martin liefert Material. Wir den Rest.</h2>
+  <div class="raum"></div>
+  <div class="zeitstrahl">
+    <span class="strich" data-an="linie" style="--d: 0.3s"></span>
+    <div class="schritt" data-an><span class="punkt" data-an="punkt" style="--d: 0.5s"></span><p class="mono" style="color: var(--fg3)">Montag</p><h3>Material</h3><p class="text">Fotos, Videos und Neuigkeiten aus den Häusern, per WhatsApp-Gruppe.</p></div>
+    <div class="schritt" data-an><span class="punkt" data-an="punkt" style="--d: 0.5s"></span><p class="mono" style="color: var(--fg3)">Dienstag</p><h3>Entwurf</h3><p class="text">LN Social gestaltet und textet die Beiträge der Woche in den Vorlagen.</p></div>
+    <div class="schritt" data-an><span class="punkt" data-an="punkt" style="--d: 0.5s"></span><p class="mono" style="color: var(--fg3)">Mittwoch</p><h3>Freigabe</h3><p class="text">Ein Ansprechpartner bei Martin gibt frei, mit einem Klick oder kurzer Notiz.</p></div>
+    <div class="schritt" data-an><span class="punkt" data-an="punkt" style="--d: 0.5s"></span><p class="mono" style="color: var(--fg3)">Laufend</p><h3>Planung</h3><p class="text">Alles wird in der Meta Business Suite eingeplant. Kein Passwort wird geteilt.</p></div>
+    <div class="schritt" data-an><span class="punkt" data-an="punkt" style="--d: 0.5s"></span><p class="mono" style="color: var(--fg3)">Monatsende</p><h3>Bericht</h3><p class="text">Offene Zahlen: was gut lief, was nicht, was wir ändern.</p></div>
+  </div>
+  <aside>Der Aufwand für Martin bleibt klein: Material schicken und freigeben. Der Zugriff läuft über die Partner-Funktion der Meta Business Suite, ohne geteilte Passwörter.</aside>
+</section>
+
+<!-- ============ 17 Kennzahlen ============ -->
+<section class="folie dunkel" data-titel="Kennzahlen">
+  <div class="kopf"><p class="mono">16 · Kennzahlen</p><p class="mono">Jeden Monat</p></div>
+  <h2 class="titel kompakt" data-an>Keine Versprechen. Offene Zahlen.</h2>
+  <div class="raum"></div>
+  <div class="raster5">
+    <div class="karte" data-an><p class="ziffer">01</p><h3>Reichweite</h3><p class="text">Erreichte Konten, davon Nicht-Follower.</p></div>
+    <div class="karte" data-an><p class="ziffer">02</p><h3>Interaktion</h3><p class="text">Speichern und Teilen pro Beitrag.</p></div>
+    <div class="karte" data-an><p class="ziffer">03</p><h3>Profil</h3><p class="text">Profilaufrufe und Klicks auf den Link.</p></div>
+    <div class="karte" data-an><p class="ziffer">04</p><h3>Anfragen</h3><p class="text">Nachrichten zu Probefahrt, Umbau, Service, Bewerbung.</p></div>
+    <div class="karte" data-an><p class="ziffer">05</p><h3>Follower</h3><p class="text">Entwicklung zum Ausgangswert.</p></div>
+  </div>
+  <div class="raster3" style="margin-top: 48px; gap: 36px">
+    <div class="platzhalter" data-an><p class="mono" style="color: var(--fg3)">Ausgangswert Follower</p><b>[Follower heute]</b></div>
+    <div class="platzhalter" data-an><p class="mono" style="color: var(--fg3)">Ausgangswert Beiträge</p><b>[Beiträge heute]</b></div>
+    <div class="platzhalter" data-an><p class="mono" style="color: var(--fg3)">Stichtag</p><b>[Datum]</b></div>
+  </div>
+  <aside>Wir versprechen keine Follower- oder Anfragezahlen. Stattdessen gibt es jeden Monat einen offenen Bericht mit diesen fünf Werten. Die Ausgangswerte tragen wir am Starttag ein.</aside>
+</section>
+
+<!-- ============ 18 Sorgfalt ============ -->
+<section class="folie hell" data-titel="Sorgfalt">
+  <div class="kopf"><p class="mono">17 · Sorgfalt</p><p class="mono">Recht und Marke</p></div>
+  <h2 class="titel" data-an>Sauber von Anfang an.</h2>
+  <div class="raum"></div>
+  <div class="raster2">
+    <div class="karte" data-an><h3>Personen</h3><p class="text">Kunden und Mitarbeitende nur mit schriftlicher Einwilligung zeigen und markieren, auch bei Übergaben.</p></div>
+    <div class="karte" data-an><h3>Aktionen</h3><p class="text">Immer mit vollständigen Bedingungen: Zeitraum, Vorrat, nicht kombinierbar.</p></div>
+    <div class="karte" data-an><h3>BMW-Markenzeichen</h3><p class="text">Nur nach den CI-Vorgaben von BMW Motorrad für Partner. Die Vorlagen nutzen Martins Wortmarke.</p></div>
+    <div class="karte" data-an><h3>Musik und Impressum</h3><p class="text">Nur lizenzfreie Musik aus der Meta-Soundbibliothek. Das Impressum ist über den Link in der Bio erreichbar.</p></div>
+  </div>
+  <aside>Unternehmensprofile dürfen keine Chart-Musik verwenden. Für Übergaben gibt es eine kurze Einwilligung zum Unterschreiben.</aside>
+</section>
+
+<!-- ============ 19 Startpaket ============ -->
+<section class="folie dunkel" data-titel="Das Startpaket">
+  <div class="kopf"><p class="mono">18 · Startpaket</p><p class="mono">Alles fertig</p></div>
+  <h2 class="titel" data-an>Das Startpaket ist fertig.</h2>
+  <div class="raum"></div>
+  <div class="paket">
+    <div data-an><p class="zahl" data-zahl="16">16</p><p class="text">Feed-Bilder: 9 Posts, davon 2 Karussells</p></div>
+    <div data-an><p class="zahl" data-zahl="3">3</p><p class="text">Reels als MP4, mit Titelbild</p></div>
+    <div data-an><p class="zahl" data-zahl="5">5</p><p class="text">Story-Vorlagen im Format 9:16</p></div>
+    <div data-an><p class="zahl" data-zahl="7">7</p><p class="text">Profilbild und 6 Highlight-Cover</p></div>
+    <div data-an><p class="zahl" data-zahl="12">12</p><p class="text">Bildunterschriften mit Hashtags</p></div>
+    <div data-an><p class="zahl" data-zahl="4">4</p><p class="text">Wochen Redaktionsplan</p></div>
+    <div data-an><p class="zahl" data-zahl="3">3</p><p class="text">Drehpläne fürs Handy</p></div>
+    <div data-an style="display: flex; flex-direction: column; justify-content: flex-end"><svg class="streifen-gross" viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><p class="text">Alle Vorlagen zum Weiterbauen</p></div>
+  </div>
+  <aside>Alles liegt als Dateipaket bereit: Bilder, Videos, Texte und die Vorlagen, aus denen neue Beiträge in Minuten entstehen.</aside>
+</section>
+
+<!-- ============ 20 Weiter ============ -->
+<section class="folie hell" data-titel="So geht es weiter">
+  <div class="kopf"><p class="mono">19 · Nächste Schritte</p><p class="mono">Start 30. November</p></div>
+  <h2 class="titel" data-an>So geht es weiter.</h2>
+  <div class="raum"></div>
+  <div class="raster4">
+    <div class="karte" data-an><p class="ziffer">01</p><h3>Kurzes Gespräch</h3><p class="text">30 Minuten: Konzept durchgehen, Fragen klären, Ansprechpartner festlegen.</p></div>
+    <div class="karte" data-an><p class="ziffer">02</p><h3>Freigabe</h3><p class="text">Bio, Profilbild, Highlights und die ersten Posts freigeben.</p></div>
+    <div class="karte" data-an><p class="ziffer">03</p><h3>Zugang</h3><p class="text">Partner-Zugang über die Meta Business Suite. Kein Passwort wird geteilt.</p></div>
+    <div class="karte" data-an><p class="ziffer">04</p><h3>Start</h3><p class="text">Montag, 30. November, mit dem Reel „Seit 1954“.</p></div>
+  </div>
+  <div class="kontakt" data-an style="margin-top: 64px">
+    <svg viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>
+    <b>Luis Nagel · LN Social</b>
+    <span class="mono" style="color: var(--fg3); margin-left: auto">lnsocial.de</span>
+  </div>
+  <aside>Ziel des Gesprächs: den Start am 30. November festmachen und einen Ansprechpartner pro Haus für Material und Freigaben benennen.</aside>
+</section>
+
+</main>
+
+<!-- ============ Bedienung ============ -->
+<div class="steuer" data-steuer>
+  <button type="button" data-tu="uebersicht" aria-label="Übersicht aller Folien (O)"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.2"/></svg></button>
+  <button type="button" data-tu="notizen" aria-label="Sprechernotizen (N)"><svg viewBox="0 0 24 24"><path d="M5 6h14M5 11h14M5 16h9"/></svg></button>
+  <button type="button" data-tu="vollbild" aria-label="Vollbild (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  <button type="button" data-tu="zurueck" aria-label="Vorherige Folie"><svg viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button>
+  <button type="button" data-tu="weiter" aria-label="Nächste Folie"><svg viewBox="0 0 24 24"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
+</div>
+
+<div class="ebene uebersicht" data-ebene="uebersicht" role="dialog" aria-modal="true" aria-label="Übersicht aller Folien">
+  <div class="uebersicht-kopf"><span>Alle Folien · Klick zum Springen</span><button type="button" class="schliessen" data-tu="uebersicht">Schließen · Esc</button></div>
+  <div class="raster-ueb" data-raster-ueb></div>
+</div>
+
+<div class="ebene notizen" data-ebene="notizen" aria-label="Sprechernotizen">
+  <div class="uebersicht-kopf" style="margin-bottom: 0"><span data-notiz-titel></span><button type="button" class="schliessen" data-tu="notizen">Schließen · N</button></div>
+  <p data-notiz-text></p>
+</div>
+
+<div class="ebene hilfe" data-ebene="hilfe" role="dialog" aria-modal="true" aria-label="Tastenkürzel">
+  <div class="hilfe-karte">
+    <div class="hilfe-kopf"><span>Bedienung</span><button type="button" class="schliessen" data-tu="hilfe">Schließen</button></div>
+    <dl>
+      <dt>→ · Leertaste</dt><dd>Nächste Folie</dd>
+      <dt>←</dt><dd>Vorherige Folie</dd>
+      <dt>Pos1 · Ende</dt><dd>Erste · letzte Folie</dd>
+      <dt>O · Esc</dt><dd>Übersicht aller Folien</dd>
+      <dt>N</dt><dd>Sprechernotizen</dd>
+      <dt>F</dt><dd>Vollbild</dd>
+      <dt>Klick · Wischen</dt><dd>Rechts weiter, links zurück</dd>
+      <dt>Drucken</dt><dd>Als PDF sichern, eine Folie pro Seite</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="toast" data-toast></div>
+<p class="sr" aria-live="polite" data-ansage></p>
+
+<script>
+const MEDIEN = {{MEDIEN}};
+</script>
+<script>
+(() => {
+  const html = document.documentElement;
+  const buehne = document.querySelector('.buehne');
+  const folien = Array.from(buehne.querySelectorAll('.folie'));
+  const n = folien.length;
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (ruhig) html.classList.add('ruhig');
+  const zwei = (x) => String(x).padStart(2, '0');
+  const STREIFEN = '<svg viewBox="0 0 26 16" aria-hidden="true"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>';
+  let ist = -1;
+  let S = 1;
+
+  /* Medien einsetzen (jedes Bild steht nur einmal in der Datei) */
+  document.querySelectorAll('[data-bild]').forEach((el) => (el.src = MEDIEN[el.dataset.bild]));
+  document.querySelectorAll('[data-poster]').forEach((el) => (el.poster = MEDIEN[el.dataset.poster]));
+  document.querySelectorAll('[data-video]').forEach((el) => (el.src = MEDIEN[el.dataset.video]));
+
+  /* Fußzeilen, Reihenfolge der Bewegung, Barrierefreiheit */
+  folien.forEach((f, k) => {
+    f.setAttribute('role', 'group');
+    f.setAttribute('aria-roledescription', 'Folie');
+    f.setAttribute('aria-label', `${k + 1} von ${n}: ${f.dataset.titel}`);
+    f.setAttribute('aria-hidden', 'true');
+    f.inert = true;
+    f.querySelectorAll('[data-an]').forEach((el, i) => {
+      if (!el.style.getPropertyValue('--i')) el.style.setProperty('--i', Math.min(i, 14));
+    });
+    f.querySelectorAll('.fit').forEach((fit) => fit.querySelectorAll('.z').forEach((z, i) => z.style.setProperty('--zi', i)));
+    if (f.hasAttribute('data-ohne-fuss')) return;
+    const fuss = document.createElement('div');
+    fuss.className = 'folien-fuss';
+    fuss.innerHTML = `<div class="spur"><span style="transform:scaleX(${((k + 1) / n).toFixed(4)})"></span></div><div class="fuss-zeile"><span class="fuss-marke">${STREIFEN}<span>BMW Motorrad Martin · Instagram-Konzept</span></span><span>${zwei(k + 1)} / ${zwei(n)}</span></div>`;
+    f.append(fuss);
+  });
+
+  /* Skalierung auf das Fenster */
+  const skaliere = () => {
+    S = Math.min(innerWidth / 1920, innerHeight / 1080);
+    html.style.setProperty('--s', S);
+    if (offen('uebersicht')) passeUebersicht();
+  };
+
+  /* Typenschild: jede Zeile über die Breitenachse auf die volle Breite */
+  const MIN = 62;
+  const MAX = 125;
+  const breite = (el) => el.getBoundingClientRect().width / S;
+  function setze(el) {
+    const ziel = el.clientWidth;
+    const zeilen = Array.from(el.querySelectorAll('.z'));
+    if (!zeilen.length || !ziel) return;
+    el.style.fontSize = '100px';
+    zeilen.forEach((z) => (z.style.fontSize = ''));
+    const messe = (z, w) => { z.style.fontStretch = w + '%'; return breite(z); };
+    const m = zeilen.map((z) => ({ z, schmal: messe(z, MIN), breit: messe(z, MAX) }));
+    let gruppe = [...m];
+    let unten = 0;
+    let oben = 0;
+    for (;;) {
+      unten = Math.max(...gruppe.map((x) => (100 * ziel) / x.breit));
+      oben = Math.min(...gruppe.map((x) => (100 * ziel) / x.schmal));
+      if (unten <= oben || gruppe.length === 1) break;
+      const kurz = gruppe.reduce((a, b) => (a.breit < b.breit ? a : b));
+      gruppe = gruppe.filter((x) => x !== kurz);
+    }
+    const groesse = Math.min(oben, unten * 1.06);
+    const soll = (ziel * 100) / groesse;
+    for (const { z, schmal, breit: b } of m) {
+      if (b <= soll) { z.style.fontStretch = MAX + '%'; z.style.fontSize = (soll / b).toFixed(4) + 'em'; continue; }
+      if (schmal >= soll) { z.style.fontStretch = MIN + '%'; z.style.fontSize = (soll / schmal).toFixed(4) + 'em'; continue; }
+      let lo = MIN;
+      let hi = MAX;
+      for (let i = 0; i < 14; i++) { const mid = (lo + hi) / 2; if (messe(z, mid) > soll) hi = mid; else lo = mid; }
+      z.style.fontStretch = lo.toFixed(2) + '%';
+    }
+    el.style.fontSize = groesse.toFixed(2) + 'px';
+    for (let lauf = 0; lauf < 3; lauf++) {
+      for (const { z } of m) {
+        const w = breite(z);
+        if (!w || Math.abs(w - ziel) < 0.5) continue;
+        const em = parseFloat(z.style.fontSize) || 1;
+        z.style.fontSize = ((em * (ziel - 0.5)) / w).toFixed(4) + 'em';
+      }
+    }
+  }
+
+  /* Zahlen zählen beim Erscheinen hoch */
+  const zaehle = (f) => f.querySelectorAll('[data-zahl]').forEach((el) => {
+    const ziel = Number(el.dataset.zahl);
+    if (ruhig) return;
+    const i = Number(el.closest('[data-an]')?.style.getPropertyValue('--i') || 0);
+    const start = performance.now() + 260 + i * 85;
+    const dauer = 1500;
+    el.textContent = '0';
+    const schritt = (t) => {
+      if (!f.classList.contains('ist-gespielt')) { el.textContent = String(ziel); return; }
+      const p = Math.min(1, Math.max(0, (t - start) / dauer));
+      const e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      el.textContent = String(Math.round(ziel * e));
+      if (p < 1) requestAnimationFrame(schritt);
+    };
+    requestAnimationFrame(schritt);
+  });
+
+  /* Wechsel */
+  const ansage = document.querySelector('[data-ansage]');
+  function zeige(k) {
+    k = Math.max(0, Math.min(n - 1, k));
+    if (k === ist) return;
+    const alt = folien[ist];
+    if (alt) {
+      alt.classList.remove('ist-aktiv');
+      alt.setAttribute('aria-hidden', 'true');
+      alt.inert = true;
+      alt.querySelectorAll('video').forEach((v) => v.pause());
+      setTimeout(() => {
+        if (alt.classList.contains('ist-aktiv')) return;
+        alt.classList.remove('ist-gespielt');
+        alt.querySelectorAll('video').forEach((v) => { try { v.currentTime = 0; } catch (e) {} });
+      }, 650);
+    }
+    ist = k;
+    const f = folien[k];
+    f.classList.add('ist-aktiv');
+    f.removeAttribute('aria-hidden');
+    f.inert = false;
+    if (!f.classList.contains('ist-gespielt')) {
+      requestAnimationFrame(() => requestAnimationFrame(() => { f.classList.add('ist-gespielt'); zaehle(f); }));
+    }
+    f.querySelectorAll('video').forEach((v) => { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); });
+    try { history.replaceState(null, '', '#' + (k + 1)); } catch (e) {}
+    ansage.textContent = `Folie ${k + 1} von ${n}: ${f.dataset.titel}`;
+    document.querySelector('[data-notiz-titel]').textContent = `${zwei(k + 1)} / ${zwei(n)} · ${f.dataset.titel}`;
+    document.querySelector('[data-notiz-text]').textContent = f.querySelector('aside')?.textContent.trim() || 'Keine Notizen zu dieser Folie.';
+    document.querySelectorAll('.zelle').forEach((z, i) => z.classList.toggle('ist-hier', i === k));
+  }
+  const weiter = () => zeige(ist + 1);
+  const zurueck = () => zeige(ist - 1);
+
+  /* Ebenen: Übersicht, Notizen, Hilfe */
+  const ebene = (name) => document.querySelector(`[data-ebene="${name}"]`);
+  const offen = (name) => ebene(name).classList.contains('offen');
+  let uebersichtGebaut = false;
+  function baueUebersicht() {
+    const raster = document.querySelector('[data-raster-ueb]');
+    folien.forEach((f, k) => {
+      const zelle = document.createElement('button');
+      zelle.type = 'button';
+      zelle.className = 'zelle';
+      zelle.setAttribute('aria-label', `Folie ${k + 1}: ${f.dataset.titel}`);
+      const bild = document.createElement('div');
+      bild.className = 'zelle-bild';
+      const innen = document.createElement('div');
+      innen.className = 'zelle-innen';
+      const kopie = f.cloneNode(true);
+      kopie.classList.add('ist-aktiv', 'ist-gespielt');
+      kopie.removeAttribute('aria-label');
+      kopie.setAttribute('aria-hidden', 'true');
+      kopie.querySelectorAll('aside').forEach((a) => a.remove());
+      kopie.querySelectorAll('video').forEach((v) => { v.removeAttribute('src'); v.preload = 'none'; v.autoplay = false; });
+      kopie.querySelectorAll('[data-zahl]').forEach((z) => (z.textContent = z.dataset.zahl));
+      innen.append(kopie);
+      bild.append(innen);
+      const nr = document.createElement('span');
+      nr.className = 'zelle-nr';
+      nr.textContent = `${zwei(k + 1)} · ${f.dataset.titel}`;
+      zelle.append(bild, nr);
+      zelle.addEventListener('click', () => { schliesse('uebersicht'); zeige(k); });
+      raster.append(zelle);
+    });
+    uebersichtGebaut = true;
+  }
+  function passeUebersicht() {
+    const z = document.querySelector('.zelle-bild');
+    if (z) document.querySelector('[data-raster-ueb]').style.setProperty('--z', z.clientWidth / 1920);
+  }
+  function oeffne(name) {
+    if (name === 'uebersicht') {
+      if (!uebersichtGebaut) baueUebersicht();
+      schliesse('notizen');
+    }
+    ebene(name).classList.add('offen');
+    if (name === 'uebersicht') {
+      passeUebersicht();
+      document.querySelectorAll('.zelle').forEach((z, i) => z.classList.toggle('ist-hier', i === ist));
+      const hier = document.querySelectorAll('.zelle')[ist];
+      if (hier) { hier.focus({ preventScroll: true }); hier.scrollIntoView({ block: 'center' }); }
+    }
+  }
+  function schliesse(name) { ebene(name).classList.remove('offen'); }
+  const umschalten = (name) => (offen(name) ? schliesse(name) : oeffne(name));
+
+  const vollbild = () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (html.requestFullscreen) html.requestFullscreen().catch(() => {});
+  };
+
+  document.querySelectorAll('[data-tu]').forEach((b) => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const tu = b.dataset.tu;
+    if (tu === 'weiter') weiter();
+    else if (tu === 'zurueck') zurueck();
+    else if (tu === 'vollbild') vollbild();
+    else umschalten(tu);
+  }));
+
+  /* Tastatur */
+  document.addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const k = e.key;
+    if (offen('hilfe')) { if (k === 'Escape' || k === '?' || k === 'h' || k === 'H') { e.preventDefault(); schliesse('hilfe'); } return; }
+    if (offen('uebersicht')) {
+      if (k === 'Escape' || k === 'o' || k === 'O') { e.preventDefault(); schliesse('uebersicht'); return; }
+      const zellen = Array.from(document.querySelectorAll('.zelle'));
+      const jetzt = zellen.indexOf(document.activeElement);
+      const spalten = Math.max(1, Math.round(document.querySelector('[data-raster-ueb]').clientWidth / (zellen[0].clientWidth + 20)));
+      const ziel = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: spalten, ArrowUp: -spalten }[k];
+      if (ziel !== undefined) { e.preventDefault(); const z = zellen[Math.max(0, Math.min(zellen.length - 1, (jetzt < 0 ? ist : jetzt) + ziel))]; z.focus(); z.scrollIntoView({ block: 'nearest' }); }
+      return;
+    }
+    if (e.target.closest && e.target.closest('button') && (k === 'Enter' || k === ' ')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); weiter(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); zurueck(); }
+    else if (k === 'Home') { e.preventDefault(); zeige(0); }
+    else if (k === 'End') { e.preventDefault(); zeige(n - 1); }
+    else if (k === 'Escape' || k === 'o' || k === 'O') { e.preventDefault(); if (offen('notizen') && k === 'Escape') schliesse('notizen'); else oeffne('uebersicht'); }
+    else if (k === 'n' || k === 'N') { e.preventDefault(); umschalten('notizen'); }
+    else if (k === 'f' || k === 'F') { e.preventDefault(); vollbild(); }
+    else if (k === '?' || k === 'h' || k === 'H') { e.preventDefault(); oeffne('hilfe'); }
+  });
+
+  /* Klick und Wischen: rechts weiter, links zurück */
+  let start = null;
+  let gewischt = false;
+  buehne.addEventListener('pointerdown', (e) => { start = { x: e.clientX, y: e.clientY }; gewischt = false; });
+  buehne.addEventListener('pointerup', (e) => {
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    start = null;
+    if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.2) { gewischt = true; dx < 0 ? weiter() : zurueck(); }
+  });
+  buehne.addEventListener('click', (e) => {
+    if (gewischt) { gewischt = false; return; }
+    if (e.target.closest('a, button')) return;
+    const r = buehne.getBoundingClientRect();
+    if (e.clientX < r.left + r.width * 0.3) zurueck(); else weiter();
+  });
+
+  /* Mausrad und Trackpad: eine Geste = eine Folie */
+  let radAktiv = false;
+  let radZeit = 0;
+  addEventListener('wheel', (e) => {
+    if (offen('uebersicht') || offen('hilfe') || (offen('notizen') && e.target.closest('[data-ebene="notizen"]'))) return;
+    e.preventDefault();
+    clearTimeout(radZeit);
+    radZeit = setTimeout(() => (radAktiv = false), 240);
+    if (radAktiv) return;
+    const d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (Math.abs(d) < 6) return;
+    radAktiv = true;
+    d > 0 ? weiter() : zurueck();
+  }, { passive: false });
+
+  /* Bedienleiste blendet sich aus, wenn die Maus ruht */
+  let ruhe = 0;
+  const wach = () => {
+    document.body.classList.remove('ruhend');
+    clearTimeout(ruhe);
+    ruhe = setTimeout(() => { if (!offen('uebersicht') && !offen('hilfe')) document.body.classList.add('ruhend'); }, 2600);
+  };
+  addEventListener('mousemove', wach);
+  addEventListener('touchstart', wach, { passive: true });
+
+  const toast = (text, ms = 3800) => {
+    const t = document.querySelector('[data-toast]');
+    t.textContent = text;
+    t.classList.add('zeigen');
+    setTimeout(() => t.classList.remove('zeigen'), ms);
+  };
+
+  /* Start: erst wenn die Schriften da sind, damit das Typenschild exakt sitzt */
+  addEventListener('resize', skaliere);
+  skaliere();
+  Promise.all([
+    document.fonts.load('800 100px Archivo'),
+    document.fonts.load('500 20px Plex'),
+    document.fonts.load('400 20px Plex'),
+  ]).catch(() => {}).then(() => document.fonts.ready).then(() => {
+    document.querySelectorAll('.buehne .fit').forEach(setze);
+    const h = parseInt(location.hash.slice(1), 10);
+    zeige(Number.isFinite(h) && h >= 1 && h <= n ? h - 1 : 0);
+    document.querySelector('[data-lade]').classList.add('weg');
+    wach();
+    const touch = matchMedia('(pointer: coarse)').matches;
+    if (touch && innerHeight > innerWidth) toast('Quer halten für die beste Ansicht');
+    else toast(touch ? 'Wischen zum Blättern' : '← → blättern · O Übersicht · N Notizen · ? Hilfe');
+    window.__bereit = true;
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,2 +1,3 @@
-# Gerenderte Reels sind groß und lassen sich jederzeit neu erzeugen: node social/reel.cjs …
+# Gerenderte Reels und die Präsentation sind groß und lassen sich jederzeit neu erzeugen
 export/reels-9x16/*.mp4
+export/praesentation/

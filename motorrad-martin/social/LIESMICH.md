@@ -14,6 +14,15 @@ Konzept und Umsetzung: LN Social · Stand November 2026
 | `TEXTE.md` | Bio, Bildunterschriften, Hashtags, Redaktionsplan, Drehpläne, Kennzahlen, Sorgfalt | Text |
 | `vorlagen/` | Alle Vorlagen als HTML zum Weiterbauen | HTML/CSS |
 
+## Präsentation
+
+`export/praesentation/martin-instagram-praesentation.html` ist eine einzige Datei mit allen Schriften, Fotos und Reels. Sie läuft per Doppelklick im Browser, auch ohne Internet.
+
+- **Blättern:** → / Leertaste oder Klick rechts, ← oder Klick links, auf dem Handy wischen.
+- **O oder Esc:** Übersicht · **N:** Sprechernotizen · **F:** Vollbild · **?:** Hilfe.
+- **Drucken → Als PDF sichern:** eine Folie pro Seite (die fertige PDF liegt daneben).
+- **Neu bauen:** `python3 social/praesentation/bauen.py` (Quelle: `social/praesentation/vorlage.html`).
+
 ## Neue Beiträge aus den Vorlagen bauen
 
 Voraussetzung ist das Website-Projekt mit `npm install`. Die Vorlagen nutzen dessen Schriften und Fotos.
