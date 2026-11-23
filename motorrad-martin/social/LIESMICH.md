@@ -16,12 +16,12 @@ Konzept und Umsetzung: LN Social · Stand November 2026
 
 ## Präsentation
 
-`export/praesentation/martin-instagram-praesentation.html` ist eine einzige Datei mit allen Schriften, Fotos und Reels. Sie läuft per Doppelklick im Browser, auch ohne Internet.
+`export/praesentation/martin-website-und-instagram.html` zeigt in 12 Folien die neue Website und den Instagram-Auftritt. Eine einzige Datei mit allen Schriften, Fotos, der Website-Aufnahme und den Reels; sie läuft per Doppelklick im Browser, auch ohne Internet.
 
 - **Blättern:** → / Leertaste oder Klick rechts, ← oder Klick links, auf dem Handy wischen.
 - **O oder Esc:** Übersicht · **N:** Sprechernotizen · **F:** Vollbild · **?:** Hilfe.
 - **Drucken → Als PDF sichern:** eine Folie pro Seite (die fertige PDF liegt daneben).
-- **Neu bauen:** `python3 social/praesentation/bauen.py` (Quelle: `social/praesentation/vorlage.html`).
+- **Neu bauen:** `python3 social/praesentation/bauen.py`. Quellen: `praesentation/folien.html` (Inhalt), `praesentation/vorlage.html` (Gestaltung und Bedienung), `praesentation/bilder/` (Website-Aufnahme und Screenshots).
 
 ## Neue Beiträge aus den Vorlagen bauen
 

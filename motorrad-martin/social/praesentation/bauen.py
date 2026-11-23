@@ -8,7 +8,7 @@ auch wenn es auf mehreren Folien vorkommt.
 Aufruf aus motorrad-martin/:  python3 social/praesentation/bauen.py
 Voraussetzung: die Exporte unter social/export/ (node social/render.cjs, node social/reel.cjs …),
 Pillow und ffmpeg.
-Ausgabe:       social/export/praesentation/martin-instagram-praesentation.html
+Ausgabe:       social/export/praesentation/martin-website-und-instagram.html
 """
 import base64
 import io
@@ -23,7 +23,7 @@ from PIL import Image
 HIER = Path(__file__).resolve().parent
 PROJEKT = HIER.parent.parent
 EXPORT = PROJEKT / 'social' / 'export'
-ZIEL = EXPORT / 'praesentation' / 'martin-instagram-praesentation.html'
+ZIEL = EXPORT / 'praesentation' / 'martin-website-und-instagram.html'
 
 SCHRIFTEN = {
     'archivo': 'src/assets/fonts/archivo-latin-wdth-normal.woff2',
@@ -40,7 +40,11 @@ FOTOS = {
     'kapitel3': ('src/assets/standorte/weyarn-werkstatt.jpg', 1600, 16 / 9, (0.5, 0.35)),
     'website': ('social/praesentation/bilder/website-hero.jpg', 1200, None, (0.5, 0.5)),
     'profil': ('social/export/profil/profilvorschau.png', 720, 1080 / 1560, (0.5, 0.0)),
+    'profilvoll': ('social/export/profil/profilvorschau.png', 620, 1080 / 2333, (0.5, 0.0)),
 }
+
+# Website-Screenshots (Zielbreite)
+WEB = {'poster': 1280, 'edition-katalog': 820, 'haus-weyarn': 820, 'karte': 820, 'geschichte': 820, 'handy-start': 600, 'handy-edition': 640}
 
 
 def daten_uri(mime: str, roh: bytes) -> str:
@@ -90,11 +94,25 @@ def medium(schluessel: str) -> str:
         return bild(EXPORT / 'reels-9x16' / f'{name}-cover.jpg', 560)
     if art == 'video':
         return video(EXPORT / 'reels-9x16' / f'{name}.mp4')
+    if art == 'web':
+        return bild(HIER / 'bilder' / f'web-{name}.jpg', WEB[name])
+    if art == 'datei':
+        # Website-Aufnahme: die ersten 1,8 s (stehende schwarze Bühne) kürzen
+        with tempfile.TemporaryDirectory() as tmp:
+            ziel = Path(tmp) / 'w.mp4'
+            subprocess.run(
+                ['ffmpeg', '-y', '-loglevel', 'error', '-ss', '1.8', '-i', str(HIER / 'bilder' / f'{name}.mp4'),
+                 '-c:v', 'libx264', '-preset', 'slow', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
+                 '-an', str(ziel)],
+                check=True,
+            )
+            return daten_uri('video/mp4', ziel.read_bytes())
     raise KeyError(schluessel)
 
 
 def main() -> None:
     vorlage = (HIER / 'vorlage.html').read_text(encoding='utf-8')
+    vorlage = vorlage.replace('{{FOLIEN}}', (HIER / 'folien.html').read_text(encoding='utf-8'))
     schluessel = sorted(set(re.findall(r'data-(?:bild|poster|video)="([^"]+)"', vorlage)))
     medien = {k: medium(k) for k in schluessel}
     html = vorlage.replace('{{MEDIEN}}', json.dumps(medien, separators=(',', ':')))

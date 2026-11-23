@@ -65,15 +65,15 @@ Alle 23 Editionen: Link in der Bio.
 #martinedition #bmwmotorrad #r1300gs #bmwgs #weyarn
 ```
 
-**02 · Karussell „Was in einer Martin Edition steckt“** (`feed-4x5/02a` bis `02e`, 5 Bilder)
+**02 · Karussell „Bauplan“** (`feed-4x5/02a` bis `02f`, 6 Bilder)
 ```
-Was steckt eigentlich in einer Martin Edition?
+Bauplan Nº 07.
 
-Am Beispiel der BMW R 18 Bobber, Nº 20 unserer Kollektion: Hattech Sidepipe-Auspuff, Big Spoke 21 Zoll und ein seitlicher Kennzeichenhalter. Big Spoke, Sidepipe, tiefe Linie.
+Die BMW R 1300 GS Gilles aus unserer Martin Edition, Teil für Teil: Spiegel und Fußrasten von Gilles Tooling, Unterfahrschutz, Auspuff schwarz matt.
 
-Wisch durch alle drei Teile. Und wenn du deine eigene willst: Wir bauen dein Motorrad nach deinen Wünschen um.
+Aus dem Plan wird ein Unikat. Wisch durch alle vier Bauteile. Und wenn du deine eigene willst: Wir bauen dein Motorrad nach deinen Wünschen um.
 
-#martinedition #bmwr18 #bobber #custombike #bmwmotorrad
+#martinedition #r1300gs #gillestooling #custombike #bmwmotorrad
 ```
 
 **03 · Übergabe Thorsten Margis** (`feed-4x5/03-uebergabe-margis.jpg`)
@@ -88,9 +88,9 @@ Gute Fahrt, Thorsten!
 ```
 [Prüfen] Thorsten Margis nur markieren, wenn er zustimmt. Die Übergabe steht schon öffentlich auf motorrad-martin.de.
 
-**04 · Karussell Winter-Wellness** (`feed-4x5/04a` bis `04d`, 4 Bilder)
+**04 · Karussell „Winterschlaf“** (`feed-4x5/04a` bis `04d`, 4 Bilder: Titel, Werkstattauftrag, Hol- und Bringservice, Anruf)
 ```
-Dein Bike überwintert bei uns.
+Winterschlaf für dein Bike.
 
 Einlagerung in trockenen, sauberen und beheizten Hallen, Batterieservice, Fahrzeug-Check und auf Wunsch die fällige Inspektion, ganz ohne Zeitdruck. Mit Hol- und Bringservice.
 
@@ -123,9 +123,9 @@ Haus 1 von 3. Schongau und Oy-Mittelberg folgen.
 #weyarn #oberland #bmwmotorrad #martinedition #motorradhändler
 ```
 
-**07 · Seit 1954** (`feed-4x5/07-seit-1954.jpg`)
+**07 · 72 Jahre Martin** (`feed-4x5/07-seit-1954.jpg`)
 ```
-Seit 1954.
+72 Jahre Martin.
 
 Am 1. April 1954 gründete Erwin Martin in Ingenried bei Schongau: Tankstelle, Kfz-Reparaturbetrieb und Glas Automobile Werksvertretung. 1967 wurden wir BMW Vertragshändler, 1969 kamen die BMW Motorräder dazu.
 
@@ -146,9 +146,9 @@ Probefahrt nach Vereinbarung in allen drei Häusern: Link in der Bio.
 ```
 [Prüfen] Ob und ab wann ein Vorführer zur Probefahrt bereitsteht.
 
-**09 · Karriere Serviceberater** (`feed-4x5/09-karriere-serviceberater.jpg`)
+**09 · Karriere, als Mitarbeiterausweis** (`feed-4x5/09-karriere-serviceberater.jpg`)
 ```
-Wir suchen: Serviceberater Motorrad (m/w/d) für Weyarn, in Vollzeit.
+Hier fehlt noch jemand: Serviceberater Motorrad (m/w/d) für Weyarn, in Vollzeit.
 
 Insgesamt sind gerade 9 Stellen in unseren drei Häusern offen, von der Werkstatt bis zur Buchhaltung. Familienbetrieb seit 1954, eigene Manufaktur, drei Häuser am Alpenrand.
 
@@ -212,7 +212,7 @@ Rhythmus: 3 Feed-Beiträge pro Woche (Mo, Mi, Fr, jeweils 18 Uhr), davon 1 Reel.
 | --- | --- | --- | --- | --- |
 | KW 49 · 30.11.–06.12. | Reel „Seit 1954“ (Auftakt) | 01 Edition Triple Black | 04 Karussell Winter-Wellness | Drei Häuser · Umfrage · Probefahrt |
 | KW 50 · 07.–13.12. | 05 Aktion Winter-Highlight | Reel „Lichtkante“ | 03 Übergabe Margis | Edition · Aktion teilen |
-| KW 51 · 14.–20.12. | 02 Karussell Bobber | 06 Haus Weyarn | Reel „Kollektion“ | Übergabe Marius · Umfrage-Ergebnis |
+| KW 51 · 14.–20.12. | 02 Karussell Bauplan | 06 Haus Weyarn | Reel „Kollektion“ | Übergabe Marius · Umfrage-Ergebnis |
 | KW 52 · 21.–27.12. | 09 Karriere | 08 F 450 GS Trophy | – (Weihnachten) | Öffnungszeiten zwischen den Jahren [Prüfen] |
 
 ---
