@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Reel – Kollektion (Fallblatt)</title>
+<link rel="stylesheet" href="basis.css" />
+<style>
+  body { padding: 0; gap: 0; }
+  .reel { width: 1080px; height: 1920px; padding: 0; position: relative; display: block; }
+  .oben { position: absolute; top: 210px; left: 72px; right: 72px; }
+  .buehne { position: absolute; top: 380px; left: 72px; width: 936px; height: 624px; perspective: 2400px; background: var(--night-2); }
+  .blatt-bild { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; }
+  .blatt-bild img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .oben-haelfte { clip-path: inset(0 0 50% 0); transform-origin: 50% 50%; }
+  .unten-haelfte { clip-path: inset(50% 0 0 0); transform-origin: 50% 50%; }
+  .naht { position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; background: rgb(0 0 0 / 0.55); z-index: 50; }
+  .tafel { position: absolute; top: 1050px; left: 72px; right: 72px; background: #050606; padding: 30px; display: grid; gap: 22px; }
+  .was { font-family: 'Plex', monospace; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--chalk-3); margin-bottom: 10px; }
+  .zellen { display: flex; gap: 6px; }
+  .zelle { position: relative; width: 62px; height: 90px; background: #1b1d1c; color: var(--chalk); font-family: 'Plex', monospace; font-weight: 500; font-size: 60px; line-height: 90px; text-align: center; overflow: hidden; }
+  .zelle i { display: block; font-style: normal; transform-origin: 50% 50%; }
+  .zelle::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: rgb(0 0 0 / 0.75); }
+  .zaehler { display: flex; justify-content: space-between; margin-top: 4px; }
+  .takt { height: 3px; background: rgb(236 233 226 / 0.16); }
+  .takt span { display: block; height: 100%; background: var(--chalk); transform-origin: 0 50%; transform: scaleX(0); }
+  .ende { position: absolute; inset: 0; z-index: 60; background: var(--night); display: flex; flex-direction: column; justify-content: center; padding: 0 72px 200px; opacity: 0; }
+  .ende .marke { transform-origin: 0 50%; transform: scale(1.9); margin-bottom: 120px; }
+  .maske { display: block; overflow: hidden; padding-bottom: 0.04em; }
+  .ende .mono { margin-top: 40px; color: var(--chalk-3); }
+</style>
+</head>
+<body>
+<section class="karte reel dunkel">
+  <div class="oben kopf mono" data-a="oben"><span>Martin Edition</span><span class="dim">Manufaktur Weyarn</span></div>
+  <div class="buehne" data-a="buehne"><div class="naht"></div></div>
+  <div class="tafel" data-a="tafel">
+    <div><div class="was">Katalog Nº</div><div class="zellen" data-feld="nr" data-n="2"></div></div>
+    <div><div class="was">Basis</div><div class="zellen" data-feld="basis" data-n="12"></div></div>
+    <div><div class="was">Edition</div><div class="zellen" data-feld="name" data-n="12"></div></div>
+    <div class="takt"><span data-a="takt"></span></div>
+    <div class="zaehler mono"><span data-a="zaehler">01 / 05</span><span class="dim">23 Editionen</span></div>
+  </div>
+  <div class="ende" data-a="ende">
+    <span class="marke"><span class="marke__bmw">BMW<br>Motorrad</span><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><span class="marke__name">Martin</span></span>
+    <div class="fit"><span class="maske"><span class="z" data-a="e1">23 Editionen.</span></span><span class="maske"><span class="z" data-a="e2">Jede ein Unikat.</span></span></div>
+    <div class="mono" data-a="e3">Gebaut in Weyarn · Link in der Bio</div>
+  </div>
+</section>
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+  // Fünf Editionen (Daten wie auf motorrad-martin.de; Katalognummer = Position in der Kollektion)
+  const EDITIONEN = [
+    { nr: '21', basis: 'M 1000 RR', name: 'BLACK', bild: 'm-1000-rr-black-2', pos: '50% 62%' },
+    { nr: '17', basis: 'R NINET', name: '90S DAYTONA', bild: 'r-ninet-90s-daytona-1', pos: '50% 62%' },
+    { nr: '13', basis: 'R 12 G/S', name: 'BLACK', bild: 'r-12-gs-black-1', pos: '50% 66%' },
+    { nr: '19', basis: 'R NINET', name: '100 RS', bild: 'r-ninet-100-rs-1', pos: '50% 72%' },
+    { nr: '01', basis: 'R 1300 GS A', name: 'HUNTER', bild: 'r-1300-gs-adventure-hunter-1', pos: '50% 60%' },
+  ];
+  const buehne = document.querySelector('[data-a="buehne"]');
+  const bild = (e, cls) => `<div class="blatt-bild ${cls}"><img src="../../src/assets/editionen/${e.bild}.jpg" style="object-position:${e.pos}" alt=""></div>`;
+  // Grundbild, danach je Wechsel: neue obere Hälfte, alte obere Hälfte als Klappe, neue untere Hälfte als Klappe
+  let html = bild(EDITIONEN[0], 'grund');
+  for (let k = 1; k < EDITIONEN.length; k++) {
+    html += bild(EDITIONEN[k], `neu-oben w${k}`) + bild(EDITIONEN[k - 1], `oben-haelfte klappe-alt w${k}`) + bild(EDITIONEN[k], `unten-haelfte klappe-neu w${k}`);
+  }
+  buehne.insertAdjacentHTML('afterbegin', html);
+  document.querySelectorAll('.neu-oben').forEach((e) => e.classList.add('oben-haelfte'));
+  const felder = {};
+  document.querySelectorAll('[data-feld]').forEach((el) => {
+    const n = Number(el.dataset.n);
+    el.innerHTML = Array.from({ length: n }, () => '<span class="zelle"><i>&nbsp;</i></span>').join('');
+    felder[el.dataset.feld] = Array.from(el.querySelectorAll('i'));
+  });
+</script>
+<script src="fit.js"></script>
+<script>
+  const $ = (n) => document.querySelector(`[data-a="${n}"]`);
+  const ZEICHEN = 'ABCDEFGHIJKLMNOPRSTUVWXYZ0123456789';
+  // deterministisches Rauschen: gleiche Zeit → gleiches Bild (wichtig für bildgenaues Rendern)
+  const rausch = (a, b) => ZEICHEN[Math.abs(Math.floor(Math.sin(a * 12.9898 + b * 78.233) * 43758.5453)) % ZEICHEN.length];
+  window.bereit.then(() => {
+    const zustand = { phase: 0 };
+    const DAUER_WECHSEL = 0.9;
+    // Text der Tafel als Funktion der Zeit: rattert durch Zufallszeichen und rastet Zelle für Zelle ein
+    const setzeTafel = (t) => {
+      const takt = 1.9;
+      const k = Math.min(EDITIONEN.length - 1, Math.max(0, Math.floor((t - 0.4) / takt)));
+      const start = 0.4 + k * takt;
+      const p = (t - start) / DAUER_WECHSEL;
+      for (const [feld, zellen] of Object.entries(felder)) {
+        const ziel = EDITIONEN[k][feld];
+        zellen.forEach((z, i) => {
+          const soll = ziel[i] ?? ' ';
+          const einrasten = 0.25 + (i / zellen.length) * 0.55 + (feld === 'nr' ? 0 : feld === 'basis' ? 0.05 : 0.1);
+          let c;
+          if (t < 0.4) c = ' ';
+          else if (p >= einrasten || (k > 0 && p < 0) ) c = soll;
+          else c = soll === ' ' && p > einrasten - 0.2 ? ' ' : rausch(Math.floor(t * 30), i + feld.length * 7);
+          z.textContent = c === ' ' ? ' ' : c;
+          // kurzes Stauchen beim Umklappen
+          const flip = p >= 0 && p < einrasten ? 0.55 + 0.45 * Math.abs(Math.cos(t * 30 * Math.PI / 2)) : 1;
+          z.style.transform = `scaleY(${flip.toFixed(3)})`;
+        });
+      }
+      $('zaehler').textContent = `${String(k + 1).padStart(2, '0')} / ${String(EDITIONEN.length).padStart(2, '0')}`;
+      $('takt').style.transform = `scaleX(${Math.min(1, Math.max(0, (t - 0.4) / (takt * EDITIONEN.length))).toFixed(4)})`;
+    };
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' }, onUpdate: () => setzeTafel(tl.time()) });
+    tl.from($('oben'), { opacity: 0, y: -16, duration: 0.6 }, 0.1)
+      .from('.grund', { opacity: 0, duration: 0.5 }, 0.15)
+      .from($('tafel'), { opacity: 0, y: 30, duration: 0.6 }, 0.2);
+    const takt = 1.9;
+    for (let k = 1; k < EDITIONEN.length; k++) {
+      const t = 0.4 + k * takt;
+      gsap.set(`.w${k}`, { autoAlpha: 0 });
+      tl.set(`.neu-oben.w${k}, .klappe-alt.w${k}`, { autoAlpha: 1 }, t)
+        .fromTo(`.klappe-alt.w${k}`, { rotationX: 0, filter: 'brightness(1)' }, { rotationX: -90, filter: 'brightness(0.45)', duration: 0.26, ease: 'power2.in' }, t)
+        .set(`.klappe-alt.w${k}`, { autoAlpha: 0 }, t + 0.26)
+        .set(`.klappe-neu.w${k}`, { autoAlpha: 1 }, t + 0.26)
+        .fromTo(`.klappe-neu.w${k}`, { rotationX: 90, filter: 'brightness(0.5)' }, { rotationX: 0, filter: 'brightness(1)', duration: 0.34, ease: 'back.out(1.4)' }, t + 0.26);
+    }
+    const ende = 0.4 + EDITIONEN.length * takt + 0.1;
+    tl.to($('ende'), { opacity: 1, duration: 0.6, ease: 'power1.inOut' }, ende)
+      .from([$('e1'), $('e2')], { yPercent: 110, duration: 0.9, stagger: 0.12, ease: 'power4.out' }, ende + 0.35)
+      .from($('e3'), { opacity: 0, duration: 0.6 }, ende + 0.9)
+      .to({}, { duration: 0.01 }, ende + 2.3);
+    setzeTafel(0);
+    window.DAUER = tl.duration();
+    window.COVER = 0.4 + 2 * takt + 1.4;
+    window.zeige = (t) => { tl.seek(t, false); setzeTafel(t); };
+    window.reelBereit = true;
+  });
+</script>
+</body>
+</html>

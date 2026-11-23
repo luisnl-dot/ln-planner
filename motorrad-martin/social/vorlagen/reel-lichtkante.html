@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Reel – Lichtkante</title>
+<link rel="stylesheet" href="basis.css" />
+<style>
+  body { padding: 0; gap: 0; }
+  .reel { width: 1080px; height: 1920px; padding: 0; position: relative; display: block; }
+  /* Reels: oben ~220 px und unten ~420 px liegen Bedienelemente, rechts ~120 px die Knöpfe */
+  .oben { position: absolute; top: 210px; left: 72px; right: 72px; }
+  .buehne { position: absolute; top: 380px; left: 0; width: 1080px; height: 720px; overflow: hidden; }
+  .rahmen2, .lage, .schiene { position: absolute; inset: 0; will-change: transform; }
+  .rahmen2 { overflow: hidden; transform: translate3d(-100%, 0, 0); }
+  .lage { transform: translate3d(100%, 0, 0); }
+  .lage img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 46%; display: block; transform-origin: 50% 50%; }
+  .schiene { opacity: 0; }
+  .kante { position: absolute; top: 0; bottom: 0; left: -2px; width: 4px; background: linear-gradient(to bottom, rgb(255 255 255 / 0.3), #fff 18%, #fff 82%, rgb(255 255 255 / 0.3)); box-shadow: 0 0 28px 4px rgb(255 255 255 / 0.35), 0 0 120px 18px rgb(255 255 255 / 0.12); }
+  .glanz { position: absolute; top: 0; bottom: 0; right: 100%; width: 260px; background: linear-gradient(to right, transparent, rgb(255 255 255 / 0.07) 65%, rgb(255 255 255 / 0.2)); }
+  .unten { position: absolute; top: 1150px; left: 72px; right: 72px; }
+  .maske { display: block; overflow: hidden; padding-bottom: 0.04em; }
+  .unten .text { margin-top: 30px; color: var(--chalk-2); font-size: 40px; }
+  .teile { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px 14px; }
+  .teile span { border: 2px solid var(--linie); padding: 10px 16px; }
+  .ende { position: absolute; inset: 0; z-index: 10; background: var(--night); display: flex; flex-direction: column; justify-content: center; padding: 0 72px 200px; opacity: 0; }
+  .ende .marke { transform-origin: 0 50%; transform: scale(1.9); margin-bottom: 120px; }
+  .ende .fit { margin-top: 10px; }
+  .ende .mono { margin-top: 40px; color: var(--chalk-3); }
+</style>
+</head>
+<body>
+<section class="karte reel dunkel" data-reel="lichtkante">
+  <div class="oben kopf mono" data-a="oben"><span>Martin Edition · Nº 05</span><span class="dim">Weyarn</span></div>
+  <div class="buehne">
+    <div class="rahmen2" data-a="rahmen"><div class="lage" data-a="lage"><img src="../../src/assets/editionen/r-1300-gs-triple-black-2.jpg" alt="" data-a="foto" /></div></div>
+    <div class="schiene" data-a="schiene"><div class="glanz"></div><div class="kante"></div></div>
+  </div>
+  <div class="unten">
+    <div class="fit"><span class="maske"><span class="z" data-a="z1">BMW R 1300 GS</span></span><span class="maske"><span class="z" data-a="z2">Triple Black</span></span></div>
+    <p class="text" data-a="zeile">Dreimal Schwarz, einmal Licht.</p>
+    <div class="teile mono" data-a="teile"><span>Auspuff schwarz matt</span><span>Unterfahrschutz</span><span>LED-Zusatzscheinwerfer</span></div>
+  </div>
+  <div class="ende" data-a="ende">
+    <span class="marke"><span class="marke__bmw">BMW<br>Motorrad</span><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><span class="marke__name">Martin</span></span>
+    <div class="fit"><span class="maske"><span class="z" data-a="e1">Home of</span></span><span class="maske"><span class="z" data-a="e2">Martin Edition.</span></span></div>
+    <div class="mono" data-a="e3">Weyarn · Schongau · Oy-Mittelberg</div>
+  </div>
+</section>
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<script src="fit.js"></script>
+<script>
+  const $ = (n) => document.querySelector(`[data-a="${n}"]`);
+  window.bereit.then(() => {
+    const licht = { x: 0, an: 0 };
+    const zeichne = () => {
+      $('rahmen').style.transform = `translate3d(${licht.x - 100}%,0,0)`;
+      $('lage').style.transform = `translate3d(${100 - licht.x}%,0,0)`;
+      $('schiene').style.transform = `translate3d(${licht.x}%,0,0)`;
+      $('schiene').style.opacity = licht.x <= 0 || licht.x >= 100 ? 0 : licht.an;
+    };
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+    tl.from($('oben'), { opacity: 0, y: -16, duration: 0.6 }, 0.2)
+      .to(licht, { an: 1, duration: 0.1, onUpdate: zeichne }, 0.75)
+      .to(licht, { x: 100, duration: 2.8, ease: 'power2.inOut', onUpdate: zeichne }, 0.8)
+      .fromTo($('foto'), { scale: 1.1 }, { scale: 1, duration: 9, ease: 'none' }, 0)
+      .from([$('z1'), $('z2')], { yPercent: 110, duration: 0.9, stagger: 0.12, ease: 'power4.out' }, 3.3)
+      .from($('zeile'), { opacity: 0, y: 24, duration: 0.7 }, 4.1)
+      .from($('teile').children, { opacity: 0, y: 18, duration: 0.5, stagger: 0.14 }, 4.6)
+      .to($('ende'), { opacity: 1, duration: 0.6, ease: 'power1.inOut' }, 6.6)
+      .from([$('e1'), $('e2')], { yPercent: 110, duration: 0.9, stagger: 0.12, ease: 'power4.out' }, 7.0)
+      .from($('e3'), { opacity: 0, duration: 0.6 }, 7.6)
+      .to({}, { duration: 0.01 }, 9.2);
+    window.COVER = 5.8;
+    zeichne();
+    window.DAUER = tl.duration();
+    window.zeige = (t) => { tl.seek(t, false); };
+    window.reelBereit = true;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Martin Social – Profilbild und Highlight-Cover</title>
+<link rel="stylesheet" href="basis.css" />
+<style>
+  /* Instagram schneidet rund zu: alles Wichtige liegt im Kreis (Mitte, 70 % der Breite) */
+  .quadrat { padding: 0; align-items: center; justify-content: center; }
+  .mitte { width: 640px; display: flex; flex-direction: column; align-items: center; }
+
+  #profil .mitte { width: 700px; transform: scale(0.88); }
+  #profil .bmw { font-size: 52px; font-weight: 780; font-stretch: 112%; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1; margin-bottom: 40px; }
+  #profil .zeile { display: flex; align-items: center; gap: 30px; }
+  #profil svg { width: 150px; height: 92px; }
+  #profil .name { font-size: 150px; font-weight: 800; font-stretch: 125%; letter-spacing: -0.03em; text-transform: uppercase; line-height: 0.8; }
+
+  .hl svg { width: 190px; height: 117px; margin-bottom: 54px; }
+  .hl .wort { font-size: 118px; font-weight: 800; font-stretch: 100%; letter-spacing: -0.03em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<section class="karte quadrat dunkel" id="profil" data-name="profilbild" data-format="png">
+  <div class="mitte">
+    <div class="bmw">BMW Motorrad</div>
+    <div class="zeile">
+      <svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>
+      <span class="name">Martin</span>
+    </div>
+  </div>
+</section>
+
+<section class="karte quadrat dunkel hl" data-name="highlight-1-edition" data-format="png"><div class="mitte"><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><div class="wort">Edition</div></div></section>
+<section class="karte quadrat dunkel hl" data-name="highlight-2-uebergaben" data-format="png"><div class="mitte"><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><div class="wort">Übergaben</div></div></section>
+<section class="karte quadrat dunkel hl" data-name="highlight-3-werkstatt" data-format="png"><div class="mitte"><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><div class="wort">Werkstatt</div></div></section>
+<section class="karte quadrat dunkel hl" data-name="highlight-4-haeuser" data-format="png"><div class="mitte"><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><div class="wort">Häuser</div></div></section>
+<section class="karte quadrat dunkel hl" data-name="highlight-5-neu" data-format="png"><div class="mitte"><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><div class="wort">Neu</div></div></section>
+<section class="karte quadrat dunkel hl" data-name="highlight-6-jobs" data-format="png"><div class="mitte"><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><div class="wort">Jobs</div></div></section>
+
+<script src="fit.js"></script>
+</body>
+</html>

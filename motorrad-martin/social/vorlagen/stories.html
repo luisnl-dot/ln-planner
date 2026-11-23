@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Martin Social – Stories 9:16</title>
+<link rel="stylesheet" href="basis.css" />
+<style>
+  /* Sichere Zone: oben 220 px (Profilzeile), unten 400 px (Antwortfeld) bleiben frei von Text */
+  .story .text { font-size: 40px; }
+
+  #s01 .fit { margin-top: 60px; }
+  #s01 .blatt { margin-top: 70px; }
+  .haeuser { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 56px; }
+  .haeuser .rahmen { height: 300px; }
+  .haeuser span { display: block; margin-top: 12px; }
+  #s01 .blatt .wert { font-size: 46px; }
+  #s01 .blatt .wert small { font-size: 32px; }
+
+  #s02 .foto { bottom: 38%; }
+  #s02 .foto img { object-position: 50% 62%; }
+  #s02 .schleier { background: linear-gradient(to bottom, rgb(11 12 12 / 0.85), transparent 18%), linear-gradient(to top, var(--night) 38%, rgb(11 12 12 / 0) 52%); }
+  #s02 .fit { margin-bottom: 30px; }
+  .tipp { position: absolute; z-index: 3; left: var(--rand); right: var(--rand); bottom: 250px; display: flex; justify-content: space-between; align-items: center; padding-top: 22px; border-top: 2px solid var(--linie); }
+
+  #s03 .rahmen { height: 640px; margin-top: 48px; }
+  .tafel { margin-top: 48px; background: #050606; padding: 34px; display: grid; gap: 26px; }
+  .tafel .was { font-family: 'Plex', monospace; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--chalk-3); margin-bottom: 10px; }
+  .zellen { display: flex; gap: 6px; }
+  .zelle { position: relative; width: 66px; height: 94px; background: #1b1d1c; color: var(--chalk); font-family: 'Plex', monospace; font-weight: 500; font-size: 64px; line-height: 94px; text-align: center; }
+  .zelle::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: rgb(0 0 0 / 0.75); }
+
+  #s04 .foto { bottom: 42%; }
+  #s04 .foto img { object-position: 50% 35%; }
+  #s04 .schleier { background: linear-gradient(to bottom, rgb(11 12 12 / 0.85), transparent 18%), linear-gradient(to top, var(--night) 42%, rgb(11 12 12 / 0) 56%); }
+  #s04 .fit { margin-bottom: 30px; }
+
+  #s05 .fit { margin-top: 50px; }
+  .wahl { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+  .wahl figure { margin: 0; }
+  .wahl .rahmen { height: 560px; }
+  .wahl figcaption { display: flex; gap: 16px; align-items: baseline; margin-top: 18px; }
+  .wahl figcaption b { font-size: 54px; font-weight: 800; font-stretch: 112%; }
+  .wahl figcaption span { font-size: 28px; line-height: 1.25; color: var(--leise); }
+</style>
+</head>
+<body>
+
+<!-- S01 · Drei Häuser -->
+<section class="karte story dunkel" id="s01" data-name="s01-drei-haeuser">
+  <div class="kopf mono"><span>BMW Motorrad Martin</span><span class="dim">seit 1954</span></div>
+  <div class="fit"><span class="z">Drei Häuser.</span><span class="z">Ein Anruf.</span></div>
+  <div class="blatt">
+    <div><span class="nr">WEY</span><span class="wert">Weyarn<small>Am Weiglfeld 20 · +49 8020 90450-0</small></span></div>
+    <div><span class="nr">SOG</span><span class="wert">Schongau<small>Marktoberdorfer Straße 16 · +49 8861 9300-0</small></span></div>
+    <div><span class="nr">OY</span><span class="wert">Oy-Mittelberg<small>Gewerbepark 2 · +49 8366 98488-0</small></span></div>
+  </div>
+  <div class="haeuser">
+    <div><div class="rahmen"><img src="../../src/assets/standorte/weyarn-front.jpg" alt="" style="object-position:40% 50%" /></div><span class="mono dim">Weyarn</span></div>
+    <div><div class="rahmen"><img src="../../src/assets/standorte/schongau-front.jpg" alt="" style="object-position:60% 50%" /></div><span class="mono dim">Schongau</span></div>
+    <div><div class="rahmen"><img src="../../src/assets/standorte/oy-front.jpg" alt="" style="object-position:55% 50%" /></div><span class="mono dim">Oy-Mittelberg</span></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="fuss"><span data-marke></span><span class="mono dim">Neu · Gebraucht · Service</span></div>
+</section>
+
+<!-- S02 · Probefahrt (Platz für den Link-Sticker über dem unteren Rand) -->
+<section class="karte story dunkel" id="s02" data-name="s02-probefahrt">
+  <div class="foto"><img src="../../src/assets/journal/bmw-f-450-gs-trophy-0.jpg" alt="" /></div>
+  <div class="schleier"></div>
+  <div class="kopf mono"><span>Probefahrt</span><span class="dim">In allen drei Häusern</span></div>
+  <div class="spacer"></div>
+  <div class="fit"><span class="z">Selbst</span><span class="z">fahren.</span></div>
+  <p class="text">Die neue F 450 GS Trophy oder dein Wunschmodell: Probefahrt nach Vereinbarung, in Weyarn auch auf deiner Hausstrecke.</p>
+  <div class="tipp mono"><span>Hier antippen</span><span>↓</span></div>
+</section>
+
+<!-- S03 · Edition als Fallblatt-Anzeige -->
+<section class="karte story dunkel" id="s03" data-name="s03-edition-fallblatt">
+  <div class="kopf mono"><span>Aus der Kollektion</span><span class="dim">Martin Edition</span></div>
+  <div class="rahmen"><img src="../../src/assets/editionen/m-1000-rr-black-2.jpg" alt="" style="object-position:50% 62%" /></div>
+  <div class="tafel">
+    <div><div class="was">Katalog Nº</div><div class="zellen" data-zellen="21" data-n="2"></div></div>
+    <div><div class="was">Basis</div><div class="zellen" data-zellen="M 1000 RR" data-n="13"></div></div>
+    <div><div class="was">Edition</div><div class="zellen" data-zellen="BLACK" data-n="13"></div></div>
+  </div>
+  <p class="text" style="margin-top:44px">Carbon, matt, kompromisslos. Akrapovič Auspuff schwarz, Rizoma Spiegel, Carbon-Bugspoiler.</p>
+  <div class="spacer"></div>
+  <div class="fuss"><span data-marke></span><span class="mono">Mehr in der Bio</span></div>
+</section>
+
+<!-- S04 · Übergabe -->
+<section class="karte story dunkel" id="s04" data-name="s04-uebergabe-marius">
+  <div class="foto"><img src="../../src/assets/journal/fahrzeuguebergabe-in-weyarn-bmw-m1000rr-martin-edition-carbon-matt-fuer-marius-aus-wetter-an-der-ruhr-0.jpg" alt="" /></div>
+  <div class="schleier"></div>
+  <div class="kopf mono"><span>Übergabe · Weyarn</span><span class="dim">M 1000 RR</span></div>
+  <div class="spacer"></div>
+  <div class="fit"><span class="z">Schlüssel</span><span class="z">übergeben.</span></div>
+  <p class="text">Marius aus Wetter an der Ruhr holt seine BMW M 1000 RR Martin Edition in Carbon matt in Weyarn ab. Gute Fahrt!</p>
+  <div class="fuss" style="margin-top:44px"><span data-marke></span><span class="mono dim">Schlüsselmoment</span></div>
+</section>
+
+<!-- S05 · Umfrage (Platz für den Umfrage-Sticker unter den Bildern) -->
+<section class="karte story hell" id="s05" data-name="s05-umfrage-edition">
+  <div class="kopf mono"><span>Deine Wahl</span><span class="dim">Martin Edition</span></div>
+  <div class="fit"><span class="z">Welche zeigen</span><span class="z">wir im Detail?</span></div>
+  <div class="wahl">
+    <figure><div class="rahmen"><img src="../../src/assets/editionen/r-1300-gs-adventure-hunter-1.jpg" alt="" style="object-position:50% 60%" /></div><figcaption><b>A</b><span>R 1300 GS Adventure Hunter</span></figcaption></figure>
+    <figure><div class="rahmen"><img src="../../src/assets/editionen/r-ninet-90s-daytona-1.jpg" alt="" style="object-position:50% 60%" /></div><figcaption><b>B</b><span>R nineT 90S Daytona</span></figcaption></figure>
+  </div>
+  <div class="spacer"></div>
+  <div class="fuss"><span data-marke></span><span class="mono">Abstimmen ↓</span></div>
+</section>
+
+<script>
+  const MARKE = '<span class="marke"><span class="marke__bmw">BMW<br>Motorrad</span><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><span class="marke__name">Martin</span></span>';
+  document.querySelectorAll('[data-marke]').forEach((el) => (el.innerHTML = MARKE));
+  document.querySelectorAll('[data-zellen]').forEach((el) => {
+    const t = el.dataset.zellen; const n = Number(el.dataset.n);
+    el.innerHTML = Array.from({ length: n }, (_, i) => `<span class="zelle">${(t[i] || ' ').replace(' ', '&nbsp;')}</span>`).join('');
+  });
+</script>
+<script src="fit.js"></script>
+</body>
+</html>

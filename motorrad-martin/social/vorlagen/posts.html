@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Martin Social – Feed-Posts 4:5</title>
+<link rel="stylesheet" href="basis.css" />
+<style>
+  /* ---------- 01 Edition: Triple Black ---------- */
+  #p01 .foto img { object-position: 50% 46%; }
+  #p01 .schleier { background: linear-gradient(to bottom, rgb(11 12 12 / 0.78), transparent 26%), linear-gradient(to top, rgb(11 12 12 / 0.95) 4%, rgb(11 12 12 / 0.6) 30%, transparent 52%); }
+  #p01 .fit { margin-bottom: 26px; }
+  #p01 .text { margin-bottom: 40px; color: var(--chalk-2); }
+
+  /* ---------- 02 Karussell Manufaktur ---------- */
+  .kar-titel .fit { margin-top: 44px; }
+  .kar-titel .rahmen { margin-top: 44px; flex: 1; }
+  .kar-titel .fuss { margin-top: 36px; }
+  .teil .zahl { font-size: 250px; margin-top: 36px; }
+  .teil .fit { margin-top: 26px; }
+  .teil .rahmen { margin-top: 40px; flex: 1; }
+  .teil .fuss { margin-top: 32px; }
+
+  /* ---------- 03 Übergabe ---------- */
+  #p03 .foto { bottom: 47%; }
+  #p03 .foto img { object-position: 50% 30%; }
+  #p03 .schleier { background: linear-gradient(to bottom, rgb(11 12 12 / 0.7), transparent 22%), linear-gradient(to top, var(--night) 47%, rgb(11 12 12 / 0) 62%); }
+  #p03 .fit { margin-bottom: 30px; }
+  #p03 .text { margin-bottom: 40px; }
+
+  /* ---------- 04 Winter-Wellness ---------- */
+  #p04 .foto { top: auto; height: 55%; }
+  #p04 .foto img { object-position: 50% 70%; }
+  #p04 .schleier { background: linear-gradient(to top, rgb(241 238 232 / 0.97) 9%, rgb(241 238 232 / 0) 22%); }
+  #p04 .fit { margin-top: 40px; }
+  .preis .zahl { font-size: 330px; margin-top: 60px; }
+  .preis .zahl sup { font-size: 0.34em; vertical-align: 1.5em; margin-left: 10px; letter-spacing: 0; font-stretch: 100%; }
+  .preis .text { margin-top: 26px; }
+  .preis .blatt { margin-top: 56px; }
+
+  /* ---------- 05 Aktion ---------- */
+  #p05 .zahl { font-size: 400px; margin-top: 56px; margin-left: -10px; white-space: nowrap; }
+  #p05 .fit { margin-top: 34px; }
+  #p05 .text { margin-top: 30px; }
+  #p05 .klein { font-size: 22px; line-height: 1.45; color: var(--chalk-3); margin-top: 26px; max-width: 46em; }
+
+  /* ---------- 06 Haus Weyarn ---------- */
+  #p06 .foto img { object-position: 46% 50%; }
+  #p06 .schleier { background: linear-gradient(to bottom, rgb(11 12 12 / 0.85), rgb(11 12 12 / 0.15) 40%, rgb(11 12 12 / 0.1) 55%, rgb(11 12 12 / 0.92) 85%); }
+  #p06 .fit { margin-top: 44px; }
+
+  /* ---------- 07 Seit 1954 ---------- */
+  #p07 .fit { margin-top: 60px; }
+  #p07 .streifen { width: 120px; height: 74px; margin-top: 46px; }
+  #p07 .text { margin-top: 40px; }
+  #p07 .leiste { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 2px solid var(--linie); }
+  #p07 .leiste div { padding: 22px 0 0; border-left: 2px solid var(--linie); padding-left: 16px; }
+  #p07 .leiste div:first-child { border-left: 0; padding-left: 0; }
+  #p07 .leiste b { display: block; font-size: 40px; font-weight: 780; font-stretch: 108%; letter-spacing: -0.02em; }
+  #p07 .leiste span { display: block; margin-top: 8px; font-size: 22px; line-height: 1.3; color: var(--chalk-2); }
+
+  /* ---------- 08 Neuheit ---------- */
+  #p08 .foto img { object-position: 50% 78%; }
+  #p08 .schleier { background: linear-gradient(to bottom, rgb(11 12 12 / 0.94) 8%, rgb(11 12 12 / 0.55) 32%, transparent 50%), linear-gradient(to top, rgb(11 12 12 / 0.92) 10%, transparent 40%); }
+  #p08 .fit { margin-top: 44px; }
+
+  /* ---------- 09 Karriere ---------- */
+  #p09 .fit { margin-top: 44px; }
+  #p09 .rahmen { margin-top: 44px; flex: 1; }
+  #p09 .zeile { display: flex; justify-content: space-between; margin-top: 30px; }
+
+  /* ---------- Abschluss-Karten ---------- */
+  .ende .fit { margin-top: auto; }
+  .ende .text { margin-top: 36px; }
+  .ende .fuss { margin-top: 56px; }
+  .ende .streifen { width: 120px; height: 74px; }
+</style>
+</head>
+<body>
+
+<!-- 01 · Edition · dunkel, Foto vollflächig -->
+<section class="karte dunkel" id="p01" data-name="01-edition-triple-black">
+  <div class="foto"><img src="../../src/assets/editionen/r-1300-gs-triple-black-2.jpg" alt="" /></div>
+  <div class="schleier"></div>
+  <div class="kopf mono"><span>Martin Edition · Nº 05</span><span class="dim">Weyarn</span></div>
+  <div class="spacer"></div>
+  <div class="fit"><span class="z">BMW R 1300 GS</span><span class="z">Triple Black</span></div>
+  <p class="text">Dreimal Schwarz, einmal Licht. Auspuff schwarz matt, Unterfahrschutz, LED-Zusatzscheinwerfer.</p>
+  <div class="fuss"><span data-marke></span><span class="mono dim">@motorrad_martin</span></div>
+</section>
+
+<!-- 02 · Karussell „Was in einer Martin Edition steckt“ · 5 Seiten -->
+<section class="karte hell kar-titel" id="p02" data-name="02a-karussell-manufaktur-titel">
+  <div class="kopf mono"><span>Manufaktur Weyarn</span><span class="dim">1 / 5</span></div>
+  <div class="fit"><span class="z">Was in einer</span><span class="z">Martin Edition</span><span class="z">steckt.</span></div>
+  <div class="rahmen"><img src="../../src/assets/editionen/r-18-bobber-1.jpg" alt="" style="object-position:50% 58%" /></div>
+  <div class="fuss"><span data-marke></span><span class="mono">Wischen →</span></div>
+</section>
+
+<section class="karte hell teil" data-name="02b-karussell-manufaktur-teil-1">
+  <div class="kopf mono"><span>BMW R 18 Bobber · Nº 20</span><span class="dim">2 / 5</span></div>
+  <div class="zahl">01</div>
+  <div class="fit"><span class="z">Hattech</span><span class="z">Sidepipe-Auspuff</span></div>
+  <div class="rahmen"><img src="../../src/assets/editionen/r-18-bobber-2.jpg" alt="" style="object-position:50% 60%" /></div>
+  <div class="fuss"><span class="mono dim">Martin Edition · Bauteil 1 von 3</span><span class="mono">→</span></div>
+</section>
+
+<section class="karte hell teil" data-name="02c-karussell-manufaktur-teil-2">
+  <div class="kopf mono"><span>BMW R 18 Bobber · Nº 20</span><span class="dim">3 / 5</span></div>
+  <div class="zahl">02</div>
+  <div class="fit"><span class="z">Big Spoke</span><span class="z">21 Zoll</span></div>
+  <div class="rahmen"><img src="../../src/assets/editionen/r-18-bobber-1.jpg" alt="" style="object-position:30% 60%" /></div>
+  <div class="fuss"><span class="mono dim">Martin Edition · Bauteil 2 von 3</span><span class="mono">→</span></div>
+</section>
+
+<section class="karte hell teil" data-name="02d-karussell-manufaktur-teil-3">
+  <div class="kopf mono"><span>BMW R 18 Bobber · Nº 20</span><span class="dim">4 / 5</span></div>
+  <div class="zahl">03</div>
+  <div class="fit"><span class="z">Kennzeichenhalter</span><span class="z">seitlich</span></div>
+  <div class="rahmen"><img src="../../src/assets/editionen/r-18-bobber-2.jpg" alt="" style="object-position:72% 55%" /></div>
+  <div class="fuss"><span class="mono dim">Martin Edition · Bauteil 3 von 3</span><span class="mono">→</span></div>
+</section>
+
+<section class="karte dunkel ende" data-name="02e-karussell-manufaktur-ende">
+  <div class="kopf mono"><span>Martin Edition</span><span class="dim">5 / 5</span></div>
+  <svg class="streifen" viewBox="0 0 26 16" style="margin-top:80px"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>
+  <div class="fit"><span class="z">Jede Edition</span><span class="z">ein Unikat.</span></div>
+  <p class="text">23 Editionen in der Kollektion, gebaut in der Manufaktur in Weyarn. Du willst deine eigene? Wir bauen dein Motorrad nach deinen Wünschen um.</p>
+  <div class="fuss"><span data-marke></span><span class="mono">Link in der Bio</span></div>
+</section>
+
+<!-- 03 · Übergabe -->
+<section class="karte dunkel" id="p03" data-name="03-uebergabe-margis">
+  <div class="foto"><img src="../../src/assets/journal/weltklasse-trifft-auf-black-edition-uebergabe-an-thorsten-margis-0.jpg" alt="" /></div>
+  <div class="schleier"></div>
+  <div class="kopf mono"><span>Übergabe · Weyarn</span><span class="dim">BMW R 12</span></div>
+  <div class="spacer"></div>
+  <div class="fit"><span class="z">Weltklasse trifft</span><span class="z">Black Edition.</span></div>
+  <p class="text">Bob-Champion Thorsten Margis übernimmt seine BMW R 12 Martin Black Edition, angepasst an seine Wünsche.</p>
+  <div class="fuss"><span data-marke></span><span class="mono dim">Schlüsselmoment</span></div>
+</section>
+
+<!-- 04 · Karussell Winter-Wellness · 4 Seiten -->
+<section class="karte hell" id="p04" data-name="04a-karussell-winter-titel">
+  <div class="foto"><img src="../../src/assets/journal/winter-wellness-0.jpg" alt="" /></div>
+  <div class="schleier"></div>
+  <div class="kopf mono"><span>Service · Winter-Wellness</span><span class="dim">1 / 4</span></div>
+  <div class="fit"><span class="z">Dein Bike</span><span class="z">überwintert</span><span class="z">bei uns.</span></div>
+  <div class="spacer"></div>
+  <div class="fuss"><span data-marke></span><span class="mono">Wischen →</span></div>
+</section>
+
+<section class="karte dunkel preis" data-name="04b-karussell-winter-preis">
+  <div class="kopf mono"><span>Winter-Wellness · Basispaket</span><span class="dim">2 / 4</span></div>
+  <div class="zahl">259<sup>€</sup></div>
+  <p class="text">Komplettpreis für fünf Monate. Jeder weitere Monat 39 Euro.</p>
+  <div class="blatt">
+    <div><span class="nr">01</span><span class="wert">Einlagerung 5 Monate</span></div>
+    <div><span class="nr">02</span><span class="wert">Fahrzeugwäsche</span></div>
+    <div><span class="nr">03</span><span class="wert">Batterieservice und Leistungstest</span></div>
+    <div><span class="nr">04</span><span class="wert">Frühjahrscheck</span></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="fuss"><span class="mono dim">Stand: motorrad-martin.de</span><span class="mono">→</span></div>
+</section>
+
+<section class="karte hell" data-name="04c-karussell-winter-leistung">
+  <div class="kopf mono"><span>Winter-Wellness</span><span class="dim">3 / 4</span></div>
+  <div class="fit" style="margin-top:44px"><span class="z">Wir holen.</span><span class="z">Wir bringen.</span></div>
+  <div class="blatt" style="margin-top:56px">
+    <div><span class="nr">01</span><span class="wert">Fachgerechte Einlagerung<small>In trockenen, sauberen und beheizten Hallen.</small></span></div>
+    <div><span class="nr">02</span><span class="wert">Batterieservice<small>Regelmäßig laden und prüfen, für einen sicheren Start im Frühling.</small></span></div>
+    <div><span class="nr">03</span><span class="wert">Fahrzeug-Check<small>Sichtprüfung von Reifen, Bremsen und Flüssigkeiten.</small></span></div>
+    <div><span class="nr">04</span><span class="wert">Auf Wunsch Inspektion<small>Fällige Arbeiten ohne Zeitdruck im Winter.</small></span></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="fuss"><span class="mono dim">Mit Hol- und Bringservice</span><span class="mono">→</span></div>
+</section>
+
+<section class="karte dunkel ende" data-name="04d-karussell-winter-ende">
+  <div class="kopf mono"><span>Platz reservieren</span><span class="dim">4 / 4</span></div>
+  <div class="fit"><span class="z">Ein Anruf</span><span class="z">genügt.</span></div>
+  <div class="blatt" style="margin-top:56px">
+    <div><span class="nr">WEY</span><span class="wert">Weyarn<small>+49 8020 90450-0</small></span></div>
+    <div><span class="nr">SOG</span><span class="wert">Schongau<small>+49 8861 9300-0</small></span></div>
+    <div><span class="nr">OY</span><span class="wert">Oy-Mittelberg<small>+49 8366 98488-0</small></span></div>
+  </div>
+  <div class="fuss"><span data-marke></span><span class="mono">Link in der Bio</span></div>
+</section>
+
+<!-- 05 · Aktion des Monats -->
+<section class="karte dunkel" id="p05" data-name="05-aktion-winter-highlight">
+  <div class="kopf mono"><span>Highlight November · Dezember</span><span class="dim">bis 31.12.</span></div>
+  <div class="zahl">17&thinsp;%</div>
+  <div class="fit"><span class="z">auf das Batterie-</span><span class="z">ladegerät Plus.</span></div>
+  <p class="text">Und 15 % auf das Nachrüst-Set Zusatzsteckdose. Damit dein Bike über den Winter fit bleibt.</p>
+  <div class="spacer"></div>
+  <p class="klein">Aktionszeitraum 01.11.–31.12.2026, nur bei teilnehmenden BMW Motorrad Partnern und solange der Vorrat reicht. Nicht mit anderen Aktionen kombinierbar. Ausgenommen Anbauteile und Einbau.</p>
+  <div class="fuss" style="margin-top:28px"><span data-marke></span><span class="mono dim">In allen drei Häusern</span></div>
+</section>
+
+<!-- 06 · Haus -->
+<section class="karte dunkel" id="p06" data-name="06-haus-weyarn">
+  <div class="foto"><img src="../../src/assets/standorte/weyarn-front.jpg" alt="" /></div>
+  <div class="schleier"></div>
+  <div class="kopf mono"><span>Weyarn · Am Weiglfeld 20</span><span class="dim">seit 2022</span></div>
+  <div class="fit"><span class="z">Home of</span><span class="z">Martin Edition.</span></div>
+  <div class="spacer"></div>
+  <p class="text" style="margin-bottom:40px">Rund 3.500 Quadratmeter direkt an der A8. Showroom, Werkstatt und die Manufaktur, in der die Editionen entstehen.</p>
+  <div class="fuss"><span data-marke></span><span class="mono dim">Haus 1 von 3</span></div>
+</section>
+
+<!-- 07 · Seit 1954 -->
+<section class="karte dunkel" id="p07" data-name="07-seit-1954">
+  <div class="kopf mono"><span>Familienbetrieb</span><span class="dim">Dritte Generation</span></div>
+  <div class="fit"><span class="z">Seit</span><span class="z">1954.</span></div>
+  <svg class="streifen" viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg>
+  <p class="text">Am 1. April 1954 gründet Erwin Martin in Ingenried bei Schongau. Heute: drei Häuser am Alpenrand, in Familienhand.</p>
+  <div class="spacer"></div>
+  <div class="leiste">
+    <div><b>1954</b><span>Gründung</span></div>
+    <div><b>1967</b><span>BMW Vertrags&shy;händler</span></div>
+    <div><b>1969</b><span>BMW Motor&shy;räder</span></div>
+    <div><b>1998</b><span>Allgäu</span></div>
+    <div><b>2022</b><span>Weyarn</span></div>
+  </div>
+  <div class="fuss" style="margin-top:40px"><span data-marke></span><span class="mono dim">Schongau · Weyarn · Oy</span></div>
+</section>
+
+<!-- 08 · Neu bei BMW Motorrad -->
+<section class="karte dunkel" id="p08" data-name="08-neuheit-f-450-gs-trophy">
+  <div class="foto"><img src="../../src/assets/journal/bmw-f-450-gs-trophy-1.jpg" alt="" /></div>
+  <div class="schleier"></div>
+  <div class="kopf mono"><span>Neu bei BMW Motorrad</span><span class="dim">A2-Klasse</span></div>
+  <div class="fit"><span class="z">F 450 GS</span><span class="z">Trophy.</span></div>
+  <div class="spacer"></div>
+  <p class="text" style="margin-bottom:40px;color:var(--chalk)">Echte GS-Optik und viel vom Charakter der großen Schwester, in der A2-Reiseenduro-Klasse.</p>
+  <div class="fuss"><span data-marke></span><span class="mono">Probefahrt: Link in der Bio</span></div>
+</section>
+
+<!-- 09 · Karriere -->
+<section class="karte hell" id="p09" data-name="09-karriere-serviceberater">
+  <div class="kopf mono"><span>Karriere · Weyarn</span><span class="dim">Vollzeit</span></div>
+  <div class="fit"><span class="z">Wir suchen:</span><span class="z">Serviceberater</span><span class="z">Motorrad.</span></div>
+  <div class="zeile mono"><span>(m/w/d)</span><span class="dim">9 offene Stellen in 3 Häusern</span></div>
+  <div class="rahmen"><img src="../../src/assets/standorte/weyarn-werkstatt.jpg" alt="" style="object-position:50% 40%" /></div>
+  <div class="fuss" style="margin-top:32px"><span data-marke></span><span class="mono">Bewerben: Link in der Bio</span></div>
+</section>
+
+<script>
+  const MARKE = '<span class="marke"><span class="marke__bmw">BMW<br>Motorrad</span><svg viewBox="0 0 26 16"><path d="M5 0h5L5 16H0z" fill="#3896D2"/><path d="M13 0h5l-5 16H8z" fill="#2B5E97"/><path d="M21 0h5l-5 16h-5z" fill="#E42A24"/></svg><span class="marke__name">Martin</span></span>';
+  document.querySelectorAll('[data-marke]').forEach((el) => (el.innerHTML = MARKE));
+</script>
+<script src="fit.js"></script>
+</body>
+</html>
