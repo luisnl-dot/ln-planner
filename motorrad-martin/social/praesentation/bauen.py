@@ -97,11 +97,11 @@ def medium(schluessel: str) -> str:
     if art == 'web':
         return bild(HIER / 'bilder' / f'web-{name}.jpg', WEB[name])
     if art == 'datei':
-        # Website-Aufnahme: die ersten 1,8 s (stehende schwarze Bühne) kürzen
+        # Website-Aufnahme: vorn kürzen, damit die schwarze Bühne nur kurz steht
         with tempfile.TemporaryDirectory() as tmp:
             ziel = Path(tmp) / 'w.mp4'
             subprocess.run(
-                ['ffmpeg', '-y', '-loglevel', 'error', '-ss', '1.8', '-i', str(HIER / 'bilder' / f'{name}.mp4'),
+                ['ffmpeg', '-y', '-loglevel', 'error', '-ss', '0.6', '-i', str(HIER / 'bilder' / f'{name}.mp4'),
                  '-c:v', 'libx264', '-preset', 'slow', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
                  '-an', str(ziel)],
                 check=True,
